@@ -1,0 +1,210 @@
+{
+  "generation": "Built-in image_gen",
+  "version": 1,
+  "artworks": [
+    {
+      "word": "serene",
+      "title": "Still Water, Early Light",
+      "titleZh": "晨光靜水",
+      "series": "Light & Living Things",
+      "seriesZh": "光與生長",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "impressionist",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"serene\".\nSubject: A wide, utterly still lake at dawn, pale mist suspended above the water, a small willow leaning from the bank, and distant wooded hills reflected in soft blue and gold. The unbroken reflection and tranquil spacious composition embody calm, peaceful and undisturbed.\nStyle/medium: A luminous impressionist oil painting, a cohesive series titled Light & Living Things. Sophisticated broken brushwork, visible impasto and linen grain, diffused natural light, sage and olive greens, muted ultramarine, warm ochre and touches of soft ivory. Atmospheric, observational, painterly and carefully composed; nuanced tones rather than sugary or saturated colors.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "flourish",
+      "title": "An Unruly Garden",
+      "titleZh": "繁盛花園",
+      "series": "Light & Living Things",
+      "seriesZh": "光與生長",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "impressionist",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"flourish\".\nSubject: An exuberantly thriving garden after rain: climbing roses, tall delphiniums, lush leaves and many new shoots spilling over a sun-warmed stone wall. A sense of healthy growth in all directions; energetic but refined brushwork, botanical variety rather than repeating flower symbols.\nStyle/medium: A luminous impressionist oil painting, a cohesive series titled Light & Living Things. Sophisticated broken brushwork, visible impasto and linen grain, diffused natural light, sage and olive greens, muted ultramarine, warm ochre and touches of soft ivory. Atmospheric, observational, painterly and carefully composed; nuanced tones rather than sugary or saturated colors.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "nurture",
+      "title": "The Young Sapling",
+      "titleZh": "幼苗的照料",
+      "series": "Light & Living Things",
+      "seriesZh": "光與生長",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "impressionist",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"nurture\".\nSubject: A quiet garden scene of an adult and a child kneeling beside a young sapling, gently settling the soil and watering its roots together. Their attentive gestures and protective closeness express caring for another's growth. Natural anatomy, faces understated, no sentimental cartoon poses.\nStyle/medium: A luminous impressionist oil painting, a cohesive series titled Light & Living Things. Sophisticated broken brushwork, visible impasto and linen grain, diffused natural light, sage and olive greens, muted ultramarine, warm ochre and touches of soft ivory. Atmospheric, observational, painterly and carefully composed; nuanced tones rather than sugary or saturated colors.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "curiosity",
+      "title": "The Collector of Questions",
+      "titleZh": "問題收藏家",
+      "series": "Light & Living Things",
+      "seriesZh": "光與生長",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "impressionist",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"curiosity\".\nSubject: An intimate sunlit naturalist's table: an open unlettered sketchbook with botanical drawings, a magnifying glass, shells and seed pods. One young adult leans in, holding a small fern toward the window to study it closely. A vivid sense of discovery through observation, with no readable writing.\nStyle/medium: A luminous impressionist oil painting, a cohesive series titled Light & Living Things. Sophisticated broken brushwork, visible impasto and linen grain, diffused natural light, sage and olive greens, muted ultramarine, warm ochre and touches of soft ivory. Atmospheric, observational, painterly and carefully composed; nuanced tones rather than sugary or saturated colors.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "delicate",
+      "title": "Porcelain and Petals",
+      "titleZh": "瓷與花瓣",
+      "series": "Light & Living Things",
+      "seriesZh": "光與生長",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "impressionist",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"delicate\".\nSubject: A refined still life of almost translucent white anemones and a single pale butterfly resting on the rim of a thin porcelain bowl. Slender stems, light falling through fragile petals, a quiet cool background and extremely sensitive brushwork convey easily damaged beauty that deserves care.\nStyle/medium: A luminous impressionist oil painting, a cohesive series titled Light & Living Things. Sophisticated broken brushwork, visible impasto and linen grain, diffused natural light, sage and olive greens, muted ultramarine, warm ochre and touches of soft ivory. Atmospheric, observational, painterly and carefully composed; nuanced tones rather than sugary or saturated colors.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "abundant",
+      "title": "The Orchard Table",
+      "titleZh": "果園的饋贈",
+      "series": "Light & Living Things",
+      "seriesZh": "光與生長",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "impressionist",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"abundant\".\nSubject: An overflowing harvest table in an orchard: woven baskets of pears, figs and grapes, laden branches overhead, a scattering of ripe fruit and dappled late-summer light. Generous quantities, varied natural forms and a bountiful atmosphere, composed like a museum oil painting rather than an advertisement.\nStyle/medium: A luminous impressionist oil painting, a cohesive series titled Light & Living Things. Sophisticated broken brushwork, visible impasto and linen grain, diffused natural light, sage and olive greens, muted ultramarine, warm ochre and touches of soft ivory. Atmospheric, observational, painterly and carefully composed; nuanced tones rather than sugary or saturated colors.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering.",
+      "edits": [
+        {
+          "prompt": "Edit this artwork only to remove the small gold handwritten signature/scribble in the extreme lower-right corner, replacing it with matching natural painted table texture. Keep every other detail, the composition, color, brushwork and dimensions unchanged. No text, letters, signature or watermark anywhere.",
+          "referencedImage": "/Users/charles/.codex/generated_images/01a075cd-8aeb-70c3-bb21-1acf1a3cb3d9/exec-7f1bad16-c492-4773-8c4f-20659c926d93.png"
+        }
+      ]
+    },
+    {
+      "word": "journey",
+      "title": "The Long Way Home",
+      "titleZh": "漫長歸途",
+      "series": "Places Between",
+      "seriesZh": "行旅之間",
+      "medium": "Modern watercolor",
+      "mediumZh": "現代水彩",
+      "style": "watercolor",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"journey\".\nSubject: A winding road tracing through hills toward a distant mountain pass, with one tiny traveler carrying a bag on the near bend. Several unfolding distances and weather bands make the movement from place to place legible. A beautifully observed watercolor landscape, no maps, icons or text.\nStyle/medium: A contemporary fine-art watercolor in a cohesive series titled Places Between. Transparent layered washes, granulating mineral pigment, subtle backruns, dry-brush details, expressive lost-and-found edges and tangible cold-pressed cotton paper. Airy muted indigo, eucalyptus green, sienna, restrained peach and warm paper white. Sophisticated modern travel and landscape painting, with strong composition and a few finely observed details, not a flat digital illustration.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "wander",
+      "title": "An Unplanned Afternoon",
+      "titleZh": "無計畫的午後",
+      "series": "Places Between",
+      "seriesZh": "行旅之間",
+      "medium": "Modern watercolor",
+      "mediumZh": "現代水彩",
+      "style": "watercolor",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"wander\".\nSubject: A solitary pedestrian strolling leisurely through an old Mediterranean town where sunlit lanes branch unpredictably between ochre buildings, potted herbs and hanging laundry. The figure pauses toward an interesting side alley, relaxed and without a fixed destination. Architectural watercolor with lively human detail.\nStyle/medium: A contemporary fine-art watercolor in a cohesive series titled Places Between. Transparent layered washes, granulating mineral pigment, subtle backruns, dry-brush details, expressive lost-and-found edges and tangible cold-pressed cotton paper. Airy muted indigo, eucalyptus green, sienna, restrained peach and warm paper white. Sophisticated modern travel and landscape painting, with strong composition and a few finely observed details, not a flat digital illustration.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "destination",
+      "title": "A Harbor at Last",
+      "titleZh": "終於抵達港灣",
+      "series": "Places Between",
+      "seriesZh": "行旅之間",
+      "medium": "Modern watercolor",
+      "mediumZh": "現代水彩",
+      "style": "watercolor",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"destination\".\nSubject: A traveler seen from behind at the end of a stone path, arriving at a quiet harbor village with a welcoming inn and boats at rest. Composition leads the eye decisively to the reached place; a feeling of arrival after travel. No signs with writing, no location pins or arrows.\nStyle/medium: A contemporary fine-art watercolor in a cohesive series titled Places Between. Transparent layered washes, granulating mineral pigment, subtle backruns, dry-brush details, expressive lost-and-found edges and tangible cold-pressed cotton paper. Airy muted indigo, eucalyptus green, sienna, restrained peach and warm paper white. Sophisticated modern travel and landscape painting, with strong composition and a few finely observed details, not a flat digital illustration.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "landscape",
+      "title": "Fields Under Moving Clouds",
+      "titleZh": "流雲下的田野",
+      "series": "Places Between",
+      "seriesZh": "行旅之間",
+      "medium": "Modern watercolor",
+      "mediumZh": "現代水彩",
+      "style": "watercolor",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"landscape\".\nSubject: An expansive terraced countryside with irregular cultivated fields, a silver river bending through the valley, distant layered mountains and generous moving clouds. A carefully organized patchwork of natural landforms, painterly watercolor specificity and open air.\nStyle/medium: A contemporary fine-art watercolor in a cohesive series titled Places Between. Transparent layered washes, granulating mineral pigment, subtle backruns, dry-brush details, expressive lost-and-found edges and tangible cold-pressed cotton paper. Airy muted indigo, eucalyptus green, sienna, restrained peach and warm paper white. Sophisticated modern travel and landscape painting, with strong composition and a few finely observed details, not a flat digital illustration.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "horizon",
+      "title": "Where Sea Meets Sky",
+      "titleZh": "海天相接之處",
+      "series": "Places Between",
+      "seriesZh": "行旅之間",
+      "medium": "Modern watercolor",
+      "mediumZh": "現代水彩",
+      "style": "watercolor",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"horizon\".\nSubject: A minimal but richly textured seascape at sunset. The exact long line where distant water meets sky is the main subject, with a tiny sailboat near that line for scale, pale peach clouds above and deep indigo washes below. Quiet contemporary watercolor, no words or graphic lines.\nStyle/medium: A contemporary fine-art watercolor in a cohesive series titled Places Between. Transparent layered washes, granulating mineral pigment, subtle backruns, dry-brush details, expressive lost-and-found edges and tangible cold-pressed cotton paper. Airy muted indigo, eucalyptus green, sienna, restrained peach and warm paper white. Sophisticated modern travel and landscape painting, with strong composition and a few finely observed details, not a flat digital illustration.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "habitat",
+      "title": "A Living Woodland",
+      "titleZh": "生機林地",
+      "series": "Places Between",
+      "seriesZh": "行旅之間",
+      "medium": "Modern watercolor",
+      "mediumZh": "現代水彩",
+      "style": "watercolor",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"habitat\".\nSubject: An ecologically rich woodland edge beside a stream: a small bird perched near its woven nest, a deer partly sheltered by trees, ferns, moss, roots and understory plants forming a convincing natural home. A cohesive observed scene with believable animal scale, not a diagram, collage of isolated animals or storybook cartoon.\nStyle/medium: A contemporary fine-art watercolor in a cohesive series titled Places Between. Transparent layered washes, granulating mineral pigment, subtle backruns, dry-brush details, expressive lost-and-found edges and tangible cold-pressed cotton paper. Airy muted indigo, eucalyptus green, sienna, restrained peach and warm paper white. Sophisticated modern travel and landscape painting, with strong composition and a few finely observed details, not a flat digital illustration.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "inspire",
+      "title": "A Window Opens",
+      "titleZh": "打開一扇窗",
+      "series": "The Shape of an Idea",
+      "seriesZh": "靈感的形狀",
+      "medium": "Contemporary gouache & mixed media",
+      "mediumZh": "當代水粉與複合媒材",
+      "style": "contemporary",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"inspire\".\nSubject: A painter at an easel turning toward an open window as morning light transforms a modest studio. Sweeps of luminous color carry the eye from a blooming branch outside toward the unfinished canvas, expressing a new urge to create. The human figure and tools are thoughtfully simplified, no lightbulb icon.\nStyle/medium: A contemporary gallery painting in a cohesive series titled The Shape of an Idea. Painterly gouache and subtle mixed-media collage on heavy cotton paper, tactile brush marks, translucent overlapping shapes and selective impasto. Figurative forms simplified into confident geometric planes but still human and recognizable. Restrained terracotta, deep olive, warm ivory, dusty blue and small brass-gold accents. Modernist visual poetry with rich surface detail and asymmetric composition; sophisticated fine art, not corporate vector graphics.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "collaboration",
+      "title": "Built Together",
+      "titleZh": "一起完成",
+      "series": "The Shape of an Idea",
+      "seriesZh": "靈感的形狀",
+      "medium": "Contemporary gouache & mixed media",
+      "mediumZh": "當代水粉與複合媒材",
+      "style": "contemporary",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"collaboration\".\nSubject: Three artisans working around one broad worktable, each contributing a distinct piece to a beautiful shared wooden and ceramic structure. Their overlapping purposeful gestures and complementary parts form a harmonious composition. Clear cooperation toward a common result, natural hands, no puzzle-piece logo.\nStyle/medium: A contemporary gallery painting in a cohesive series titled The Shape of an Idea. Painterly gouache and subtle mixed-media collage on heavy cotton paper, tactile brush marks, translucent overlapping shapes and selective impasto. Figurative forms simplified into confident geometric planes but still human and recognizable. Restrained terracotta, deep olive, warm ivory, dusty blue and small brass-gold accents. Modernist visual poetry with rich surface detail and asymmetric composition; sophisticated fine art, not corporate vector graphics.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "innovation",
+      "title": "A Different Kind of Bridge",
+      "titleZh": "另一種橋",
+      "series": "The Shape of an Idea",
+      "seriesZh": "靈感的形狀",
+      "medium": "Contemporary gouache & mixed media",
+      "mediumZh": "當代水粉與複合媒材",
+      "style": "contemporary",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"innovation\".\nSubject: An inventor's small studio with a striking experimental bridge maquette made of folded paper, slender wood ribs and a curved metal element, surrounded by subtle exploratory drawings without writing. The new structure visibly solves a span through an unexpected elegant form. Grounded physical materials, no futuristic screens or lightbulb symbols.\nStyle/medium: A contemporary gallery painting in a cohesive series titled The Shape of an Idea. Painterly gouache and subtle mixed-media collage on heavy cotton paper, tactile brush marks, translucent overlapping shapes and selective impasto. Figurative forms simplified into confident geometric planes but still human and recognizable. Restrained terracotta, deep olive, warm ivory, dusty blue and small brass-gold accents. Modernist visual poetry with rich surface detail and asymmetric composition; sophisticated fine art, not corporate vector graphics.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "ambition",
+      "title": "Toward the Light",
+      "titleZh": "向光而行",
+      "series": "The Shape of an Idea",
+      "seriesZh": "靈感的形狀",
+      "medium": "Contemporary gouache & mixed media",
+      "mediumZh": "當代水粉與複合媒材",
+      "style": "contemporary",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"ambition\".\nSubject: A small determined climber ascending a monumental sequence of terracotta-colored terraces and stone steps toward a bright high opening. The architecture becomes a poetic, nearly abstract composition of upward planes; a clear attainable direction, scale and persistence. No corporate success icons.\nStyle/medium: A contemporary gallery painting in a cohesive series titled The Shape of an Idea. Painterly gouache and subtle mixed-media collage on heavy cotton paper, tactile brush marks, translucent overlapping shapes and selective impasto. Figurative forms simplified into confident geometric planes but still human and recognizable. Restrained terracotta, deep olive, warm ivory, dusty blue and small brass-gold accents. Modernist visual poetry with rich surface detail and asymmetric composition; sophisticated fine art, not corporate vector graphics.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "craft",
+      "title": "The Potter's Hands",
+      "titleZh": "陶人的雙手",
+      "series": "The Shape of an Idea",
+      "seriesZh": "靈感的形狀",
+      "medium": "Contemporary gouache & mixed media",
+      "mediumZh": "當代水粉與複合媒材",
+      "style": "contemporary",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"craft\".\nSubject: A close and tactile view of a potter's skilled hands shaping the rim of a clay vessel on a wheel. Carefully observed hands, concentric clay ridges, small tools and linen cloth; a composition in simplified painterly planes that celebrates patient practiced technique and making by hand.\nStyle/medium: A contemporary gallery painting in a cohesive series titled The Shape of an Idea. Painterly gouache and subtle mixed-media collage on heavy cotton paper, tactile brush marks, translucent overlapping shapes and selective impasto. Figurative forms simplified into confident geometric planes but still human and recognizable. Restrained terracotta, deep olive, warm ivory, dusty blue and small brass-gold accents. Modernist visual poetry with rich surface detail and asymmetric composition; sophisticated fine art, not corporate vector graphics.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "sustainable",
+      "title": "A Garden That Gives Back",
+      "titleZh": "生生不息的花園",
+      "series": "The Shape of an Idea",
+      "seriesZh": "靈感的形狀",
+      "medium": "Contemporary gouache & mixed media",
+      "mediumZh": "當代水粉與複合媒材",
+      "style": "contemporary",
+      "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"sustainable\".\nSubject: A peaceful community garden designed to keep thriving: a rain barrel feeding vegetable beds, young and mature fruit trees together, a person returning compost to the soil and sunlight on a small greenhouse. Subtle circular visual composition of renewal, lush living greens connect this work to impressionist and watercolor garden paintings. No recycling logo, words, infographic arrows or corporate eco symbols.\nStyle/medium: A contemporary gallery painting in a cohesive series titled The Shape of an Idea. Painterly gouache and subtle mixed-media collage on heavy cotton paper, tactile brush marks, translucent overlapping shapes and selective impasto. Figurative forms simplified into confident geometric planes but still human and recognizable. Restrained terracotta, deep olive, warm ivory, dusty blue and small brass-gold accents. Modernist visual poetry with rich surface detail and asymmetric composition; sophisticated fine art, not corporate vector graphics.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    }
+  ]
+}
