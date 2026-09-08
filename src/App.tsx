@@ -40,6 +40,9 @@ import collection from "./collection.json";
 import { Museum, exhibitPlacements, type Pose } from "./museum";
 import {
   ENTRY,
+  ENTRANCE,
+  ENTRANCE_INDEX,
+  galleryTransform,
   GARDEN,
   GARDEN_INDEX,
   OUTDOOR_DISPLAYS,
@@ -51,7 +54,12 @@ import { useExhibitAudio } from "./useExhibitAudio";
 import { YouglishPlayer, YouTubeLogo } from "./YouglishPlayer";
 const exhibits = collection.exhibits as Exhibit[];
 const rooms = collection.rooms;
-const destinations = [...rooms, GARDEN];
+const destinations = [...rooms, GARDEN, ENTRANCE];
+const wordClip = (exhibit: Exhibit) => ({
+  key: "word",
+  url: exhibit.audio,
+  text: exhibit.word,
+});
 const languages = [
   { id: "", name: "English only" },
   { id: "zh_TW", name: "繁體中文" },
@@ -172,116 +180,47 @@ function MuseumLogo() {
     </svg>
   );
 }
+function FloorPlan({ pose }: { pose: Pose }) {
+  const { t } = useLocale();
+  return <svg viewBox="0 0 244 210" aria-label={t("Museum floor plan")}>
+    <rect x="92" y="19" width="60" height="44" rx="2" fill={pose.room === GARDEN_INDEX ? "#ccdabf" : "#dfe5d3"} stroke="#a8b49a" />
+    <path d="M118 19h8v45h-8z M92 42h60v6H92z" fill="#f1edde" />
+    <rect x="131" y="37" width="8" height="18" fill="#9fbdb4" rx="1" />
+    {[97, 147].map(x => [26, 36, 56].map(y => <circle key={`${x}-${y}`} cx={x} cy={y} r="2.3" fill="#97ae80" />))}
+    <text x="122" y="11" textAnchor="middle" fill="#718166" fontSize="7">{t("GARDEN")}</text>
+    <rect x="104" y="147" width="36" height="28" fill={pose.room === ENTRANCE_INDEX ? "#d8cfb2" : "#eee7d7"} stroke="#bcb294" />
+    <rect x="104" y="175" width="36" height="24" fill="#e7e3d5" />
+    {rooms.map((room, i) => {
+      const center = galleryTransform(i), p = mapPoint(center.x, center.z);
+      const w = i < 3 ? 24 : 28, h = i < 3 ? 28 : 24;
+      return <g key={room.id}>
+        <rect x={p.x-w/2} y={p.y-h/2} width={w} height={h} fill={pose.room === i ? `${room.color}66` : `${room.color}20`} stroke="#b7b8a5" strokeWidth=".7" />
+        <text x={p.x} y={p.y+2.5} textAnchor="middle" fill="#69715a" fontSize="7">0{i+1}</text>
+      </g>;
+    })}
+    <path d="M118 64v83m8-83v83 M20 157h84m-84 8h84 M140 157h84m-84 8h84" stroke="#faf7ea" strokeWidth="2" />
+    <text x="57" y="187" textAnchor="middle" fill="#718166" fontSize="7">{t("WEST WING")}</text>
+    <text x="187" y="187" textAnchor="middle" fill="#718166" fontSize="7">{t("EAST WING")}</text>
+    <circle cx="122" cy="161" r="5" fill="none" stroke="#ad986b" />
+    <path d="M113 180v3h18v-3" fill="none" stroke="#998562" strokeWidth="2" />
+    {exhibits.flatMap(e => exhibitPlacements(e).map(p => {
+      const point = mapPoint(p.x, p.z);
+      return <rect key={`${e.id}-${p.area}`} x={point.x-1.2} y={point.y-1.2} width="2.4" height="2.4" rx=".5" fill={rooms[e.room].color} />;
+    }))}
+    <text x="122" y="204" textAnchor="middle" fill="#868b78" fontSize="7" letterSpacing="1.5">{t("GATE & WELCOME")}</text>
+    <g data-world-x={pose.x.toFixed(2)} data-world-z={pose.z.toFixed(2)} transform={`translate(${mapPoint(pose.x, pose.z).x},${mapPoint(pose.x, pose.z).y}) rotate(${(-pose.yaw * 180) / Math.PI})`}>
+      <path d="M0-10-5 0H5Z" fill="#56765b" opacity=".25" />
+      <circle r="3" fill="#345d47" stroke="#faf9f2" strokeWidth="1.3" />
+    </g>
+  </svg>;
+}
 function MiniMap({ pose, onOpen }: { pose: Pose; onOpen: () => void }) {
   const { t } = useLocale();
-  return (
-    <button
-      className="minimap"
-      onClick={onOpen}
-      aria-label={t("Open museum floor map")}
-    >
-      <span className="map-label">
-        {t("YOUR LITTLE WORLD")}
-        <Expand size={12} />
-      </span>
-      <svg viewBox="0 0 154 206" aria-hidden="true">
-        <rect
-          x="39.5"
-          y="30.5"
-          width="75"
-          height="55"
-          rx="2"
-          fill={pose.room === GARDEN_INDEX ? "#ccdabf" : "#dfe5d3"}
-          stroke="#a8b49a"
-        />
-        <path d="M72 31h10v55H72z M40 66h74v5H40z" fill="#f1edde" />
-        <rect x="86" y="55" width="11.5" height="20" fill="#9fbdb4" rx="1" />
-        <path d="M52 55h11v16H52z" fill="#b8b096" />
-        {[44, 109].map((x) =>
-          [39, 52, 76].map((y) => (
-            <circle key={`${x}-${y}`} cx={x} cy={y} r="3" fill="#97ae80" />
-          )),
-        )}
-        <text x="77" y="21" textAnchor="middle" fill="#718166" fontSize="8">
-          {t("GARDEN")}
-        </text>
-        <rect x="62" y="85.5" width="30" height="105" fill="#eae7dd" />
-        {[2, 1, 0].map((r, i) => (
-          <g key={r}>
-            <rect
-              x="63"
-              y={86 + i * 35}
-              width="28"
-              height="34"
-              fill={pose.room === r ? "#d2dbc9" : "#eae7dd"}
-            />
-            <text
-              x="47"
-              y={106 + i * 35}
-              fill="#868b78"
-              fontSize="8"
-              fontFamily="DM Sans"
-            >
-              0{r + 1}
-            </text>
-            {i > 0 && (
-              <path
-                d={`M63 ${85.5 + i * 35}h28`}
-                stroke="#c2c3b2"
-                strokeDasharray="2 3"
-              />
-            )}
-          </g>
-        ))}
-        <path
-          d="M62 85.5v105h30v-105 M72 86v104m10-104v104"
-          fill="none"
-          stroke="#b7b8a5"
-          strokeWidth="1"
-        />
-        {exhibits.flatMap((e) =>
-          exhibitPlacements(e).map((p) => {
-            const point = mapPoint(p.x, p.z);
-            return (
-              <rect
-                key={`${e.id}-${p.area}`}
-                x={point.x - 1.5}
-                y={point.y - 1.5}
-                width="3"
-                height="3"
-                rx=".5"
-                fill={rooms[e.room].color}
-              />
-            );
-          }),
-        )}
-        <g
-          data-world-x={pose.x.toFixed(2)}
-          data-world-z={pose.z.toFixed(2)}
-          transform={`translate(${mapPoint(pose.x, pose.z).x},${mapPoint(pose.x, pose.z).y}) rotate(${(-pose.yaw * 180) / Math.PI})`}
-        >
-          <path d="M0-12-6 0H6Z" fill="#56765b" opacity=".2" />
-          <circle r="3.5" fill="#345d47" stroke="#faf9f2" strokeWidth="1.5" />
-        </g>
-        <text
-          x="77"
-          y="202"
-          textAnchor="middle"
-          fill="#868b78"
-          fontSize="8"
-          letterSpacing="2"
-        >
-          {t("ENTRANCE")}
-        </text>
-      </svg>
-      <span className="map-current">
-        <span />
-        {pose.room === GARDEN_INDEX
-          ? t("Garden")
-          : `${t("Gallery")} ${String(pose.room + 1).padStart(2, "0")}`}
-      </span>
-    </button>
-  );
+  return <button className="minimap" onClick={onOpen} aria-label={t("Open museum floor map")}>
+    <span className="map-label">{t("YOUR LITTLE WORLD")}<Expand size={12} /></span>
+    <FloorPlan pose={pose} />
+    <span className="map-current"><span />{pose.room === GARDEN_INDEX ? t("Garden") : pose.room === ENTRANCE_INDEX ? t("The Welcome Hall") : `${t("Gallery")} ${String(pose.room+1).padStart(2,"0")}`}</span>
+  </button>;
 }
 function DirectionPad({
   onMove,
@@ -340,7 +279,7 @@ export default function App() {
   const [error, setError] = useState("");
   const [pose, setPose] = useState<Pose>({
     ...ENTRY,
-    room: 0,
+    room: ENTRANCE_INDEX,
   });
   const [intro, setIntro] = useState(true);
   const [selected, setSelected] = useState<Exhibit | null>(null);
@@ -394,11 +333,13 @@ export default function App() {
       setSelected(exhibit);
       setSelectedArea(area);
       setModal(null);
+      // Play inside the opening gesture so mobile browsers allow pronunciation.
+      void playback.start([wordClip(exhibit)]);
       setVisited((current) =>
         current.includes(exhibit.id) ? current : [...current, exhibit.id],
       );
     },
-    [setVisited],
+    [setVisited, playback.start],
   );
   useEffect(() => {
     let live = true;
@@ -410,6 +351,7 @@ export default function App() {
       try {
         museum.current = new Museum(hostRef.current, {
           exhibits,
+          rooms,
           checked: checkedRef.current,
           onToggleChecked: toggleChecked,
           onVideo: setVideoExhibit,
@@ -500,11 +442,6 @@ export default function App() {
           : `“${exhibit.word}” saved to your collection`,
     );
   };
-  const wordClip = (exhibit: Exhibit) => ({
-    key: "word",
-    url: exhibit.audio,
-    text: exhibit.word,
-  });
   const exampleClip = (exhibit: Exhibit) => ({
     key: "example",
     url: exhibit.exampleAudio,
@@ -551,8 +488,8 @@ export default function App() {
       : -1;
     if (tour && delta === 1 && index === exhibits.length - 1) {
       setTour(false);
-      navigateRoom(0);
-      showToast(t("All 18 words discovered. Keep your curiosity close."));
+      navigateRoom(ENTRANCE_INDEX);
+      showToast(t("All words discovered. Keep your curiosity close."));
       return;
     }
     visit(exhibits[(index + delta + exhibits.length) % exhibits.length]);
@@ -582,7 +519,8 @@ export default function App() {
           onClick={() => {
             setSelected(null);
             setModal(null);
-            navigateRoom(0);
+            setIntro(true);
+            museum.current?.goToGate();
           }}
           aria-label={t("Vocab Hall entrance")}
         >
@@ -610,7 +548,7 @@ export default function App() {
             }}
           >
             {t("The collection")}
-            <span>18</span>
+            <span>{exhibits.length}</span>
           </button>
         </nav>
         <div className="header-actions">
@@ -679,7 +617,7 @@ export default function App() {
               {pose.room === GARDEN_INDEX ? (
                 <Trees size={27} />
               ) : (
-                `0${pose.room + 1}`
+                pose.room === ENTRANCE_INDEX ? "⌂" : `0${pose.room + 1}`
               )}
             </span>
             <span>
@@ -696,7 +634,7 @@ export default function App() {
           <div>
             <strong>
               {visited.length}
-              <span> / 18</span>
+              <span> / {exhibits.length}</span>
             </strong>
             <small>{t("words discovered")}</small>
           </div>
@@ -716,7 +654,7 @@ export default function App() {
               fill="none"
               stroke="#56735c"
               strokeWidth="2"
-              strokeDasharray={`${(visited.length / 18) * 75.4} 75.4`}
+              strokeDasharray={`${(visited.length / exhibits.length) * 75.4} 75.4`}
               transform="rotate(-90 16 16)"
             />
           </svg>
@@ -724,21 +662,12 @@ export default function App() {
 
         {intro && ready && !error && (
           <section className="welcome-card">
-            <span className="welcome-tag">
-              <span />
-              {t("A SPACE TO SLOW DOWN")}
-            </span>
-            <h1>
-              {t("Let curiosity")}
-              <br />
-              {t("lead the")}
-              <em>{t("way.")}</em>
-            </h1>
-            <p>
-              {t("A gallery of words. A world of meaning.")}
-              <br />
-              {t("Wander, discover, and make them yours.")}
-            </p>
+            <div className="mascot-greeting">
+              <img src={assetUrl("mascot/welcome.webp")} alt={t("Handy 990 mascot waving hello")} />
+              <span className="welcome-tag">{t("YOUR LITTLE MUSEUM GUIDE")}</span>
+            </div>
+            <h1>{t("Hello! Welcome to Vocab Hall.")}</h1>
+            <p>{t("Come through the gate. There are 54 words, two new wings, and a garden waiting for you.")}</p>
             <button
               className="primary-button"
               onClick={() => {
@@ -752,11 +681,11 @@ export default function App() {
             <button className="text-button" onClick={startTour}>
               <Headphones size={15} />
               {t("Take a guided tour")}
-              <span>{t("18 stops")}</span>
+              <span>{exhibits.length} {t("stops")}</span>
             </button>
             <div className="welcome-footnote">
-              <span>01 — 03 + ♧</span>
-              <span>{t("THREE GRAND HALLS. ONE OPEN GARDEN.")}</span>
+              <span>01 — 09 + ♧</span>
+              <span>{t("TWO NEW WINGS. A WORLD OF WORDS.")}</span>
             </div>
           </section>
         )}
@@ -1289,7 +1218,7 @@ export default function App() {
                   onClick={() => setFilter("all")}
                 >
                   {t("All exhibits")}
-                  <span>18</span>
+                  <span>{exhibits.length}</span>
                 </button>
                 <button
                   className={filter === "saved" ? "active" : ""}
@@ -1425,7 +1354,7 @@ export default function App() {
             )}
             <footer className="collection-footer">
               {t(
-                "18 words from Handy 990, with original AI-created museum artwork.",
+                "54 words from Handy 990, with original AI-created museum artwork.",
               )}
               <span>
                 {visited.length}
@@ -1460,9 +1389,13 @@ export default function App() {
             </div>
             <p>
               {t(
-                "Three spacious halls, one long promenade, and a garden under open skies. Walk freely between them or choose where to begin.",
+                "A welcoming entrance, two new wings, and a garden under open skies. Choose a direction or simply follow your curiosity.",
               )}
             </p>
+            <div className="expanded-floorplan"><FloorPlan pose={pose} /></div>
+            <div className="wing-shortcuts">
+              {[[ENTRANCE_INDEX, "The Welcome Hall"], [0, "Central Gallery"], [3, "West Wing"], [6, "East Wing"], [GARDEN_INDEX, "Garden"]].map(([index, label]) => <button key={index} onClick={() => navigateRoom(Number(index))}>{t(String(label))}<ArrowRight size={14} /></button>)}
+            </div>
             <div className="room-list">
               {destinations.map((room, i) => (
                 <button
@@ -1480,15 +1413,18 @@ export default function App() {
                         size={49}
                         strokeWidth={1}
                       />
+                    ) : i === ENTRANCE_INDEX ? (
+                      <img className="mascot-preview" src={assetUrl("mascot/welcome.webp")} alt="" />
                     ) : (
                       <img src={assetUrl(exhibits[i * 6].image)} alt="" />
                     )}
-                    <b>{i === GARDEN_INDEX ? "♧" : `0${i + 1}`}</b>
+                    <b>{i === GARDEN_INDEX ? "♧" : i === ENTRANCE_INDEX ? "⌂" : `0${i + 1}`}</b>
                   </span>
                   <span className="room-info">
                     <span className="eyebrow">
                       {pose.room === i
                         ? t("YOU ARE HERE")
+                        : i === ENTRANCE_INDEX ? t("GATE & WELCOME")
                         : i === GARDEN_INDEX
                           ? t("OUTDOORS")
                           : `${t("Gallery")} 0${i + 1}`}
@@ -1498,7 +1434,7 @@ export default function App() {
                     <span className="room-count">
                       {i === GARDEN_INDEX ? (
                         t("6 outdoor exhibits · garden curiosities")
-                      ) : (
+                      ) : i === ENTRANCE_INDEX ? t("Meet your guide · choose a wing") : (
                         <>
                           {
                             exhibits.filter(
@@ -1603,7 +1539,7 @@ export default function App() {
                   <strong>{t("Let curiosity be your guide")}</strong>
                   <p>
                     {t(
-                      "Follow the wide central promenade through all three halls and into the garden. The floor map lets you jump to any hall or the garden; the guided tour visits all 18 exhibits.",
+                      "Start at the mascot gate, cross the welcome hall, and choose the central gallery or either broad wing. The floor map reaches all nine galleries and the garden; the guided tour visits all 54 exhibits.",
                     )}
                   </p>
                 </span>

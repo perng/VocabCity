@@ -2754,3 +2754,65 @@ html:lang(zh-Hant-TW) .audio-status {
     outline-offset: 2px;
   }
 }
+
+/* A friendly arrival and a complete plan for the expanded museum. */
+.mascot-greeting { display: flex; align-items: center; gap: 18px; margin-bottom: 14px; }
+.mascot-greeting img { width: 78px; height: 96px; object-fit: contain; filter: drop-shadow(0 5px 4px #51654715); }
+.mascot-greeting .welcome-tag { margin: 0; max-width: 150px; line-height: 1.8; }
+.welcome-card h1 { font-size: 43px; line-height: 1.12; margin-top: 0; }
+html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
+.expanded-floorplan { background: #efeee3; border: 1px solid #d6d6c6; margin: 22px 0 12px; padding: 16px; }
+.expanded-floorplan svg { width: 100%; max-height: 300px; display: block; }
+.wing-shortcuts { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 24px; }
+.wing-shortcuts button { display: inline-flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border: 1px solid #cdd1be; color: #4b654f; background: #f4f3e9; font-size: 11px; }
+.wing-shortcuts button:hover { background: #e4e9d9; }
+.room-preview img.mascot-preview { object-fit: contain; padding: 6px; mix-blend-mode: normal; }
+.minimap { width: 188px; }
+.minimap > svg { width: 100%; height: auto; max-height: 162px; }
+@media (max-width: 760px) {
+  .minimap { width: 114px; }
+  .mascot-greeting { gap: 12px; margin-bottom: 7px; }
+  .mascot-greeting img { width: 53px; height: 66px; }
+  .mascot-greeting .welcome-tag { display: block; font-size: 8px; }
+  .welcome-card h1, html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 27px; }
+  .expanded-floorplan { padding: 8px; margin-top: 16px; }
+  .wing-shortcuts { gap: 6px; }
+  .wing-shortcuts button { flex: 1 1 30%; padding: 8px; font-size: 10px; }
+}
+@media (max-height: 650px) and (min-width: 761px) {
+  .mascot-greeting img { width: 48px; height: 59px; }
+  .mascot-greeting { margin-bottom: 8px; gap: 12px; }
+  .welcome-card h1, html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 29px; }
+  .welcome-card p { margin: 12px 0; }
+}
+
+/* Keep the gate greeting usable in a short desktop panel or landscape phone. */
+@media (max-height: 600px) {
+  .museum-stage { min-height: 0; }
+  .welcome-card {
+    top: 14px;
+    bottom: auto;
+    width: min(320px, calc(100vw - 32px));
+    max-height: calc(100% - 96px);
+    padding: 12px 18px;
+    overflow-y: auto;
+  }
+  .mascot-greeting { margin-bottom: 5px; gap: 12px; }
+  .mascot-greeting img { width: 32px; height: 40px; }
+  .welcome-card h1,
+  html:lang(zh-Hant-TW) .welcome-card h1 {
+    font-size: 22px;
+    line-height: 1.25;
+    letter-spacing: 0;
+    margin: 5px 0 7px;
+  }
+  .welcome-card > p,
+  html:lang(zh-Hant-TW) .welcome-card > p {
+    font-size: 9px;
+    line-height: 1.6;
+    margin: 6px 0;
+  }
+  .welcome-card .primary-button { margin-top: 10px; padding: 9px 12px; }
+  .welcome-card .text-button { margin-top: 1px; padding: 8px 0 0; }
+  .welcome-footnote { display: none; }
+}

@@ -49,13 +49,21 @@ test("a painting opens by raycast; meanings, audio, saved words, and discovery p
   await page
     .getByRole("button", { name: "Start exploring", exact: true })
     .click();
+  await page.getByRole("button", { name: "Floor map", exact: true }).click();
+  await page.locator(".room-list > button").filter({ hasText: "Everyday Wonders" }).click();
+  await expect(page.locator(".scene")).not.toHaveClass(/room-transition/);
   // Click the center of curiosity's painting in the enlarged east gallery.
+  const recording = page.waitForResponse((response) =>
+    response.url().endsWith("/audio/curiosity.m4a"),
+  );
   await page.mouse.click(1160, 446);
   const dialog = page.getByRole("dialog", {
     name: "Vocabulary exhibit: curiosity",
     exact: true,
   });
   await expect(dialog).toBeVisible();
+  expect((await recording).ok()).toBe(true);
+  await expect(dialog.locator(".audio-status")).toContainText("Listening to word");
   const source = data.exhibits.find((e) => e.word === "curiosity")!;
   await expect(
     dialog.getByText(source.definition, { exact: true }),
@@ -64,13 +72,6 @@ test("a painting opens by raycast; meanings, audio, saved words, and discovery p
   await expect(
     dialog.getByText(source.translations.ja_JP, { exact: true }),
   ).toBeVisible();
-  const recording = page.waitForResponse((response) =>
-    response.url().endsWith("/audio/curiosity.m4a"),
-  );
-  await dialog
-    .getByRole("button", { name: "Listen to word: curiosity" })
-    .click();
-  expect((await recording).ok()).toBe(true);
   await dialog
     .getByRole("button", { name: "Keep this word", exact: true })
     .click();
@@ -100,6 +101,9 @@ test("the broad promenade connects every hall and the outdoor garden without doo
   await page
     .getByRole("button", { name: "Start exploring", exact: true })
     .click();
+  await page.getByRole("button", { name: "Floor map", exact: true }).click();
+  await page.locator(".room-list > button").filter({ hasText: "Everyday Wonders" }).click();
+  await expect(page.locator(".scene")).not.toHaveClass(/room-transition/);
   const marker = page.locator(".minimap [data-world-z]");
   const z = async () => Number(await marker.getAttribute("data-world-z"));
   const x = async () => Number(await marker.getAttribute("data-world-x"));
@@ -165,6 +169,9 @@ test("gallery walls and the garden pool remain solid while open paths stay walka
   await page
     .getByRole("button", { name: "Start exploring", exact: true })
     .click();
+  await page.getByRole("button", { name: "Floor map", exact: true }).click();
+  await page.locator(".room-list > button").filter({ hasText: "Everyday Wonders" }).click();
+  await expect(page.locator(".scene")).not.toHaveClass(/room-transition/);
   const marker = page.locator(".minimap [data-world-x]");
   const x = async () => Number(await marker.getAttribute("data-world-x"));
   await page.keyboard.down("Shift");
@@ -223,16 +230,16 @@ test("guided tour covers every exhibit and finishes at the entrance", async ({
       });
     await page
       .getByRole("button", {
-        name: i === 17 ? "Finish tour" : "Next",
+        name: i === data.exhibits.length - 1 ? "Finish tour" : "Next",
         exact: true,
       })
       .click();
   }
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(page.locator(".gallery-heading strong")).toHaveText(
-    "Everyday Wonders",
+    "The Welcome Hall",
   );
-  await expect(page.locator(".visit-progress strong")).toHaveText("18 / 18");
+  await expect(page.locator(".visit-progress strong")).toHaveText(`${data.exhibits.length} / ${data.exhibits.length}`);
 });
 
 test("mobile layout supports gallery navigation, collection search, saved words, and touch controls", async ({
@@ -315,17 +322,17 @@ test("Traditional Chinese is the default; original sentence audio and sequential
     animations: "disabled",
     path: "test-results/gallery-desktop-zh.png",
   });
-  await page.getByRole("button", { name: /跟著導覽走/ }).click();
-  await expect(page.locator(".translation strong")).toHaveText("寧靜的");
-  await page.getByLabel("播放速度").selectOption("1.25");
   const wordRequest = page.waitForResponse((r) =>
     r.url().endsWith("/audio/serene.m4a"),
   );
+  await page.getByRole("button", { name: /跟著導覽走/ }).click();
+  expect((await wordRequest).ok()).toBe(true);
+  await expect(page.locator(".translation strong")).toHaveText("寧靜的");
+  await page.getByLabel("播放速度").selectOption("1.25");
   const sentenceRequest = page.waitForResponse((r) =>
     r.url().endsWith("/audio/serene-example-0.m4a"),
   );
   await page.getByRole("button", { name: "全部播放", exact: true }).click();
-  expect((await wordRequest).ok()).toBe(true);
   expect((await sentenceRequest).ok()).toBe(true);
   await expect(page.locator(".audio-status")).toContainText("正在播放例句");
   await expect
@@ -351,9 +358,9 @@ test("Traditional Chinese is the default; original sentence audio and sequential
   ).toBeVisible();
   expect(
     await page.evaluate(() =>
-      ((window as any).__museumRecordings as HTMLAudioElement[]).every(
-        (a) => a.paused || a.ended,
-      ),
+      ((window as any).__museumRecordings as HTMLAudioElement[])
+        .filter((a) => !a.src.endsWith("/audio/flourish.m4a"))
+        .every((a) => a.paused || a.ended),
     ),
   ).toBe(true);
   await page.getByRole("button", { name: "聽例句", exact: true }).click();

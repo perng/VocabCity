@@ -1,13 +1,13 @@
 import { test, expect } from "@playwright/test";
 import collection from "../src/collection.json" with { type: "json" };
 
-test("all 18 museum artworks load at native resolution, with coordinated halls and a responsive larger view", async ({
+test("all 54 museum artworks load at native resolution, with coordinated halls and a responsive larger view", async ({
   page,
 }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "單字典藏18", exact: true }).click();
+  await page.getByRole("button", { name: "單字典藏54", exact: true }).click();
   const images = page.locator(".collection-art img");
-  await expect(images).toHaveCount(18);
+  await expect(images).toHaveCount(collection.exhibits.length);
   await expect
     .poll(() =>
       images.evaluateAll((nodes) =>
@@ -23,7 +23,7 @@ test("all 18 museum artworks load at native resolution, with coordinated halls a
       ),
     )
     .toBe(true);
-  for (let room = 0; room < 3; room++) {
+  for (let room = 0; room < collection.rooms.length; room++) {
     const works = collection.exhibits.filter(
       (exhibit) => exhibit.room === room,
     );

@@ -12,6 +12,11 @@ import {
   GARDEN_BACK,
   GARDEN_INDEX,
   ENTRY,
+  GALLERY_ENTRY,
+  GALLERY_COUNT,
+  ENTRANCE_INDEX,
+  galleryTransform,
+  inGallery,
   areaAt,
   withinGrounds,
   OUTDOOR_DISPLAYS,
@@ -21,6 +26,7 @@ export type Pose = { x: number; z: number; yaw: number; room: number };
 type MuseumOptions = {
   locale: string;
   exhibits: Exhibit[];
+  rooms: { name: string; color: string }[];
   checked: string[];
   onToggleChecked: (exhibit: Exhibit) => void;
   onVideo: (exhibit: Exhibit) => void;
@@ -36,16 +42,16 @@ const Y_AXIS = new THREE.Vector3(0, 1, 0);
 const clamp = THREE.MathUtils.clamp;
 
 export function exhibitPlacement(exhibit: Pick<Exhibit, "room" | "slot">) {
-  const z = -exhibit.room * ROOM_SPACING;
   const slots = [
-    { x: -11.78, z: z + 8, yaw: Math.PI / 2 },
-    { x: -11.78, z, yaw: Math.PI / 2 },
-    { x: -11.78, z: z - 8, yaw: Math.PI / 2 },
-    { x: 11.78, z: z - 8, yaw: -Math.PI / 2 },
-    { x: 11.78, z, yaw: -Math.PI / 2 },
-    { x: 11.78, z: z + 8, yaw: -Math.PI / 2 },
+    { x: -11.78, z: 8, yaw: Math.PI / 2 },
+    { x: -11.78, z: 0, yaw: Math.PI / 2 },
+    { x: -11.78, z: -8, yaw: Math.PI / 2 },
+    { x: 11.78, z: -8, yaw: -Math.PI / 2 },
+    { x: 11.78, z: 0, yaw: -Math.PI / 2 },
+    { x: 11.78, z: 8, yaw: -Math.PI / 2 },
   ];
-  return { ...slots[exhibit.slot], area: exhibit.room };
+  const slot = slots[exhibit.slot];
+  return { ...inGallery(exhibit.room, slot.x, slot.z, slot.yaw), area: exhibit.room };
 }
 
 export function exhibitPlacements(exhibit: Exhibit) {
@@ -150,11 +156,11 @@ export class Museum {
     this.scene.add(this.sun.target);
     this.sun.castShadow = true;
     Object.assign(this.sun.shadow.camera, {
-      left: -58,
-      right: 58,
-      top: 66,
-      bottom: -66,
-      far: 160,
+      left: -130,
+      right: 130,
+      top: 110,
+      bottom: -110,
+      far: 300,
     });
     this.sun.shadow.mapSize.set(2048, 2048);
     this.sun.shadow.normalBias = 0.025;
@@ -162,6 +168,7 @@ export class Museum {
     this.checked = new Set(options.checked);
     this.botany = new Botany((w, h, draw) => this.canvasTexture(w, h, draw));
     this.buildArchitecture();
+    this.buildEntrance();
     this.buildExhibits();
     this.buildDecorations();
     this.buildGarden();
@@ -311,113 +318,150 @@ export class Museum {
       }
     });
     floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-    floorTexture.repeat.set(4.5, 16);
-    const floor = new THREE.Mesh(
-      new THREE.PlaneGeometry(HALL_WIDTH, HALL_FRONT - HALL_BACK),
-      new THREE.MeshStandardMaterial({ map: floorTexture, roughness: 0.68 }),
-    );
-    floor.rotation.x = -Math.PI / 2;
-    floor.position.set(0, 0, (HALL_FRONT + HALL_BACK) / 2);
-    floor.receiveShadow = true;
-    this.scene.add(floor);
-
-    // A generous, level promenade is continuous through every hall.
-    this.box(8, 0.025, 84, 0, 0.006, -28, "#ded7c5");
-    for (const x of [-4, 4])
-      this.box(0.045, 0.009, 84, x, 0.025, -28, "#b5a172");
-    for (let z = HALL_BACK; z < HALL_FRONT; z += 3.5)
-      this.box(7.96, 0.005, 0.012, 0, 0.022, z, "#c6bfae");
-
-    const colors = ["#e5e8dc", "#dfe8e6", "#ede1d4"];
-    for (let room = 0; room < 3; room++) {
-      const z = -room * ROOM_SPACING;
+    floorTexture.repeat.set(4.5, 5.33);
+    const floorMaterial = new THREE.MeshStandardMaterial({ map: floorTexture, roughness: 0.68 });
+    const colors = ["#e5e8dc", "#dfe8e6", "#ede1d4", "#e6e9da", "#d9e5dc", "#e3e3e8", "#e6e1d7", "#ebe0dc", "#ecdfce"];
+    for (let room = 0; room < GALLERY_COUNT; room++) {
+      const origin = galleryTransform(room);
+      const hall = new THREE.Group();
+      hall.position.set(origin.x, 0, origin.z);
+      hall.rotation.y = origin.yaw;
+      this.scene.add(hall);
+      const floor = new THREE.Mesh(new THREE.PlaneGeometry(24, 28), floorMaterial);
+      floor.rotation.x = -Math.PI / 2;
+      floor.receiveShadow = true;
+      hall.add(floor);
+      this.box(8, 0.025, 28, 0, 0.006, 0, "#ded7c5", hall);
+      for (const x of [-4, 4]) this.box(0.045, 0.009, 28, x, 0.025, 0, "#b5a172", hall);
+      for (let z = -14; z < 14; z += 3.5) this.box(7.96, 0.005, 0.012, 0, 0.022, z, "#c6bfae", hall);
       for (const side of [-1, 1]) {
-        const x = side * 12;
-        this.box(0.3, HALL_HEIGHT, 28, x, HALL_HEIGHT / 2, z, colors[room]);
-        this.box(0.1, 0.2, 28, side * 11.82, 0.1, z, "#b5a07e");
-        this.box(0.12, 0.16, 28, side * 11.8, 7.8, z, "#cabb9e");
-        for (const offset of [-12, 12]) {
-          this.box(
-            0.32,
-            HALL_HEIGHT,
-            0.5,
-            side * 11.7,
-            HALL_HEIGHT / 2,
-            z + offset,
-            "#e1d8c6",
-          );
-        }
-        // Ceiling and light tracks stay well above the enlarged artworks.
-        this.box(8, 0.22, 28, side * 8, HALL_HEIGHT, z, "#f3efe2");
-        this.box(0.065, 0.08, 25, side * 9.8, 7.5, z, "#6e6958");
-        for (const offset of [-8, 0, 8]) {
-          const lamp = new THREE.Mesh(
-            new THREE.CylinderGeometry(0.19, 0.15, 0.38, 12),
-            this.material("#625e4e"),
-          );
-          lamp.position.set(side * 9.8, 7.3, z + offset);
+        this.box(0.3, HALL_HEIGHT, 28, side * 12, HALL_HEIGHT / 2, 0, colors[room], hall);
+        this.box(0.1, 0.2, 28, side * 11.82, 0.1, 0, "#b5a07e", hall);
+        this.box(0.12, 0.16, 28, side * 11.8, 7.8, 0, "#cabb9e", hall);
+        for (const z of [-12, 12]) this.box(0.32, HALL_HEIGHT, 0.5, side * 11.7, HALL_HEIGHT / 2, z, "#e1d8c6", hall);
+        this.box(8, 0.22, 28, side * 8, HALL_HEIGHT, 0, "#f3efe2", hall);
+        this.box(0.065, 0.08, 25, side * 9.8, 7.5, 0, "#6e6958", hall);
+        for (const z of [-8, 0, 8]) {
+          const lamp = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.15, 0.38, 12), this.material("#625e4e"));
+          lamp.position.set(side * 9.8, 7.3, z);
           lamp.rotation.z = side * 0.6;
-          this.scene.add(lamp);
-          const light = new THREE.Mesh(
-            new THREE.CircleGeometry(0.14, 12),
-            new THREE.MeshBasicMaterial({ color: "#fff2c7" }),
-          );
+          hall.add(lamp);
+          const light = new THREE.Mesh(new THREE.CircleGeometry(0.14, 12), new THREE.MeshBasicMaterial({ color: "#fff2c7" }));
           light.rotation.x = Math.PI / 2;
           light.position.y = -0.195;
           lamp.add(light);
         }
       }
-      const sky = this.box(8, 0.06, 28, 0, 8.6, z, "#dbe9e5");
+      const sky = this.box(8, 0.06, 28, 0, 8.6, 0, "#dbe9e5", hall);
       sky.material.emissive.set("#dbe9e5");
       sky.material.emissiveIntensity = 0.35;
-      for (let offset = -14; offset < 14; offset += 7)
-        this.box(24, 0.22, 0.16, 0, 8.18, z + offset, "#bfa581");
-      for (const x of [-4, 4]) this.box(0.18, 0.25, 28, x, 8.25, z, "#b69b76");
-
-      // Suspended wayfinding marks each hall without dividing the space.
-      const sign = this.canvasTexture(
-        1024,
-        160,
-        (ctx) => {
-          ctx.fillStyle = "#eeeadd";
-          ctx.fillRect(0, 0, 1024, 160);
-          ctx.fillStyle = "#56644e";
-          ctx.textAlign = "center";
-          ctx.font = '30px "DM Sans", sans-serif';
-          const title = [
-            "Everyday Wonders",
-            "Out in the World",
-            "Ideas at Work",
-          ][room];
-          ctx.fillText(
-            `0${room + 1}   /   ${translate(title, this.options.locale)}`,
-            512,
-            75,
-          );
-          ctx.font = '19px "DM Sans", sans-serif';
-          ctx.fillText(
-            this.options.locale === "zh_TW"
-              ? "長廊漫遊   ·   往前通往花園 ↑"
-              : "THE LONG GALLERY   ·   GARDEN AHEAD ↑",
-            512,
-            122,
-          );
-        },
-        true,
-      );
-      const signZ = z + 11.5;
-      this.box(5, 0.78, 0.06, 0, 6.8, signZ, "#eeeadd");
-      this.panel(sign, 5, 0.78, 0, 6.8, signZ + 0.035);
-      for (const x of [-2.1, 2.1])
-        this.box(0.025, 1, 0.025, x, 7.7, signZ, "#9c957d");
-    }
-    // A quiet entrance wall; the opposite end opens at the full 24 m hall width.
-    this.box(24, 8.4, 0.3, 0, 4.2, HALL_FRONT, "#eee9dc");
-    for (const x of [-8, 0, 8]) {
-      this.box(6.6, 5.8, 0.08, x, 3.6, HALL_FRONT - 0.2, "#b9cfbf");
-      this.box(0.08, 5.8, 0.13, x, 3.6, HALL_FRONT - 0.26, "#9d9e84");
+      for (let z = -14; z < 14; z += 7) this.box(24, 0.22, 0.16, 0, 8.18, z, "#bfa581", hall);
+      for (const x of [-4, 4]) this.box(0.18, 0.25, 28, x, 8.25, 0, "#b69b76", hall);
+      const sign = this.canvasTexture(1024, 160, (ctx) => {
+        ctx.fillStyle = "#eeeadd"; ctx.fillRect(0, 0, 1024, 160);
+        ctx.fillStyle = "#56644e"; ctx.textAlign = "center";
+        ctx.font = '30px "DM Sans", sans-serif';
+        ctx.fillText(`0${room + 1}   /   ${translate(this.options.rooms[room].name, this.options.locale)}`, 512, 75);
+        ctx.font = '19px "DM Sans", sans-serif';
+        const route = room < 3 ? "CENTRAL GALLERY · GARDEN AHEAD" : room < 6 ? "WEST WING · NATURE & LIGHT" : "EAST WING · PEOPLE & CONNECTION";
+        ctx.fillText(translate(route, this.options.locale), 512, 122);
+      }, true);
+      this.box(5.7, 0.89, 0.06, 0, 6.8, 11.5, "#eeeadd", hall);
+      this.panel(sign, 5.7, 0.89, 0, 6.8, 11.535, hall);
+      for (const x of [-2.4, 2.4]) this.box(0.025, 1, 0.025, x, 7.7, 11.5, "#9c957d", hall);
+      if (room === 5 || room === 8) {
+        this.box(24, 8.4, 0.3, 0, 4.2, -14, colors[room], hall);
+        for (const x of [-8, 0, 8]) {
+          this.box(6.2, 5.9, 0.08, x, 3.7, -13.81, "#b9cfbf", hall);
+          this.box(0.075, 5.9, 0.1, x, 3.7, -13.75, "#e2d6bb", hall);
+        }
+      }
     }
     this.box(24, 0.4, 0.45, 0, 8.1, HALL_BACK, "#bfa581");
+  }
+
+  private buildEntrance() {
+    // Pale stone, high clerestories and a level compass floor connect all three routes.
+    this.box(36, 0.12, 52, 0, -0.06, 40, "#ddd7c6");
+    for (let x = -18; x <= 18; x += 3) this.box(0.025, 0.009, 52, x, 0.009, 40, "#c9c2ad");
+    for (let z = 14; z <= 66; z += 3) this.box(36, 0.009, 0.025, 0, 0.009, z, "#c9c2ad");
+    this.box(8, 0.014, 52, 0, 0.016, 40, "#ece6d6");
+    this.box(36, 0.014, 8, 0, 0.026, 28, "#ece6d6");
+    for (const x of [-4, 4]) this.box(0.045, 0.01, 52, x, 0.03, 40, "#bca471");
+    for (const z of [24, 32]) this.box(36, 0.01, 0.045, 0, 0.036, z, "#bca471");
+    for (const side of [-1, 1]) {
+      this.box(6, 10.8, 0.32, side * 15, 5.4, 14, "#e9e2d1");
+      this.box(11, 10.8, 0.32, side * 12.5, 5.4, 42, "#e9e2d1");
+      this.box(0.35, 2.6, 28, side * 18, 9.5, 28, "#e9e2d1");
+      for (const z of [15.4, 40.6]) {
+        const column = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.67, 10.6, 24), this.material("#e6dcc5"));
+        column.position.set(side * 16.7, 5.3, z); column.castShadow = true; this.scene.add(column);
+        this.box(1.6, 0.25, 1.6, side * 16.7, 0.125, z, "#bca785");
+        this.obstacles.push({ x: side * 16.7, z, rx: 1.05, rz: 1.05 });
+      }
+      this.box(10, 0.24, 28, side * 13, 10.85, 28, "#f0e9d8");
+      this.plant(side * 13.8, 18.5, 1.8);
+      this.plant(side * 14, 37.5, 1.7);
+      this.box(4.4, 0.22, 1.25, side * 11.6, 0.58, 38.7, "#a38b65");
+      this.box(4.35, 0.18, 1.2, side * 11.6, 0.76, 38.7, "#abb596");
+      this.obstacles.push({ x: side * 11.6, z: 38.7, rx: 2.5, rz: 0.95 });
+    }
+    this.box(14, 3.1, 0.32, 0, 9.25, 42, "#e9e2d1");
+    const skylight = this.box(16, 0.1, 28, 0, 11, 28, "#cbdedb");
+    skylight.material.emissive.set("#cbdedb"); skylight.material.emissiveIntensity = 0.4;
+    for (let z = 14; z <= 42; z += 4) this.box(36, 0.25, 0.18, 0, 10.6, z, "#b8a17a");
+    for (const x of [-8, 0, 8]) this.box(0.18, 0.25, 28, x, 10.6, 28, "#b8a17a");
+    const compass = this.canvasTexture(768, 768, (ctx) => {
+      ctx.clearRect(0, 0, 768, 768); ctx.translate(384, 384);
+      ctx.strokeStyle = '#ad9368'; ctx.lineWidth = 4;
+      for (const radius of [295, 320]) { ctx.beginPath(); ctx.arc(0, 0, radius, 0, Math.PI * 2); ctx.stroke(); }
+      for (let i = 0; i < 8; i++) {
+        ctx.save(); ctx.rotate(i * Math.PI / 4); ctx.beginPath(); ctx.moveTo(0, -270); ctx.lineTo(46, 0); ctx.lineTo(0, 50); ctx.lineTo(-46, 0); ctx.closePath(); ctx.fillStyle = i % 2 ? '#c2b294' : '#839078'; ctx.fill(); ctx.restore();
+      }
+    });
+    const compassFloor = this.panel(compass, 10, 10, 0, 0.045, 28);
+    compassFloor.rotation.x = -Math.PI / 2;
+    const sign = (text: string, x: number, y: number, z: number, width: number, yaw = 0) => {
+      const texture = this.canvasTexture(1024, 230, (ctx) => {
+        ctx.fillStyle = '#385c49'; ctx.fillRect(0, 0, 1024, 230);
+        ctx.strokeStyle = '#b9aa7b'; ctx.lineWidth = 3; ctx.strokeRect(18, 18, 988, 194);
+        ctx.fillStyle = '#f7f0da'; ctx.font = '40px "DM Sans", sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(translate(text, this.options.locale), 512, 115, 950);
+      }, true);
+      const panel = this.panel(texture, width, width * 230 / 1024, x, y, z); panel.rotation.y = yaw;
+    };
+    sign('CENTRAL GALLERY · GARDEN AHEAD', 0, 7.4, 14.3, 10);
+    sign('← WEST WING · NATURE & LIGHT', -12, 7.1, 26, 8);
+    sign('EAST WING · PEOPLE & CONNECTION →', 12, 7.1, 26, 8);
+    this.box(36, 0.7, 0.35, 0, 0.35, 66, "#c7c5ab");
+    for (const side of [-1, 1]) this.box(0.35, 0.7, 18, side * 18, 0.35, 57, "#c7c5ab");
+    // An open gate is twelve metres wide; the mascot stands beside the walking route.
+    for (const side of [-1, 1]) {
+      this.box(1.2, 6.4, 1.25, side * 7.3, 3.2, 48, '#d4c4a6', this.scene, true);
+      this.box(1.8, 0.3, 1.8, side * 7.3, 6.4, 48, '#b69b6e');
+      this.box(10.1, 1.1, 0.4, side * 12.9, 0.55, 48, '#d2c5a9');
+      this.box(18, 0.7, 0.35, side * 27, 0.35, 42, '#c7c5ab');
+      this.plant(side * 10, 51.5, 1.9);
+      const tree = this.botany.tree(1.4, 80 + side, false);
+      tree.position.set(side * 23, 0, 49); this.scene.add(tree);
+    }
+    this.box(16.4, 0.65, 1.8, 0, 6.85, 48, '#baa075', this.scene, true);
+    sign('VOCAB HALL · A MUSEUM FOR YOUR MIND', 0, 5.7, 48.68, 12.6);
+    const mascotTexture = new THREE.TextureLoader().load(assetUrl('mascot/welcome.webp'), () => { this.needsRender = true; });
+    mascotTexture.colorSpace = THREE.SRGBColorSpace; this.textures.push(mascotTexture);
+    const mascot = this.panel(mascotTexture, 2.85, 3.5, 4.7, 1.85, 45);
+    mascot.material.alphaTest = 0.05; mascot.material.side = THREE.DoubleSide;
+    this.shadow(4.7, 45, 3.8, 1.6);
+    this.obstacles.push({ x: 4.7, z: 45, rx: 1.5, rz: 0.7 });
+    const hello = this.canvasTexture(768, 190, (ctx) => {
+      ctx.fillStyle = '#f7f3e7'; ctx.beginPath(); ctx.roundRect(0, 0, 768, 160, 32); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(345, 158); ctx.lineTo(377, 188); ctx.lineTo(407, 158); ctx.fill();
+      ctx.fillStyle = '#385c49'; ctx.textAlign = 'center'; ctx.font = '34px "DM Sans", sans-serif';
+      ctx.fillText(translate('Hello! Welcome to Vocab Hall.', this.options.locale), 384, 69, 704);
+      ctx.font = '25px "DM Sans", sans-serif';
+      ctx.fillText(translate('Take your time. Follow your curiosity.', this.options.locale), 384, 116, 704);
+    }, true);
+    this.panel(hello, 4.9, 1.21, 4.7, 4.25, 45.04);
   }
 
   private buildExhibits() {
@@ -496,7 +540,14 @@ export class Museum {
         if (!texture) {
           texture = loader.load(
             assetUrl(exhibit.image),
-            () => {
+            (loaded: THREE.Texture) => {
+              if (this.disposed) return;
+              const image = loaded.image as HTMLImageElement;
+              if (image.width > 768) {
+                const canvas = document.createElement('canvas'); canvas.width = 768; canvas.height = Math.round(image.height * 768 / image.width);
+                canvas.getContext('2d')!.drawImage(image, 0, 0, canvas.width, canvas.height);
+                loaded.source = new THREE.Source(canvas); loaded.needsUpdate = true;
+              }
               this.needsRender = true;
             },
             undefined,
@@ -685,13 +736,15 @@ export class Museum {
   }
 
   private buildDecorations() {
-    for (let room = 0; room < 3; room++) {
-      const z = -room * ROOM_SPACING;
-      this.plant(-10.3, z + 12, 1.65);
-      this.plant(10.3, z - 12, 1.6);
+    for (let room = 0; room < GALLERY_COUNT; room++) {
+      const point = (x: number, z: number) => inGallery(room, x, z);
+      const a = point(-10.3, 12), b = point(10.3, -12), seat = point(7.4, 5.15);
+      this.plant(a.x, a.z, 1.65);
+      this.plant(b.x, b.z, 1.6);
       // Upholstered gallery bench with a solid oak base.
       const bench = new THREE.Group();
-      bench.position.set(7.4, 0, z + 5.15);
+      bench.position.set(seat.x, 0, seat.z);
+      bench.rotation.y = seat.yaw;
       this.scene.add(bench);
       this.box(2.55, 0.13, 0.88, 0, 0.43, 0, "#957550", bench, true);
       this.box(
@@ -701,14 +754,14 @@ export class Museum {
         0,
         0.58,
         0,
-        ["#a6ac8b", "#9eafb0", "#b59a81"][room],
+        ["#a6ac8b", "#9eafb0", "#b59a81"][room % 3],
         bench,
         true,
       );
       for (const x of [-0.93, 0.93])
         this.box(0.14, 0.42, 0.68, x, 0.21, 0, "#8c6f4a", bench, true);
-      this.shadow(7.4, z + 5.15, 3.4, 1.7);
-      this.obstacles.push({ x: 7.4, z: z + 5.15, rx: 1.53, rz: 0.72 });
+      this.shadow(seat.x, seat.z, room < 3 ? 3.4 : 1.7, room < 3 ? 1.7 : 3.4);
+      this.obstacles.push({ x: seat.x, z: seat.z, rx: room < 3 ? 1.53 : 0.72, rz: room < 3 ? 0.72 : 1.53 });
     }
     // A brass orbit sits in a side alcove, clear of the central promenade.
     const plinth = new THREE.Mesh(
@@ -754,7 +807,7 @@ export class Museum {
 
   private buildGarden() {
     // A level limestone terrace continues straight from the long gallery.
-    const landscape = this.box(260, 0.15, 240, 0, -0.23, -130, "#8a9c72");
+    const landscape = this.box(320, 0.15, 320, 0, -0.23, -70, "#8a9c72");
     landscape.receiveShadow = true;
     this.box(
       GARDEN_WIDTH,
@@ -1284,16 +1337,21 @@ export class Museum {
       this.moveCamera(new THREE.Vector3(0, EYE_HEIGHT, -77), -0.18, 0.055);
       return;
     }
-    this.moveCamera(
-      new THREE.Vector3(ENTRY.x, EYE_HEIGHT, ENTRY.z - room * ROOM_SPACING),
-      ENTRY.yaw,
-      0.055,
-    );
+    if (room === ENTRANCE_INDEX) {
+      this.moveCamera(new THREE.Vector3(0.35, EYE_HEIGHT, 36), 0.015, 0.035);
+      return;
+    }
+    const point = inGallery(room, GALLERY_ENTRY.x, GALLERY_ENTRY.z, GALLERY_ENTRY.yaw);
+    this.moveCamera(new THREE.Vector3(point.x, EYE_HEIGHT, point.z), point.yaw, 0.055);
   }
+  goToGate() {
+    this.moveCamera(new THREE.Vector3(ENTRY.x, EYE_HEIGHT, ENTRY.z), ENTRY.yaw, 0.055);
+  }
+
   goToExhibit(exhibit: Exhibit) {
     const placements = exhibitPlacements(exhibit);
     const placement =
-      (areaAt(this.camera.position.z) === GARDEN_INDEX
+      (areaAt(this.camera.position.x, this.camera.position.z) === GARDEN_INDEX
         ? placements.find((p) => p.area === GARDEN_INDEX)
         : null) || placements[0];
     const normal = new THREE.Vector3(0, 0, 1).applyAxisAngle(
@@ -1413,7 +1471,7 @@ export class Museum {
     this.camera.rotation.set(this.pitch, this.yaw, 0, "YXZ");
     if (time - this.lastReport > 150) {
       const { x, z } = this.camera.position;
-      const pose = { x, z, yaw: this.yaw, room: areaAt(z) };
+      const pose = { x, z, yaw: this.yaw, room: areaAt(x, z) };
       if (
         !this.reportedPose ||
         pose.x !== this.reportedPose.x ||

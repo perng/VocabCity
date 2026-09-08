@@ -1,6 +1,6 @@
 {
   "generation": "Built-in image_gen",
-  "version": 1,
+  "version": 2,
   "artworks": [
     {
       "word": "serene",
@@ -205,6 +205,408 @@
       "mediumZh": "當代水粉與複合媒材",
       "style": "contemporary",
       "prompt": "Use case: stylized-concept.\nAsset type: a high-resolution artwork to hang in a 3D fine-art museum, one original work for the vocabulary word \"sustainable\".\nSubject: A peaceful community garden designed to keep thriving: a rain barrel feeding vegetable beds, young and mature fruit trees together, a person returning compost to the soil and sunlight on a small greenhouse. Subtle circular visual composition of renewal, lush living greens connect this work to impressionist and watercolor garden paintings. No recycling logo, words, infographic arrows or corporate eco symbols.\nStyle/medium: A contemporary gallery painting in a cohesive series titled The Shape of an Idea. Painterly gouache and subtle mixed-media collage on heavy cotton paper, tactile brush marks, translucent overlapping shapes and selective impasto. Figurative forms simplified into confident geometric planes but still human and recognizable. Restrained terracotta, deep olive, warm ivory, dusty blue and small brass-gold accents. Modernist visual poetry with rich surface detail and asymmetric composition; sophisticated fine art, not corporate vector graphics.\nComposition: one square artwork, flat straight-on reproduction, the painting fills the entire image edge to edge. Design a complete, considered composition with detailed areas that reward looking closely at large display size.\nOutput: high-resolution square, target 2048 by 2048 pixels or the highest supported square resolution.\nConstraints: only the artwork itself. No picture frame, gallery wall, typography, letters, word labels, signatures, watermarks, logos, sticker borders, panels or grids. Do not imitate a named living artist. Avoid clip art, emoji, children's flashcard aesthetics, bland stock imagery and plastic CGI rendering."
+    },
+    {
+      "word": "agriculture",
+      "title": "Fields at Work",
+      "titleZh": "耕作的日常",
+      "series": "The Living Earth",
+      "seriesZh": "土地的呼吸",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "earth-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"agriculture\", exhibited in a 3D fine-art museum.\nSubject: Farmers tending long curved rows of vegetables in an expansive cultivated landscape, soil, tools and a small farmhouse under afternoon light.\nStyle/medium: Sophisticated impressionist oil painting with textured impasto and linen grain, sun-warmed ochres, olive green, muted blue, broken brushwork, a quiet observational rural atmosphere.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "cultivate",
+      "title": "A Garden in Patient Hands",
+      "titleZh": "耐心耕耘",
+      "series": "The Living Earth",
+      "seriesZh": "土地的呼吸",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "earth-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"cultivate\", exhibited in a 3D fine-art museum.\nSubject: Close view of a gardener carefully loosening rich soil around young vegetables with a hand trowel; newly planted rows extend behind.\nStyle/medium: Sophisticated impressionist oil painting with textured impasto and linen grain, sun-warmed ochres, olive green, muted blue, broken brushwork, a quiet observational rural atmosphere.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "fertile",
+      "title": "Earth That Gives",
+      "titleZh": "豐饒之土",
+      "series": "The Living Earth",
+      "seriesZh": "土地的呼吸",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "earth-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"fertile\", exhibited in a 3D fine-art museum.\nSubject: Dark richly fertile earth with vigorous rows of leafy plants, fruit trees and healthy seedlings overflowing with growth, glowing afternoon light.\nStyle/medium: Sophisticated impressionist oil painting with textured impasto and linen grain, sun-warmed ochres, olive green, muted blue, broken brushwork, a quiet observational rural atmosphere.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "rural",
+      "title": "Beyond the Town",
+      "titleZh": "鄉間午後",
+      "series": "The Living Earth",
+      "seriesZh": "土地的呼吸",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "earth-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"rural\", exhibited in a 3D fine-art museum.\nSubject: A peaceful countryside lane weaving past a modest farmhouse, open fields and an old barn; open space and country life without city buildings.\nStyle/medium: Sophisticated impressionist oil painting with textured impasto and linen grain, sun-warmed ochres, olive green, muted blue, broken brushwork, a quiet observational rural atmosphere.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI.",
+      "edits": [
+        {
+          "prompt": "Edit only the tiny dark signature-like scribble in the extreme lower-left corner of this rural countryside oil painting. Remove that mark by replacing it with matching natural earth-and-grass brushwork. Preserve absolutely everything else: composition, farm, fence, road, light, palette, impasto texture and square framing. Do not add any lettering, signature, logo, watermark or border. Return the same native resolution.",
+          "source": "/Users/charles/.codex/generated_images/01a075cd-8aeb-70c3-bb21-1acf1a3cb3d9/exec-7a51a2ce-3a58-407a-8efa-b9f913ab4510.png"
+        }
+      ]
+    },
+    {
+      "word": "fragrant",
+      "title": "An Offering of Jasmine",
+      "titleZh": "茉莉的芬芳",
+      "series": "The Living Earth",
+      "seriesZh": "土地的呼吸",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "earth-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"fragrant\", exhibited in a 3D fine-art museum.\nSubject: A young adult quietly smelling freshly cut jasmine in a small ceramic vase beside an open garden window, soft fragrant blossoms and leaves.\nStyle/medium: Sophisticated impressionist oil painting with textured impasto and linen grain, sun-warmed ochres, olive green, muted blue, broken brushwork, a quiet observational rural atmosphere.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "abundance",
+      "title": "The Long Harvest Table",
+      "titleZh": "豐盛的餐桌",
+      "series": "The Living Earth",
+      "seriesZh": "土地的呼吸",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "earth-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"abundance\", exhibited in a 3D fine-art museum.\nSubject: A lavish harvest table covered with many baskets of autumn fruit, squash and sunflowers, plentiful produce spilling gently over woven cloth.\nStyle/medium: Sophisticated impressionist oil painting with textured impasto and linen grain, sun-warmed ochres, olive green, muted blue, broken brushwork, a quiet observational rural atmosphere.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "ecosystem",
+      "title": "Life Around the Pond",
+      "titleZh": "池塘的生命",
+      "series": "A World Held Together",
+      "seriesZh": "相依的世界",
+      "medium": "Modern botanical watercolor",
+      "mediumZh": "現代植物水彩",
+      "style": "botanical-watercolor",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"ecosystem\", exhibited in a 3D fine-art museum.\nSubject: A richly interconnected pond scene with water plants, dragonflies, a frog, fish visible in clear water, birds and reeds all sharing the same natural habitat.\nStyle/medium: Refined contemporary botanical watercolor on textured cold-pressed paper. Transparent sap green, mineral blue and warm umber washes, delicate drybrush details, atmospheric negative space integrated within the painting, contemporary gallery quality.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "ecology",
+      "title": "Studying the Living Shore",
+      "titleZh": "觀察生命的關係",
+      "series": "A World Held Together",
+      "seriesZh": "相依的世界",
+      "medium": "Modern botanical watercolor",
+      "mediumZh": "現代植物水彩",
+      "style": "botanical-watercolor",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"ecology\", exhibited in a 3D fine-art museum.\nSubject: A field naturalist kneeling beside a stream observing insects, plants and ripples with a small magnifying lens and a blank field notebook, connections between species visually evident.\nStyle/medium: Refined contemporary botanical watercolor on textured cold-pressed paper. Transparent sap green, mineral blue and warm umber washes, delicate drybrush details, atmospheric negative space integrated within the painting, contemporary gallery quality.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "conservation",
+      "title": "The Protected Grove",
+      "titleZh": "守護樹林",
+      "series": "A World Held Together",
+      "seriesZh": "相依的世界",
+      "medium": "Modern botanical watercolor",
+      "mediumZh": "現代植物水彩",
+      "style": "botanical-watercolor",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"conservation\", exhibited in a 3D fine-art museum.\nSubject: Volunteers gently installing a protective fence around a grove of young native trees, protected thriving woodland and a clean stream, careful stewardship.\nStyle/medium: Refined contemporary botanical watercolor on textured cold-pressed paper. Transparent sap green, mineral blue and warm umber washes, delicate drybrush details, atmospheric negative space integrated within the painting, contemporary gallery quality.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "preserve",
+      "title": "Keeping the Ancient Oak",
+      "titleZh": "留住老橡樹",
+      "series": "A World Held Together",
+      "seriesZh": "相依的世界",
+      "medium": "Modern botanical watercolor",
+      "mediumZh": "現代植物水彩",
+      "style": "botanical-watercolor",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"preserve\", exhibited in a 3D fine-art museum.\nSubject: Hands carefully tending and protecting the roots of a venerable broad oak tree, a healthy old tree preserved amid a flourishing landscape.\nStyle/medium: Refined contemporary botanical watercolor on textured cold-pressed paper. Transparent sap green, mineral blue and warm umber washes, delicate drybrush details, atmospheric negative space integrated within the painting, contemporary gallery quality.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "restore",
+      "title": "A River Returns",
+      "titleZh": "重生的河岸",
+      "series": "A World Held Together",
+      "seriesZh": "相依的世界",
+      "medium": "Modern botanical watercolor",
+      "mediumZh": "現代植物水彩",
+      "style": "botanical-watercolor",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"restore\", exhibited in a 3D fine-art museum.\nSubject: People restoring a formerly bare riverbank by planting native reeds and young trees; one integrated scene of visibly renewing green habitat and clear water.\nStyle/medium: Refined contemporary botanical watercolor on textured cold-pressed paper. Transparent sap green, mineral blue and warm umber washes, delicate drybrush details, atmospheric negative space integrated within the painting, contemporary gallery quality.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "shelter",
+      "title": "Safe Beneath the Roof",
+      "titleZh": "屋簷下的安心",
+      "series": "A World Held Together",
+      "seriesZh": "相依的世界",
+      "medium": "Modern botanical watercolor",
+      "mediumZh": "現代植物水彩",
+      "style": "botanical-watercolor",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"shelter\", exhibited in a 3D fine-art museum.\nSubject: A cozy simple timber shelter with broad protective roof amid rain, a traveler and small dog comfortably dry beneath it, warm light inside against cool wet trees.\nStyle/medium: Refined contemporary botanical watercolor on textured cold-pressed paper. Transparent sap green, mineral blue and warm umber washes, delicate drybrush details, atmospheric negative space integrated within the painting, contemporary gallery quality.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "scenic",
+      "title": "The Winding Coast Road",
+      "titleZh": "沿著風景前行",
+      "series": "Ways of Seeing",
+      "seriesZh": "觀看的方式",
+      "medium": "Luminous post-impressionist oil painting",
+      "mediumZh": "後印象派油畫",
+      "style": "luminous-post-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"scenic\", exhibited in a 3D fine-art museum.\nSubject: A breathtaking scenic road curving around sea cliffs, blue sea below, cypress trees and a tiny distant traveler emphasizing natural views.\nStyle/medium: Luminous post-impressionist oil painting, expressive yet controlled short brushstrokes, soft mineral blue, cream, apricot, dusty lavender and sage, richly textured painted surface, sophisticated spatial composition.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "magnificent",
+      "title": "Beneath the Great Vault",
+      "titleZh": "壯麗穹頂之下",
+      "series": "Ways of Seeing",
+      "seriesZh": "觀看的方式",
+      "medium": "Luminous post-impressionist oil painting",
+      "mediumZh": "後印象派油畫",
+      "style": "luminous-post-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"magnificent\", exhibited in a 3D fine-art museum.\nSubject: A magnificent historic vaulted interior with soaring columns and radiant daylight; tiny people show its grand scale and extraordinary architectural beauty.\nStyle/medium: Luminous post-impressionist oil painting, expressive yet controlled short brushstrokes, soft mineral blue, cream, apricot, dusty lavender and sage, richly textured painted surface, sophisticated spatial composition.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "spacious",
+      "title": "Room for Light",
+      "titleZh": "留給光的空間",
+      "series": "Ways of Seeing",
+      "seriesZh": "觀看的方式",
+      "medium": "Luminous post-impressionist oil painting",
+      "mediumZh": "後印象派油畫",
+      "style": "luminous-post-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"spacious\", exhibited in a 3D fine-art museum.\nSubject: An exceptionally spacious airy hall with high ceilings, wide open floor, a few carefully placed chairs far apart and broad tall windows.\nStyle/medium: Luminous post-impressionist oil painting, expressive yet controlled short brushstrokes, soft mineral blue, cream, apricot, dusty lavender and sage, richly textured painted surface, sophisticated spatial composition.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "fragile",
+      "title": "The Porcelain Bird",
+      "titleZh": "易碎的白瓷鳥",
+      "series": "Ways of Seeing",
+      "seriesZh": "觀看的方式",
+      "medium": "Luminous post-impressionist oil painting",
+      "mediumZh": "後印象派油畫",
+      "style": "luminous-post-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"fragile\", exhibited in a 3D fine-art museum.\nSubject: An exquisitely thin porcelain bird with a delicate wing, carefully held in two adult hands above a soft cloth, tenderness and vulnerability.\nStyle/medium: Luminous post-impressionist oil painting, expressive yet controlled short brushstrokes, soft mineral blue, cream, apricot, dusty lavender and sage, richly textured painted surface, sophisticated spatial composition.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "radiant",
+      "title": "A Radiant Afternoon",
+      "titleZh": "燦爛的午後",
+      "series": "Ways of Seeing",
+      "seriesZh": "觀看的方式",
+      "medium": "Luminous post-impressionist oil painting",
+      "mediumZh": "後印象派油畫",
+      "style": "luminous-post-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"radiant\", exhibited in a 3D fine-art museum.\nSubject: A joyful adult woman with a beautifully radiant smile turning toward warm garden light, sunlit face and lively expressive brushwork, elegant portrait.\nStyle/medium: Luminous post-impressionist oil painting, expressive yet controlled short brushstrokes, soft mineral blue, cream, apricot, dusty lavender and sage, richly textured painted surface, sophisticated spatial composition.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "reflection",
+      "title": "After the Day",
+      "titleZh": "沉思片刻",
+      "series": "Ways of Seeing",
+      "seriesZh": "觀看的方式",
+      "medium": "Luminous post-impressionist oil painting",
+      "mediumZh": "後印象派油畫",
+      "style": "luminous-post-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"reflection\", exhibited in a 3D fine-art museum.\nSubject: A thoughtful person quietly reflecting on the day beside a window with an open handwritten-free journal and tea, a contemplative expression and intimate stillness.\nStyle/medium: Luminous post-impressionist oil painting, expressive yet controlled short brushstrokes, soft mineral blue, cream, apricot, dusty lavender and sage, richly textured painted surface, sophisticated spatial composition.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "community",
+      "title": "The Shared Courtyard",
+      "titleZh": "我們的院子",
+      "series": "A Shared World",
+      "seriesZh": "共同的世界",
+      "medium": "Contemporary gouache and paper collage",
+      "mediumZh": "當代不透明水彩與紙拼貼",
+      "style": "community-gouache",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"community\", exhibited in a 3D fine-art museum.\nSubject: Neighbors of different ages gathering in a beautiful shared courtyard, tending plants, conversing and sharing food, a connected local community.\nStyle/medium: Museum-quality contemporary figurative gouache and cut-paper collage, visible layered paper fibers and matte pigment, elegant simplified human forms with expressive gestures, terracotta, deep teal, warm cream and mustard palette, subtle spatial depth. Not a cartoon or flat icon.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "harmony",
+      "title": "Playing as One",
+      "titleZh": "合奏的和諧",
+      "series": "A Shared World",
+      "seriesZh": "共同的世界",
+      "medium": "Contemporary gouache and paper collage",
+      "mediumZh": "當代不透明水彩與紙拼貼",
+      "style": "community-gouache",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"harmony\", exhibited in a 3D fine-art museum.\nSubject: A small diverse ensemble of musicians listening to one another and playing together in calm cooperation, balanced composition and peaceful relationships.\nStyle/medium: Museum-quality contemporary figurative gouache and cut-paper collage, visible layered paper fibers and matte pigment, elegant simplified human forms with expressive gestures, terracotta, deep teal, warm cream and mustard palette, subtle spatial depth. Not a cartoon or flat icon.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "cooperate",
+      "title": "Many Hands, One Table",
+      "titleZh": "一起完成",
+      "series": "A Shared World",
+      "seriesZh": "共同的世界",
+      "medium": "Contemporary gouache and paper collage",
+      "mediumZh": "當代不透明水彩與紙拼貼",
+      "style": "community-gouache",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"cooperate\", exhibited in a 3D fine-art museum.\nSubject: Several people actively working together to assemble a long wooden community table, synchronized gestures and shared practical purpose.\nStyle/medium: Museum-quality contemporary figurative gouache and cut-paper collage, visible layered paper fibers and matte pigment, elegant simplified human forms with expressive gestures, terracotta, deep teal, warm cream and mustard palette, subtle spatial depth. Not a cartoon or flat icon.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "gather",
+      "title": "All in One Place",
+      "titleZh": "相聚此刻",
+      "series": "A Shared World",
+      "seriesZh": "共同的世界",
+      "medium": "Contemporary gouache and paper collage",
+      "mediumZh": "當代不透明水彩與紙拼貼",
+      "style": "community-gouache",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"gather\", exhibited in a 3D fine-art museum.\nSubject: People bringing flowers and fruit from different directions into a central communal basket in a courtyard, clearly collecting and bringing things together.\nStyle/medium: Museum-quality contemporary figurative gouache and cut-paper collage, visible layered paper fibers and matte pigment, elegant simplified human forms with expressive gestures, terracotta, deep teal, warm cream and mustard palette, subtle spatial depth. Not a cartoon or flat icon.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "volunteer",
+      "title": "A Morning Given Freely",
+      "titleZh": "自願付出的早晨",
+      "series": "A Shared World",
+      "seriesZh": "共同的世界",
+      "medium": "Contemporary gouache and paper collage",
+      "mediumZh": "當代不透明水彩與紙拼貼",
+      "style": "community-gouache",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"volunteer\", exhibited in a 3D fine-art museum.\nSubject: A friendly volunteer freely helping clean a neighborhood garden, gathering litter in a bag while others plant flowers nearby, no logos or labels.\nStyle/medium: Museum-quality contemporary figurative gouache and cut-paper collage, visible layered paper fibers and matte pigment, elegant simplified human forms with expressive gestures, terracotta, deep teal, warm cream and mustard palette, subtle spatial depth. Not a cartoon or flat icon.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "contribution",
+      "title": "One Stone Among Many",
+      "titleZh": "一份心力",
+      "series": "A Shared World",
+      "seriesZh": "共同的世界",
+      "medium": "Contemporary gouache and paper collage",
+      "mediumZh": "當代不透明水彩與紙拼貼",
+      "style": "community-gouache",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"contribution\", exhibited in a 3D fine-art museum.\nSubject: Different hands adding individual stones to complete a beautiful shared garden mosaic, each contribution forming an essential part of the whole.\nStyle/medium: Museum-quality contemporary figurative gouache and cut-paper collage, visible layered paper fibers and matte pigment, elegant simplified human forms with expressive gestures, terracotta, deep teal, warm cream and mustard palette, subtle spatial depth. Not a cartoon or flat icon.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "generous",
+      "title": "More Than Enough to Share",
+      "titleZh": "慷慨分享",
+      "series": "Small Acts of Care",
+      "seriesZh": "日常的溫柔",
+      "medium": "Soft pastel and charcoal drawing",
+      "mediumZh": "柔和粉彩與炭筆",
+      "style": "care-pastel",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"generous\", exhibited in a 3D fine-art museum.\nSubject: A person generously handing a full basket of fresh food to a grateful neighbor, giving more than expected, warm natural gestures and facial expressions.\nStyle/medium: Sensitive contemporary fine-art soft pastel and charcoal drawing on warm textured paper, beautiful expressive realistic hands and faces, softly broken edges, restrained blush, umber, slate blue and cream, intimate humane atmosphere. Finished gallery artwork, not a sketch study.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "gratitude",
+      "title": "Thank You Without Words",
+      "titleZh": "無聲的感謝",
+      "series": "Small Acts of Care",
+      "seriesZh": "日常的溫柔",
+      "medium": "Soft pastel and charcoal drawing",
+      "mediumZh": "柔和粉彩與炭筆",
+      "style": "care-pastel",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"gratitude\", exhibited in a 3D fine-art museum.\nSubject: A thankful person holding both hands of someone who helped them, deeply grateful expression, a small bouquet on the table, intimate natural light.\nStyle/medium: Sensitive contemporary fine-art soft pastel and charcoal drawing on warm textured paper, beautiful expressive realistic hands and faces, softly broken edges, restrained blush, umber, slate blue and cream, intimate humane atmosphere. Finished gallery artwork, not a sketch study.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "compassion",
+      "title": "Sitting Beside You",
+      "titleZh": "陪在你身旁",
+      "series": "Small Acts of Care",
+      "seriesZh": "日常的溫柔",
+      "medium": "Soft pastel and charcoal drawing",
+      "mediumZh": "柔和粉彩與炭筆",
+      "style": "care-pastel",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"compassion\", exhibited in a 3D fine-art museum.\nSubject: A compassionate adult sitting beside a distressed friend on a bench, gently offering a comforting hand and attentive presence.\nStyle/medium: Sensitive contemporary fine-art soft pastel and charcoal drawing on warm textured paper, beautiful expressive realistic hands and faces, softly broken edges, restrained blush, umber, slate blue and cream, intimate humane atmosphere. Finished gallery artwork, not a sketch study.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "cherish",
+      "title": "Kept Close to the Heart",
+      "titleZh": "珍藏於心",
+      "series": "Small Acts of Care",
+      "seriesZh": "日常的溫柔",
+      "medium": "Soft pastel and charcoal drawing",
+      "mediumZh": "柔和粉彩與炭筆",
+      "style": "care-pastel",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"cherish\", exhibited in a 3D fine-art museum.\nSubject: An older adult tenderly holding a treasured family photograph against their chest, the photograph shows tiny indistinct portraits without text, deep care and affection.\nStyle/medium: Sensitive contemporary fine-art soft pastel and charcoal drawing on warm textured paper, beautiful expressive realistic hands and faces, softly broken edges, restrained blush, umber, slate blue and cream, intimate humane atmosphere. Finished gallery artwork, not a sketch study.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "embrace",
+      "title": "Coming Home",
+      "titleZh": "重逢的擁抱",
+      "series": "Small Acts of Care",
+      "seriesZh": "日常的溫柔",
+      "medium": "Soft pastel and charcoal drawing",
+      "mediumZh": "柔和粉彩與炭筆",
+      "style": "care-pastel",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"embrace\", exhibited in a 3D fine-art museum.\nSubject: Two adult loved ones reunited in a warm wholehearted embrace at a sunlit doorway, believable anatomy and emotionally expressive posture.\nStyle/medium: Sensitive contemporary fine-art soft pastel and charcoal drawing on warm textured paper, beautiful expressive realistic hands and faces, softly broken edges, restrained blush, umber, slate blue and cream, intimate humane atmosphere. Finished gallery artwork, not a sketch study.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "companion",
+      "title": "The Path We Share",
+      "titleZh": "相伴的路",
+      "series": "Small Acts of Care",
+      "seriesZh": "日常的溫柔",
+      "medium": "Soft pastel and charcoal drawing",
+      "mediumZh": "柔和粉彩與炭筆",
+      "style": "care-pastel",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"companion\", exhibited in a 3D fine-art museum.\nSubject: Two long-time adult companions walking slowly side by side along a garden path, easy familiar companionship and gentle afternoon light.\nStyle/medium: Sensitive contemporary fine-art soft pastel and charcoal drawing on warm textured paper, beautiful expressive realistic hands and faces, softly broken edges, restrained blush, umber, slate blue and cream, intimate humane atmosphere. Finished gallery artwork, not a sketch study.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "welcome",
+      "title": "The Open Door",
+      "titleZh": "為你敞開的門",
+      "series": "The Rooms We Share",
+      "seriesZh": "有人情味的地方",
+      "medium": "Figurative impressionist oil painting",
+      "mediumZh": "人物印象派油畫",
+      "style": "welcome-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"welcome\", exhibited in a 3D fine-art museum.\nSubject: A smiling host warmly greeting a newly arrived guest at a broad open entrance, welcoming hand gesture, flowers and soft light, faces naturally drawn.\nStyle/medium: Refined figurative impressionist oil painting with tactile brushwork, warm honey and rust tones balanced with cool turquoise and creamy light, inviting interiors, natural human gestures and beautiful compositions, coherent gallery series.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "hospitality",
+      "title": "A Place Set for You",
+      "titleZh": "為你留的位置",
+      "series": "The Rooms We Share",
+      "seriesZh": "有人情味的地方",
+      "medium": "Figurative impressionist oil painting",
+      "mediumZh": "人物印象派油畫",
+      "style": "welcome-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"hospitality\", exhibited in a 3D fine-art museum.\nSubject: A gracious host offering tea and freshly baked food to a visitor at a carefully set table, generous treatment and warm hospitality.\nStyle/medium: Refined figurative impressionist oil painting with tactile brushwork, warm honey and rust tones balanced with cool turquoise and creamy light, inviting interiors, natural human gestures and beautiful compositions, coherent gallery series.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "tradition",
+      "title": "Hands Remember",
+      "titleZh": "雙手記得的傳統",
+      "series": "The Rooms We Share",
+      "seriesZh": "有人情味的地方",
+      "medium": "Figurative impressionist oil painting",
+      "mediumZh": "人物印象派油畫",
+      "style": "welcome-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"tradition\", exhibited in a 3D fine-art museum.\nSubject: Grandparent and adult grandchild preparing traditional dumplings together in a warmly lit kitchen, inherited customs passed through generations, flour and bamboo trays.\nStyle/medium: Refined figurative impressionist oil painting with tactile brushwork, warm honey and rust tones balanced with cool turquoise and creamy light, inviting interiors, natural human gestures and beautiful compositions, coherent gallery series.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "mentor",
+      "title": "Beside the Workbench",
+      "titleZh": "工作桌旁的引路人",
+      "series": "The Rooms We Share",
+      "seriesZh": "有人情味的地方",
+      "medium": "Figurative impressionist oil painting",
+      "mediumZh": "人物印象派油畫",
+      "style": "welcome-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"mentor\", exhibited in a 3D fine-art museum.\nSubject: An experienced craftsperson patiently advising a younger adult apprentice at a pottery workbench, guidance and supportive teaching, graceful pottery forms.\nStyle/medium: Refined figurative impressionist oil painting with tactile brushwork, warm honey and rust tones balanced with cool turquoise and creamy light, inviting interiors, natural human gestures and beautiful compositions, coherent gallery series.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "wisdom",
+      "title": "The Considered Advice",
+      "titleZh": "深思熟慮的建議",
+      "series": "The Rooms We Share",
+      "seriesZh": "有人情味的地方",
+      "medium": "Figurative impressionist oil painting",
+      "mediumZh": "人物印象派油畫",
+      "style": "welcome-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"wisdom\", exhibited in a 3D fine-art museum.\nSubject: An experienced elderly person thoughtfully advising a younger adult across a quiet table, reflective expression and attentive listening, wisdom through experience.\nStyle/medium: Refined figurative impressionist oil painting with tactile brushwork, warm honey and rust tones balanced with cool turquoise and creamy light, inviting interiors, natural human gestures and beautiful compositions, coherent gallery series.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
+    },
+    {
+      "word": "encourage",
+      "title": "You Can Do This",
+      "titleZh": "相信你可以",
+      "series": "The Rooms We Share",
+      "seriesZh": "有人情味的地方",
+      "medium": "Figurative impressionist oil painting",
+      "mediumZh": "人物印象派油畫",
+      "style": "welcome-impressionism",
+      "prompt": "Use case: stylized-concept.\nAsset type: one original high-resolution artwork for the vocabulary word \"encourage\", exhibited in a 3D fine-art museum.\nSubject: An adult encouraging a hesitant friend who is about to present a painting in a small studio, supportive hand on shoulder and hopeful confidence.\nStyle/medium: Refined figurative impressionist oil painting with tactile brushwork, warm honey and rust tones balanced with cool turquoise and creamy light, inviting interiors, natural human gestures and beautiful compositions, coherent gallery series.\nComposition: a single square artwork, flat straight-on reproduction, full image edge-to-edge, thoughtful complete composition and rich details rewarding close viewing.\nOutput: highest supported native square resolution, at least 1024 pixels.\nConstraints: artwork only. No surrounding frame, wall, typography, letters, signatures, watermarks, logos, borders, panels, grids or readable text. No imitation of a named living artist. Avoid clip art, emoji, children's flashcard styling and glossy CGI."
     }
   ]
 }

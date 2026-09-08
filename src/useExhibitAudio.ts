@@ -38,18 +38,13 @@ export function useExhibitAudio(
   }, []);
 
   useEffect(() => {
-    stop();
-    return stop;
+    if (!exhibitId) stop();
   }, [exhibitId, stop]);
+  useEffect(() => stop, [stop]);
 
-  const play = async (clips: AudioClip[], asSequence = false) => {
-    if (
-      (asSequence && sequence) ||
-      (!asSequence && active === clips[0]?.key && !sequence)
-    ) {
-      stop();
-      return;
-    }
+  // A new exhibit always starts its word, even if the previous word is playing.
+  // Keep this callback stable because the 3D scene retains its click handler.
+  const start = useCallback(async (clips: AudioClip[], asSequence = false) => {
     stop();
     const token = generation.current;
     setSequence(asSequence);
@@ -120,6 +115,17 @@ export function useExhibitAudio(
       setTime(0);
       setDuration(0);
     }
+  }, [onError, stop]);
+
+  const play = (clips: AudioClip[], asSequence = false) => {
+    if (
+      (asSequence && sequence) ||
+      (!asSequence && active === clips[0]?.key && !sequence)
+    ) {
+      stop();
+      return;
+    }
+    return start(clips, asSequence);
   };
 
   const setRate = (value: number) => {
@@ -127,5 +133,5 @@ export function useExhibitAudio(
     setRateState(value);
     if (audio.current) audio.current.playbackRate = value;
   };
-  return { active, sequence, time, duration, rate, setRate, play, stop };
+  return { active, sequence, time, duration, rate, setRate, play, start, stop };
 }

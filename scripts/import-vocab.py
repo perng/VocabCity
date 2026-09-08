@@ -19,6 +19,8 @@ def read(path):
 def import_audio(source, filename):
     destination = ROOT / 'public/audio' / filename
     destination.parent.mkdir(parents=True, exist_ok=True)
+    if source.exists() and destination.exists() and destination.stat().st_mtime >= source.stat().st_mtime:
+        return f'audio/{filename}'
     if source.exists() and shutil.which('ffmpeg'):
         subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', str(source), '-c:a', 'aac', '-b:a', '96k', str(destination)], check=True)
         return f'audio/{filename}'
@@ -28,6 +30,13 @@ ROOMS = [
     {'id': 'wonders', 'name': 'Everyday Wonders', 'subtitle': 'Find the extraordinary in the ordinary.', 'color': '#54756a', 'words': ['serene', 'flourish', 'nurture', 'curiosity', 'delicate', 'abundant']},
     {'id': 'world', 'name': 'Out in the World', 'subtitle': 'A new perspective is just a word away.', 'color': '#59768b', 'words': ['journey', 'wander', 'destination', 'landscape', 'horizon', 'habitat']},
     {'id': 'ideas', 'name': 'Ideas at Work', 'subtitle': 'Small ideas. Remarkable possibilities.', 'color': '#ad7355', 'words': ['inspire', 'collaboration', 'innovation', 'ambition', 'craft', 'sustainable']},
+    {'id': 'earth', 'name': 'Rooted in Nature', 'subtitle': 'The living earth, in every season.', 'color': '#71875b', 'words': ['agriculture', 'cultivate', 'fertile', 'rural', 'fragrant', 'abundance']},
+    {'id': 'connections', 'name': 'Living Connections', 'subtitle': 'A world held together by care.', 'color': '#54877c', 'words': ['ecosystem', 'ecology', 'conservation', 'preserve', 'restore', 'shelter']},
+    {'id': 'perspective', 'name': 'Light & Perspective', 'subtitle': 'Make a little room for a new way of seeing.', 'color': '#7a7895', 'words': ['scenic', 'magnificent', 'spacious', 'fragile', 'radiant', 'reflection']},
+    {'id': 'together', 'name': 'Better Together', 'subtitle': 'A shared world, made by many hands.', 'color': '#ac7a50', 'words': ['community', 'harmony', 'cooperate', 'gather', 'volunteer', 'contribution']},
+    {'id': 'caring', 'name': 'The Art of Caring', 'subtitle': 'Small acts. Lasting warmth.', 'color': '#ae7b79', 'words': ['generous', 'gratitude', 'compassion', 'cherish', 'embrace', 'companion']},
+    {'id': 'welcome', 'name': 'A Warm Welcome', 'subtitle': 'There is always a place for you.', 'color': '#ba8c59', 'words': ['welcome', 'hospitality', 'tradition', 'mentor', 'wisdom', 'encourage']},
+
 ]
 
 catalog = read(DATA / 'catalog.json')['questions']
