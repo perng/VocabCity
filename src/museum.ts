@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { Botany } from "./botany";
+import { buildEnvironments } from "./environments";
 import { translate } from "./i18n";
 import { assetUrl, partOfSpeech, type Exhibit } from "./types";
 import {
@@ -13,7 +14,9 @@ import {
   GARDEN_INDEX,
   ENTRY,
   GALLERY_ENTRY,
-  GALLERY_COUNT,
+  INDOOR_GALLERY_COUNT,
+  placeExhibitSlot,
+  isPlaceGallery,
   ENTRANCE_INDEX,
   galleryTransform,
   inGallery,
@@ -50,7 +53,7 @@ export function exhibitPlacement(exhibit: Pick<Exhibit, "room" | "slot">) {
     { x: 11.78, z: 0, yaw: -Math.PI / 2 },
     { x: 11.78, z: 8, yaw: -Math.PI / 2 },
   ];
-  const slot = slots[exhibit.slot];
+  const slot = isPlaceGallery(exhibit.room) ? placeExhibitSlot(exhibit.room, exhibit.slot) : slots[exhibit.slot];
   return { ...inGallery(exhibit.room, slot.x, slot.z, slot.yaw), area: exhibit.room };
 }
 
@@ -172,6 +175,16 @@ export class Museum {
     this.buildExhibits();
     this.buildDecorations();
     this.buildGarden();
+    buildEnvironments({
+      scene: this.scene,
+      botany: this.botany,
+      box: this.box.bind(this),
+      material: this.material.bind(this),
+      texture: this.canvasTexture.bind(this),
+      title: room => translate(this.options.rooms[room].name, this.options.locale),
+      translate: text => translate(text, this.options.locale),
+      obstacle: obstacle => this.obstacles.push(obstacle),
+    });
     this.buildCuriosities();
     this.resizeObserver = new ResizeObserver(this.resize);
     this.resizeObserver.observe(host);
@@ -321,7 +334,7 @@ export class Museum {
     floorTexture.repeat.set(4.5, 5.33);
     const floorMaterial = new THREE.MeshStandardMaterial({ map: floorTexture, roughness: 0.68 });
     const colors = ["#e5e8dc", "#dfe8e6", "#ede1d4", "#e6e9da", "#d9e5dc", "#e3e3e8", "#e6e1d7", "#ebe0dc", "#ecdfce"];
-    for (let room = 0; room < GALLERY_COUNT; room++) {
+    for (let room = 0; room < INDOOR_GALLERY_COUNT; room++) {
       const origin = galleryTransform(room);
       const hall = new THREE.Group();
       hall.position.set(origin.x, 0, origin.z);
@@ -499,7 +512,9 @@ export class Museum {
     });
     for (const [index, exhibit] of this.options.exhibits.entries()) {
       for (const placement of exhibitPlacements(exhibit)) {
-        const outdoor = placement.area === GARDEN_INDEX;
+        const place = isPlaceGallery(placement.area);
+        const outdoor = placement.area === GARDEN_INDEX || place;
+        const cave = placement.area === 13;
         const group = new THREE.Group();
         group.position.set(placement.x, 0, placement.z);
         group.rotation.y = placement.yaw;
@@ -507,19 +522,19 @@ export class Museum {
         this.scene.add(group);
         if (outdoor) {
           // Solid, freestanding display walls face clear garden paths.
-          this.box(5.6, 5.1, 0.28, 0.85, 2.55, -0.19, "#e8e3d1", group, true);
+          this.box(5.6, 5.1, 0.28, 0.85, 2.55, -0.19, place ? (cave ? "#c7bca6" : "#ddd9c4") : "#e8e3d1", group, true);
           this.box(5.85, 0.16, 0.48, 0.85, 5.18, -0.19, "#b8a078", group, true);
           this.box(5.7, 0.15, 0.65, 0.85, 0.075, -0.19, "#c6bfa6", group);
           const center = new THREE.Vector3(0.85, 0, -0.19).applyAxisAngle(
             Y_AXIS,
             placement.yaw,
           );
-          const sideFacing = Math.abs(placement.yaw) > 1;
+          const c = Math.abs(Math.cos(placement.yaw)), s = Math.abs(Math.sin(placement.yaw));
           this.obstacles.push({
             x: placement.x + center.x,
             z: placement.z + center.z,
-            rx: sideFacing ? 0.65 : 3.2,
-            rz: sideFacing ? 3.2 : 0.65,
+            rx: c * 3.2 + s * 0.65,
+            rz: s * 3.2 + c * 0.65,
           });
         }
         const frameColor = exhibit.room === 2 ? "#73533a" : "#9a744f";
@@ -736,7 +751,7 @@ export class Museum {
   }
 
   private buildDecorations() {
-    for (let room = 0; room < GALLERY_COUNT; room++) {
+    for (let room = 0; room < INDOOR_GALLERY_COUNT; room++) {
       const point = (x: number, z: number) => inGallery(room, x, z);
       const a = point(-10.3, 12), b = point(10.3, -12), seat = point(7.4, 5.15);
       this.plant(a.x, a.z, 1.65);
@@ -807,7 +822,7 @@ export class Museum {
 
   private buildGarden() {
     // A level limestone terrace continues straight from the long gallery.
-    const landscape = this.box(320, 0.15, 320, 0, -0.23, -70, "#8a9c72");
+    const landscape = this.box(320, 0.15, 560, 0, -0.23, -190, "#8a9c72");
     landscape.receiveShadow = true;
     this.box(
       GARDEN_WIDTH,
@@ -827,7 +842,7 @@ export class Museum {
     // Low perimeter walls make the edge of the walkable grounds visible.
     for (const x of [-30, 30])
       this.box(0.45, 0.65, 44, x, 0.25, -92, "#c7c5ab");
-    this.box(60, 0.65, 0.45, 0, 0.25, GARDEN_BACK, "#c7c5ab");
+    for (const x of [-21, 21]) this.box(18, 0.65, 0.45, x, 0.25, GARDEN_BACK, "#c7c5ab");
     for (const x of [-21, 21])
       this.box(18, 0.65, 0.45, x, 0.25, HALL_BACK, "#c7c5ab");
 
@@ -928,13 +943,13 @@ export class Museum {
         new THREE.SphereGeometry(1, 32, 16),
         this.material(["#9ead8d", "#899e87", "#b2bca0"][i % 3]),
       );
-      hill.position.set(-112 + i * 19, -5, -156 - (i % 3) * 17);
+      hill.position.set(-112 + i * 19, -5, -402 - (i % 3) * 17);
       hill.scale.set(25 + (i % 3) * 9, 15 + (i % 4) * 5, 24 + (i % 3) * 8);
       this.scene.add(hill);
     }
     for (let i = 0; i < 15; i++) {
-      const x = -54 + i * 8;
-      const z = -123 - (i % 3) * 5;
+      const x = (i < 8 ? -1 : 1) * (25 + (i % 8) * 5);
+      const z = -126 - (i % 3) * 14;
       // These trees are outside the grounds, so their trunks never obstruct walking.
       tree(x, z, 1.3 + (i % 3) * 0.25, i);
     }
@@ -1341,7 +1356,7 @@ export class Museum {
       this.moveCamera(new THREE.Vector3(0.35, EYE_HEIGHT, 36), 0.015, 0.035);
       return;
     }
-    const point = inGallery(room, GALLERY_ENTRY.x, GALLERY_ENTRY.z, GALLERY_ENTRY.yaw);
+    const point = inGallery(room, GALLERY_ENTRY.x, isPlaceGallery(room) ? 16.5 : GALLERY_ENTRY.z, isPlaceGallery(room) ? 0 : GALLERY_ENTRY.yaw);
     this.moveCamera(new THREE.Vector3(point.x, EYE_HEIGHT, point.z), point.yaw, 0.055);
   }
   goToGate() {
@@ -1362,11 +1377,11 @@ export class Museum {
       placement.x,
       EYE_HEIGHT,
       placement.z,
-    ).addScaledVector(normal, placement.area === GARDEN_INDEX ? 4.3 : 4.9);
+    ).addScaledVector(normal, placement.area === GARDEN_INDEX || isPlaceGallery(placement.area) ? 4.3 : 4.9);
     this.moveCamera(
       position,
       placement.yaw,
-      placement.area === GARDEN_INDEX ? 0.2 : 0.29,
+      placement.area === GARDEN_INDEX || isPlaceGallery(placement.area) ? 0.2 : 0.29,
     );
     return placement.area;
   }

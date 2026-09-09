@@ -36,6 +36,12 @@ ROOMS = [
     {'id': 'together', 'name': 'Better Together', 'subtitle': 'A shared world, made by many hands.', 'color': '#ac7a50', 'words': ['community', 'harmony', 'cooperate', 'gather', 'volunteer', 'contribution']},
     {'id': 'caring', 'name': 'The Art of Caring', 'subtitle': 'Small acts. Lasting warmth.', 'color': '#ae7b79', 'words': ['generous', 'gratitude', 'compassion', 'cherish', 'embrace', 'companion']},
     {'id': 'welcome', 'name': 'A Warm Welcome', 'subtitle': 'There is always a place for you.', 'color': '#ba8c59', 'words': ['welcome', 'hospitality', 'tradition', 'mentor', 'wisdom', 'encourage']},
+    {'id': 'woodland', 'name': 'The Leafy Walk', 'subtitle': 'A little wonder beneath the leaves.', 'color': '#527b5c', 'words': ['wildlife', 'species', 'diversity', 'observe', 'encounter', 'environment']},
+    {'id': 'palace', 'name': 'The Palace Gallery', 'subtitle': 'Art, light, and a little grandeur.', 'color': '#ac9066', 'words': ['thrive', 'adapt', 'vitality', 'growth', 'gradual', 'endurance']},
+    {'id': 'street', 'name': 'A Street of Stories', 'subtitle': 'Take a stroll. Find a new perspective.', 'color': '#b07e6c', 'words': ['excursion', 'navigate', 'guide', 'remote', 'solitude', 'refuge']},
+    {'id': 'market', 'name': 'The Discovery Market', 'subtitle': 'Wander the square. Collect a few words.', 'color': '#b28c50', 'words': ['mineral', 'texture', 'surface', 'formation', 'structure', 'durable']},
+    {'id': 'cave', 'name': 'The Lantern Cave', 'subtitle': 'A little light changes what we see.', 'color': '#728b82', 'words': ['illuminate', 'emerge', 'mysterious', 'clarity', 'perceive', 'reveal']},
+    {'id': 'waterfront', 'name': 'The Waterfront Terrace', 'subtitle': 'A breath of sea air. A wider horizon.', 'color': '#6c999e', 'words': ['tunnel', 'exploration', 'discover', 'insight', 'remarkable', 'majestic']},
 
 ]
 

@@ -243,6 +243,51 @@ export class Botany {
     if (!distant) group.add(this.fern(seed));
     return group;
   }
+  tunnelBay(seed: number, autumn = false) {
+    const group = new THREE.Group();
+    const rnd = random(seed + 391);
+    const wood: THREE.BufferGeometry[] = [];
+    const centers: THREE.Vector3[] = [];
+    for (const side of [-1, 1]) {
+      const trunk = [
+        new THREE.Vector3(side * 14, 0, 0),
+        new THREE.Vector3(side * 13.6, 4.5, 0.1),
+        new THREE.Vector3(side * 11, 8.8, -0.2),
+        new THREE.Vector3(side * 6, 11.5, 0.4),
+        new THREE.Vector3(side * 0.6, 12.5, 0),
+      ];
+      wood.push(branch(trunk, 0.72, 0.07));
+      for (let arm = 0; arm < 10; arm++) {
+        const t = arm / 10;
+        const start = new THREE.Vector3(side * (12 - 11 * t), 8.5 + 3.9 * Math.sin(t * 1.5), 0);
+        for (const direction of [-1, 1]) {
+          const end = start.clone().add(new THREE.Vector3((rnd() - 0.5) * 2, 0.2 + rnd(), direction * (2.6 + rnd() * 2)));
+          wood.push(branch([start, start.clone().lerp(end, 0.55).add(new THREE.Vector3(0, 0.5, 0)), end], 0.14 * (1 - t * 0.6), 0.018));
+          centers.push(end);
+        }
+      }
+      for (let root = 0; root < 5; root++) {
+        const angle = root * 1.3;
+        wood.push(branch([new THREE.Vector3(side * 14, 0.8, 0), new THREE.Vector3(side * 14 + Math.cos(angle), 0.18, Math.sin(angle)), new THREE.Vector3(side * 14 + Math.cos(angle) * 1.8, 0.03, Math.sin(angle) * 1.8)], 0.18, 0.03));
+      }
+      const fern = this.fern(seed + side); fern.position.set(side * 13.2, 0.1, 1.7); fern.scale.setScalar(1.8); group.add(fern);
+    }
+    const leaves = new THREE.InstancedMesh(this.leaf, this.foliage, 3600);
+    const dummy = new THREE.Object3D();
+    const colors = autumn ? ['#879153', '#b3a661', '#b89048', '#799459', '#bda66a'] : ['#41663b', '#5b8047', '#7b9656', '#91a765', '#436f52'];
+    for (let i = 0; i < leaves.count; i++) {
+      dummy.position.copy(centers[i % centers.length]).add(new THREE.Vector3((rnd() - 0.5) * 3.2, (rnd() - 0.5) * 1.8, (rnd() - 0.5) * 3.6));
+      const size = 0.5 + rnd() * 0.5;
+      dummy.scale.set(size * 0.7, size, size);
+      dummy.rotation.set(rnd() * 2 - 1, rnd() * Math.PI * 2, rnd() * 2 - 1);
+      dummy.updateMatrix(); leaves.setMatrixAt(i, dummy.matrix);
+      leaves.setColorAt(i, new THREE.Color(colors[i % colors.length]));
+    }
+    leaves.castShadow = true; leaves.receiveShadow = true;
+    group.add(leaves); this.wood(wood, group);
+    return group;
+  }
+
   private fern(seed: number) {
     const group = new THREE.Group(),
       rnd = random(seed + 73),

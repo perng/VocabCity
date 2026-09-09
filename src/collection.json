@@ -55,6 +55,42 @@
       "name": "A Warm Welcome",
       "subtitle": "There is always a place for you.",
       "color": "#ba8c59"
+    },
+    {
+      "id": "woodland",
+      "name": "The Leafy Walk",
+      "subtitle": "A little wonder beneath the leaves.",
+      "color": "#527b5c"
+    },
+    {
+      "id": "palace",
+      "name": "The Palace Gallery",
+      "subtitle": "Art, light, and a little grandeur.",
+      "color": "#ac9066"
+    },
+    {
+      "id": "street",
+      "name": "A Street of Stories",
+      "subtitle": "Take a stroll. Find a new perspective.",
+      "color": "#b07e6c"
+    },
+    {
+      "id": "market",
+      "name": "The Discovery Market",
+      "subtitle": "Wander the square. Collect a few words.",
+      "color": "#b28c50"
+    },
+    {
+      "id": "cave",
+      "name": "The Lantern Cave",
+      "subtitle": "A little light changes what we see.",
+      "color": "#728b82"
+    },
+    {
+      "id": "waterfront",
+      "name": "The Waterfront Terrace",
+      "subtitle": "A breath of sea air. A wider horizon.",
+      "color": "#6c999e"
     }
   ],
   "exhibits": [
@@ -2697,8 +2733,6 @@
       ],
       "image": "artwork/museum-v1/agriculture.webp",
       "originalImage": "artwork/agriculture.webp",
-      "audio": "audio/agriculture.m4a",
-      "exampleAudio": "audio/agriculture-example-0.m4a",
       "artwork": {
         "title": "Fields at Work",
         "titleZh": "耕作的日常",
@@ -2711,7 +2745,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/agriculture.m4a",
+      "exampleAudio": "audio/agriculture-example-0.m4a"
     },
     {
       "id": "4262b79cb28c3d6fd41e43c0e91e0719",
@@ -2848,8 +2884,6 @@
       ],
       "image": "artwork/museum-v1/cultivate.webp",
       "originalImage": "artwork/cultivate.webp",
-      "audio": "audio/cultivate.m4a",
-      "exampleAudio": "audio/cultivate-example-0.m4a",
       "artwork": {
         "title": "A Garden in Patient Hands",
         "titleZh": "耐心耕耘",
@@ -2862,7 +2896,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/cultivate.m4a",
+      "exampleAudio": "audio/cultivate-example-0.m4a"
     },
     {
       "id": "d71f6bac058028f74b8c2193a93e9ed0",
@@ -2994,8 +3030,6 @@
       ],
       "image": "artwork/museum-v1/fertile.webp",
       "originalImage": "artwork/fertile.webp",
-      "audio": "audio/fertile.m4a",
-      "exampleAudio": "audio/fertile-example-0.m4a",
       "artwork": {
         "title": "Earth That Gives",
         "titleZh": "豐饒之土",
@@ -3008,7 +3042,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/fertile.m4a",
+      "exampleAudio": "audio/fertile-example-0.m4a"
     },
     {
       "id": "80173f27335f7a967c7efc009c87b8d4",
@@ -3106,8 +3142,6 @@
       ],
       "image": "artwork/museum-v1/rural.webp",
       "originalImage": "artwork/rural.webp",
-      "audio": "audio/rural.m4a",
-      "exampleAudio": "audio/rural-example-0.m4a",
       "artwork": {
         "title": "Beyond the Town",
         "titleZh": "鄉間午後",
@@ -3120,7 +3154,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/rural.m4a",
+      "exampleAudio": "audio/rural-example-0.m4a"
     },
     {
       "id": "52a713e564f05e3597744b0e0d1e14c3",
@@ -3222,8 +3258,6 @@
       ],
       "image": "artwork/museum-v1/fragrant.webp",
       "originalImage": "artwork/fragrant.webp",
-      "audio": "audio/fragrant.m4a",
-      "exampleAudio": "audio/fragrant-example-0.m4a",
       "artwork": {
         "title": "An Offering of Jasmine",
         "titleZh": "茉莉的芬芳",
@@ -3236,7 +3270,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/fragrant.m4a",
+      "exampleAudio": "audio/fragrant-example-0.m4a"
     },
     {
       "id": "fa0543e6c928767caaf88799f0640349",
@@ -3339,8 +3375,6 @@
       ],
       "image": "artwork/museum-v1/abundance.webp",
       "originalImage": "artwork/abundance.webp",
-      "audio": "audio/abundance.m4a",
-      "exampleAudio": "audio/abundance-example-0.m4a",
       "artwork": {
         "title": "The Long Harvest Table",
         "titleZh": "豐盛的餐桌",
@@ -3353,7 +3387,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/abundance.m4a",
+      "exampleAudio": "audio/abundance-example-0.m4a"
     },
     {
       "id": "638f4d623fbe90928d254ba993e83ff9",
@@ -3484,8 +3520,6 @@
       ],
       "image": "artwork/museum-v1/ecosystem.webp",
       "originalImage": "artwork/ecosystem.webp",
-      "audio": "audio/ecosystem.m4a",
-      "exampleAudio": "audio/ecosystem-example-0.m4a",
       "artwork": {
         "title": "Life Around the Pond",
         "titleZh": "池塘的生命",
@@ -3498,7 +3532,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/ecosystem.m4a",
+      "exampleAudio": "audio/ecosystem-example-0.m4a"
     },
     {
       "id": "239e854e730e87de2535a4ba53ff299b",
@@ -3627,8 +3663,6 @@
       ],
       "image": "artwork/museum-v1/ecology.webp",
       "originalImage": "artwork/ecology.webp",
-      "audio": "audio/ecology.m4a",
-      "exampleAudio": "audio/ecology-example-0.m4a",
       "artwork": {
         "title": "Studying the Living Shore",
         "titleZh": "觀察生命的關係",
@@ -3641,7 +3675,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/ecology.m4a",
+      "exampleAudio": "audio/ecology-example-0.m4a"
     },
     {
       "id": "b8fc2edcc877225525201a83f93b6ef6",
@@ -3742,8 +3778,6 @@
       ],
       "image": "artwork/museum-v1/conservation.webp",
       "originalImage": "artwork/conservation.webp",
-      "audio": "audio/conservation.m4a",
-      "exampleAudio": "audio/conservation-example-0.m4a",
       "artwork": {
         "title": "The Protected Grove",
         "titleZh": "守護樹林",
@@ -3756,7 +3790,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/conservation.m4a",
+      "exampleAudio": "audio/conservation-example-0.m4a"
     },
     {
       "id": "69d82c9f6b29667ab9b8c911d09f7511",
@@ -3891,8 +3927,6 @@
       ],
       "image": "artwork/museum-v1/preserve.webp",
       "originalImage": "artwork/preserve.webp",
-      "audio": "audio/preserve.m4a",
-      "exampleAudio": "audio/preserve-example-0.m4a",
       "artwork": {
         "title": "Keeping the Ancient Oak",
         "titleZh": "留住老橡樹",
@@ -3905,7 +3939,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/preserve.m4a",
+      "exampleAudio": "audio/preserve-example-0.m4a"
     },
     {
       "id": "05d500ae36bd396272814ae5a7404e04",
@@ -4008,8 +4044,6 @@
       ],
       "image": "artwork/museum-v1/restore.webp",
       "originalImage": "artwork/restore.webp",
-      "audio": "audio/restore.m4a",
-      "exampleAudio": "audio/restore-example-0.m4a",
       "artwork": {
         "title": "A River Returns",
         "titleZh": "重生的河岸",
@@ -4022,7 +4056,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/restore.m4a",
+      "exampleAudio": "audio/restore-example-0.m4a"
     },
     {
       "id": "c3e637002ca19279348a9e7e4593b953",
@@ -4156,8 +4192,6 @@
       ],
       "image": "artwork/museum-v1/shelter.webp",
       "originalImage": "artwork/shelter.webp",
-      "audio": "audio/shelter.m4a",
-      "exampleAudio": "audio/shelter-example-0.m4a",
       "artwork": {
         "title": "Safe Beneath the Roof",
         "titleZh": "屋簷下的安心",
@@ -4170,7 +4204,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/shelter.m4a",
+      "exampleAudio": "audio/shelter-example-0.m4a"
     },
     {
       "id": "d2560837deb48e068510d5645aeb0abb",
@@ -4301,8 +4337,6 @@
       ],
       "image": "artwork/museum-v1/scenic.webp",
       "originalImage": "artwork/scenic.webp",
-      "audio": "audio/scenic.m4a",
-      "exampleAudio": "audio/scenic-example-0.m4a",
       "artwork": {
         "title": "The Winding Coast Road",
         "titleZh": "沿著風景前行",
@@ -4315,7 +4349,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/scenic.m4a",
+      "exampleAudio": "audio/scenic-example-0.m4a"
     },
     {
       "id": "93a268bf067e53270ec1838a6d9f7f3d",
@@ -4417,8 +4453,6 @@
       ],
       "image": "artwork/museum-v1/magnificent.webp",
       "originalImage": "artwork/magnificent.webp",
-      "audio": "audio/magnificent.m4a",
-      "exampleAudio": "audio/magnificent-example-0.m4a",
       "artwork": {
         "title": "Beneath the Great Vault",
         "titleZh": "壯麗穹頂之下",
@@ -4431,7 +4465,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/magnificent.m4a",
+      "exampleAudio": "audio/magnificent-example-0.m4a"
     },
     {
       "id": "dcc1532510862208ac5149f46bcb344f",
@@ -4533,8 +4569,6 @@
       ],
       "image": "artwork/museum-v1/spacious.webp",
       "originalImage": "artwork/spacious.webp",
-      "audio": "audio/spacious.m4a",
-      "exampleAudio": "audio/spacious-example-0.m4a",
       "artwork": {
         "title": "Room for Light",
         "titleZh": "留給光的空間",
@@ -4547,7 +4581,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/spacious.m4a",
+      "exampleAudio": "audio/spacious-example-0.m4a"
     },
     {
       "id": "f556fb727bf90de8622658f70e22b09e",
@@ -4649,8 +4685,6 @@
       ],
       "image": "artwork/museum-v1/fragile.webp",
       "originalImage": "artwork/fragile.webp",
-      "audio": "audio/fragile.m4a",
-      "exampleAudio": "audio/fragile-example-0.m4a",
       "artwork": {
         "title": "The Porcelain Bird",
         "titleZh": "易碎的白瓷鳥",
@@ -4663,7 +4697,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/fragile.m4a",
+      "exampleAudio": "audio/fragile-example-0.m4a"
     },
     {
       "id": "d1e6e07cd3187c42f9f4a5b0dc226376",
@@ -4797,8 +4833,6 @@
       ],
       "image": "artwork/museum-v1/radiant.webp",
       "originalImage": "artwork/radiant.webp",
-      "audio": "audio/radiant.m4a",
-      "exampleAudio": "audio/radiant-example-0.m4a",
       "artwork": {
         "title": "A Radiant Afternoon",
         "titleZh": "燦爛的午後",
@@ -4811,7 +4845,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/radiant.m4a",
+      "exampleAudio": "audio/radiant-example-0.m4a"
     },
     {
       "id": "f0a96443b96a3cb182c19fa2c1698ca3",
@@ -5010,8 +5046,6 @@
       ],
       "image": "artwork/museum-v1/reflection.webp",
       "originalImage": "artwork/reflection.webp",
-      "audio": "audio/reflection.m4a",
-      "exampleAudio": "audio/reflection-example-0.m4a",
       "artwork": {
         "title": "After the Day",
         "titleZh": "沉思片刻",
@@ -5024,7 +5058,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/reflection.m4a",
+      "exampleAudio": "audio/reflection-example-0.m4a"
     },
     {
       "id": "2de3e4b594d93376de18efccjfk56789",
@@ -5125,8 +5161,6 @@
       ],
       "image": "artwork/museum-v1/community.webp",
       "originalImage": "artwork/community.webp",
-      "audio": "audio/community.m4a",
-      "exampleAudio": "audio/community-example-0.m4a",
       "artwork": {
         "title": "The Shared Courtyard",
         "titleZh": "我們的院子",
@@ -5139,7 +5173,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/community.m4a",
+      "exampleAudio": "audio/community-example-0.m4a"
     },
     {
       "id": "39a4954481b6984334b672e9b5d79404",
@@ -5274,8 +5310,6 @@
       ],
       "image": "artwork/museum-v1/harmony.webp",
       "originalImage": "artwork/harmony.webp",
-      "audio": "audio/harmony.m4a",
-      "exampleAudio": "audio/harmony-example-0.m4a",
       "artwork": {
         "title": "Playing as One",
         "titleZh": "合奏的和諧",
@@ -5288,7 +5322,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/harmony.m4a",
+      "exampleAudio": "audio/harmony-example-0.m4a"
     },
     {
       "id": "733e5bc42bf49d74ec75ab0cd6ae0a11",
@@ -5422,8 +5458,6 @@
       ],
       "image": "artwork/museum-v1/cooperate.webp",
       "originalImage": "artwork/cooperate.webp",
-      "audio": "audio/cooperate.m4a",
-      "exampleAudio": "audio/cooperate-example-0.m4a",
       "artwork": {
         "title": "Many Hands, One Table",
         "titleZh": "一起完成",
@@ -5436,7 +5470,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/cooperate.m4a",
+      "exampleAudio": "audio/cooperate-example-0.m4a"
     },
     {
       "id": "6860b5ea4e09a2f85766dcd82424267e",
@@ -5614,8 +5650,6 @@
       ],
       "image": "artwork/museum-v1/gather.webp",
       "originalImage": "artwork/gather.webp",
-      "audio": "audio/gather.m4a",
-      "exampleAudio": "audio/gather-example-0.m4a",
       "artwork": {
         "title": "All in One Place",
         "titleZh": "相聚此刻",
@@ -5628,7 +5662,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/gather.m4a",
+      "exampleAudio": "audio/gather-example-0.m4a"
     },
     {
       "id": "f7bd0f27753c9baf030263e5d823b77d",
@@ -5760,8 +5796,6 @@
       ],
       "image": "artwork/museum-v1/volunteer.webp",
       "originalImage": "artwork/volunteer.webp",
-      "audio": "audio/volunteer.m4a",
-      "exampleAudio": "audio/volunteer-example-0.m4a",
       "artwork": {
         "title": "A Morning Given Freely",
         "titleZh": "自願付出的早晨",
@@ -5774,7 +5808,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/volunteer.m4a",
+      "exampleAudio": "audio/volunteer-example-0.m4a"
     },
     {
       "id": "ae2b1fca515949e5d54fb22b97425d20",
@@ -5877,8 +5913,6 @@
       ],
       "image": "artwork/museum-v1/contribution.webp",
       "originalImage": "artwork/contribution.webp",
-      "audio": "audio/contribution.m4a",
-      "exampleAudio": "audio/contribution-example-0.m4a",
       "artwork": {
         "title": "One Stone Among Many",
         "titleZh": "一份心力",
@@ -5891,7 +5925,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/contribution.m4a",
+      "exampleAudio": "audio/contribution-example-0.m4a"
     },
     {
       "id": "96e15399cce16e8ab44e96a5d17f590d",
@@ -5997,8 +6033,6 @@
       ],
       "image": "artwork/museum-v1/generous.webp",
       "originalImage": "artwork/generous.webp",
-      "audio": "audio/generous.m4a",
-      "exampleAudio": "audio/generous-example-0.m4a",
       "artwork": {
         "title": "More Than Enough to Share",
         "titleZh": "慷慨分享",
@@ -6011,7 +6045,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/generous.m4a",
+      "exampleAudio": "audio/generous-example-0.m4a"
     },
     {
       "id": "d6c0bb6f1ccf4c85b3916f450b71da46",
@@ -6112,8 +6148,6 @@
       ],
       "image": "artwork/museum-v1/gratitude.webp",
       "originalImage": "artwork/gratitude.webp",
-      "audio": "audio/gratitude.m4a",
-      "exampleAudio": "audio/gratitude-example-0.m4a",
       "artwork": {
         "title": "Thank You Without Words",
         "titleZh": "無聲的感謝",
@@ -6126,7 +6160,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/gratitude.m4a",
+      "exampleAudio": "audio/gratitude-example-0.m4a"
     },
     {
       "id": "87ab7ae650a28ef900f6f546b7937529",
@@ -6231,8 +6267,6 @@
       ],
       "image": "artwork/museum-v1/compassion.webp",
       "originalImage": "artwork/compassion.webp",
-      "audio": "audio/compassion.m4a",
-      "exampleAudio": "audio/compassion-example-0.m4a",
       "artwork": {
         "title": "Sitting Beside You",
         "titleZh": "陪在你身旁",
@@ -6245,7 +6279,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/compassion.m4a",
+      "exampleAudio": "audio/compassion-example-0.m4a"
     },
     {
       "id": "79db6776778a6a6d47f5767b78b59b6c",
@@ -6348,8 +6384,6 @@
       ],
       "image": "artwork/museum-v1/cherish.webp",
       "originalImage": "artwork/cherish.webp",
-      "audio": "audio/cherish.m4a",
-      "exampleAudio": "audio/cherish-example-0.m4a",
       "artwork": {
         "title": "Kept Close to the Heart",
         "titleZh": "珍藏於心",
@@ -6362,7 +6396,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/cherish.m4a",
+      "exampleAudio": "audio/cherish-example-0.m4a"
     },
     {
       "id": "a410ae84cb530e48a7d6f8a32908a62e",
@@ -6526,8 +6562,6 @@
       ],
       "image": "artwork/museum-v1/embrace.webp",
       "originalImage": "artwork/embrace.webp",
-      "audio": "audio/embrace.m4a",
-      "exampleAudio": "audio/embrace-example-0.m4a",
       "artwork": {
         "title": "Coming Home",
         "titleZh": "重逢的擁抱",
@@ -6540,7 +6574,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/embrace.m4a",
+      "exampleAudio": "audio/embrace-example-0.m4a"
     },
     {
       "id": "dfe6692dfebf10bd841e59e284a3ef02",
@@ -6643,8 +6679,6 @@
       ],
       "image": "artwork/museum-v1/companion.webp",
       "originalImage": "artwork/companion.webp",
-      "audio": "audio/companion.m4a",
-      "exampleAudio": "audio/companion-example-0.m4a",
       "artwork": {
         "title": "The Path We Share",
         "titleZh": "相伴的路",
@@ -6657,7 +6691,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/companion.m4a",
+      "exampleAudio": "audio/companion-example-0.m4a"
     },
     {
       "id": "ca32414e0db045f2788f2915f39b5193",
@@ -6825,8 +6861,6 @@
       ],
       "image": "artwork/museum-v1/welcome.webp",
       "originalImage": "artwork/welcome.webp",
-      "audio": "audio/welcome.m4a",
-      "exampleAudio": "audio/welcome-example-0.m4a",
       "artwork": {
         "title": "The Open Door",
         "titleZh": "為你敞開的門",
@@ -6839,7 +6873,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/welcome.m4a",
+      "exampleAudio": "audio/welcome-example-0.m4a"
     },
     {
       "id": "ae4cf841db8563de12fa756c6a36ce49",
@@ -6972,8 +7008,6 @@
       ],
       "image": "artwork/museum-v1/hospitality.webp",
       "originalImage": "artwork/hospitality.webp",
-      "audio": "audio/hospitality.m4a",
-      "exampleAudio": "audio/hospitality-example-0.m4a",
       "artwork": {
         "title": "A Place Set for You",
         "titleZh": "為你留的位置",
@@ -6986,7 +7020,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/hospitality.m4a",
+      "exampleAudio": "audio/hospitality-example-0.m4a"
     },
     {
       "id": "74d7f3c23f4073884ba5479075daec99",
@@ -7120,8 +7156,6 @@
       ],
       "image": "artwork/museum-v1/tradition.webp",
       "originalImage": "artwork/tradition.webp",
-      "audio": "audio/tradition.m4a",
-      "exampleAudio": "audio/tradition-example-0.m4a",
       "artwork": {
         "title": "Hands Remember",
         "titleZh": "雙手記得的傳統",
@@ -7134,7 +7168,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/tradition.m4a",
+      "exampleAudio": "audio/tradition-example-0.m4a"
     },
     {
       "id": "254ed1abef2cafe1da52a9c681b8366f",
@@ -7271,8 +7307,6 @@
       ],
       "image": "artwork/museum-v1/mentor.webp",
       "originalImage": "artwork/mentor.webp",
-      "audio": "audio/mentor.m4a",
-      "exampleAudio": "audio/mentor-example-0.m4a",
       "artwork": {
         "title": "Beside the Workbench",
         "titleZh": "工作桌旁的引路人",
@@ -7285,7 +7319,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/mentor.m4a",
+      "exampleAudio": "audio/mentor-example-0.m4a"
     },
     {
       "id": "42e0394aa877250a0915f30f4f48a959",
@@ -7388,8 +7424,6 @@
       ],
       "image": "artwork/museum-v1/wisdom.webp",
       "originalImage": "artwork/wisdom.webp",
-      "audio": "audio/wisdom.m4a",
-      "exampleAudio": "audio/wisdom-example-0.m4a",
       "artwork": {
         "title": "The Considered Advice",
         "titleZh": "深思熟慮的建議",
@@ -7402,7 +7436,9 @@
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"
-      }
+      },
+      "audio": "audio/wisdom.m4a",
+      "exampleAudio": "audio/wisdom-example-0.m4a"
     },
     {
       "id": "2e49d8658854e71a9942b1e8d91b06d4",
@@ -7539,8 +7575,6 @@
       ],
       "image": "artwork/museum-v1/encourage.webp",
       "originalImage": "artwork/encourage.webp",
-      "audio": "audio/encourage.m4a",
-      "exampleAudio": "audio/encourage-example-0.m4a",
       "artwork": {
         "title": "You Can Do This",
         "titleZh": "相信你可以",
@@ -7550,6 +7584,4801 @@
         "mediumZh": "人物印象派油畫",
         "style": "welcome-impressionism",
         "image": "artwork/museum-v1/encourage.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      },
+      "audio": "audio/encourage.m4a",
+      "exampleAudio": "audio/encourage-example-0.m4a"
+    },
+    {
+      "id": "b0a8a8b79ea990531c9187bbc01c1ea0",
+      "word": "wildlife",
+      "room": 9,
+      "slot": 0,
+      "ipa": "ˈwaɪldˌlaɪf",
+      "kk": "ˈwaɪldˌlaɪf",
+      "pos": "n",
+      "definition": "animals and plants living in natural conditions",
+      "example": "This sanctuary is home to various species of wildlife, making it an ideal place to observe nature.",
+      "translations": {
+        "zh_TW": "動物群；野生動物",
+        "ja_JP": "野生生物",
+        "ko_KR": "동물군; 야생 동물",
+        "vi_VN": "dộng vật hoang dã",
+        "th_TH": "สัตว์ประจำถิ่น; สัตว์ป่า"
+      },
+      "definitionTranslations": {
+        "zh_TW": "在自然條件下生存的野生動植物",
+        "ja_JP": "自然な状態で生息する動植物",
+        "ko_KR": "자연 상태에서 살아가는 동식물",
+        "vi_VN": "động thực vật hoang dã sống trong điều kiện tự nhiên",
+        "th_TH": "สัตว์ป่าและพืชพรรณที่อาศัยอยู่ในสภาพธรรมชาติ"
+      },
+      "exampleTranslations": {
+        "zh_TW": "這個保護區內有許多種野生動物，是觀察自然界的最佳場所。",
+        "en_US": "This sanctuary is home to various species of wildlife, making it an ideal place to observe nature.",
+        "ja_JP": "この保護区にはさまざまな野生動物が生息しており、自然を観察するのに理想的な場所です。",
+        "ko_KR": "이 보호구역에는 다양한 야생동물이 서식하고 있어 자연을 관찰하기에 이상적인 곳이다.",
+        "vi_VN": "Khu bảo tồn này là nơi sinh sống của nhiều loài động vật hoang dã, nên là địa điểm lý tưởng để quan sát thiên nhiên.",
+        "th_TH": "เขตรักษาพันธุ์แห่งนี้เป็นที่อยู่อาศัยของสัตว์ป่านานาชนิด จึงเป็นสถานที่ที่เหมาะอย่างยิ่งสำหรับการสังเกตธรรมชาติ"
+      },
+      "synonyms": [
+        "fauna",
+        "wild animals"
+      ],
+      "level": 21,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "animals and plants living in natural conditions",
+          "synonyms": [
+            "fauna",
+            "wild animals"
+          ],
+          "example": null,
+          "countability": "uncountable",
+          "translations": {
+            "zh_TW": "動物群；野生動物",
+            "ja_JP": "野生生物",
+            "ko_KR": "동물군; 야생 동물",
+            "vi_VN": "dộng vật hoang dã",
+            "th_TH": "สัตว์ประจำถิ่น; สัตว์ป่า"
+          },
+          "definition_translations": {
+            "zh_TW": "在自然條件下生存的野生動植物",
+            "ja_JP": "自然な状態で生息する動植物",
+            "ko_KR": "자연 상태에서 살아가는 동식물",
+            "vi_VN": "động thực vật hoang dã sống trong điều kiện tự nhiên",
+            "th_TH": "สัตว์ป่าและพืชพรรณที่อาศัยอยู่ในสภาพธรรมชาติ"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "protect wildlife",
+          "translations": {
+            "zh_TW": "保護野生動物",
+            "ja_JP": "野生動物を保護する",
+            "ko_KR": "야생동물을 보호하다",
+            "vi_VN": "bảo vệ động vật hoang dã",
+            "th_TH": "ปกป้องสัตว์ป่า"
+          }
+        },
+        {
+          "text": "common wildlife",
+          "translations": {
+            "zh_TW": "常見野生動物",
+            "ja_JP": "一般的な野生動物",
+            "ko_KR": "일반적인 야생 동물",
+            "vi_VN": "động vật hoang dã thông thường",
+            "th_TH": "สัตว์ป่าทั่วไป"
+          }
+        },
+        {
+          "text": "new wildlife",
+          "translations": {
+            "zh_TW": "新的野生動物",
+            "ja_JP": "新しい野生動物",
+            "ko_KR": "새로운 야생동물",
+            "vi_VN": "động vật hoang dã mới",
+            "th_TH": "สัตว์ป่าชนิดใหม่"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/wildlife.webp",
+      "originalImage": "artwork/wildlife.webp",
+      "audio": "audio/wildlife.m4a",
+      "exampleAudio": "audio/wildlife-example-0.m4a",
+      "artwork": {
+        "title": "The Forest Listens",
+        "titleZh": "森林的聆聽",
+        "series": "Lives Among the Leaves",
+        "seriesZh": "葉影之間的生命",
+        "medium": "Natural-history watercolor",
+        "mediumZh": "自然史水彩",
+        "style": "woodland-watercolor",
+        "image": "artwork/museum-v1/wildlife.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "c74d0975e310deb5642e2f5293446b52",
+      "word": "species",
+      "room": 9,
+      "slot": 1,
+      "ipa": "ˈspiʃiz",
+      "kk": "ˈspiʃiz",
+      "pos": "n",
+      "definition": "a group of living things that share common features and can usually reproduce together",
+      "example": "There are many different species in the world, each playing a unique role in the ecosystem.",
+      "translations": {
+        "zh_TW": "物種",
+        "ja_JP": "種類;タイプ",
+        "ko_KR": "종",
+        "vi_VN": "loài",
+        "th_TH": "ชนิด; ประเภท"
+      },
+      "definitionTranslations": {
+        "zh_TW": "具有共同特徵且通常能共同繁殖的一群生物",
+        "ja_JP": "共通の特徴を持ち、通常は互いに繁殖できる生物の群れ",
+        "ko_KR": "공통된 특징을 가지며 보통 서로 번식할 수 있는 생물 집단",
+        "vi_VN": "một nhóm sinh vật có đặc điểm chung và thường có thể sinh sản với nhau",
+        "th_TH": "กลุ่มสิ่งมีชีวิตที่มีลักษณะร่วมกันและมักสืบพันธุ์กันได้"
+      },
+      "exampleTranslations": {
+        "zh_TW": "世界上存在著許多不同的物種，它們各自在生態系統中扮演著獨特的角色。",
+        "en_US": "There are many different species in the world, each playing a unique role in the ecosystem.",
+        "ja_JP": "世界には多くの異なる種が存在し、それぞれが生態系で独自の役割を果たしています。",
+        "ko_KR": "세계에는 다양한 종이 있으며, 각각이 생태계에서 고유한 역할을 합니다.",
+        "vi_VN": "Có nhiều loài khác nhau trên thế giới, mỗi loài đóng vai trò riêng biệt trong hệ sinh thái.",
+        "th_TH": "มีชนิดต่างๆ มากมายในโลก ซึ่งแต่ละชนิดมีบทบาทเฉพาะในระบบนิเวศ"
+      },
+      "synonyms": [
+        "kind",
+        "type"
+      ],
+      "level": 13,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "a group of living things that share common features and can usually reproduce together",
+          "synonyms": [
+            "kind",
+            "type"
+          ],
+          "example": null,
+          "countability": "countable",
+          "translations": {
+            "zh_TW": "物種",
+            "ja_JP": "種類;タイプ",
+            "ko_KR": "종",
+            "vi_VN": "loài",
+            "th_TH": "ชนิด; ประเภท"
+          },
+          "definition_translations": {
+            "zh_TW": "具有共同特徵且通常能共同繁殖的一群生物",
+            "ja_JP": "共通の特徴を持ち、通常は互いに繁殖できる生物の群れ",
+            "ko_KR": "공통된 특징을 가지며 보통 서로 번식할 수 있는 생물 집단",
+            "vi_VN": "một nhóm sinh vật có đặc điểm chung và thường có thể sinh sản với nhau",
+            "th_TH": "กลุ่มสิ่งมีชีวิตที่มีลักษณะร่วมกันและมักสืบพันธุ์กันได้"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "common species",
+          "translations": {
+            "zh_TW": "常見物種",
+            "ja_JP": "一般的な種",
+            "ko_KR": "일반적인 종",
+            "vi_VN": "loài phổ biến",
+            "th_TH": "สายพันธุ์ทั่วไป"
+          }
+        },
+        {
+          "text": "new species",
+          "translations": {
+            "zh_TW": "新物種",
+            "ja_JP": "新種",
+            "ko_KR": "새로운 종",
+            "vi_VN": "loài mới",
+            "th_TH": "สายพันธุ์ใหม่"
+          }
+        },
+        {
+          "text": "use of species",
+          "translations": {
+            "zh_TW": "物種的利用",
+            "ja_JP": "種の使用",
+            "ko_KR": "종의 사용",
+            "vi_VN": "sử dụng các loài",
+            "th_TH": "การใช้สายพันธุ์"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/species.webp",
+      "originalImage": "artwork/species.webp",
+      "audio": "audio/species.m4a",
+      "exampleAudio": "audio/species-example-0.m4a",
+      "artwork": {
+        "title": "Variations on a Wing",
+        "titleZh": "羽翼的變奏",
+        "series": "Lives Among the Leaves",
+        "seriesZh": "葉影之間的生命",
+        "medium": "Natural-history watercolor",
+        "mediumZh": "自然史水彩",
+        "style": "woodland-watercolor",
+        "image": "artwork/museum-v1/species.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "aacc70f826c625b9776e90de0e528b64",
+      "word": "diversity",
+      "room": 9,
+      "slot": 2,
+      "ipa": "dɪˈvɝsɪti",
+      "kk": "dɪˈvɝsɪti",
+      "pos": "n",
+      "definition": "the state of including many different types of people or things",
+      "example": "The diversity of a society can foster creativity and innovation, driving progress and development.",
+      "translations": {
+        "zh_TW": "多樣性",
+        "ja_JP": "多様性。範囲",
+        "ko_KR": "다양성; 범위",
+        "vi_VN": "đa dạng; phạm vi",
+        "th_TH": "ความหลากหลาย; ช่วง"
+      },
+      "definitionTranslations": {
+        "zh_TW": "包含許多不同類型的人或事物的狀態",
+        "ja_JP": "多くの異なる種類の人や物を含む状態",
+        "ko_KR": "여러 다양한 유형의 사람이나 사물을 포함한 상태",
+        "vi_VN": "tình trạng bao gồm nhiều loại người hoặc vật khác nhau",
+        "th_TH": "สภาพที่รวมผู้คนหรือสิ่งของหลายประเภทที่แตกต่างกัน"
+      },
+      "exampleTranslations": {
+        "zh_TW": "社會的多樣性可以促進創造性和創新，促進進步和發展。",
+        "en_US": "The diversity of a society can foster creativity and innovation, driving progress and development.",
+        "ja_JP": "社会の多様性は創造性や革新を育み、進歩と発展を促進することができます。",
+        "ko_KR": "사회 의 다양성 은 창의성과 혁신을 촉진시켜 발전과 성장을 이끈다.",
+        "vi_VN": "Sự đa dạng của một xã hội có thể thúc đẩy sự sáng tạo và đổi mới, qua đó thúc đẩy tiến bộ và phát triển.",
+        "th_TH": "ความหลากหลายของสังคมสามารถส่งเสริมความคิดสร้างสรรค์และนวัตกรรม ขับเคลื่อนความก้าวหน้าและการพัฒนา"
+      },
+      "synonyms": [
+        "variety",
+        "range",
+        "mixture",
+        "multiplicity"
+      ],
+      "level": 25,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "the state of including many different types of people or things",
+          "synonyms": [
+            "variety",
+            "range",
+            "mixture",
+            "multiplicity"
+          ],
+          "example": null,
+          "countability": "uncountable",
+          "translations": {
+            "zh_TW": "多樣性",
+            "ja_JP": "多様性。範囲",
+            "ko_KR": "다양성; 범위",
+            "vi_VN": "đa dạng; phạm vi",
+            "th_TH": "ความหลากหลาย; ช่วง"
+          },
+          "definition_translations": {
+            "zh_TW": "包含許多不同類型的人或事物的狀態",
+            "ja_JP": "多くの異なる種類の人や物を含む状態",
+            "ko_KR": "여러 다양한 유형의 사람이나 사물을 포함한 상태",
+            "vi_VN": "tình trạng bao gồm nhiều loại người hoặc vật khác nhau",
+            "th_TH": "สภาพที่รวมผู้คนหรือสิ่งของหลายประเภทที่แตกต่างกัน"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "value diversity",
+          "translations": {
+            "zh_TW": "價值多樣性",
+            "ja_JP": "多様性を大切にする",
+            "ko_KR": "가치 다양성",
+            "vi_VN": "coi trọng sự đa dạng",
+            "th_TH": "ความหลากหลายของคุณค่า"
+          }
+        },
+        {
+          "text": "embrace diversity",
+          "translations": {
+            "zh_TW": "擁抱多樣性",
+            "ja_JP": "多様性を受け入れる",
+            "ko_KR": "다양성을 포용하다",
+            "vi_VN": "đón nhận sự đa dạng",
+            "th_TH": "ยอมรับความหลากหลาย"
+          }
+        },
+        {
+          "text": "common diversity",
+          "translations": {
+            "zh_TW": "共同的多樣性",
+            "ja_JP": "共通の多様性",
+            "ko_KR": "공통의 다양성",
+            "vi_VN": "sự đa dạng chung",
+            "th_TH": "ความหลากหลายทั่วไป"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/diversity.webp",
+      "originalImage": "artwork/diversity.webp",
+      "audio": "audio/diversity.m4a",
+      "exampleAudio": "audio/diversity-example-0.m4a",
+      "artwork": {
+        "title": "Many Ways to Grow",
+        "titleZh": "生長的萬種模樣",
+        "series": "Lives Among the Leaves",
+        "seriesZh": "葉影之間的生命",
+        "medium": "Natural-history watercolor",
+        "mediumZh": "自然史水彩",
+        "style": "woodland-watercolor",
+        "image": "artwork/museum-v1/diversity.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "7a9af2937e178e9621fb157f6c3cc2eb",
+      "word": "observe",
+      "room": 9,
+      "slot": 3,
+      "ipa": "əbˈzɝv",
+      "kk": "əbˈzɝv",
+      "pos": "v",
+      "definition": "to watch or notice something carefully",
+      "example": "Scientists must carefully observe each step of the experiment to ensure the accuracy of the data.",
+      "translations": {
+        "zh_TW": "觀察",
+        "ja_JP": "観察する",
+        "ko_KR": "관찰하다",
+        "vi_VN": "quan sát",
+        "th_TH": "สังเกต"
+      },
+      "definitionTranslations": {
+        "zh_TW": "仔細觀看或注意某事物",
+        "ja_JP": "何かを注意深く見る、または気づく",
+        "ko_KR": "무언가를 주의 깊게 보거나 알아차리다",
+        "vi_VN": "quan sát hoặc nhận thấy điều gì đó một cách cẩn thận",
+        "th_TH": "เฝ้าดูหรือสังเกตบางสิ่งอย่างระมัดระวัง"
+      },
+      "exampleTranslations": {
+        "zh_TW": "科學家們需要仔細觀察實驗的每個步驟，以確保數據的準確性。",
+        "en_US": "Scientists must carefully observe each step of the experiment to ensure the accuracy of the data.",
+        "ja_JP": "科学者は、データの正確性を確保するために、実験の各段階を注意深く観察しなければなりません。",
+        "ko_KR": "과학자들은 데이터의 정확성을 보장하기 위해 실험의 각 단계를 세심하게 관찰해야 합니다.",
+        "vi_VN": "Các nhà khoa học phải quan sát cẩn thận từng bước của thí nghiệm để bảo đảm dữ liệu chính xác.",
+        "th_TH": "นักวิทยาศาสตร์ต้องสังเกตแต่ละขั้นตอนของการทดลองอย่างละเอียดเพื่อให้แน่ใจว่าข้อมูลถูกต้อง"
+      },
+      "synonyms": [
+        "watch",
+        "monitor",
+        "notice",
+        "inspect"
+      ],
+      "level": 41,
+      "senses": [
+        {
+          "pos": "v",
+          "gloss": "to watch or notice something carefully",
+          "synonyms": [
+            "watch",
+            "monitor",
+            "notice",
+            "inspect"
+          ],
+          "example": null,
+          "transitivity": "transitive",
+          "translations": {
+            "zh_TW": "觀察",
+            "ja_JP": "観察する",
+            "ko_KR": "관찰하다",
+            "vi_VN": "quan sát",
+            "th_TH": "สังเกต"
+          },
+          "definition_translations": {
+            "zh_TW": "仔細觀看或注意某事物",
+            "ja_JP": "何かを注意深く見る、または気づく",
+            "ko_KR": "무언가를 주의 깊게 보거나 알아차리다",
+            "vi_VN": "quan sát hoặc nhận thấy điều gì đó một cách cẩn thận",
+            "th_TH": "เฝ้าดูหรือสังเกตบางสิ่งอย่างระมัดระวัง"
+          }
+        },
+        {
+          "pos": "v",
+          "gloss": "to follow a rule, law, or custom",
+          "synonyms": [
+            "follow",
+            "obey",
+            "respect",
+            "comply with"
+          ],
+          "example": "All visitors must observe the safety regulations.",
+          "transitivity": "transitive",
+          "translations": {
+            "zh_TW": "遵守",
+            "ja_JP": "遵守する",
+            "ko_KR": "준수하다",
+            "vi_VN": "tuân thủ",
+            "th_TH": "ปฏิบัติตาม"
+          },
+          "example_translations": {
+            "zh_TW": "所有訪客都必須遵守安全規定。",
+            "ja_JP": "すべての訪問者は安全規則を守らなければなりません。",
+            "ko_KR": "모든 방문객은 안전 규정을 준수해야 합니다.",
+            "vi_VN": "Tất cả khách tham quan phải tuân thủ các quy định an toàn.",
+            "th_TH": "ผู้มาเยือนทุกคนต้องปฏิบัติตามกฎระเบียบด้านความปลอดภัย"
+          },
+          "definition_translations": {
+            "zh_TW": "遵守規則、法律或習俗",
+            "ja_JP": "規則、法律、慣習に従う",
+            "ko_KR": "규칙, 법, 관습을 따르다",
+            "vi_VN": "tuân theo quy tắc, luật lệ hoặc phong tục",
+            "th_TH": "ปฏิบัติตามกฎ กฎหมาย หรือธรรมเนียม"
+          },
+          "audio": "audio/observe-example-1.m4a"
+        },
+        {
+          "pos": "v",
+          "gloss": "to celebrate or formally mark a date or occasion",
+          "synonyms": [
+            "celebrate",
+            "mark",
+            "commemorate"
+          ],
+          "example": "The office will observe the national holiday on Monday.",
+          "transitivity": "transitive",
+          "translations": {
+            "zh_TW": "慶祝",
+            "ja_JP": "祝う",
+            "ko_KR": "기념하다",
+            "vi_VN": "kỷ niệm",
+            "th_TH": "เฉลิมฉลอง"
+          },
+          "example_translations": {
+            "zh_TW": "辦公室將於星期一慶祝國定假日。",
+            "ja_JP": "オフィスでは月曜日に国民の祝日を祝います。",
+            "ko_KR": "사무실은 월요일에 국경일을 기념할 예정입니다.",
+            "vi_VN": "Văn phòng sẽ kỷ niệm ngày lễ quốc gia vào thứ Hai.",
+            "th_TH": "สำนักงานจะถือปฏิบัติวันหยุดประจำชาติในวันจันทร์"
+          },
+          "definition_translations": {
+            "zh_TW": "慶祝或正式紀念某個日期或場合",
+            "ja_JP": "日付や行事を祝う、または正式に記念する",
+            "ko_KR": "날짜나 행사를 기념하거나 공식적으로 지키다",
+            "vi_VN": "kỷ niệm hoặc chính thức đánh dấu một ngày hay dịp",
+            "th_TH": "เฉลิมฉลองหรือระลึกถึงวันหรือโอกาสอย่างเป็นทางการ"
+          },
+          "audio": "audio/observe-example-2.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "observe the plan",
+          "translations": {
+            "zh_TW": "遵守計劃",
+            "ja_JP": "計画を守る",
+            "ko_KR": "계획을 관찰하다",
+            "vi_VN": "quan sát kế hoạch",
+            "th_TH": "สังเกตแผน"
+          }
+        },
+        {
+          "text": "carefully observe",
+          "translations": {
+            "zh_TW": "仔細觀察",
+            "ja_JP": "注意深く観察する",
+            "ko_KR": "주의깊게 관찰하다",
+            "vi_VN": "quan sát cẩn thận",
+            "th_TH": "สังเกตอย่างระมัดระวัง"
+          }
+        },
+        {
+          "text": "observe effectively",
+          "translations": {
+            "zh_TW": "有效觀察",
+            "ja_JP": "効果的に観察する",
+            "ko_KR": "효과적으로 관찰하다",
+            "vi_VN": "quan sát hiệu quả",
+            "th_TH": "สังเกตได้อย่างมีประสิทธิภาพ"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/observe.webp",
+      "originalImage": "artwork/observe.webp",
+      "audio": "audio/observe.m4a",
+      "exampleAudio": "audio/observe-example-0.m4a",
+      "artwork": {
+        "title": "A Patient Witness",
+        "titleZh": "耐心的觀察者",
+        "series": "Lives Among the Leaves",
+        "seriesZh": "葉影之間的生命",
+        "medium": "Natural-history watercolor",
+        "mediumZh": "自然史水彩",
+        "style": "woodland-watercolor",
+        "image": "artwork/museum-v1/observe.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "e456b9d9da44948a12a2f8c7222d647d",
+      "word": "encounter",
+      "room": 9,
+      "slot": 4,
+      "ipa": "ɪnˈkaʊntɚ",
+      "kk": "ɪnˈkaʊntɚ",
+      "pos": "v",
+      "definition": "to meet or experience something, especially unexpectedly",
+      "example": "Archaeologists often encounter unexpected challenges and difficulties during their exploration of ancient ruins.",
+      "translations": {
+        "zh_TW": "遭遇",
+        "ja_JP": "出会い",
+        "ko_KR": "만남",
+        "vi_VN": "chạm trán",
+        "th_TH": "เผชิญหน้า"
+      },
+      "definitionTranslations": {
+        "zh_TW": "遇到或經歷某事，尤指出乎意料地",
+        "ja_JP": "特に思いがけず出会う、または経験する",
+        "ko_KR": "특히 뜻밖에 무언가를 만나거나 경험하다",
+        "vi_VN": "gặp hoặc trải qua điều gì, nhất là bất ngờ",
+        "th_TH": "พบหรือประสบกับบางสิ่ง โดยเฉพาะอย่างไม่คาดคิด"
+      },
+      "exampleTranslations": {
+        "zh_TW": "在探索古代遺跡的過程中，考古學家們經常遭遇意想不到的挑戰和困難。",
+        "en_US": "Archaeologists often encounter unexpected challenges and difficulties during their exploration of ancient ruins.",
+        "ja_JP": "考古学者はしばしば古代遺跡の探検中に予期せぬ挑戦や困難に出会います。",
+        "ko_KR": "고고학자들은 고대 유적을 탐사하는 동안 종종 예상치 못한 도전과 어려움에 직면한다.",
+        "vi_VN": "Các nhà khảo cổ học thường gặp phải những thách thức và khó khăn bất ngờ trong quá trình khám phá các di tích cổ.",
+        "th_TH": "นักโบราณคดีมักเผชิญความท้าทายและความยากลำบากที่ไม่คาดคิดระหว่างการสำรวจซากโบราณ"
+      },
+      "synonyms": [
+        "meet",
+        "face",
+        "come across",
+        "run into"
+      ],
+      "level": 41,
+      "senses": [
+        {
+          "pos": "v",
+          "gloss": "to meet or experience something, especially unexpectedly",
+          "synonyms": [
+            "meet",
+            "face",
+            "come across",
+            "run into"
+          ],
+          "example": null,
+          "transitivity": "transitive",
+          "translations": {
+            "zh_TW": "遭遇",
+            "ja_JP": "出会い",
+            "ko_KR": "만남",
+            "vi_VN": "chạm trán",
+            "th_TH": "เผชิญหน้า"
+          },
+          "definition_translations": {
+            "zh_TW": "遇到或經歷某事，尤指出乎意料地",
+            "ja_JP": "特に思いがけず出会う、または経験する",
+            "ko_KR": "특히 뜻밖에 무언가를 만나거나 경험하다",
+            "vi_VN": "gặp hoặc trải qua điều gì, nhất là bất ngờ",
+            "th_TH": "พบหรือประสบกับบางสิ่ง โดยเฉพาะอย่างไม่คาดคิด"
+          }
+        },
+        {
+          "pos": "n",
+          "gloss": "an unexpected meeting or experience",
+          "synonyms": [
+            "meeting",
+            "experience",
+            "meeting up"
+          ],
+          "example": "Her first encounter with the client was brief but productive.",
+          "countability": "countable",
+          "translations": {
+            "zh_TW": "相遇；遭遇",
+            "ja_JP": "出会い",
+            "ko_KR": "만남",
+            "vi_VN": "cuộc gặp",
+            "th_TH": "การพบกัน"
+          },
+          "example_translations": {
+            "zh_TW": "她第一次與客戶接觸雖然短暫，但很有成效。",
+            "ja_JP": "彼女がその顧客と初めて会った機会は短かったものの、有意義でした。",
+            "ko_KR": "그녀의 고객과의 첫 만남은 짧았지만 생산적이었습니다.",
+            "vi_VN": "Lần gặp đầu tiên của cô ấy với khách hàng tuy ngắn nhưng hiệu quả.",
+            "th_TH": "การพบลูกค้าครั้งแรกของเธอสั้นแต่มีประสิทธิผล"
+          },
+          "definition_translations": {
+            "zh_TW": "意外的會面或經歷",
+            "ja_JP": "思いがけない出会いや経験",
+            "ko_KR": "뜻밖의 만남이나 경험",
+            "vi_VN": "cuộc gặp hoặc trải nghiệm bất ngờ",
+            "th_TH": "การพบหรือประสบการณ์ที่ไม่คาดคิด"
+          },
+          "audio": "audio/encounter-example-1.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "encounter the plan",
+          "translations": {
+            "zh_TW": "遇到計劃",
+            "ja_JP": "計画に遭遇する",
+            "ko_KR": "계획을 만나다",
+            "vi_VN": "gặp phải kế hoạch",
+            "th_TH": "พบกับแผน"
+          }
+        },
+        {
+          "text": "carefully encounter",
+          "translations": {
+            "zh_TW": "小心翼翼地遇見",
+            "ja_JP": "注意深く遭遇する",
+            "ko_KR": "조심스럽게 만나다",
+            "vi_VN": "gặp gỡ cẩn thận",
+            "th_TH": "เผชิญหน้ากันอย่างระมัดระวัง"
+          }
+        },
+        {
+          "text": "encounter effectively",
+          "translations": {
+            "zh_TW": "有效地相遇",
+            "ja_JP": "効果的に出会う",
+            "ko_KR": "효과적으로 만나다",
+            "vi_VN": "gặp gỡ hiệu quả",
+            "th_TH": "เผชิญหน้าได้อย่างมีประสิทธิภาพ"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/encounter.webp",
+      "originalImage": "artwork/encounter.webp",
+      "audio": "audio/encounter.m4a",
+      "exampleAudio": "audio/encounter-example-0.m4a",
+      "artwork": {
+        "title": "A Moment on the Path",
+        "titleZh": "林間的相遇",
+        "series": "Lives Among the Leaves",
+        "seriesZh": "葉影之間的生命",
+        "medium": "Natural-history watercolor",
+        "mediumZh": "自然史水彩",
+        "style": "woodland-watercolor",
+        "image": "artwork/museum-v1/encounter.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "637fc32832245685781c7dd553dfbaf4",
+      "word": "environment",
+      "room": 9,
+      "slot": 5,
+      "ipa": "ɪnˈvaɪɹənmənt",
+      "kk": "ɪnˈvaɪrənmənt",
+      "pos": "n",
+      "definition": "the surroundings or conditions in which a person, animal, or plant lives or operates",
+      "example": "A good environment can enhance students' learning effectiveness, enabling them to absorb knowledge better.",
+      "translations": {
+        "zh_TW": "周圍環境；條件",
+        "ja_JP": "環境",
+        "ko_KR": "주변 환경; 조건",
+        "vi_VN": "môi trường xung quanh; điều kiện",
+        "th_TH": "สภาพแวดล้อม; เงื่อนไข"
+      },
+      "definitionTranslations": {
+        "zh_TW": "人、動物或植物生活或活動的周遭環境或條件",
+        "ja_JP": "人、動物、植物が生活または活動する周囲の状況や条件",
+        "ko_KR": "사람, 동물, 식물이 살거나 활동하는 주변 환경이나 조건",
+        "vi_VN": "môi trường xung quanh hoặc điều kiện nơi con người, động vật hoặc thực vật sống hay hoạt động",
+        "th_TH": "สภาพแวดล้อมหรือเงื่อนไขที่คน สัตว์ หรือพืชอาศัยหรือดำเนินชีวิตอยู่"
+      },
+      "exampleTranslations": {
+        "zh_TW": "良好的學習環境能夠提高學生的學習效果，促使他們更好地吸收知識。",
+        "en_US": "A good environment can enhance students' learning effectiveness, enabling them to absorb knowledge better.",
+        "ja_JP": "良い環境は学生の学習効果を高め、知識をよりよく吸収できるようにします。",
+        "ko_KR": "좋은 환경은 학생들의 학습 효과를 높여 지식을 더 잘 흡수할 수 있게 해 준다.",
+        "vi_VN": "Một môi trường tốt có thể nâng cao hiệu quả học tập của học sinh, giúp họ tiếp thu kiến thức tốt hơn.",
+        "th_TH": "สภาพแวดล้อมที่ดีสามารถเพิ่มประสิทธิภาพการเรียนรู้ของนักเรียน ทำให้พวกเขาเข้าใจความรู้ได้ดียิ่งขึ้น"
+      },
+      "synonyms": [
+        "surroundings",
+        "conditions",
+        "ambiance",
+        "atmosphere",
+        "setting",
+        "milieu"
+      ],
+      "level": 6,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "the surroundings or conditions in which a person, animal, or plant lives or operates",
+          "synonyms": [
+            "surroundings",
+            "conditions",
+            "ambiance",
+            "atmosphere",
+            "setting",
+            "milieu"
+          ],
+          "example": null,
+          "countability": "countable",
+          "translations": {
+            "zh_TW": "周圍環境；條件",
+            "ja_JP": "環境",
+            "ko_KR": "주변 환경; 조건",
+            "vi_VN": "môi trường xung quanh; điều kiện",
+            "th_TH": "สภาพแวดล้อม; เงื่อนไข"
+          },
+          "definition_translations": {
+            "zh_TW": "人、動物或植物生活或活動的周遭環境或條件",
+            "ja_JP": "人、動物、植物が生活または活動する周囲の状況や条件",
+            "ko_KR": "사람, 동물, 식물이 살거나 활동하는 주변 환경이나 조건",
+            "vi_VN": "môi trường xung quanh hoặc điều kiện nơi con người, động vật hoặc thực vật sống hay hoạt động",
+            "th_TH": "สภาพแวดล้อมหรือเงื่อนไขที่คน สัตว์ หรือพืชอาศัยหรือดำเนินชีวิตอยู่"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "common environment",
+          "translations": {
+            "zh_TW": "共同環境",
+            "ja_JP": "共通の環境",
+            "ko_KR": "공통 환경",
+            "vi_VN": "môi trường chung",
+            "th_TH": "สภาพแวดล้อมทั่วไป"
+          }
+        },
+        {
+          "text": "new environment",
+          "translations": {
+            "zh_TW": "新環境",
+            "ja_JP": "新しい環境",
+            "ko_KR": "새로운 환경",
+            "vi_VN": "môi trường mới",
+            "th_TH": "สภาพแวดล้อมใหม่"
+          }
+        },
+        {
+          "text": "use of environment",
+          "translations": {
+            "zh_TW": "使用環境",
+            "ja_JP": "環境の利用",
+            "ko_KR": "환경의 이용",
+            "vi_VN": "sử dụng môi trường",
+            "th_TH": "การใช้สิ่งแวดล้อม"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/environment.webp",
+      "originalImage": "artwork/environment.webp",
+      "audio": "audio/environment.m4a",
+      "exampleAudio": "audio/environment-example-0.m4a",
+      "artwork": {
+        "title": "A Place to Belong",
+        "titleZh": "生息之地",
+        "series": "Lives Among the Leaves",
+        "seriesZh": "葉影之間的生命",
+        "medium": "Natural-history watercolor",
+        "mediumZh": "自然史水彩",
+        "style": "woodland-watercolor",
+        "image": "artwork/museum-v1/environment.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "67e5e769c82f4cb9920b21c77dbd1980",
+      "word": "thrive",
+      "room": 10,
+      "slot": 0,
+      "ipa": "θɹaɪv",
+      "kk": "θraɪv",
+      "pos": "v",
+      "definition": "to grow, succeed, or develop very well",
+      "example": "With the right resources, businesses and innovations can thrive in a competitive market.",
+      "translations": {
+        "zh_TW": "茁壯成長",
+        "ja_JP": "繁盛する",
+        "ko_KR": "잘 자라다",
+        "vi_VN": "phát triển mạnh mẽ; thịnh vượng",
+        "th_TH": "เติบโตดี"
+      },
+      "definitionTranslations": {
+        "zh_TW": "蓬勃發展，茁壯成長，成功",
+        "ja_JP": "非常によく育つ、成功する、または発展する",
+        "ko_KR": "매우 잘 자라거나 성공하거나 발달하다",
+        "vi_VN": "phát triển mạnh mẽ, thịnh vượng hoặc thành công",
+        "th_TH": "เติบโต เจริญรุ่งเรือง หรือพัฒนาไปด้วยดีอย่างยิ่ง"
+      },
+      "exampleTranslations": {
+        "zh_TW": "如果給予正確的資源，企業和創新可以在競爭激烈的市場中茁壯成長。",
+        "en_US": "With the right resources, businesses and innovations can thrive in a competitive market.",
+        "ja_JP": "適切なリソースがあれば、企業やイノベーションは競争の激しい市場で繁栄することができます。",
+        "ko_KR": "적절한 자원이 있으면 기업과 혁신은 경쟁적인 시장에서 번창할 수 있다.",
+        "vi_VN": "Với nguồn lực phù hợp, các doanh nghiệp và các đổi mới có thể phát triển thịnh vượng trong một thị trường cạnh tranh.",
+        "th_TH": "ด้วยทรัพยากรที่เหมาะสม ธุรกิจและนวัตกรรมสามารถเติบโตได้ในตลาดที่มีการแข่งขันสูง"
+      },
+      "synonyms": [
+        "flourish",
+        "prosper",
+        "succeed",
+        "grow",
+        "boom"
+      ],
+      "level": 63,
+      "senses": [
+        {
+          "pos": "v",
+          "gloss": "to grow, succeed, or develop very well",
+          "synonyms": [
+            "flourish",
+            "prosper",
+            "succeed",
+            "grow",
+            "boom"
+          ],
+          "example": null,
+          "transitivity": "intransitive",
+          "translations": {
+            "zh_TW": "茁壯成長",
+            "ja_JP": "繁盛する",
+            "ko_KR": "잘 자라다",
+            "vi_VN": "phát triển mạnh mẽ; thịnh vượng",
+            "th_TH": "เติบโตดี"
+          },
+          "definition_translations": {
+            "zh_TW": "蓬勃發展，茁壯成長，成功",
+            "ja_JP": "非常によく育つ、成功する、または発展する",
+            "ko_KR": "매우 잘 자라거나 성공하거나 발달하다",
+            "vi_VN": "phát triển mạnh mẽ, thịnh vượng hoặc thành công",
+            "th_TH": "เติบโต เจริญรุ่งเรือง หรือพัฒนาไปด้วยดีอย่างยิ่ง"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "thrive the plan",
+          "translations": {
+            "zh_TW": "使計劃蓬勃發展",
+            "ja_JP": "計画を成功させる",
+            "ko_KR": "계획을 성공시키다",
+            "vi_VN": "phát huy kế hoạch",
+            "th_TH": "เจริญเติบโตตามแผน"
+          }
+        },
+        {
+          "text": "carefully thrive",
+          "translations": {
+            "zh_TW": "小心翼翼地茁壯成長",
+            "ja_JP": "慎重に成長する",
+            "ko_KR": "조심스럽게 번창하다",
+            "vi_VN": "cẩn thận phát triển mạnh",
+            "th_TH": "เจริญเติบโตอย่างระมัดระวัง"
+          }
+        },
+        {
+          "text": "thrive effectively",
+          "translations": {
+            "zh_TW": "有效地茁壯成長",
+            "ja_JP": "効果的に成長する",
+            "ko_KR": "효과적으로 성장하다",
+            "vi_VN": "phát triển hiệu quả",
+            "th_TH": "เจริญเติบโตอย่างมีประสิทธิภาพ"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/thrive.webp",
+      "originalImage": "artwork/thrive.webp",
+      "audio": "audio/thrive.m4a",
+      "exampleAudio": "audio/thrive-example-0.m4a",
+      "artwork": {
+        "title": "Toward the Light",
+        "titleZh": "向光而盛",
+        "series": "The Shape of Growth",
+        "seriesZh": "生長的形狀",
+        "medium": "Contemporary ink and watercolor",
+        "mediumZh": "當代水墨與水彩",
+        "style": "canopy-ink-watercolor",
+        "image": "artwork/museum-v1/thrive.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "supp600b-v-5",
+      "word": "adapt",
+      "room": 10,
+      "slot": 1,
+      "ipa": "əˈdæpt",
+      "kk": "əˈdæpt",
+      "pos": "v",
+      "definition": "to change so that something works better in a new situation",
+      "example": "Our sales staff must adapt quickly when clients request changes to a proposal.",
+      "translations": {
+        "zh_TW": "適應",
+        "ja_JP": "適応する",
+        "ko_KR": "적응하다",
+        "vi_VN": "thích nghi",
+        "th_TH": "ปรับตัว"
+      },
+      "definitionTranslations": {
+        "zh_TW": "改變以便在新情況下運作得更好",
+        "ja_JP": "新しい状況でよりよく機能するように変える",
+        "ko_KR": "새로운 상황에서 더 잘 작동하도록 바꾸다",
+        "vi_VN": "thay đổi để điều gì đó hoạt động tốt hơn trong tình huống mới",
+        "th_TH": "เปลี่ยนเพื่อให้บางสิ่งทำงานได้ดีขึ้นในสถานการณ์ใหม่"
+      },
+      "exampleTranslations": {
+        "zh_TW": "當客戶要求修改提案時，我們的業務人員必須迅速適應。",
+        "en_US": "Our sales staff must adapt quickly when clients request changes to a proposal.",
+        "ja_JP": "顧客が提案の変更を求めたとき、当社の営業スタッフは素早く対応しなければなりません。",
+        "ko_KR": "고객이 제안서 수정을 요청할 때 우리 영업 직원은 신속하게 적응해야 합니다.",
+        "vi_VN": "Nhân viên kinh doanh của chúng tôi phải nhanh chóng thích ứng khi khách hàng yêu cầu thay đổi một đề xuất.",
+        "th_TH": "พนักงานฝ่ายขายของเราต้องปรับตัวอย่างรวดเร็วเมื่อลูกค้าขอเปลี่ยนแปลงข้อเสนอ"
+      },
+      "synonyms": [
+        "adjust",
+        "modify",
+        "alter",
+        "change"
+      ],
+      "level": 50,
+      "senses": [
+        {
+          "pos": "v",
+          "gloss": "to change so that something works better in a new situation",
+          "synonyms": [
+            "adjust",
+            "modify",
+            "alter",
+            "change"
+          ],
+          "example": null,
+          "transitivity": "both",
+          "translations": {
+            "zh_TW": "適應",
+            "ja_JP": "適応する",
+            "ko_KR": "적응하다",
+            "vi_VN": "thích nghi",
+            "th_TH": "ปรับตัว"
+          },
+          "definition_translations": {
+            "zh_TW": "改變以便在新情況下運作得更好",
+            "ja_JP": "新しい状況でよりよく機能するように変える",
+            "ko_KR": "새로운 상황에서 더 잘 작동하도록 바꾸다",
+            "vi_VN": "thay đổi để điều gì đó hoạt động tốt hơn trong tình huống mới",
+            "th_TH": "เปลี่ยนเพื่อให้บางสิ่งทำงานได้ดีขึ้นในสถานการณ์ใหม่"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "adapt to change",
+          "translations": {
+            "zh_TW": "適應變化",
+            "ja_JP": "変化に適応する",
+            "ko_KR": "변화에 적응하다",
+            "vi_VN": "thích nghi với thay đổi",
+            "th_TH": "ปรับตัวกับการเปลี่ยนแปลง"
+          }
+        },
+        {
+          "text": "adapt the system",
+          "translations": {
+            "zh_TW": "調整系統",
+            "ja_JP": "システムを適応させる",
+            "ko_KR": "시스템을 조정하다",
+            "vi_VN": "điều chỉnh hệ thống",
+            "th_TH": "ปรับระบบ"
+          }
+        },
+        {
+          "text": "adapt to new conditions",
+          "translations": {
+            "zh_TW": "適應新情況",
+            "ja_JP": "新しい状況に適応する",
+            "ko_KR": "새로운 조건에 적응하다",
+            "vi_VN": "thích nghi với điều kiện mới",
+            "th_TH": "ปรับตัวเข้ากับเงื่อนไขใหม่"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/adapt.webp",
+      "originalImage": "artwork/adapt.webp",
+      "audio": "audio/adapt.m4a",
+      "exampleAudio": "audio/adapt-example-0.m4a",
+      "artwork": {
+        "title": "Finding Another Way",
+        "titleZh": "找到另一條路",
+        "series": "The Shape of Growth",
+        "seriesZh": "生長的形狀",
+        "medium": "Contemporary ink and watercolor",
+        "mediumZh": "當代水墨與水彩",
+        "style": "canopy-ink-watercolor",
+        "image": "artwork/museum-v1/adapt.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "d094fb6c5b5a72f6442e5410cb6d8bc6",
+      "word": "vitality",
+      "room": 10,
+      "slot": 2,
+      "ipa": "vaɪˈtæləti",
+      "kk": "vaɪˈtæləti",
+      "pos": "n",
+      "definition": "physical or mental energy and liveliness",
+      "example": "A healthy diet and regular exercise are key to maintaining physical vitality.",
+      "translations": {
+        "zh_TW": "能源；活力",
+        "ja_JP": "エネルギー。活力",
+        "ko_KR": "에너지; 활력",
+        "vi_VN": "sức sống",
+        "th_TH": "ชีวิตชีวา"
+      },
+      "definitionTranslations": {
+        "zh_TW": "身體或精神上的活力與生氣",
+        "ja_JP": "身体的または精神的な活力と生気",
+        "ko_KR": "신체적 또는 정신적 에너지와 활기",
+        "vi_VN": "năng lượng và sự sôi nổi về thể chất hoặc tinh thần",
+        "th_TH": "พลังและความมีชีวิตชีวาทางร่างกายหรือจิตใจ"
+      },
+      "exampleTranslations": {
+        "zh_TW": "健康的飲食和規律的運動方式是維持身體活力的關鍵。",
+        "en_US": "A healthy diet and regular exercise are key to maintaining physical vitality.",
+        "ja_JP": "健康的な食事と定期的な運動は、身体の健康を維持するための鍵です。",
+        "ko_KR": "건강한 식단과 규칙적인 운동은 신체 활력을 유지하는 데 핵심적입니다.",
+        "vi_VN": "Một chế độ ăn uống lành mạnh và tập thể dục đều đặn là chìa khóa để duy trì sức sống thể chất.",
+        "th_TH": "อาหารที่ดีต่อสุขภาพและการออกกำลังกายเป็นประจำเป็นกุญแจสำคัญในการคงความมีชีวิตชีวาทางร่างกาย"
+      },
+      "synonyms": [
+        "energy",
+        "vigor",
+        "liveliness",
+        "strength"
+      ],
+      "level": 61,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "physical or mental energy and liveliness",
+          "synonyms": [
+            "energy",
+            "vigor",
+            "liveliness",
+            "strength"
+          ],
+          "example": null,
+          "countability": "uncountable",
+          "translations": {
+            "zh_TW": "能源；活力",
+            "ja_JP": "エネルギー。活力",
+            "ko_KR": "에너지; 활력",
+            "vi_VN": "sức sống",
+            "th_TH": "ชีวิตชีวา"
+          },
+          "definition_translations": {
+            "zh_TW": "身體或精神上的活力與生氣",
+            "ja_JP": "身体的または精神的な活力と生気",
+            "ko_KR": "신체적 또는 정신적 에너지와 활기",
+            "vi_VN": "năng lượng và sự sôi nổi về thể chất hoặc tinh thần",
+            "th_TH": "พลังและความมีชีวิตชีวาทางร่างกายหรือจิตใจ"
+          }
+        },
+        {
+          "pos": "n",
+          "gloss": "the ability of something to continue being successful or active",
+          "synonyms": [
+            "strength",
+            "viability",
+            "resilience"
+          ],
+          "example": "The new investment restored the vitality of the downtown shopping area.",
+          "countability": "uncountable",
+          "translations": {
+            "zh_TW": "活力",
+            "ja_JP": "活力",
+            "ko_KR": "활력",
+            "vi_VN": "sức sống",
+            "th_TH": "ความมีชีวิตชีวา"
+          },
+          "example_translations": {
+            "zh_TW": "新的投資恢復了市中心商圈的活力。",
+            "ja_JP": "新たな投資により、中心街の商業地区の活力が回復しました。",
+            "ko_KR": "새로운 투자는 도심 쇼핑 지역의 활력을 회복시켰습니다.",
+            "vi_VN": "Khoản đầu tư mới đã khôi phục sức sống cho khu mua sắm trung tâm thành phố.",
+            "th_TH": "การลงทุนใหม่ฟื้นฟูความมีชีวิตชีวาของย่านช็อปปิงใจกลางเมือง"
+          },
+          "definition_translations": {
+            "zh_TW": "某事物持續成功或活躍的能力",
+            "ja_JP": "物事が成功または活動を続ける力",
+            "ko_KR": "어떤 것이 계속 성공하거나 활발하게 유지되는 능력",
+            "vi_VN": "khả năng tiếp tục thành công hoặc hoạt động",
+            "th_TH": "ความสามารถของสิ่งใดสิ่งหนึ่งในการคงความสำเร็จหรือความเคลื่อนไหวต่อไป"
+          },
+          "audio": "audio/vitality-example-1.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "common vitality",
+          "translations": {
+            "zh_TW": "共同的活力",
+            "ja_JP": "共通の活力",
+            "ko_KR": "공동의 활력",
+            "vi_VN": "sức sống chung",
+            "th_TH": "พลังร่วมกัน"
+          }
+        },
+        {
+          "text": "new vitality",
+          "translations": {
+            "zh_TW": "新活力",
+            "ja_JP": "新しい活力",
+            "ko_KR": "새로운 활력",
+            "vi_VN": "sức sống mới",
+            "th_TH": "พลังใหม่"
+          }
+        },
+        {
+          "text": "use of vitality",
+          "translations": {
+            "zh_TW": "使用活力",
+            "ja_JP": "活力の使い方",
+            "ko_KR": "활력의 활용",
+            "vi_VN": "sử dụng sức sống",
+            "th_TH": "การใช้พลัง"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/vitality.webp",
+      "originalImage": "artwork/vitality.webp",
+      "audio": "audio/vitality.m4a",
+      "exampleAudio": "audio/vitality-example-0.m4a",
+      "artwork": {
+        "title": "The Morning Leap",
+        "titleZh": "晨間的躍動",
+        "series": "The Shape of Growth",
+        "seriesZh": "生長的形狀",
+        "medium": "Contemporary ink and watercolor",
+        "mediumZh": "當代水墨與水彩",
+        "style": "canopy-ink-watercolor",
+        "image": "artwork/museum-v1/vitality.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "f01fc12b3c7754a0ee66c6d7cb6db0b5",
+      "word": "growth",
+      "room": 10,
+      "slot": 3,
+      "ipa": "gɹoʊθ",
+      "kk": "groθ",
+      "pos": "n",
+      "definition": "the process of increasing in size, number, amount, or development",
+      "example": "The growth of plants requires sunlight, water, and appropriate soil to ensure healthy development.",
+      "translations": {
+        "zh_TW": "生長",
+        "ja_JP": "成長",
+        "ko_KR": "성장",
+        "vi_VN": "sự phát triển",
+        "th_TH": "การเติบโต"
+      },
+      "definitionTranslations": {
+        "zh_TW": "在大小、數量、金額或發展上增加的過程",
+        "ja_JP": "大きさ、数、量、または発展が増す過程",
+        "ko_KR": "크기, 수, 양 또는 발전이 증가하는 과정",
+        "vi_VN": "quá trình tăng về kích thước, số lượng, mức độ hoặc sự phát triển",
+        "th_TH": "กระบวนการเพิ่มขึ้นของขนาด จำนวน ปริมาณ หรือการพัฒนา"
+      },
+      "exampleTranslations": {
+        "zh_TW": "植物的生長需要陽光、水和恰當的土壤，以確保健康的發展。",
+        "en_US": "The growth of plants requires sunlight, water, and appropriate soil to ensure healthy development.",
+        "ja_JP": "植物の成長には、健康な発育を確保するために日光、水、適切な土壌が必要です。",
+        "ko_KR": "식물의 성장은 건강한 발달을 보장하기 위해 햇빛, 물, 그리고 적절한 토양이 필요합니다.",
+        "vi_VN": "Sự phát triển của cây cối cần có ánh sáng mặt trời, nước và đất phù hợp để bảo đảm sự phát triển khỏe mạnh.",
+        "th_TH": "การเจริญเติบโตของพืชต้องอาศัยแสงแดด น้ำ และดินที่เหมาะสมเพื่อให้เติบโตอย่างแข็งแรง"
+      },
+      "synonyms": [
+        "increase",
+        "expansion",
+        "development",
+        "rise"
+      ],
+      "level": 7,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "the process of increasing in size, number, amount, or development",
+          "synonyms": [
+            "increase",
+            "expansion",
+            "development",
+            "rise"
+          ],
+          "example": null,
+          "countability": "uncountable",
+          "translations": {
+            "zh_TW": "生長",
+            "ja_JP": "成長",
+            "ko_KR": "성장",
+            "vi_VN": "sự phát triển",
+            "th_TH": "การเติบโต"
+          },
+          "definition_translations": {
+            "zh_TW": "在大小、數量、金額或發展上增加的過程",
+            "ja_JP": "大きさ、数、量、または発展が増す過程",
+            "ko_KR": "크기, 수, 양 또는 발전이 증가하는 과정",
+            "vi_VN": "quá trình tăng về kích thước, số lượng, mức độ hoặc sự phát triển",
+            "th_TH": "กระบวนการเพิ่มขึ้นของขนาด จำนวน ปริมาณ หรือการพัฒนา"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "stimulate growth",
+          "translations": {
+            "zh_TW": "刺激生長",
+            "ja_JP": "成長を刺激する",
+            "ko_KR": "성장을 자극하다",
+            "vi_VN": "kích thích tăng trưởng",
+            "th_TH": "กระตุ้นการเจริญเติบโต"
+          }
+        },
+        {
+          "text": "experience growth",
+          "translations": {
+            "zh_TW": "經歷成長",
+            "ja_JP": "成長を経験する",
+            "ko_KR": "성장을 경험하다",
+            "vi_VN": "trải qua tăng trưởng",
+            "th_TH": "สัมผัสประสบการณ์การเติบโต"
+          }
+        },
+        {
+          "text": "common growth",
+          "translations": {
+            "zh_TW": "共同成長",
+            "ja_JP": "共通の成長",
+            "ko_KR": "크기, 수, 양 또는 발전이 증가하는 과정",
+            "vi_VN": "tăng trưởng chung",
+            "th_TH": "การเจริญเติบโตทั่วไป"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/growth.webp",
+      "originalImage": "artwork/growth.webp",
+      "audio": "audio/growth.m4a",
+      "exampleAudio": "audio/growth-example-0.m4a",
+      "artwork": {
+        "title": "A Rising Rhythm",
+        "titleZh": "向上的節奏",
+        "series": "The Shape of Growth",
+        "seriesZh": "生長的形狀",
+        "medium": "Contemporary ink and watercolor",
+        "mediumZh": "當代水墨與水彩",
+        "style": "canopy-ink-watercolor",
+        "image": "artwork/museum-v1/growth.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "f473942120c1f521414a9a1cf5e9276",
+      "word": "gradual",
+      "room": 10,
+      "slot": 4,
+      "ipa": "ˈgɹædʒuəl",
+      "kk": "ˈgrædʒuəl",
+      "pos": "adj",
+      "definition": "happening slowly or by small stages",
+      "example": "Their memory has seen a gradual decline as they age.",
+      "translations": {
+        "zh_TW": "逐漸的",
+        "ja_JP": "徐々に",
+        "ko_KR": "점진적인",
+        "vi_VN": "dần dần",
+        "th_TH": "ค่อยเป็นค่อยไป"
+      },
+      "definitionTranslations": {
+        "zh_TW": "緩慢或分小階段發生",
+        "ja_JP": "ゆっくり、または小さな段階で起こる",
+        "ko_KR": "천천히 또는 작은 단계로 일어나는",
+        "vi_VN": "xảy ra chậm rãi hoặc qua từng giai đoạn nhỏ",
+        "th_TH": "เกิดขึ้นอย่างช้า ๆ หรือเป็นขั้นตอนเล็ก ๆ"
+      },
+      "exampleTranslations": {
+        "zh_TW": "他們的記憶力隨著年齡的增長而有了一個逐漸的降低。",
+        "en_US": "Their memory has seen a gradual decline as they age.",
+        "ja_JP": "彼らの記憶は、年齢を重ねるにつれて徐々に低下しています。",
+        "ko_KR": "나이가 들수록 그들의 기억력은 점차 저하되고 있습니다.",
+        "vi_VN": "Trí nhớ của họ đã suy giảm dần theo tuổi tác.",
+        "th_TH": "ความทรงจำของพวกเขาได้เห็นการลดลงอย่างกระทันหันเมื่อพวกเขาอายุมากขึ้น"
+      },
+      "synonyms": [
+        "slow",
+        "steady",
+        "step-by-step",
+        "progressive"
+      ],
+      "level": 61,
+      "senses": [
+        {
+          "pos": "adj",
+          "gloss": "happening slowly or by small stages",
+          "synonyms": [
+            "slow",
+            "steady",
+            "step-by-step",
+            "progressive"
+          ],
+          "example": null,
+          "translations": {
+            "zh_TW": "逐漸的",
+            "ja_JP": "徐々に",
+            "ko_KR": "점진적인",
+            "vi_VN": "dần dần",
+            "th_TH": "ค่อยเป็นค่อยไป"
+          },
+          "definition_translations": {
+            "zh_TW": "緩慢或分小階段發生",
+            "ja_JP": "ゆっくり、または小さな段階で起こる",
+            "ko_KR": "천천히 또는 작은 단계로 일어나는",
+            "vi_VN": "xảy ra chậm rãi hoặc qua từng giai đoạn nhỏ",
+            "th_TH": "เกิดขึ้นอย่างช้า ๆ หรือเป็นขั้นตอนเล็ก ๆ"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "gradual approach",
+          "translations": {
+            "zh_TW": "漸進的方法",
+            "ja_JP": "段階的なアプローチ",
+            "ko_KR": "점진적인 접근",
+            "vi_VN": "tiếp cận dần dần",
+            "th_TH": "แนวทางที่ค่อยเป็นค่อยไป"
+          }
+        },
+        {
+          "text": "highly gradual",
+          "translations": {
+            "zh_TW": "高度漸進的",
+            "ja_JP": "非常に緩やかな",
+            "ko_KR": "매우 점진적인",
+            "vi_VN": "rất dần dần",
+            "th_TH": "ค่อยเป็นค่อยไป"
+          }
+        },
+        {
+          "text": "remain gradual",
+          "translations": {
+            "zh_TW": "保持漸進",
+            "ja_JP": "緩やかなまま",
+            "ko_KR": "점진적으로 유지하다",
+            "vi_VN": "duy trì dần dần",
+            "th_TH": "ยังคงค่อยเป็นค่อยไป"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/gradual.webp",
+      "originalImage": "artwork/gradual.webp",
+      "audio": "audio/gradual.m4a",
+      "exampleAudio": "audio/gradual-example-0.m4a",
+      "artwork": {
+        "title": "Almost Imperceptibly",
+        "titleZh": "一點一滴",
+        "series": "The Shape of Growth",
+        "seriesZh": "生長的形狀",
+        "medium": "Contemporary ink and watercolor",
+        "mediumZh": "當代水墨與水彩",
+        "style": "canopy-ink-watercolor",
+        "image": "artwork/museum-v1/gradual.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "7c92461b477d7c93b1e07954be56c633",
+      "word": "endurance",
+      "room": 10,
+      "slot": 5,
+      "ipa": "ˈɛndɚəns",
+      "kk": "ˈɛndɚəns",
+      "pos": "n",
+      "definition": "the ability to continue doing something difficult for a long time",
+      "example": "Long periods of exercise can build your endurance, helping you remain resilient during challenges.",
+      "translations": {
+        "zh_TW": "耐力；復原力",
+        "ja_JP": "耐久性",
+        "ko_KR": "지속력",
+        "vi_VN": "sức bền",
+        "th_TH": "ความทนทาน"
+      },
+      "definitionTranslations": {
+        "zh_TW": "長時間持續做困難事情的能力",
+        "ja_JP": "困難なことを長く続ける能力",
+        "ko_KR": "어려운 일을 오랫동안 계속하는 능력",
+        "vi_VN": "khả năng tiếp tục làm việc khó trong thời gian dài",
+        "th_TH": "ความสามารถในการทำสิ่งยากต่อไปเป็นเวลานาน"
+      },
+      "exampleTranslations": {
+        "zh_TW": "長時間的運動能夠增強你的耐力，幫助你在挑戰中保持堅韌。",
+        "en_US": "Long periods of exercise can build your endurance, helping you remain resilient during challenges.",
+        "ja_JP": "長時間の運動は持久力を鍛え、困難な状況でも粘り強くいられるようにしてくれます。",
+        "ko_KR": "오랜 시간 운동하면 지구력을 기를 수 있어, 어려움 속에서도 회복력을 유지하는 데 도움이 됩니다.",
+        "vi_VN": "Những khoảng thời gian tập luyện dài có thể rèn luyện sức bền của bạn, giúp bạn giữ được sự kiên cường trong những lúc khó khăn.",
+        "th_TH": "การออกกำลังกายเป็นเวลานานสามารถเสริมสร้างความทนทานของคุณ ช่วยให้คุณยืนหยัดได้อย่างเข้มแข็งเมื่อเผชิญกับความท้าทาย"
+      },
+      "synonyms": [
+        "stamina",
+        "resilience",
+        "persistence",
+        "fortitude"
+      ],
+      "level": 58,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "the ability to continue doing something difficult for a long time",
+          "synonyms": [
+            "stamina",
+            "resilience",
+            "persistence",
+            "fortitude"
+          ],
+          "example": null,
+          "countability": "uncountable",
+          "translations": {
+            "zh_TW": "耐力；復原力",
+            "ja_JP": "耐久性",
+            "ko_KR": "지속력",
+            "vi_VN": "sức bền",
+            "th_TH": "ความทนทาน"
+          },
+          "definition_translations": {
+            "zh_TW": "長時間持續做困難事情的能力",
+            "ja_JP": "困難なことを長く続ける能力",
+            "ko_KR": "어려운 일을 오랫동안 계속하는 능력",
+            "vi_VN": "khả năng tiếp tục làm việc khó trong thời gian dài",
+            "th_TH": "ความสามารถในการทำสิ่งยากต่อไปเป็นเวลานาน"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "common endurance",
+          "translations": {
+            "zh_TW": "共同的耐力",
+            "ja_JP": "共通の耐久力",
+            "ko_KR": "공통 지구력",
+            "vi_VN": "sức chịu đựng chung",
+            "th_TH": "ความอดทนทั่วไป"
+          }
+        },
+        {
+          "text": "new endurance",
+          "translations": {
+            "zh_TW": "新耐力",
+            "ja_JP": "新しい耐久力",
+            "ko_KR": "새로운 지구력",
+            "vi_VN": "sức chịu đựng mới",
+            "th_TH": "ความอดทนใหม่"
+          }
+        },
+        {
+          "text": "use of endurance",
+          "translations": {
+            "zh_TW": "運用耐力",
+            "ja_JP": "持久力の使い方",
+            "ko_KR": "지구력의 사용",
+            "vi_VN": "sử dụng sức chịu đựng",
+            "th_TH": "การใช้ความอดทน"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/endurance.webp",
+      "originalImage": "artwork/endurance.webp",
+      "audio": "audio/endurance.m4a",
+      "exampleAudio": "audio/endurance-example-0.m4a",
+      "artwork": {
+        "title": "Through the Long Rain",
+        "titleZh": "走過漫長雨季",
+        "series": "The Shape of Growth",
+        "seriesZh": "生長的形狀",
+        "medium": "Contemporary ink and watercolor",
+        "mediumZh": "當代水墨與水彩",
+        "style": "canopy-ink-watercolor",
+        "image": "artwork/museum-v1/endurance.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "supp600-v-110",
+      "word": "excursion",
+      "room": 11,
+      "slot": 0,
+      "ipa": "ɪkˈskɝʒən",
+      "kk": "ɪkˈskɝʒən",
+      "pos": "n",
+      "definition": "a short trip made for pleasure or a specific purpose",
+      "example": "The company arranged a short excursion to the historic district after the conference ended.",
+      "translations": {
+        "zh_TW": "短途旅行",
+        "ja_JP": "小旅行",
+        "ko_KR": "짧은 여행",
+        "vi_VN": "chuyến tham quan ngắn",
+        "th_TH": "การทัศนศึกษาระยะสั้น"
+      },
+      "definitionTranslations": {
+        "zh_TW": "為娛樂或特定目的而進行的短途旅行",
+        "ja_JP": "楽しみや特定の目的のための短い旅行",
+        "ko_KR": "즐거움이나 특정 목적을 위한 짧은 여행",
+        "vi_VN": "chuyến đi ngắn để giải trí hoặc vì mục đích cụ thể",
+        "th_TH": "การเดินทางสั้น ๆ เพื่อความเพลิดเพลินหรือจุดประสงค์เฉพาะ"
+      },
+      "exampleTranslations": {
+        "zh_TW": "公司在會議結束後安排了一次前往歷史區的短途遊覽。",
+        "en_US": "The company arranged a short excursion to the historic district after the conference ended.",
+        "ja_JP": "会社は、会議が終わった後に歴史地区への短い見学旅行を手配しました。",
+        "ko_KR": "회사는 회의가 끝난 후 역사 지구로 가는 짧은 견학 일정을 마련했습니다.",
+        "vi_VN": "Công ty đã sắp xếp một chuyến tham quan ngắn đến khu phố cổ sau khi hội nghị kết thúc.",
+        "th_TH": "บริษัทได้จัดทัศนศึกษาสั้นๆ ไปยังย่านประวัติศาสตร์หลังจากการประชุมสิ้นสุดลง"
+      },
+      "synonyms": [
+        "outing",
+        "trip",
+        "tour",
+        "jaunt"
+      ],
+      "level": 61,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "a short trip made for pleasure or a specific purpose",
+          "synonyms": [
+            "outing",
+            "trip",
+            "tour",
+            "jaunt"
+          ],
+          "example": null,
+          "countability": "countable",
+          "translations": {
+            "zh_TW": "短途旅行",
+            "ja_JP": "小旅行",
+            "ko_KR": "짧은 여행",
+            "vi_VN": "chuyến tham quan ngắn",
+            "th_TH": "การทัศนศึกษาระยะสั้น"
+          },
+          "definition_translations": {
+            "zh_TW": "為娛樂或特定目的而進行的短途旅行",
+            "ja_JP": "楽しみや特定の目的のための短い旅行",
+            "ko_KR": "즐거움이나 특정 목적을 위한 짧은 여행",
+            "vi_VN": "chuyến đi ngắn để giải trí hoặc vì mục đích cụ thể",
+            "th_TH": "การเดินทางสั้น ๆ เพื่อความเพลิดเพลินหรือจุดประสงค์เฉพาะ"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "common excursion",
+          "translations": {
+            "zh_TW": "共同導覽",
+            "ja_JP": "よくある旅行",
+            "ko_KR": "공동 소풍",
+            "vi_VN": "chuyến tham quan chung",
+            "th_TH": "ทัศนศึกษาทั่วไป"
+          }
+        },
+        {
+          "text": "new excursion",
+          "translations": {
+            "zh_TW": "新的旅行",
+            "ja_JP": "新しい遠足",
+            "ko_KR": "새로운 여행",
+            "vi_VN": "chuyến tham quan mới",
+            "th_TH": "ทัศนศึกษาใหม่"
+          }
+        },
+        {
+          "text": "use of excursion",
+          "translations": {
+            "zh_TW": "利用遊覽",
+            "ja_JP": "エクスカーションの利用",
+            "ko_KR": "소풍의 이용",
+            "vi_VN": "sử dụng chuyến tham quan",
+            "th_TH": "การใช้การท่องเที่ยว"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/excursion.webp",
+      "originalImage": "artwork/excursion.webp",
+      "audio": "audio/excursion.m4a",
+      "exampleAudio": "audio/excursion-example-0.m4a",
+      "artwork": {
+        "title": "An Afternoon Away",
+        "titleZh": "午後的小旅行",
+        "series": "Where the Paths Lead",
+        "seriesZh": "小徑通往的地方",
+        "medium": "Woodland impressionist oil painting",
+        "mediumZh": "森林印象派油畫",
+        "style": "wayfarer-impressionism",
+        "image": "artwork/museum-v1/excursion.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "87756cf4c451aa7b08e1f94b44586316",
+      "word": "navigate",
+      "room": 11,
+      "slot": 1,
+      "ipa": "ˈnævəˌgeɪt",
+      "kk": "ˈnævəˌget",
+      "pos": "v",
+      "definition": "to find and follow a route through an area or across water",
+      "example": "In unknown waters, skilled sailors can easily navigate to avoid hidden dangers and obstacles.",
+      "translations": {
+        "zh_TW": "導航",
+        "ja_JP": "航行する",
+        "ko_KR": "항해하다",
+        "vi_VN": "dẫn đường",
+        "th_TH": "นำทาง"
+      },
+      "definitionTranslations": {
+        "zh_TW": "在某地或水域中尋找並沿路線前進",
+        "ja_JP": "地域や水上で経路を見つけて進む",
+        "ko_KR": "지역이나 수역을 지나갈 경로를 찾아 따라가다",
+        "vi_VN": "tìm và đi theo một tuyến đường qua khu vực hoặc trên mặt nước",
+        "th_TH": "ค้นหาและไปตามเส้นทางผ่านพื้นที่หรือข้ามน้ำ"
+      },
+      "exampleTranslations": {
+        "zh_TW": "在未知的水域中，熟練的水手能夠輕鬆地導航，以避免隱藏的危險和障礙物。",
+        "en_US": "In unknown waters, skilled sailors can easily navigate to avoid hidden dangers and obstacles.",
+        "ja_JP": "未知の海域では、熟練した船乗りは、隠れた危険や障害物を避けるために、簡単に航海できます。",
+        "ko_KR": "낯선 바다에서는 숙련된 선원들이 숨겨진 위험과 장애물을 피하기 위해 쉽게 항해할 수 있다.",
+        "vi_VN": "Ở những vùng nước xa lạ, các thủy thủ lành nghề có thể dễ dàng điều hướng để tránh những nguy hiểm và chướng ngại vật ẩn giấu.",
+        "th_TH": "ในน่านน้ำที่ไม่คุ้นเคย ลูกเรือที่มีทักษะสามารถนำทางได้อย่างง่ายดายเพื่อหลีกเลี่ยงอันตรายและอุปสรรคที่ซ่อนอยู่"
+      },
+      "synonyms": [
+        "steer",
+        "pilot",
+        "guide",
+        "direct"
+      ],
+      "level": 28,
+      "senses": [
+        {
+          "pos": "v",
+          "gloss": "to find and follow a route through an area or across water",
+          "synonyms": [
+            "steer",
+            "pilot",
+            "guide",
+            "direct"
+          ],
+          "example": null,
+          "transitivity": "both",
+          "translations": {
+            "zh_TW": "導航",
+            "ja_JP": "航行する",
+            "ko_KR": "항해하다",
+            "vi_VN": "dẫn đường",
+            "th_TH": "นำทาง"
+          },
+          "definition_translations": {
+            "zh_TW": "在某地或水域中尋找並沿路線前進",
+            "ja_JP": "地域や水上で経路を見つけて進む",
+            "ko_KR": "지역이나 수역을 지나갈 경로를 찾아 따라가다",
+            "vi_VN": "tìm và đi theo một tuyến đường qua khu vực hoặc trên mặt nước",
+            "th_TH": "ค้นหาและไปตามเส้นทางผ่านพื้นที่หรือข้ามน้ำ"
+          }
+        },
+        {
+          "pos": "v",
+          "gloss": "to deal with a difficult or complex situation successfully",
+          "synonyms": [
+            "manage",
+            "handle",
+            "negotiate",
+            "work through"
+          ],
+          "example": "The new manager helped the team navigate a difficult transition.",
+          "transitivity": "both",
+          "translations": {
+            "zh_TW": "應對",
+            "ja_JP": "乗り切る",
+            "ko_KR": "헤쳐나가다",
+            "vi_VN": "vượt qua",
+            "th_TH": "รับมือ"
+          },
+          "example_translations": {
+            "zh_TW": "新任經理協助團隊順利度過一段艱難的轉型期。",
+            "ja_JP": "新しいマネージャーは、チームが困難な移行期を乗り越えるのを助けた。",
+            "ko_KR": "새 관리자는 팀이 어려운 전환기를 헤쳐 나가도록 도왔다.",
+            "vi_VN": "Người quản lý mới đã giúp nhóm vượt qua giai đoạn chuyển đổi khó khăn.",
+            "th_TH": "ผู้จัดการคนใหม่ช่วยให้ทีมผ่านช่วงเปลี่ยนผ่านที่ยากลำบากไปได้"
+          },
+          "definition_translations": {
+            "zh_TW": "成功應對困難或複雜的情況",
+            "ja_JP": "困難または複雑な状況にうまく対処する",
+            "ko_KR": "어렵거나 복잡한 상황을 성공적으로 헤쳐 나가다",
+            "vi_VN": "xử lý thành công một tình huống khó khăn hoặc phức tạp",
+            "th_TH": "รับมือกับสถานการณ์ที่ยากหรือซับซ้อนได้สำเร็จ"
+          },
+          "audio": "audio/navigate-example-1.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "navigate the plan",
+          "translations": {
+            "zh_TW": "導航計劃",
+            "ja_JP": "計画をナビゲートする",
+            "ko_KR": "계획을 탐색하다",
+            "vi_VN": "điều hướng kế hoạch",
+            "th_TH": "นำทางตามแผน"
+          }
+        },
+        {
+          "text": "carefully navigate",
+          "translations": {
+            "zh_TW": "仔細導航",
+            "ja_JP": "慎重にナビゲートする",
+            "ko_KR": "조심스럽게 탐색",
+            "vi_VN": "điều hướng cẩn thận",
+            "th_TH": "นำทางอย่างระมัดระวัง"
+          }
+        },
+        {
+          "text": "navigate effectively",
+          "translations": {
+            "zh_TW": "有效導航",
+            "ja_JP": "効果的にナビゲートする",
+            "ko_KR": "효과적으로 탐색",
+            "vi_VN": "điều hướng hiệu quả",
+            "th_TH": "นำทางได้อย่างมีประสิทธิภาพ"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/navigate.webp",
+      "originalImage": "artwork/navigate.webp",
+      "audio": "audio/navigate.m4a",
+      "exampleAudio": "audio/navigate-example-0.m4a",
+      "artwork": {
+        "title": "The Chosen Direction",
+        "titleZh": "選定的方向",
+        "series": "Where the Paths Lead",
+        "seriesZh": "小徑通往的地方",
+        "medium": "Woodland impressionist oil painting",
+        "mediumZh": "森林印象派油畫",
+        "style": "wayfarer-impressionism",
+        "image": "artwork/museum-v1/navigate.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "843b49c830a9b45866ae38e65202fbbd",
+      "word": "guide",
+      "room": 11,
+      "slot": 2,
+      "ipa": "gaɪd",
+      "kk": "gaɪd",
+      "pos": "n",
+      "definition": "a person who shows the way to others, especially one employed to lead tours",
+      "example": "On this trip, there is a very knowledgeable guide who will lead the team and share insights about the local culture.",
+      "translations": {
+        "zh_TW": "指導",
+        "ja_JP": "ガイド",
+        "ko_KR": "가이드",
+        "vi_VN": "hướng dẫn",
+        "th_TH": "ไกด์"
+      },
+      "definitionTranslations": {
+        "zh_TW": "為他人帶路的人，尤指受雇帶領旅遊的人",
+        "ja_JP": "他人に道案内する人、特にツアーを案内する職業の人",
+        "ko_KR": "다른 사람에게 길을 안내하는 사람, 특히 관광을 이끄는 직업인",
+        "vi_VN": "người chỉ đường cho người khác, đặc biệt là người được thuê để dẫn tour",
+        "th_TH": "ผู้ที่บอกทางแก่ผู้อื่น โดยเฉพาะผู้ที่รับจ้างนำเที่ยว"
+      },
+      "exampleTranslations": {
+        "zh_TW": "在這次旅行中，有一位非常熟悉當地文化的導遊來負責指導團隊。",
+        "en_US": "On this trip, there is a very knowledgeable guide who will lead the team and share insights about the local culture.",
+        "ja_JP": "この旅行では、チームを案内し、現地の文化についての洞察を共有してくれる、とても知識豊富なガイドがいます。",
+        "ko_KR": "이번 여행에는 팀을 이끌고 현지 문화에 대한 통찰을 나눠 줄 매우 박식한 안내자가 있습니다.",
+        "vi_VN": "Trong chuyến đi này, có một hướng dẫn viên rất am hiểu, người sẽ dẫn dắt nhóm và chia sẻ những hiểu biết về văn hóa địa phương.",
+        "th_TH": "ในการเดินทางครั้งนี้ มีไกด์ที่มีความรู้มากคนหนึ่งที่จะนำทีมและแบ่งปันข้อมูลเชิงลึกเกี่ยวกับวัฒนธรรมท้องถิ่น"
+      },
+      "synonyms": [
+        "leader",
+        "advisor",
+        "conductor",
+        "escort",
+        "director"
+      ],
+      "level": 2,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "a person who shows the way to others, especially one employed to lead tours",
+          "synonyms": [
+            "leader",
+            "advisor",
+            "conductor",
+            "escort",
+            "director"
+          ],
+          "example": null,
+          "countability": "countable",
+          "translations": {
+            "zh_TW": "指導",
+            "ja_JP": "ガイド",
+            "ko_KR": "가이드",
+            "vi_VN": "hướng dẫn",
+            "th_TH": "ไกด์"
+          },
+          "definition_translations": {
+            "zh_TW": "為他人帶路的人，尤指受雇帶領旅遊的人",
+            "ja_JP": "他人に道案内する人、特にツアーを案内する職業の人",
+            "ko_KR": "다른 사람에게 길을 안내하는 사람, 특히 관광을 이끄는 직업인",
+            "vi_VN": "người chỉ đường cho người khác, đặc biệt là người được thuê để dẫn tour",
+            "th_TH": "ผู้ที่บอกทางแก่ผู้อื่น โดยเฉพาะผู้ที่รับจ้างนำเที่ยว"
+          }
+        },
+        {
+          "pos": "v",
+          "gloss": "to show the way to others or direct the movement of something",
+          "synonyms": [
+            "lead",
+            "direct",
+            "steer",
+            "conduct",
+            "usher"
+          ],
+          "example": "She guided the visitors through the historical museum.",
+          "transitivity": "transitive",
+          "translations": {
+            "zh_TW": "引導；帶領；指引",
+            "ja_JP": "案内する；導く",
+            "ko_KR": "안내하다; 이끌다",
+            "vi_VN": "dẫn đường; hướng dẫn",
+            "th_TH": "นำทาง; แนะนำ"
+          },
+          "example_translations": {
+            "zh_TW": "她帶領訪客參觀那座歷史博物館。",
+            "ja_JP": "彼女は訪問者たちを歴史博物館内に案内しました。",
+            "ko_KR": "그녀는 방문객들을 역사 박물관 안으로 안내했습니다.",
+            "vi_VN": "Cô ấy dẫn khách tham quan đi qua bảo tàng lịch sử.",
+            "th_TH": "เธอนำผู้เยี่ยมชมชมพิพิธภัณฑ์ประวัติศาสตร์"
+          },
+          "definition_translations": {
+            "zh_TW": "為他人帶路或引導某物的移動",
+            "ja_JP": "他人に道を示す、または何かの動きを導く",
+            "ko_KR": "다른 사람에게 길을 알려 주거나 무언가의 움직임을 이끌다",
+            "vi_VN": "chỉ đường cho người khác hoặc điều hướng sự di chuyển của thứ gì đó",
+            "th_TH": "บอกทางแก่ผู้อื่นหรือกำกับการเคลื่อนที่ของบางสิ่ง"
+          },
+          "audio": "audio/guide-example-1.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "guide discussion",
+          "translations": {
+            "zh_TW": "引導討論",
+            "ja_JP": "ガイドディスカッション",
+            "ko_KR": "토론 안내",
+            "vi_VN": "hướng dẫn thảo luận",
+            "th_TH": "การอภิปรายแนะนำ"
+          }
+        },
+        {
+          "text": "common guide",
+          "translations": {
+            "zh_TW": "共同指南",
+            "ja_JP": "共通ガイド",
+            "ko_KR": "공통 가이드",
+            "vi_VN": "hướng dẫn viên chung",
+            "th_TH": "คู่มือทั่วไป"
+          }
+        },
+        {
+          "text": "new guide",
+          "translations": {
+            "zh_TW": "新指南",
+            "ja_JP": "新しいガイド",
+            "ko_KR": "새로운 가이드",
+            "vi_VN": "hướng dẫn viên mới",
+            "th_TH": "คู่มือใหม่"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/guide.webp",
+      "originalImage": "artwork/guide.webp",
+      "audio": "audio/guide.m4a",
+      "exampleAudio": "audio/guide-example-0.m4a",
+      "artwork": {
+        "title": "Follow Me",
+        "titleZh": "跟我來",
+        "series": "Where the Paths Lead",
+        "seriesZh": "小徑通往的地方",
+        "medium": "Woodland impressionist oil painting",
+        "mediumZh": "森林印象派油畫",
+        "style": "wayfarer-impressionism",
+        "image": "artwork/museum-v1/guide.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "c21b1a958a8d5ef9e92469c66a93024a",
+      "word": "remote",
+      "room": 11,
+      "slot": 3,
+      "ipa": "ɹɪˈmoʊt",
+      "kk": "rɪˈmot",
+      "pos": "adj",
+      "definition": "far away from towns, cities, or other places",
+      "example": "In a remote village, the way of life relies heavily on natural resources.",
+      "translations": {
+        "zh_TW": "遙遠的；孤立的",
+        "ja_JP": "人里離れた",
+        "ko_KR": "먼; 외딴",
+        "vi_VN": "hẻo lánh",
+        "th_TH": "ระยะไกล"
+      },
+      "definitionTranslations": {
+        "zh_TW": "遠離城鎮、城市或其他地方的",
+        "ja_JP": "町、都市、その他の場所から遠く離れた",
+        "ko_KR": "마을, 도시 또는 다른 장소에서 멀리 떨어진",
+        "vi_VN": "ở xa thị trấn, thành phố hoặc nơi khác",
+        "th_TH": "อยู่ไกลจากเมืองหรือสถานที่อื่น"
+      },
+      "exampleTranslations": {
+        "zh_TW": "在遙遠的村莊中，生活方式主要依賴於自然資源。",
+        "en_US": "In a remote village, the way of life relies heavily on natural resources.",
+        "ja_JP": "辺鄙な村では、生活様式が自然資源に大きく依存しています。",
+        "ko_KR": "외딴 마을에서는 생활 방식이 자연자원에 크게 의존합니다.",
+        "vi_VN": "Ở một ngôi làng hẻo lánh, lối sống phụ thuộc rất nhiều vào tài nguyên thiên nhiên.",
+        "th_TH": "ในหมู่บ้านห่างไกล วิถีชีวิตพึ่งพาทรัพยากรธรรมชาติเป็นอย่างมาก"
+      },
+      "synonyms": [
+        "distant",
+        "isolated",
+        "faraway"
+      ],
+      "level": 12,
+      "senses": [
+        {
+          "pos": "adj",
+          "gloss": "far away from towns, cities, or other places",
+          "synonyms": [
+            "distant",
+            "isolated",
+            "faraway"
+          ],
+          "example": null,
+          "translations": {
+            "zh_TW": "遙遠的；孤立的",
+            "ja_JP": "人里離れた",
+            "ko_KR": "먼; 외딴",
+            "vi_VN": "hẻo lánh",
+            "th_TH": "ระยะไกล"
+          },
+          "definition_translations": {
+            "zh_TW": "遠離城鎮、城市或其他地方的",
+            "ja_JP": "町、都市、その他の場所から遠く離れた",
+            "ko_KR": "마을, 도시 또는 다른 장소에서 멀리 떨어진",
+            "vi_VN": "ở xa thị trấn, thành phố hoặc nơi khác",
+            "th_TH": "อยู่ไกลจากเมืองหรือสถานที่อื่น"
+          }
+        },
+        {
+          "pos": "adj",
+          "gloss": "done or controlled from a distance",
+          "synonyms": [
+            "distant",
+            "off-site",
+            "virtual"
+          ],
+          "example": "The company offers remote work three days a week.",
+          "translations": {
+            "zh_TW": "遠端的",
+            "ja_JP": "遠隔の",
+            "ko_KR": "원격이다",
+            "vi_VN": "từ xa",
+            "th_TH": "ระยะไกล"
+          },
+          "example_translations": {
+            "zh_TW": "公司每週提供三天遠距工作。",
+            "ja_JP": "その会社は週3日のリモート勤務を提供しています。",
+            "ko_KR": "그 회사는 주 3일 원격 근무를 제공합니다.",
+            "vi_VN": "Công ty cho phép làm việc từ xa ba ngày mỗi tuần.",
+            "th_TH": "บริษัทเสนอให้ทำงานทางไกลสัปดาห์ละสามวัน"
+          },
+          "definition_translations": {
+            "zh_TW": "從遠處完成或控制的",
+            "ja_JP": "離れた場所から行う、または制御する",
+            "ko_KR": "멀리서 수행되거나 제어되는",
+            "vi_VN": "được thực hiện hoặc điều khiển từ xa",
+            "th_TH": "ทำหรือควบคุมจากระยะไกล"
+          },
+          "audio": "audio/remote-example-1.m4a"
+        },
+        {
+          "pos": "adj",
+          "gloss": "not very likely to happen",
+          "synonyms": [
+            "unlikely",
+            "slight",
+            "small"
+          ],
+          "example": "There is only a remote chance that the shipment will arrive today.",
+          "translations": {
+            "zh_TW": "渺茫的",
+            "ja_JP": "わずかな",
+            "ko_KR": "희박하다",
+            "vi_VN": "mong manh",
+            "th_TH": "ริบหรี่"
+          },
+          "example_translations": {
+            "zh_TW": "這批貨今天送達的機會很渺茫。",
+            "ja_JP": "その荷物が今日届く可能性はごくわずかです。",
+            "ko_KR": "그 배송물이 오늘 도착할 가능성은 매우 낮습니다.",
+            "vi_VN": "Khả năng lô hàng đến hôm nay là rất thấp.",
+            "th_TH": "มีโอกาสเพียงเล็กน้อยมากที่สินค้าจะมาถึงวันนี้"
+          },
+          "definition_translations": {
+            "zh_TW": "不太可能發生的",
+            "ja_JP": "起こる可能性が低い",
+            "ko_KR": "일어날 가능성이 매우 낮은",
+            "vi_VN": "không có nhiều khả năng xảy ra",
+            "th_TH": "ไม่น่าจะเกิดขึ้นมากนัก"
+          },
+          "audio": "audio/remote-example-2.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "remote approach",
+          "translations": {
+            "zh_TW": "遠端方法",
+            "ja_JP": "遠隔アプローチ",
+            "ko_KR": "원격 접근",
+            "vi_VN": "cách tiếp cận từ xa",
+            "th_TH": "วิธีการระยะไกล"
+          }
+        },
+        {
+          "text": "highly remote",
+          "translations": {
+            "zh_TW": "高度偏遠",
+            "ja_JP": "非常に遠い",
+            "ko_KR": "매우 먼",
+            "vi_VN": "rất xa xôi",
+            "th_TH": "ห่างไกลมาก"
+          }
+        },
+        {
+          "text": "remain remote",
+          "translations": {
+            "zh_TW": "保持遠端",
+            "ja_JP": "リモートのまま",
+            "ko_KR": "멀리 떨어져 있다",
+            "vi_VN": "vẫn ở xa",
+            "th_TH": "ยังคงห่างไกล"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/remote.webp",
+      "originalImage": "artwork/remote.webp",
+      "audio": "audio/remote.m4a",
+      "exampleAudio": "audio/remote-example-0.m4a",
+      "artwork": {
+        "title": "Beyond the Last Road",
+        "titleZh": "道路盡頭之外",
+        "series": "Where the Paths Lead",
+        "seriesZh": "小徑通往的地方",
+        "medium": "Woodland impressionist oil painting",
+        "mediumZh": "森林印象派油畫",
+        "style": "wayfarer-impressionism",
+        "image": "artwork/museum-v1/remote.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "bf334158cfb1b874043394a6302d49b6",
+      "word": "solitude",
+      "room": 11,
+      "slot": 4,
+      "ipa": "ˈsɑləˌtud",
+      "kk": "ˈsɑləˌtud",
+      "pos": "n",
+      "definition": "the state of being alone, often by choice",
+      "example": "In this fast-paced world, many people long to find moments of solitude to rethink their lives.",
+      "translations": {
+        "zh_TW": "孤獨；隱居",
+        "ja_JP": "孤独;隠遁",
+        "ko_KR": "고독",
+        "vi_VN": "sự cô đơn; sự tách biệt",
+        "th_TH": "ความโดดเดี่ยว"
+      },
+      "definitionTranslations": {
+        "zh_TW": "獨處的狀態，通常是出於選擇",
+        "ja_JP": "一人でいる状態、多くは自らの選択による",
+        "ko_KR": "혼자 있는 상태, 흔히 스스로 선택한 것",
+        "vi_VN": "trạng thái ở một mình, thường do lựa chọn",
+        "th_TH": "สภาพของการอยู่ลำพัง มักเป็นการเลือกเอง"
+      },
+      "exampleTranslations": {
+        "zh_TW": "在這個快節奏的世界中，許多人渴望找到孤獨的空間來重新思考自己的生活。",
+        "en_US": "In this fast-paced world, many people long to find moments of solitude to rethink their lives.",
+        "ja_JP": "この目まぐるしい世界で、多くの人は人生を見つめ直すための孤独な時間を見つけたいと願っています。",
+        "ko_KR": "이 빠르게 돌아가는 세상에서 많은 사람들은 삶을 다시 생각해 볼 고독한 순간을 찾고 싶어 합니다.",
+        "vi_VN": "Trong thế giới hối hả này, nhiều người khao khát tìm được những khoảnh khắc cô độc để suy ngẫm lại cuộc sống của mình.",
+        "th_TH": "ในโลกที่หมุนไปอย่างรวดเร็วนี้ หลายคนปรารถนาที่จะหาช่วงเวลาแห่งความโดดเดี่ยวเพื่อทบทวนชีวิตของตน"
+      },
+      "synonyms": [
+        "aloneness",
+        "seclusion",
+        "isolation",
+        "privacy"
+      ],
+      "level": 67,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "the state of being alone, often by choice",
+          "synonyms": [
+            "aloneness",
+            "seclusion",
+            "isolation",
+            "privacy"
+          ],
+          "example": null,
+          "countability": "uncountable",
+          "translations": {
+            "zh_TW": "孤獨；隱居",
+            "ja_JP": "孤独;隠遁",
+            "ko_KR": "고독",
+            "vi_VN": "sự cô đơn; sự tách biệt",
+            "th_TH": "ความโดดเดี่ยว"
+          },
+          "definition_translations": {
+            "zh_TW": "獨處的狀態，通常是出於選擇",
+            "ja_JP": "一人でいる状態、多くは自らの選択による",
+            "ko_KR": "혼자 있는 상태, 흔히 스스로 선택한 것",
+            "vi_VN": "trạng thái ở một mình, thường do lựa chọn",
+            "th_TH": "สภาพของการอยู่ลำพัง มักเป็นการเลือกเอง"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "common solitude",
+          "translations": {
+            "zh_TW": "共同的孤獨",
+            "ja_JP": "共通の孤独",
+            "ko_KR": "공동의 고독",
+            "vi_VN": "nỗi cô đơn chung",
+            "th_TH": "ความสันโดษทั่วไป"
+          }
+        },
+        {
+          "text": "new solitude",
+          "translations": {
+            "zh_TW": "新的孤獨",
+            "ja_JP": "新しい孤独",
+            "ko_KR": "새로운 고독",
+            "vi_VN": "nỗi cô đơn mới",
+            "th_TH": "ความสันโดษใหม่"
+          }
+        },
+        {
+          "text": "use of solitude",
+          "translations": {
+            "zh_TW": "利用孤獨",
+            "ja_JP": "孤独の利用",
+            "ko_KR": "고독의 이용",
+            "vi_VN": "sử dụng sự cô đơn",
+            "th_TH": "การใช้ความสันโดษ"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/solitude.webp",
+      "originalImage": "artwork/solitude.webp",
+      "audio": "audio/solitude.m4a",
+      "exampleAudio": "audio/solitude-example-0.m4a",
+      "artwork": {
+        "title": "A Bench for One",
+        "titleZh": "一個人的長椅",
+        "series": "Where the Paths Lead",
+        "seriesZh": "小徑通往的地方",
+        "medium": "Woodland impressionist oil painting",
+        "mediumZh": "森林印象派油畫",
+        "style": "wayfarer-impressionism",
+        "image": "artwork/museum-v1/solitude.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "e35c8aa9537e13be33aa1c1d9a0cf4a",
+      "word": "refuge",
+      "room": 11,
+      "slot": 5,
+      "ipa": "ˈɹɛfjudʒ",
+      "kk": "ˈrɛfjudʒ",
+      "pos": "n",
+      "definition": "a place or situation that provides safety or shelter",
+      "example": "This simple little hut became a refuge for those seeking shelter during the blizzard.",
+      "translations": {
+        "zh_TW": "庇護所；避難所",
+        "ja_JP": "避難所。聖域",
+        "ko_KR": "피난처; 성역",
+        "vi_VN": "nơi trú ẩn; thánh đường",
+        "th_TH": "ที่หลบภัย"
+      },
+      "definitionTranslations": {
+        "zh_TW": "提供安全或庇護的地點或處境",
+        "ja_JP": "安全または避難所を提供する場所または状況",
+        "ko_KR": "안전이나 피난처를 제공하는 장소 또는 상황",
+        "vi_VN": "một nơi hoặc hoàn cảnh mang lại sự an toàn hoặc nơi trú ẩn",
+        "th_TH": "สถานที่หรือสถานการณ์ที่ให้ความปลอดภัยหรือที่พักพิง"
+      },
+      "exampleTranslations": {
+        "zh_TW": "這個簡單的小屋成為了在暴風雪中尋求避難者的避難所。",
+        "en_US": "This simple little hut became a refuge for those seeking shelter during the blizzard.",
+        "ja_JP": "この質素な小さな小屋は、吹雪のあいだに避難場所を求める人々の避難所となった。",
+        "ko_KR": "이 단순하고 작은 오두막은 눈보라가 몰아치는 동안 피난처를 찾는 사람들의 피난처가 되었다.",
+        "vi_VN": "Căn lều nhỏ đơn sơ này đã trở thành nơi trú ẩn cho những người tìm chỗ che chở trong trận bão tuyết.",
+        "th_TH": "กระท่อมเล็กๆ เรียบง่ายหลังนี้กลายเป็นที่หลบภัยสำหรับผู้ที่กำลังมองหาที่กำบังในช่วงพายุหิมะ"
+      },
+      "synonyms": [
+        "shelter",
+        "sanctuary",
+        "haven",
+        "protection"
+      ],
+      "level": 52,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "a place or situation that provides safety or shelter",
+          "synonyms": [
+            "shelter",
+            "sanctuary",
+            "haven",
+            "protection"
+          ],
+          "example": null,
+          "countability": "countable",
+          "translations": {
+            "zh_TW": "庇護所；避難所",
+            "ja_JP": "避難所。聖域",
+            "ko_KR": "피난처; 성역",
+            "vi_VN": "nơi trú ẩn; thánh đường",
+            "th_TH": "ที่หลบภัย"
+          },
+          "definition_translations": {
+            "zh_TW": "提供安全或庇護的地點或處境",
+            "ja_JP": "安全または避難所を提供する場所または状況",
+            "ko_KR": "안전이나 피난처를 제공하는 장소 또는 상황",
+            "vi_VN": "một nơi hoặc hoàn cảnh mang lại sự an toàn hoặc nơi trú ẩn",
+            "th_TH": "สถานที่หรือสถานการณ์ที่ให้ความปลอดภัยหรือที่พักพิง"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "common refuge",
+          "translations": {
+            "zh_TW": "共同避難所",
+            "ja_JP": "共通の避難所",
+            "ko_KR": "공동 피난처",
+            "vi_VN": "nơi trú ẩn chung",
+            "th_TH": "ที่หลบภัยทั่วไป"
+          }
+        },
+        {
+          "text": "new refuge",
+          "translations": {
+            "zh_TW": "新的避難所",
+            "ja_JP": "新しい避難所",
+            "ko_KR": "새로운 피난처",
+            "vi_VN": "nơi ẩn náu mới",
+            "th_TH": "ที่หลบภัยใหม่"
+          }
+        },
+        {
+          "text": "use of refuge",
+          "translations": {
+            "zh_TW": "使用避難所",
+            "ja_JP": "避難所の利用",
+            "ko_KR": "피난처의 사용",
+            "vi_VN": "sử dụng nơi ẩn náu",
+            "th_TH": "การใช้ที่หลบภัย"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/refuge.webp",
+      "originalImage": "artwork/refuge.webp",
+      "audio": "audio/refuge.m4a",
+      "exampleAudio": "audio/refuge-example-0.m4a",
+      "artwork": {
+        "title": "Shelter in the Grove",
+        "titleZh": "林間的庇護",
+        "series": "Where the Paths Lead",
+        "seriesZh": "小徑通往的地方",
+        "medium": "Woodland impressionist oil painting",
+        "mediumZh": "森林印象派油畫",
+        "style": "wayfarer-impressionism",
+        "image": "artwork/museum-v1/refuge.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "e0609e138b3da44807963ef64bc59030",
+      "word": "mineral",
+      "room": 12,
+      "slot": 0,
+      "ipa": "ˈmɪnɚəl",
+      "kk": "ˈmɪnɚəl",
+      "pos": "n",
+      "definition": "a natural substance from the earth that the body or industry uses",
+      "example": "Calcium is an essential body mineral that strengthens bones and supports healthy teeth.",
+      "translations": {
+        "zh_TW": "礦物",
+        "ja_JP": "鉱物",
+        "ko_KR": "광물",
+        "vi_VN": "khoáng chất",
+        "th_TH": "แร่; สารอนินทรีย์"
+      },
+      "definitionTranslations": {
+        "zh_TW": "身體或工業使用的地球天然物質",
+        "ja_JP": "体や産業が利用する地中の天然物質",
+        "ko_KR": "신체나 산업이 사용하는 지구의 천연 물질",
+        "vi_VN": "chất tự nhiên từ đất được cơ thể hoặc công nghiệp sử dụng",
+        "th_TH": "สารธรรมชาติจากโลกที่ร่างกายหรืออุตสาหกรรมใช้"
+      },
+      "exampleTranslations": {
+        "zh_TW": "鈣是人體不可或缺的礦物質，能強化骨骼並維持牙齒健康。",
+        "en_US": "Calcium is an essential body mineral that strengthens bones and supports healthy teeth.",
+        "ja_JP": "カルシウムは、骨を強くし健康な歯を維持するために不可欠な体内鉱物（ミネラル）です。",
+        "ko_KR": "칼슘은 뼈를 강화하고 건강한 치아를 유지하는 데 필수적인 신체 미네랄입니다.",
+        "vi_VN": "Canxi là một khoáng chất thiết yếu của cơ thể giúp làm chắc xương và hỗ trợ răng khỏe mạnh.",
+        "th_TH": "แคลเซียมเป็นเกลือแร่หรือแร่ธาตุที่จำเป็นต่อร่างกายที่ช่วยเสริมสร้างกระดูกและบำรุงฟันให้แข็งแรง"
+      },
+      "synonyms": [
+        "ore",
+        "inorganic substance"
+      ],
+      "level": 34,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "a natural substance from the earth that the body or industry uses",
+          "synonyms": [
+            "ore",
+            "inorganic substance"
+          ],
+          "example": null,
+          "countability": "countable",
+          "translations": {
+            "zh_TW": "礦物",
+            "ja_JP": "鉱物",
+            "ko_KR": "광물",
+            "vi_VN": "khoáng chất",
+            "th_TH": "แร่; สารอนินทรีย์"
+          },
+          "definition_translations": {
+            "zh_TW": "身體或工業使用的地球天然物質",
+            "ja_JP": "体や産業が利用する地中の天然物質",
+            "ko_KR": "신체나 산업이 사용하는 지구의 천연 물질",
+            "vi_VN": "chất tự nhiên từ đất được cơ thể hoặc công nghiệp sử dụng",
+            "th_TH": "สารธรรมชาติจากโลกที่ร่างกายหรืออุตสาหกรรมใช้"
+          }
+        },
+        {
+          "pos": "adj",
+          "gloss": "relating to minerals or substances from the earth",
+          "synonyms": [
+            "inorganic",
+            "geological"
+          ],
+          "example": "The company tested the mineral content of the water.",
+          "translations": {
+            "zh_TW": "礦物的",
+            "ja_JP": "鉱物の",
+            "ko_KR": "광물의",
+            "vi_VN": "khoáng chất",
+            "th_TH": "ทางแร่ธาตุ"
+          },
+          "example_translations": {
+            "zh_TW": "公司檢測了水中的礦物質含量。",
+            "ja_JP": "会社は水のミネラル含有量を検査しました。",
+            "ko_KR": "회사는 물의 미네랄 함량을 검사했다.",
+            "vi_VN": "Công ty đã kiểm tra hàm lượng khoáng chất trong nước.",
+            "th_TH": "บริษัทได้ทดสอบปริมาณแร่ธาตุในน้ำ"
+          },
+          "definition_translations": {
+            "zh_TW": "與礦物或地球物質有關的",
+            "ja_JP": "鉱物や地中の物質に関する",
+            "ko_KR": "광물이나 지구 물질과 관련된",
+            "vi_VN": "liên quan đến khoáng chất hoặc chất từ đất",
+            "th_TH": "เกี่ยวกับแร่ธาตุหรือสารจากโลก"
+          },
+          "audio": "audio/mineral-example-1.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "common mineral",
+          "translations": {
+            "zh_TW": "普通礦物",
+            "ja_JP": "一般的な鉱物",
+            "ko_KR": "일반적인 미네랄",
+            "vi_VN": "khoáng sản thông thường",
+            "th_TH": "แร่ธาตุทั่วไป"
+          }
+        },
+        {
+          "text": "new mineral",
+          "translations": {
+            "zh_TW": "新礦物",
+            "ja_JP": "新しい鉱物",
+            "ko_KR": "새로운 광물",
+            "vi_VN": "khoáng sản mới",
+            "th_TH": "แร่ธาตุใหม่"
+          }
+        },
+        {
+          "text": "use of mineral",
+          "translations": {
+            "zh_TW": "礦物的利用",
+            "ja_JP": "ミネラルの使用",
+            "ko_KR": "미네랄의 사용",
+            "vi_VN": "sử dụng khoáng sản",
+            "th_TH": "การใช้แร่"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/mineral.webp",
+      "originalImage": "artwork/mineral.webp",
+      "audio": "audio/mineral.m4a",
+      "exampleAudio": "audio/mineral-example-0.m4a",
+      "artwork": {
+        "title": "Treasures of the Earth",
+        "titleZh": "地底的珍藏",
+        "series": "The Earth's Surfaces",
+        "seriesZh": "大地的表面",
+        "medium": "Fine-art geological photography",
+        "mediumZh": "地質藝術攝影",
+        "style": "geological-photography",
+        "image": "artwork/museum-v1/mineral.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "1e3683134e90290efda660fd7f5578d2",
+      "word": "texture",
+      "room": 12,
+      "slot": 1,
+      "ipa": "ˈtɛkstʃɚ",
+      "kk": "ˈtɛkstʃɚ",
+      "pos": "n",
+      "definition": "the way a surface or food feels, especially how smooth, rough, soft, or firm it is",
+      "example": "The texture of food is crucial for the dining experience as it can influence the perception of flavor and enhance the enjoyment of taste.",
+      "translations": {
+        "zh_TW": "質地",
+        "ja_JP": "質感",
+        "ko_KR": "질감",
+        "vi_VN": "kết cấu",
+        "th_TH": "พื้นผิว"
+      },
+      "definitionTranslations": {
+        "zh_TW": "質地、口感、觸感（表面或食物的滑平、粗糙、軟硬等感覺）",
+        "ja_JP": "（表面や食べ物の）手触り、食感、質感",
+        "ko_KR": "（표면이나 음식의） 감촉, 질감, 식감",
+        "vi_VN": "kết cấu, độ mịn/thô/mềm/cứng (của bề mặt hoặc thức ăn)",
+        "th_TH": "เนื้อสัมผัส (ความรู้สึกเมื่อสัมผัสผิวหรืออาหาร เช่น เรียบ, หยาบ, นุ่ม, หรือแน่น)"
+      },
+      "exampleTranslations": {
+        "zh_TW": "食物的質地對於用餐體驗至關重要，它可以影響風味的感知，增強味覺享受。",
+        "en_US": "The texture of food is crucial for the dining experience as it can influence the perception of flavor and enhance the enjoyment of taste.",
+        "ja_JP": "食べ物の食感は、味の感じ方に影響を与え、味わう楽しさを高めるため、食事体験にとって非常に重要です。",
+        "ko_KR": "음식의 질감은 맛의 인식을 영향을 미치고 맛을 즐기는 경험을 향상시킬 수 있기 때문에 식사 경험에서 매우 중요하다.",
+        "vi_VN": "Độ kết cấu của món ăn rất quan trọng đối với trải nghiệm ăn uống vì nó có thể ảnh hưởng đến cảm nhận về hương vị và làm tăng sự thích thú khi thưởng thức.",
+        "th_TH": "เนื้อสัมผัสของอาหารมีความสำคัญต่อประสบการณ์การรับประทานอาหาร เพราะมันสามารถมีอิทธิพลต่อการรับรู้รสชาติและเพิ่มความเพลิดเพลินในการลิ้มรส"
+      },
+      "synonyms": [
+        "feel",
+        "consistency"
+      ],
+      "level": 44,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "the way a surface or food feels, especially how smooth, rough, soft, or firm it is",
+          "synonyms": [
+            "feel",
+            "consistency"
+          ],
+          "example": null,
+          "countability": "both",
+          "translations": {
+            "zh_TW": "質地",
+            "ja_JP": "質感",
+            "ko_KR": "질감",
+            "vi_VN": "kết cấu",
+            "th_TH": "พื้นผิว"
+          },
+          "definition_translations": {
+            "zh_TW": "質地、口感、觸感（表面或食物的滑平、粗糙、軟硬等感覺）",
+            "ja_JP": "（表面や食べ物の）手触り、食感、質感",
+            "ko_KR": "（표면이나 음식의） 감촉, 질감, 식감",
+            "vi_VN": "kết cấu, độ mịn/thô/mềm/cứng (của bề mặt hoặc thức ăn)",
+            "th_TH": "เนื้อสัมผัส (ความรู้สึกเมื่อสัมผัสผิวหรืออาหาร เช่น เรียบ, หยาบ, นุ่ม, หรือแน่น)"
+          }
+        },
+        {
+          "pos": "n",
+          "gloss": "the detailed quality created by combining different parts in art, music, or writing",
+          "synonyms": [
+            "quality",
+            "character"
+          ],
+          "example": "The designer added visual texture with layered patterns and soft colors.",
+          "countability": "both",
+          "translations": {
+            "zh_TW": "層次感；質感",
+            "ja_JP": "質感；構成",
+            "ko_KR": "질감; 짜임새",
+            "vi_VN": "kết cấu; độ phong phú",
+            "th_TH": "มิติ; พื้นผิว"
+          },
+          "example_translations": {
+            "zh_TW": "設計師以層疊圖案和柔和色彩增添視覺層次。",
+            "ja_JP": "デザイナーは重なり合う模様と柔らかな色で視覚的な質感を加えました。",
+            "ko_KR": "디자이너는 겹겹의 패턴과 부드러운 색상으로 시각적 질감을 더했습니다.",
+            "vi_VN": "Nhà thiết kế đã thêm chiều sâu thị giác bằng các họa tiết xếp lớp và màu sắc dịu nhẹ.",
+            "th_TH": "นักออกแบบเพิ่มมิติทางสายตาด้วยลวดลายซ้อนชั้นและสีอ่อนนุ่ม"
+          },
+          "definition_translations": {
+            "zh_TW": "（藝術、音樂或寫作中）結構、紋理、細節品質",
+            "ja_JP": "（美術・音楽・文章などの）詳細な質感、構成",
+            "ko_KR": "（미술, 음악, 문학 등의） 유기적 구성, 짜임새",
+            "vi_VN": "kết cấu, chi tiết cấu thành (trong nghệ thuật, âm nhạc hoặc văn bản)",
+            "th_TH": "ความกลมกลืนขององค์ประกอบ (ที่เกิดจากการผสมผสานส่วนต่าง ๆ ในศิลปะ ดนตรี หรืองานเขียน)"
+          },
+          "audio": "audio/texture-example-1.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "common texture",
+          "translations": {
+            "zh_TW": "普通紋理",
+            "ja_JP": "共通のテクスチャ",
+            "ko_KR": "일반적인 질감",
+            "vi_VN": "kết cấu chung",
+            "th_TH": "เนื้อสัมผัสทั่วไป"
+          }
+        },
+        {
+          "text": "new texture",
+          "translations": {
+            "zh_TW": "新紋理",
+            "ja_JP": "新しいテクスチャ",
+            "ko_KR": "새로운 질감",
+            "vi_VN": "kết cấu mới",
+            "th_TH": "พื้นผิวใหม่"
+          }
+        },
+        {
+          "text": "use of texture",
+          "translations": {
+            "zh_TW": "紋理的使用",
+            "ja_JP": "テクスチャの使用",
+            "ko_KR": "질감의 사용",
+            "vi_VN": "sử dụng kết cấu",
+            "th_TH": "การใช้พื้นผิว"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/texture.webp",
+      "originalImage": "artwork/texture.webp",
+      "audio": "audio/texture.m4a",
+      "exampleAudio": "audio/texture-example-0.m4a",
+      "artwork": {
+        "title": "A Landscape Under the Fingertips",
+        "titleZh": "指尖下的風景",
+        "series": "The Earth's Surfaces",
+        "seriesZh": "大地的表面",
+        "medium": "Fine-art geological photography",
+        "mediumZh": "地質藝術攝影",
+        "style": "geological-photography",
+        "image": "artwork/museum-v1/texture.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "83e5ab6483e5090d0a032af2073ef11c",
+      "word": "surface",
+      "room": 12,
+      "slot": 2,
+      "ipa": "ˈsɝfəs",
+      "kk": "ˈsɝfəs",
+      "pos": "n",
+      "definition": "the outside part or outermost layer of something",
+      "example": "The surface of this table is smooth and shiny, making it feel very pleasant.",
+      "translations": {
+        "zh_TW": "表面",
+        "ja_JP": "地上",
+        "ko_KR": "지상",
+        "vi_VN": "bề mặt",
+        "th_TH": "พื้นผิว"
+      },
+      "definitionTranslations": {
+        "zh_TW": "某物的外部或最外層",
+        "ja_JP": "物の外側の部分または最外層",
+        "ko_KR": "무언가의 바깥 부분이나 가장 바깥층",
+        "vi_VN": "phần bên ngoài hoặc lớp ngoài cùng của một vật",
+        "th_TH": "ส่วนภายนอกหรือชั้นนอกสุดของสิ่งหนึ่ง"
+      },
+      "exampleTranslations": {
+        "zh_TW": "這個桌子的表面平滑而光亮，讓人感到很舒適。",
+        "en_US": "The surface of this table is smooth and shiny, making it feel very pleasant.",
+        "ja_JP": "このテーブルの表面はなめらかで光沢があり、とても心地よく感じます。",
+        "ko_KR": "이 테이블의 표면은 매끄럽고 반짝여서 매우 기분이 좋다.",
+        "vi_VN": "Bề mặt của bàn này trơn và sáng bóng, khiến nó cảm thấy rất dễ chịu.",
+        "th_TH": "ผิวของโต๊ะนี้เรียบและเงา ทำให้รู้สึกน่าใช้มาก"
+      },
+      "synonyms": [
+        "exterior",
+        "outside",
+        "outer layer",
+        "facade",
+        "veneer"
+      ],
+      "level": 12,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "the outside part or outermost layer of something",
+          "synonyms": [
+            "exterior",
+            "outside",
+            "outer layer",
+            "facade",
+            "veneer"
+          ],
+          "example": null,
+          "countability": "countable",
+          "translations": {
+            "zh_TW": "表面",
+            "ja_JP": "地上",
+            "ko_KR": "지상",
+            "vi_VN": "bề mặt",
+            "th_TH": "พื้นผิว"
+          },
+          "definition_translations": {
+            "zh_TW": "某物的外部或最外層",
+            "ja_JP": "物の外側の部分または最外層",
+            "ko_KR": "무언가의 바깥 부분이나 가장 바깥층",
+            "vi_VN": "phần bên ngoài hoặc lớp ngoài cùng của một vật",
+            "th_TH": "ส่วนภายนอกหรือชั้นนอกสุดของสิ่งหนึ่ง"
+          }
+        },
+        {
+          "pos": "v",
+          "gloss": "to rise to the surface of water, or to become apparent or known",
+          "synonyms": [
+            "rise",
+            "emerge",
+            "come up",
+            "appear",
+            "arise"
+          ],
+          "example": "The submarine is expected to surface in about ten minutes.",
+          "transitivity": "intransitive",
+          "translations": {
+            "zh_TW": "浮現；曝光",
+            "ja_JP": "浮上する；明らかになる",
+            "ko_KR": "수면 위로 떠오르다; 드러나다",
+            "vi_VN": "nổi lên; lộ ra",
+            "th_TH": "โผล่ขึ้น; ปรากฏ"
+          },
+          "example_translations": {
+            "zh_TW": "這艘潛水艇預計約十分鐘後浮出水面。",
+            "ja_JP": "その潜水艦は約10分後に浮上する見込みです。",
+            "ko_KR": "그 잠수함은 약 10분 후에 수면 위로 떠오를 것으로 예상된다.",
+            "vi_VN": "Tàu ngầm dự kiến sẽ nổi lên trong khoảng mười phút nữa.",
+            "th_TH": "คาดว่าเรือดำน้ำจะโผล่ขึ้นสู่ผิวน้ำในอีกประมาณสิบนาที"
+          },
+          "definition_translations": {
+            "zh_TW": "浮出水面，或變得明顯或為人所知",
+            "ja_JP": "水面に浮上する、または明らかになる・知られる",
+            "ko_KR": "수면으로 올라오거나, 드러나거나 알려지다",
+            "vi_VN": "nổi lên mặt nước, hoặc trở nên rõ ràng hay được biết đến",
+            "th_TH": "โผล่ขึ้นสู่ผิวน้ำ หรือปรากฏชัดหรือเป็นที่รู้"
+          },
+          "audio": "audio/surface-example-1.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "common surface",
+          "translations": {
+            "zh_TW": "公共表面",
+            "ja_JP": "共通面",
+            "ko_KR": "공통 표면",
+            "vi_VN": "bề mặt chung",
+            "th_TH": "พื้นผิวทั่วไป"
+          }
+        },
+        {
+          "text": "new surface",
+          "translations": {
+            "zh_TW": "新表面",
+            "ja_JP": "新しい表面",
+            "ko_KR": "새로운 표면",
+            "vi_VN": "bề mặt mới",
+            "th_TH": "พื้นผิวใหม่"
+          }
+        },
+        {
+          "text": "use of surface",
+          "translations": {
+            "zh_TW": "表面的使用",
+            "ja_JP": "表面の使用",
+            "ko_KR": "무언가의 바깥 부분이나 가장 바깥층",
+            "vi_VN": "sử dụng bề mặt",
+            "th_TH": "การใช้พื้นผิว"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/surface.webp",
+      "originalImage": "artwork/surface.webp",
+      "audio": "audio/surface.m4a",
+      "exampleAudio": "audio/surface-example-0.m4a",
+      "artwork": {
+        "title": "The Outermost Story",
+        "titleZh": "最外層的故事",
+        "series": "The Earth's Surfaces",
+        "seriesZh": "大地的表面",
+        "medium": "Fine-art geological photography",
+        "mediumZh": "地質藝術攝影",
+        "style": "geological-photography",
+        "image": "artwork/museum-v1/surface.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "930c4a4772241383f921cce6f031143a",
+      "word": "formation",
+      "room": 12,
+      "slot": 3,
+      "ipa": "fɔɹˈmeɪʃən",
+      "kk": "fɔrˈmeʃən",
+      "pos": "n",
+      "definition": "the process by which something is created or developed",
+      "example": "The mountains and valleys on Earth are a result of complex geological formation.",
+      "translations": {
+        "zh_TW": "形成",
+        "ja_JP": "形成",
+        "ko_KR": "형성",
+        "vi_VN": "sự hình thành",
+        "th_TH": "การก่อตัว"
+      },
+      "definitionTranslations": {
+        "zh_TW": "某物被創造或發展的過程",
+        "ja_JP": "何かが作られたり発展したりする過程",
+        "ko_KR": "무언가가 만들어지거나 발전되는 과정",
+        "vi_VN": "quá trình mà một thứ được tạo ra hoặc phát triển",
+        "th_TH": "กระบวนการที่บางสิ่งถูกสร้างหรือพัฒนา"
+      },
+      "exampleTranslations": {
+        "zh_TW": "地球的山脈和谷地是由複雜的地質過程所形成的。",
+        "en_US": "The mountains and valleys on Earth are a result of complex geological formation.",
+        "ja_JP": "地球の山や谷は、複雑な地質学的形成の結果です。",
+        "ko_KR": "지구의 산과 계곡은 복잡한 지질 형성의 결과이다.",
+        "vi_VN": "Những ngọn núi và thung lũng trên Trái Đất là kết quả của quá trình hình thành địa chất phức tạp.",
+        "th_TH": "ภูเขาและหุบเขาบนโลกเป็นผลมาจากการก่อตัวทางธรณีวิทยาที่ซับซ้อน"
+      },
+      "synonyms": [
+        "creation",
+        "development",
+        "forming",
+        "establishment"
+      ],
+      "level": 26,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "the process by which something is created or developed",
+          "synonyms": [
+            "creation",
+            "development",
+            "forming",
+            "establishment"
+          ],
+          "example": null,
+          "countability": "uncountable",
+          "translations": {
+            "zh_TW": "形成",
+            "ja_JP": "形成",
+            "ko_KR": "형성",
+            "vi_VN": "sự hình thành",
+            "th_TH": "การก่อตัว"
+          },
+          "definition_translations": {
+            "zh_TW": "某物被創造或發展的過程",
+            "ja_JP": "何かが作られたり発展したりする過程",
+            "ko_KR": "무언가가 만들어지거나 발전되는 과정",
+            "vi_VN": "quá trình mà một thứ được tạo ra hoặc phát triển",
+            "th_TH": "กระบวนการที่บางสิ่งถูกสร้างหรือพัฒนา"
+          }
+        },
+        {
+          "pos": "n",
+          "gloss": "an arrangement or structure of people or things",
+          "synonyms": [
+            "arrangement",
+            "structure",
+            "pattern"
+          ],
+          "example": "The aircraft flew in a tight formation over the stadium.",
+          "countability": "countable",
+          "translations": {
+            "zh_TW": "隊形",
+            "ja_JP": "隊形",
+            "ko_KR": "대형",
+            "vi_VN": "đội hình",
+            "th_TH": "ขบวน"
+          },
+          "example_translations": {
+            "zh_TW": "飛機以緊密隊形飛越體育場上空。",
+            "ja_JP": "航空機はスタジアム上空を密集隊形で飛行した。",
+            "ko_KR": "항공기들은 경기장 상공을 촘촘한 대형으로 비행했다.",
+            "vi_VN": "Các máy bay bay theo đội hình sát nhau qua sân vận động.",
+            "th_TH": "เครื่องบินบินเป็นขบวนแน่นเหนือสนามกีฬา"
+          },
+          "definition_translations": {
+            "zh_TW": "人或事物的排列或結構",
+            "ja_JP": "人や物の配置または構造",
+            "ko_KR": "사람이나 사물의 배열 또는 구조",
+            "vi_VN": "sự sắp xếp hoặc cấu trúc của người hay vật",
+            "th_TH": "การจัดเรียงหรือโครงสร้างของคนหรือสิ่งของ"
+          },
+          "audio": "audio/formation-example-1.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "common formation",
+          "translations": {
+            "zh_TW": "共同陣型",
+            "ja_JP": "共通フォーメーション",
+            "ko_KR": "일반적인 형성",
+            "vi_VN": "sự hình thành chung",
+            "th_TH": "การก่อตัวทั่วไป"
+          }
+        },
+        {
+          "text": "new formation",
+          "translations": {
+            "zh_TW": "新陣型",
+            "ja_JP": "新しいフォーメーション",
+            "ko_KR": "새로운 형성",
+            "vi_VN": "sự hình thành mới",
+            "th_TH": "รูปแบบใหม่"
+          }
+        },
+        {
+          "text": "use of formation",
+          "translations": {
+            "zh_TW": "陣型的運用",
+            "ja_JP": "フォーメーションの使用",
+            "ko_KR": "형성의 사용",
+            "vi_VN": "sử dụng sự hình thành",
+            "th_TH": "การใช้รูปแบบ"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/formation.webp",
+      "originalImage": "artwork/formation.webp",
+      "audio": "audio/formation.m4a",
+      "exampleAudio": "audio/formation-example-0.m4a",
+      "artwork": {
+        "title": "Time Made Visible",
+        "titleZh": "看得見的時間",
+        "series": "The Earth's Surfaces",
+        "seriesZh": "大地的表面",
+        "medium": "Fine-art geological photography",
+        "mediumZh": "地質藝術攝影",
+        "style": "geological-photography",
+        "image": "artwork/museum-v1/formation.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "7409791b69da92320559e88968c99fc5",
+      "word": "structure",
+      "room": 12,
+      "slot": 4,
+      "ipa": "ˈstɹʌktʃɚ",
+      "kk": "ˈstrʌktʃɚ",
+      "pos": "n",
+      "definition": "the way something is built, arranged, or organized",
+      "example": "The structure of this building is uniquely designed, attracting many architecture enthusiasts to stop and admire.",
+      "translations": {
+        "zh_TW": "結構",
+        "ja_JP": "構造",
+        "ko_KR": "구조",
+        "vi_VN": "cấu trúc",
+        "th_TH": "โครงสร้าง"
+      },
+      "definitionTranslations": {
+        "zh_TW": "事物被建造、安排或組織的方式",
+        "ja_JP": "物事が作られ、配置され、組織される方法",
+        "ko_KR": "무언가가 만들어지고 배열되거나 조직된 방식",
+        "vi_VN": "cách một thứ được xây dựng, sắp xếp hoặc tổ chức",
+        "th_TH": "วิธีที่สิ่งหนึ่งถูกสร้าง จัดวาง หรือจัดระบบ"
+      },
+      "exampleTranslations": {
+        "zh_TW": "這個建築的結構設計非常獨特，吸引了許多建築愛好者駐足觀賞。",
+        "en_US": "The structure of this building is uniquely designed, attracting many architecture enthusiasts to stop and admire.",
+        "ja_JP": "この建物の構造は独特に設計されており、多くの建築愛好家が立ち止まって見とれています。",
+        "ko_KR": "이 건물의 구조는 독특하게 설계되어 있어 많은 건축 애호가들이 발걸음을 멈추고 감탄하게 합니다.",
+        "vi_VN": "Cấu trúc của tòa nhà này được thiết kế độc đáo, thu hút nhiều người yêu kiến trúc dừng lại chiêm ngưỡng.",
+        "th_TH": "โครงสร้างของอาคารนี้ได้รับการออกแบบอย่างมีเอกลักษณ์ ดึงดูดให้ผู้ที่ชื่นชอบสถาปัตยกรรมจำนวนมากหยุดชื่นชม"
+      },
+      "synonyms": [
+        "framework",
+        "arrangement",
+        "organization",
+        "form"
+      ],
+      "level": 9,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "the way something is built, arranged, or organized",
+          "synonyms": [
+            "framework",
+            "arrangement",
+            "organization",
+            "form"
+          ],
+          "example": null,
+          "countability": "both",
+          "translations": {
+            "zh_TW": "結構",
+            "ja_JP": "構造",
+            "ko_KR": "구조",
+            "vi_VN": "cấu trúc",
+            "th_TH": "โครงสร้าง"
+          },
+          "definition_translations": {
+            "zh_TW": "事物被建造、安排或組織的方式",
+            "ja_JP": "物事が作られ、配置され、組織される方法",
+            "ko_KR": "무언가가 만들어지고 배열되거나 조직된 방식",
+            "vi_VN": "cách một thứ được xây dựng, sắp xếp hoặc tổ chức",
+            "th_TH": "วิธีที่สิ่งหนึ่งถูกสร้าง จัดวาง หรือจัดระบบ"
+          }
+        },
+        {
+          "pos": "n",
+          "gloss": "a building or other constructed object",
+          "synonyms": [
+            "building",
+            "construction",
+            "edifice"
+          ],
+          "example": "The old stone structure was converted into a museum.",
+          "countability": "countable",
+          "translations": {
+            "zh_TW": "建築物",
+            "ja_JP": "建造物",
+            "ko_KR": "건축물",
+            "vi_VN": "công trình",
+            "th_TH": "สิ่งก่อสร้าง"
+          },
+          "example_translations": {
+            "zh_TW": "那座古老的石造建築被改建成博物館。",
+            "ja_JP": "その古い石造りの建物は博物館に改装されました。",
+            "ko_KR": "그 오래된 석조 건물은 박물관으로 개조되었습니다.",
+            "vi_VN": "Công trình bằng đá cũ đã được cải tạo thành bảo tàng.",
+            "th_TH": "สิ่งปลูกสร้างหินเก่าแก่ถูกดัดแปลงเป็นพิพิธภัณฑ์"
+          },
+          "definition_translations": {
+            "zh_TW": "建築物或其他建造物",
+            "ja_JP": "建物またはその他の建造物",
+            "ko_KR": "건물 또는 기타 건축물",
+            "vi_VN": "tòa nhà hoặc vật được xây dựng khác",
+            "th_TH": "อาคารหรือสิ่งก่อสร้างอื่น"
+          },
+          "audio": "audio/structure-example-1.m4a"
+        },
+        {
+          "pos": "v",
+          "gloss": "to arrange something according to a plan or system",
+          "synonyms": [
+            "arrange",
+            "organize",
+            "format",
+            "shape"
+          ],
+          "example": "The manager structured the training program into three modules.",
+          "transitivity": "transitive",
+          "translations": {
+            "zh_TW": "組織；構成",
+            "ja_JP": "構成する",
+            "ko_KR": "구성하다",
+            "vi_VN": "cấu trúc; sắp xếp",
+            "th_TH": "จัดโครงสร้าง"
+          },
+          "example_translations": {
+            "zh_TW": "經理將訓練課程規劃成三個模組。",
+            "ja_JP": "マネージャーは研修プログラムを3つのモジュールに構成しました。",
+            "ko_KR": "관리자는 교육 프로그램을 세 개의 모듈로 구성했습니다.",
+            "vi_VN": "Người quản lý đã cấu trúc chương trình đào tạo thành ba mô-đun.",
+            "th_TH": "ผู้จัดการจัดโครงสร้างโปรแกรมฝึกอบรมออกเป็นสามโมดูล"
+          },
+          "definition_translations": {
+            "zh_TW": "依照計畫或系統安排某事物",
+            "ja_JP": "計画や体系に従って何かを整えること",
+            "ko_KR": "계획이나 체계에 따라 무언가를 배열하는 것",
+            "vi_VN": "sắp xếp điều gì theo kế hoạch hoặc hệ thống",
+            "th_TH": "จัดบางสิ่งตามแผนหรือระบบ"
+          },
+          "audio": "audio/structure-example-2.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "common structure",
+          "translations": {
+            "zh_TW": "共同結構",
+            "ja_JP": "共通構造",
+            "ko_KR": "공통 구조",
+            "vi_VN": "cấu trúc chung",
+            "th_TH": "โครงสร้างทั่วไป"
+          }
+        },
+        {
+          "text": "new structure",
+          "translations": {
+            "zh_TW": "新結構",
+            "ja_JP": "新しい構造",
+            "ko_KR": "새로운 구조",
+            "vi_VN": "cấu trúc mới",
+            "th_TH": "โครงสร้างใหม่"
+          }
+        },
+        {
+          "text": "use of structure",
+          "translations": {
+            "zh_TW": "結構的使用",
+            "ja_JP": "構造の使用",
+            "ko_KR": "구조의 사용",
+            "vi_VN": "sử dụng cấu trúc",
+            "th_TH": "การใช้โครงสร้าง"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/structure.webp",
+      "originalImage": "artwork/structure.webp",
+      "audio": "audio/structure.m4a",
+      "exampleAudio": "audio/structure-example-0.m4a",
+      "artwork": {
+        "title": "An Order Within",
+        "titleZh": "內在的秩序",
+        "series": "The Earth's Surfaces",
+        "seriesZh": "大地的表面",
+        "medium": "Fine-art geological photography",
+        "mediumZh": "地質藝術攝影",
+        "style": "geological-photography",
+        "image": "artwork/museum-v1/structure.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "a72f9cfb689b7b946bb78bc7f17a2ccd",
+      "word": "durable",
+      "room": 12,
+      "slot": 5,
+      "ipa": "ˈdʊɹəbəl",
+      "kk": "ˈdʊrəbəl",
+      "pos": "adj",
+      "definition": "strong enough to last for a long time without breaking or wearing out",
+      "example": "Choosing some durable materials for furniture construction can make it last much longer.",
+      "translations": {
+        "zh_TW": "耐用",
+        "ja_JP": "耐久性のある",
+        "ko_KR": "내구성이 있는",
+        "vi_VN": "bền",
+        "th_TH": "ทนทาน"
+      },
+      "definitionTranslations": {
+        "zh_TW": "足夠堅固，可長久使用而不破損或磨損",
+        "ja_JP": "壊れたりすり減ったりせず長く使えるほど丈夫な",
+        "ko_KR": "부서지거나 닳지 않고 오래갈 만큼 튼튼한",
+        "vi_VN": "đủ bền để dùng lâu mà không hỏng hoặc mòn",
+        "th_TH": "แข็งแรงพอที่จะใช้ได้นานโดยไม่แตกหรือสึกหรอ"
+      },
+      "exampleTranslations": {
+        "zh_TW": "選擇一些耐用的材料來建造家具，這樣就能使它們使用得更長久。",
+        "en_US": "Choosing some durable materials for furniture construction can make it last much longer.",
+        "ja_JP": "家具を作るためにいくつかの耐久性のある材料を選ぶと、ずっと長持ちさせることができます。",
+        "ko_KR": "가구 제작에 내구성이 있는 소재를 선택하면 훨씬 오래 사용할 수 있습니다.",
+        "vi_VN": "Việc chọn một số vật liệu bền để làm đồ nội thất có thể giúp chúng bền lâu hơn nhiều.",
+        "th_TH": "การเลือกวัสดุที่ทนทานบางชนิดสำหรับการสร้างเฟอร์นิเจอร์สามารถทำให้มันคงทนได้นานขึ้นมาก"
+      },
+      "synonyms": [
+        "long-lasting",
+        "sturdy",
+        "hard-wearing",
+        "resilient"
+      ],
+      "level": 41,
+      "senses": [
+        {
+          "pos": "adj",
+          "gloss": "strong enough to last for a long time without breaking or wearing out",
+          "synonyms": [
+            "long-lasting",
+            "sturdy",
+            "hard-wearing",
+            "resilient"
+          ],
+          "example": null,
+          "translations": {
+            "zh_TW": "耐用",
+            "ja_JP": "耐久性のある",
+            "ko_KR": "내구성이 있는",
+            "vi_VN": "bền",
+            "th_TH": "ทนทาน"
+          },
+          "definition_translations": {
+            "zh_TW": "足夠堅固，可長久使用而不破損或磨損",
+            "ja_JP": "壊れたりすり減ったりせず長く使えるほど丈夫な",
+            "ko_KR": "부서지거나 닳지 않고 오래갈 만큼 튼튼한",
+            "vi_VN": "đủ bền để dùng lâu mà không hỏng hoặc mòn",
+            "th_TH": "แข็งแรงพอที่จะใช้ได้นานโดยไม่แตกหรือสึกหรอ"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "durable approach",
+          "translations": {
+            "zh_TW": "持久的方法",
+            "ja_JP": "耐久性のあるアプローチ",
+            "ko_KR": "지속 가능한 접근 방식",
+            "vi_VN": "cách tiếp cận bền vững",
+            "th_TH": "แนวทางที่คงทน"
+          }
+        },
+        {
+          "text": "highly durable",
+          "translations": {
+            "zh_TW": "高度耐用",
+            "ja_JP": "耐久性が高い",
+            "ko_KR": "내구성이 뛰어나다",
+            "vi_VN": "độ bền cao",
+            "th_TH": "มีความทนทานสูง"
+          }
+        },
+        {
+          "text": "remain durable",
+          "translations": {
+            "zh_TW": "保持耐用",
+            "ja_JP": "耐久性を維持する",
+            "ko_KR": "내구성을 유지하다",
+            "vi_VN": "vẫn bền",
+            "th_TH": "ยังคงคงทน"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/durable.webp",
+      "originalImage": "artwork/durable.webp",
+      "audio": "audio/durable.m4a",
+      "exampleAudio": "audio/durable-example-0.m4a",
+      "artwork": {
+        "title": "The Stone That Remains",
+        "titleZh": "歷久的石橋",
+        "series": "The Earth's Surfaces",
+        "seriesZh": "大地的表面",
+        "medium": "Fine-art geological photography",
+        "mediumZh": "地質藝術攝影",
+        "style": "geological-photography",
+        "image": "artwork/museum-v1/durable.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "9aa4e0a69120fcddde2df69a09a3e403",
+      "word": "illuminate",
+      "room": 13,
+      "slot": 0,
+      "ipa": "ˌɪˈlumɪnɪt",
+      "kk": "ˌɪˈlumɪnɪt",
+      "pos": "v",
+      "definition": "to light something up",
+      "example": "During dark nights, the tower's lights can illuminate the entire city, providing a sense of safety and comfort.",
+      "translations": {
+        "zh_TW": "照亮；提亮",
+        "ja_JP": "照らす",
+        "ko_KR": "비추다",
+        "vi_VN": "sáng tỏ",
+        "th_TH": "ส่องสว่าง"
+      },
+      "definitionTranslations": {
+        "zh_TW": "照亮某物",
+        "ja_JP": "何かを明るく照らす",
+        "ko_KR": "무언가를 밝게 비추다",
+        "vi_VN": "chiếu sáng thứ gì đó",
+        "th_TH": "ส่องให้บางสิ่งสว่าง"
+      },
+      "exampleTranslations": {
+        "zh_TW": "在黑暗的夜晚，塔樓的燈光可以照亮整個城市，讓人感到安全和舒適。",
+        "en_US": "During dark nights, the tower's lights can illuminate the entire city, providing a sense of safety and comfort.",
+        "ja_JP": "暗い夜には、塔の明かりが街全体を照らし、安全と安らぎを与えることがあります。",
+        "ko_KR": "어두운 밤에는 탑의 불빛이 도시 전체를 비추어 안전함과 편안함을 줍니다.",
+        "vi_VN": "Vào những đêm tối, ánh đèn của tòa tháp có thể chiếu sáng toàn bộ thành phố, mang lại cảm giác an toàn và thoải mái.",
+        "th_TH": "ในคืนที่มืดมิด แสงไฟของหอคอยสามารถส่องสว่างทั่วทั้งเมือง ทำให้รู้สึกปลอดภัยและสบายใจ"
+      },
+      "synonyms": [
+        "light",
+        "brighten",
+        "shine on"
+      ],
+      "level": 71,
+      "senses": [
+        {
+          "pos": "v",
+          "gloss": "to light something up",
+          "synonyms": [
+            "light",
+            "brighten",
+            "shine on"
+          ],
+          "example": null,
+          "transitivity": "transitive",
+          "translations": {
+            "zh_TW": "照亮；提亮",
+            "ja_JP": "照らす",
+            "ko_KR": "비추다",
+            "vi_VN": "sáng tỏ",
+            "th_TH": "ส่องสว่าง"
+          },
+          "definition_translations": {
+            "zh_TW": "照亮某物",
+            "ja_JP": "何かを明るく照らす",
+            "ko_KR": "무언가를 밝게 비추다",
+            "vi_VN": "chiếu sáng thứ gì đó",
+            "th_TH": "ส่องให้บางสิ่งสว่าง"
+          }
+        },
+        {
+          "pos": "v",
+          "gloss": "to make an idea or situation easier to understand",
+          "synonyms": [
+            "clarify",
+            "explain",
+            "reveal",
+            "shed light on"
+          ],
+          "example": "The chart helped illuminate the company's cash-flow problem.",
+          "transitivity": "transitive",
+          "translations": {
+            "zh_TW": "闡明；剖析；使明朗",
+            "ja_JP": "解明する；明らかにする",
+            "ko_KR": "명확히 밝히다; 자명하게 하다",
+            "vi_VN": "làm sáng tỏ; giải thích rõ",
+            "th_TH": "อธิบายให้กระจ่าง; ทำให้เข้าใจง่าย"
+          },
+          "example_translations": {
+            "zh_TW": "這張圖表有助於說明公司的現金流問題。",
+            "ja_JP": "その図表は、会社のキャッシュフロー問題を分かりやすく示すのに役立った。",
+            "ko_KR": "그 차트는 회사의 현금 흐름 문제를 이해하기 쉽게 설명하는 데 도움이 되었다.",
+            "vi_VN": "Biểu đồ đã giúp làm sáng tỏ vấn đề dòng tiền của công ty.",
+            "th_TH": "แผนภูมิช่วยอธิบายปัญหากระแสเงินสดของบริษัทให้เข้าใจง่ายขึ้น"
+          },
+          "definition_translations": {
+            "zh_TW": "使想法或情況更容易理解",
+            "ja_JP": "考えや状況を理解しやすくする",
+            "ko_KR": "생각이나 상황을 이해하기 쉽게 하다",
+            "vi_VN": "làm cho ý tưởng hoặc tình huống dễ hiểu hơn",
+            "th_TH": "ทำให้ความคิดหรือสถานการณ์เข้าใจง่ายขึ้น"
+          },
+          "audio": "audio/illuminate-example-1.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "illuminate the plan",
+          "translations": {
+            "zh_TW": "闡明計劃",
+            "ja_JP": "計画を照らす",
+            "ko_KR": "계획을 밝히다",
+            "vi_VN": "làm sáng tỏ kế hoạch",
+            "th_TH": "ส่องสว่างแผน"
+          }
+        },
+        {
+          "text": "carefully illuminate",
+          "translations": {
+            "zh_TW": "仔細照亮",
+            "ja_JP": "注意深く照らす",
+            "ko_KR": "조심스럽게 조명",
+            "vi_VN": "chiếu sáng cẩn thận",
+            "th_TH": "ส่องสว่างอย่างระมัดระวัง"
+          }
+        },
+        {
+          "text": "illuminate effectively",
+          "translations": {
+            "zh_TW": "有效照明",
+            "ja_JP": "効果的に照らす",
+            "ko_KR": "효과적으로 조명",
+            "vi_VN": "chiếu sáng hiệu quả",
+            "th_TH": "ส่องสว่างได้อย่างมีประสิทธิภาพ"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/illuminate.webp",
+      "originalImage": "artwork/illuminate.webp",
+      "audio": "audio/illuminate.m4a",
+      "exampleAudio": "audio/illuminate-example-0.m4a",
+      "artwork": {
+        "title": "The Lantern's Reach",
+        "titleZh": "燈火所及",
+        "series": "Light Within",
+        "seriesZh": "內在的光",
+        "medium": "Luminous oil and charcoal painting",
+        "mediumZh": "光影油畫與炭筆",
+        "style": "cavern-chiaroscuro",
+        "image": "artwork/museum-v1/illuminate.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "4c266c5c1c8597a6858461fb197add9d",
+      "word": "emerge",
+      "room": 13,
+      "slot": 1,
+      "ipa": "ɪˈmɝdʒ",
+      "kk": "ɪˈmɝdʒ",
+      "pos": "v",
+      "definition": "to become known, visible, or apparent",
+      "example": "After the crisis event, many issues began to emerge, demanding our attention for resolution.",
+      "translations": {
+        "zh_TW": "浮現",
+        "ja_JP": "現れる;表面化する",
+        "ko_KR": "떠오르다",
+        "vi_VN": "xuất hiện; lên bề mặt",
+        "th_TH": "ปรากฏ; เพื่อพื้นผิว"
+      },
+      "definitionTranslations": {
+        "zh_TW": "變得為人所知、可見或明顯",
+        "ja_JP": "知られる、見える、または明らかになる",
+        "ko_KR": "알려지거나 보이거나 분명해지다",
+        "vi_VN": "trở nên được biết đến, nhìn thấy hoặc rõ ràng",
+        "th_TH": "กลายเป็นที่รู้ เห็นได้ หรือชัดเจน"
+      },
+      "exampleTranslations": {
+        "zh_TW": "在那個危機事件後，許多問題開始浮現，要求我們解決。",
+        "en_US": "After the crisis event, many issues began to emerge, demanding our attention for resolution.",
+        "ja_JP": "危機の出来事の後、多くの問題が現れ始め、解決のために私たちの注意を必要としました。",
+        "ko_KR": "위기 사건 이후 많은 문제가 나타나기 시작했고, 해결을 위해 우리의 주의를 요구했습니다.",
+        "vi_VN": "Sau sự kiện khủng hoảng, nhiều vấn đề bắt đầu xuất hiện, đòi hỏi chúng ta phải chú ý để giải quyết.",
+        "th_TH": "หลังเหตุการณ์วิกฤต ปัญหามากมายเริ่มปรากฏขึ้น และต้องการความสนใจของเราเพื่อแก้ไข"
+      },
+      "synonyms": [
+        "appear",
+        "surface",
+        "arise",
+        "come out"
+      ],
+      "level": 51,
+      "senses": [
+        {
+          "pos": "v",
+          "gloss": "to become known, visible, or apparent",
+          "synonyms": [
+            "appear",
+            "surface",
+            "arise",
+            "come out"
+          ],
+          "example": null,
+          "transitivity": "intransitive",
+          "translations": {
+            "zh_TW": "浮現",
+            "ja_JP": "現れる;表面化する",
+            "ko_KR": "떠오르다",
+            "vi_VN": "xuất hiện; lên bề mặt",
+            "th_TH": "ปรากฏ; เพื่อพื้นผิว"
+          },
+          "definition_translations": {
+            "zh_TW": "變得為人所知、可見或明顯",
+            "ja_JP": "知られる、見える、または明らかになる",
+            "ko_KR": "알려지거나 보이거나 분명해지다",
+            "vi_VN": "trở nên được biết đến, nhìn thấy hoặc rõ ràng",
+            "th_TH": "กลายเป็นที่รู้ เห็นได้ หรือชัดเจน"
+          }
+        },
+        {
+          "pos": "v",
+          "gloss": "to come out from a place or situation",
+          "synonyms": [
+            "come out",
+            "exit",
+            "appear"
+          ],
+          "example": "The manager emerged from the meeting with a revised proposal.",
+          "transitivity": "intransitive",
+          "translations": {
+            "zh_TW": "顯露；走出來",
+            "ja_JP": "現れる",
+            "ko_KR": "나타나다",
+            "vi_VN": "xuất hiện",
+            "th_TH": "ปรากฏออกมา"
+          },
+          "example_translations": {
+            "zh_TW": "經理帶著修訂後的提案從會議中走出來。",
+            "ja_JP": "マネージャーは修正案を持って会議から出てきました。",
+            "ko_KR": "관리자는 수정된 제안서를 가지고 회의에서 나왔습니다.",
+            "vi_VN": "Người quản lý bước ra khỏi cuộc họp với một đề xuất đã được chỉnh sửa.",
+            "th_TH": "ผู้จัดการออกมาจากการประชุมพร้อมข้อเสนอฉบับแก้ไข"
+          },
+          "definition_translations": {
+            "zh_TW": "從某處或某種情況中出來",
+            "ja_JP": "場所や状況から出てくる",
+            "ko_KR": "장소나 상황에서 나오다",
+            "vi_VN": "đi ra khỏi một nơi hoặc tình huống",
+            "th_TH": "ออกมาจากสถานที่หรือสถานการณ์"
+          },
+          "audio": "audio/emerge-example-1.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "emerge the plan",
+          "translations": {
+            "zh_TW": "制定計劃",
+            "ja_JP": "計画を立てる",
+            "ko_KR": "계획을 세우다",
+            "vi_VN": "đưa ra kế hoạch",
+            "th_TH": "โผล่ออกมาตามแผน"
+          }
+        },
+        {
+          "text": "carefully emerge",
+          "translations": {
+            "zh_TW": "小心地出現",
+            "ja_JP": "慎重に出現する",
+            "ko_KR": "조심스럽게 나타나다",
+            "vi_VN": "cẩn thận xuất hiện",
+            "th_TH": "ออกมาอย่างระมัดระวัง"
+          }
+        },
+        {
+          "text": "emerge effectively",
+          "translations": {
+            "zh_TW": "有效地出現",
+            "ja_JP": "効果的に現れる",
+            "ko_KR": "효과적으로 나타나다",
+            "vi_VN": "nổi lên một cách hiệu quả",
+            "th_TH": "ออกมาได้อย่างมีประสิทธิภาพ"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/emerge.webp",
+      "originalImage": "artwork/emerge.webp",
+      "audio": "audio/emerge.m4a",
+      "exampleAudio": "audio/emerge-example-0.m4a",
+      "artwork": {
+        "title": "Into View",
+        "titleZh": "逐漸浮現",
+        "series": "Light Within",
+        "seriesZh": "內在的光",
+        "medium": "Luminous oil and charcoal painting",
+        "mediumZh": "光影油畫與炭筆",
+        "style": "cavern-chiaroscuro",
+        "image": "artwork/museum-v1/emerge.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "dc2c1188c854e08064399d52c56bb7b0",
+      "word": "mysterious",
+      "room": 13,
+      "slot": 2,
+      "ipa": "mɪˈstɪɹiəs",
+      "kk": "mɪˈstɪriəs",
+      "pos": "adj",
+      "definition": "strange, unclear, or difficult to explain",
+      "example": "The plot of this book is filled with mysterious elements that entice readers to delve deeper into its underlying meanings.",
+      "translations": {
+        "zh_TW": "神秘的",
+        "ja_JP": "神秘的な",
+        "ko_KR": "신비로운",
+        "vi_VN": "huyền bí",
+        "th_TH": "ลึกลับ"
+      },
+      "definitionTranslations": {
+        "zh_TW": "奇怪、不清楚或難以解釋的",
+        "ja_JP": "奇妙で、不明瞭、または説明しにくい",
+        "ko_KR": "이상하거나 불분명하거나 설명하기 어려운",
+        "vi_VN": "kỳ lạ, không rõ hoặc khó giải thích",
+        "th_TH": "แปลก ไม่ชัดเจน หรืออธิบายยาก"
+      },
+      "exampleTranslations": {
+        "zh_TW": "這本書的情節充滿了神秘的元素，讓讀者不禁想要繼續探索故事的深層意義。",
+        "en_US": "The plot of this book is filled with mysterious elements that entice readers to delve deeper into its underlying meanings.",
+        "ja_JP": "この本の筋書きは、読者をその根底にある意味をさらに深く掘り下げたくさせる神秘的な要素で満ちています。",
+        "ko_KR": "이 책의 줄거리는 독자들이 그 이면의 의미를 더 깊이 파고들고 싶게 만드는 신비로운 요소들로 가득하다.",
+        "vi_VN": "Cốt truyện của cuốn sách này đầy những yếu tố bí ẩn, lôi cuốn người đọc đào sâu hơn vào những ý nghĩa ẩn sau đó.",
+        "th_TH": "โครงเรื่องของหนังสือเล่มนี้เต็มไปด้วยองค์ประกอบลึกลับที่ดึงดูดให้ผู้อ่านเจาะลึกความหมายที่ซ่อนอยู่เบื้องหลัง"
+      },
+      "synonyms": [
+        "puzzling",
+        "strange",
+        "enigmatic",
+        "unexplained"
+      ],
+      "level": 47,
+      "senses": [
+        {
+          "pos": "adj",
+          "gloss": "strange, unclear, or difficult to explain",
+          "synonyms": [
+            "puzzling",
+            "strange",
+            "enigmatic",
+            "unexplained"
+          ],
+          "example": null,
+          "translations": {
+            "zh_TW": "神秘的",
+            "ja_JP": "神秘的な",
+            "ko_KR": "신비로운",
+            "vi_VN": "huyền bí",
+            "th_TH": "ลึกลับ"
+          },
+          "definition_translations": {
+            "zh_TW": "奇怪、不清楚或難以解釋的",
+            "ja_JP": "奇妙で、不明瞭、または説明しにくい",
+            "ko_KR": "이상하거나 불분명하거나 설명하기 어려운",
+            "vi_VN": "kỳ lạ, không rõ hoặc khó giải thích",
+            "th_TH": "แปลก ไม่ชัดเจน หรืออธิบายยาก"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "mysterious approach",
+          "translations": {
+            "zh_TW": "神秘的方法",
+            "ja_JP": "謎のアプローチ",
+            "ko_KR": "신비한 접근",
+            "vi_VN": "cách tiếp cận bí ẩn",
+            "th_TH": "วิธีการลึกลับ"
+          }
+        },
+        {
+          "text": "highly mysterious",
+          "translations": {
+            "zh_TW": "高度神秘",
+            "ja_JP": "非常に神秘的な",
+            "ko_KR": "매우 신비한",
+            "vi_VN": "rất bí ẩn",
+            "th_TH": "ลึกลับมาก"
+          }
+        },
+        {
+          "text": "remain mysterious",
+          "translations": {
+            "zh_TW": "保持神秘",
+            "ja_JP": "謎のまま",
+            "ko_KR": "신비롭게 남아",
+            "vi_VN": "vẫn còn bí ẩn",
+            "th_TH": "ยังคงลึกลับ"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/mysterious.webp",
+      "originalImage": "artwork/mysterious.webp",
+      "audio": "audio/mysterious.m4a",
+      "exampleAudio": "audio/mysterious-example-0.m4a",
+      "artwork": {
+        "title": "Beyond the Veil",
+        "titleZh": "薄霧的彼端",
+        "series": "Light Within",
+        "seriesZh": "內在的光",
+        "medium": "Luminous oil and charcoal painting",
+        "mediumZh": "光影油畫與炭筆",
+        "style": "cavern-chiaroscuro",
+        "image": "artwork/museum-v1/mysterious.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "09434f54360eaab801913aef2288fa9e",
+      "word": "clarity",
+      "room": 13,
+      "slot": 3,
+      "ipa": "ˈklɛɹəti",
+      "kk": "ˈklɛrəti",
+      "pos": "n",
+      "definition": "the quality of being clear and easy to understand, see, or hear",
+      "example": "When explaining complex concepts, clarity of expression is crucial so that everyone can easily understand.",
+      "translations": {
+        "zh_TW": "清晰度；清醒度",
+        "ja_JP": "明瞭さ",
+        "ko_KR": "명확성; 명쾌함",
+        "vi_VN": "độ rõ",
+        "th_TH": "ความชัดเจน; ความชัดเจน"
+      },
+      "definitionTranslations": {
+        "zh_TW": "清楚且易於理解、看見或聽見的品質",
+        "ja_JP": "明確で理解しやすく、見やすく、聞き取りやすい性質",
+        "ko_KR": "명확하고 이해하거나 보거나 듣기 쉬운 특성",
+        "vi_VN": "tính rõ ràng và dễ hiểu, dễ nhìn hoặc dễ nghe",
+        "th_TH": "คุณภาพของความชัดเจนและเข้าใจ มองเห็น หรือได้ยินง่าย"
+      },
+      "exampleTranslations": {
+        "zh_TW": "在解釋複雜的概念時，清晰的表達是至關重要的，這樣才能讓所有人都容易理解。",
+        "en_US": "When explaining complex concepts, clarity of expression is crucial so that everyone can easily understand.",
+        "ja_JP": "複雑な概念を説明するときは、誰もが簡単に理解できるよう、表現の明確さが極めて重要です。",
+        "ko_KR": "복잡한 개념을 설명할 때는 모두가 쉽게 이해할 수 있도록 표현의 명확성이 매우 중요합니다.",
+        "vi_VN": "Khi giải thích các khái niệm phức tạp, sự rõ ràng trong diễn đạt là rất quan trọng để mọi người đều có thể dễ dàng hiểu.",
+        "th_TH": "เมื่ออธิบายแนวคิดที่ซับซ้อน ความชัดเจนในการสื่อสารเป็นสิ่งสำคัญมาก เพื่อให้ทุกคนเข้าใจได้ง่าย"
+      },
+      "synonyms": [
+        "clearness",
+        "lucidity",
+        "precision"
+      ],
+      "level": 42,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "the quality of being clear and easy to understand, see, or hear",
+          "synonyms": [
+            "clearness",
+            "lucidity",
+            "precision"
+          ],
+          "example": null,
+          "countability": "uncountable",
+          "translations": {
+            "zh_TW": "清晰度；清醒度",
+            "ja_JP": "明瞭さ",
+            "ko_KR": "명확성; 명쾌함",
+            "vi_VN": "độ rõ",
+            "th_TH": "ความชัดเจน; ความชัดเจน"
+          },
+          "definition_translations": {
+            "zh_TW": "清楚且易於理解、看見或聽見的品質",
+            "ja_JP": "明確で理解しやすく、見やすく、聞き取りやすい性質",
+            "ko_KR": "명확하고 이해하거나 보거나 듣기 쉬운 특성",
+            "vi_VN": "tính rõ ràng và dễ hiểu, dễ nhìn hoặc dễ nghe",
+            "th_TH": "คุณภาพของความชัดเจนและเข้าใจ มองเห็น หรือได้ยินง่าย"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "clarity of speech",
+          "translations": {
+            "zh_TW": "語音清晰度",
+            "ja_JP": "話し方の明瞭さ",
+            "ko_KR": "말의 명확성",
+            "vi_VN": "độ rõ của lời nói",
+            "th_TH": "ความชัดเจนของคำพูด"
+          }
+        },
+        {
+          "text": "provide clarity",
+          "translations": {
+            "zh_TW": "提供清晰度",
+            "ja_JP": "明確さを提供する",
+            "ko_KR": "명확성을 제공하다",
+            "vi_VN": "cung cấp sự rõ ràng",
+            "th_TH": "ให้ความชัดเจน"
+          }
+        },
+        {
+          "text": "need greater clarity",
+          "translations": {
+            "zh_TW": "需要更清楚",
+            "ja_JP": "より明確さが必要だ",
+            "ko_KR": "더 큰 명확성이 필요하다",
+            "vi_VN": "cần rõ ràng hơn",
+            "th_TH": "ต้องการความชัดเจนมากขึ้น"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/clarity.webp",
+      "originalImage": "artwork/clarity.webp",
+      "audio": "audio/clarity.m4a",
+      "exampleAudio": "audio/clarity-example-0.m4a",
+      "artwork": {
+        "title": "The Water Clears",
+        "titleZh": "清澈之後",
+        "series": "Light Within",
+        "seriesZh": "內在的光",
+        "medium": "Luminous oil and charcoal painting",
+        "mediumZh": "光影油畫與炭筆",
+        "style": "cavern-chiaroscuro",
+        "image": "artwork/museum-v1/clarity.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "69d7c774cd4e5ea67e843fbc0d953d40",
+      "word": "perceive",
+      "room": 13,
+      "slot": 4,
+      "ipa": "pɚˈsiv",
+      "kk": "pɚˈsiv",
+      "pos": "v",
+      "definition": "to notice, understand, or become aware of something",
+      "example": "Because humans cannot detect infrared light naturally, our eyes fail to perceive infrared radiation beyond the visible spectrum.",
+      "translations": {
+        "zh_TW": "感知",
+        "ja_JP": "知覚する",
+        "ko_KR": "인지해",
+        "vi_VN": "nhận thức",
+        "th_TH": "รับรู้"
+      },
+      "definitionTranslations": {
+        "zh_TW": "注意到、理解或意識到某事",
+        "ja_JP": "何かに気づく、理解する、または認識する",
+        "ko_KR": "무언가를 알아차리거나 이해하거나 인식하다",
+        "vi_VN": "nhận thấy, hiểu, hoặc nhận thức được điều gì đó",
+        "th_TH": "สังเกตเห็น เข้าใจ หรือตระหนักถึงบางสิ่ง"
+      },
+      "exampleTranslations": {
+        "zh_TW": "因為人類無法自然地偵測紅外線光，我們的眼睛無法察覺超出可見光譜的紅外線輻射。",
+        "en_US": "Because humans cannot detect infrared light naturally, our eyes fail to perceive infrared radiation beyond the visible spectrum.",
+        "ja_JP": "人間は自然に赤外線光を検出できないため、私たちの目は可視光線のスペクトルを超えた赤外線放射を認識できません。",
+        "ko_KR": "인간은 자연적으로 적외선 빛을 감지할 수 없기 때문에 우리의 눈은 가시광선 스펙트럼을 넘어서는 적외선 복사에 인식하지 못합니다.",
+        "vi_VN": "Vì con người không thể phát hiện ánh sáng hồng ngoại một cách tự nhiên nên mắt chúng ta không thể nhận biết bức xạ hồng ngoại vượt quá dải quang phổ khả kiến.",
+        "th_TH": "เนื่องจากมนุษย์ไม่สามารถตรวจจับแสงอินฟราเรดได้โดยธรรมชาติ ดวงตาของเราจึงไม่สามารถรับรู้ถึงการแผ่รังสีอินฟราเรดที่อยู่เหนือสเปกตรัมที่มองเห็นได้"
+      },
+      "synonyms": [
+        "notice",
+        "sense",
+        "detect",
+        "recognize",
+        "understand"
+      ],
+      "level": 59,
+      "senses": [
+        {
+          "pos": "v",
+          "gloss": "to notice, understand, or become aware of something",
+          "synonyms": [
+            "notice",
+            "sense",
+            "detect",
+            "recognize",
+            "understand"
+          ],
+          "example": null,
+          "transitivity": "transitive",
+          "translations": {
+            "zh_TW": "感知",
+            "ja_JP": "知覚する",
+            "ko_KR": "인지해",
+            "vi_VN": "nhận thức",
+            "th_TH": "รับรู้"
+          },
+          "definition_translations": {
+            "zh_TW": "注意到、理解或意識到某事",
+            "ja_JP": "何かに気づく、理解する、または認識する",
+            "ko_KR": "무언가를 알아차리거나 이해하거나 인식하다",
+            "vi_VN": "nhận thấy, hiểu, hoặc nhận thức được điều gì đó",
+            "th_TH": "สังเกตเห็น เข้าใจ หรือตระหนักถึงบางสิ่ง"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "perceive the plan",
+          "translations": {
+            "zh_TW": "感知計劃",
+            "ja_JP": "計画を認識する",
+            "ko_KR": "계획을 인지하다",
+            "vi_VN": "nhận thức được kế hoạch",
+            "th_TH": "รับรู้ถึงแผน"
+          }
+        },
+        {
+          "text": "carefully perceive",
+          "translations": {
+            "zh_TW": "仔細感知",
+            "ja_JP": "注意深く認識する",
+            "ko_KR": "조심스럽게 인식하다",
+            "vi_VN": "nhận thức cẩn thận",
+            "th_TH": "รับรู้อย่างระมัดระวัง"
+          }
+        },
+        {
+          "text": "perceive effectively",
+          "translations": {
+            "zh_TW": "有效地感知",
+            "ja_JP": "効果的に認識する",
+            "ko_KR": "효과적으로 인지하다",
+            "vi_VN": "nhận thức một cách hiệu quả",
+            "th_TH": "รับรู้ได้อย่างมีประสิทธิภาพ"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/perceive.webp",
+      "originalImage": "artwork/perceive.webp",
+      "audio": "audio/perceive.m4a",
+      "exampleAudio": "audio/perceive-example-0.m4a",
+      "artwork": {
+        "title": "Noticing the Hidden Shape",
+        "titleZh": "看見隱藏的形狀",
+        "series": "Light Within",
+        "seriesZh": "內在的光",
+        "medium": "Luminous oil and charcoal painting",
+        "mediumZh": "光影油畫與炭筆",
+        "style": "cavern-chiaroscuro",
+        "image": "artwork/museum-v1/perceive.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "74efb17cab587f85be52296449f1d9e7",
+      "word": "reveal",
+      "room": 13,
+      "slot": 5,
+      "ipa": "ɹɪˈvil",
+      "kk": "rɪˈvil",
+      "pos": "v",
+      "definition": "to make something known or visible",
+      "example": "The scientist's latest research will reveal the connection between healthy eating and mental health.",
+      "translations": {
+        "zh_TW": "揭示",
+        "ja_JP": "明らかにする",
+        "ko_KR": "드러내다",
+        "vi_VN": "để hiển thị; tiết lộ",
+        "th_TH": "เพื่อแสดง; ที่จะเปิดเผย"
+      },
+      "definitionTranslations": {
+        "zh_TW": "使某事為人所知或可見",
+        "ja_JP": "何かを知らせる、または見えるようにする",
+        "ko_KR": "무언가를 알려지게 하거나 보이게 하다",
+        "vi_VN": "làm cho điều gì được biết đến hoặc nhìn thấy",
+        "th_TH": "ทำให้บางสิ่งเป็นที่รู้หรือมองเห็นได้"
+      },
+      "exampleTranslations": {
+        "zh_TW": "科學家的最新研究揭示了健康飲食與心理健康之間的關係。",
+        "en_US": "The scientist's latest research will reveal the connection between healthy eating and mental health.",
+        "ja_JP": "研究者の最新の研究は、健康的な食事とメンタルヘルスの関係を明らかにするでしょう。",
+        "ko_KR": "과학자의 최신 연구는 건강한 식습관과 정신 건강의 연관성을 밝혀낼 것입니다.",
+        "vi_VN": "Nghiên cứu mới nhất của nhà khoa học sẽ làm sáng tỏ mối liên hệ giữa việc ăn uống lành mạnh và sức khỏe tinh thần.",
+        "th_TH": "การวิจัยล่าสุดของนักวิทยาศาสตร์จะเปิดเผยความเชื่อมโยงระหว่างการกินอาหารเพื่อสุขภาพกับสุขภาพจิต"
+      },
+      "synonyms": [
+        "show",
+        "disclose",
+        "uncover",
+        "expose"
+      ],
+      "level": 39,
+      "senses": [
+        {
+          "pos": "v",
+          "gloss": "to make something known or visible",
+          "synonyms": [
+            "show",
+            "disclose",
+            "uncover",
+            "expose"
+          ],
+          "example": null,
+          "transitivity": "transitive",
+          "translations": {
+            "zh_TW": "揭示",
+            "ja_JP": "明らかにする",
+            "ko_KR": "드러내다",
+            "vi_VN": "để hiển thị; tiết lộ",
+            "th_TH": "เพื่อแสดง; ที่จะเปิดเผย"
+          },
+          "definition_translations": {
+            "zh_TW": "使某事為人所知或可見",
+            "ja_JP": "何かを知らせる、または見えるようにする",
+            "ko_KR": "무언가를 알려지게 하거나 보이게 하다",
+            "vi_VN": "làm cho điều gì được biết đến hoặc nhìn thấy",
+            "th_TH": "ทำให้บางสิ่งเป็นที่รู้หรือมองเห็นได้"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "reveal character",
+          "translations": {
+            "zh_TW": "揭示性格",
+            "ja_JP": "性格を明らかにする",
+            "ko_KR": "성격을 드러내다",
+            "vi_VN": "tiết lộ tính cách",
+            "th_TH": "เปิดเผยตัวละคร"
+          }
+        },
+        {
+          "text": "reveal patterns",
+          "translations": {
+            "zh_TW": "揭示模式",
+            "ja_JP": "パターンを明らかにする",
+            "ko_KR": "패턴을 드러내다",
+            "vi_VN": "tiết lộ mẫu",
+            "th_TH": "เปิดเผยรูปแบบ"
+          }
+        },
+        {
+          "text": "reveal information",
+          "translations": {
+            "zh_TW": "透露訊息",
+            "ja_JP": "情報を明らかにする",
+            "ko_KR": "정보를 공개하다",
+            "vi_VN": "tiết lộ thông tin",
+            "th_TH": "เปิดเผยข้อมูล"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/reveal.webp",
+      "originalImage": "artwork/reveal.webp",
+      "audio": "audio/reveal.m4a",
+      "exampleAudio": "audio/reveal-example-0.m4a",
+      "artwork": {
+        "title": "What the Light Uncovers",
+        "titleZh": "光所揭示的事",
+        "series": "Light Within",
+        "seriesZh": "內在的光",
+        "medium": "Luminous oil and charcoal painting",
+        "mediumZh": "光影油畫與炭筆",
+        "style": "cavern-chiaroscuro",
+        "image": "artwork/museum-v1/reveal.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "c5c58b818cb00c30acded1bc1cb6d8e1",
+      "word": "tunnel",
+      "room": 14,
+      "slot": 0,
+      "ipa": "ˈtʌnəl",
+      "kk": "ˈtʌnəl",
+      "pos": "n",
+      "definition": "an underground or covered passage through something",
+      "example": "Engineers dug a long underground tunnel straight through the mountain to allow trains to pass through.",
+      "translations": {
+        "zh_TW": "隧道",
+        "ja_JP": "トンネル",
+        "ko_KR": "터널",
+        "vi_VN": "lối đi; đường hầm",
+        "th_TH": "ทาง; อุโมงค์"
+      },
+      "definitionTranslations": {
+        "zh_TW": "穿過某物的地下或有遮蓋通道",
+        "ja_JP": "何かを通り抜ける地下または覆われた通路",
+        "ko_KR": "무언가를 통과하는 지하 또는 덮인 통로",
+        "vi_VN": "lối đi ngầm hoặc có mái che xuyên qua thứ gì đó",
+        "th_TH": "ทางเดินใต้ดินหรือมีหลังคาคลุมที่ผ่านบางสิ่ง"
+      },
+      "exampleTranslations": {
+        "zh_TW": "工程師在大山中穿鑿了一條長長的地下隧道，以便火車能夠通過。",
+        "en_US": "Engineers dug a long underground tunnel straight through the mountain to allow trains to pass through.",
+        "ja_JP": "エンジニアは列車が通過できるように、山を真っ直ぐ貫く長い地下トンネルを掘りました。",
+        "ko_KR": "엔지니어들은 기차가 통과할 수 있도록 산을 관통하는 긴 지하 터널을 뚫었습니다.",
+        "vi_VN": "Các kỹ sư đã đào một đường hầm ngầm dài đâm xuyên qua núi để tàu hỏa có thể đi qua.",
+        "th_TH": "วิศวกรได้ขุดอุโมงค์ใต้ดินยาวตรงทะลุภูเขาเพื่อให้รถไฟสามารถวิ่งผ่านไปได้"
+      },
+      "synonyms": [
+        "passage",
+        "underpass",
+        "tube"
+      ],
+      "level": 38,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "an underground or covered passage through something",
+          "synonyms": [
+            "passage",
+            "underpass",
+            "tube"
+          ],
+          "example": null,
+          "countability": "countable",
+          "translations": {
+            "zh_TW": "隧道",
+            "ja_JP": "トンネル",
+            "ko_KR": "터널",
+            "vi_VN": "lối đi; đường hầm",
+            "th_TH": "ทาง; อุโมงค์"
+          },
+          "definition_translations": {
+            "zh_TW": "穿過某物的地下或有遮蓋通道",
+            "ja_JP": "何かを通り抜ける地下または覆われた通路",
+            "ko_KR": "무언가를 통과하는 지하 또는 덮인 통로",
+            "vi_VN": "lối đi ngầm hoặc có mái che xuyên qua thứ gì đó",
+            "th_TH": "ทางเดินใต้ดินหรือมีหลังคาคลุมที่ผ่านบางสิ่ง"
+          }
+        },
+        {
+          "pos": "v",
+          "gloss": "to dig or make an underground passage",
+          "synonyms": [
+            "dig",
+            "excavate",
+            "burrow"
+          ],
+          "example": "Engineers will tunnel through the mountain to shorten the route.",
+          "transitivity": "both",
+          "translations": {
+            "zh_TW": "開鑿隧道；挖地道",
+            "ja_JP": "トンネルを掘る；掘削する",
+            "ko_KR": "터널을 뚫다; 굴을 파다",
+            "vi_VN": "đào hầm; làm đường hầm",
+            "th_TH": "ขุดอุโมงค์; สกัดอุโมงค์"
+          },
+          "example_translations": {
+            "zh_TW": "工程師將開鑿穿越山體的隧道，以縮短路線。",
+            "ja_JP": "技術者たちはルートを短縮するため、山を貫くトンネルを掘る予定だ。",
+            "ko_KR": "엔지니어들은 경로를 단축하기 위해 산을 관통하는 터널을 뚫을 것이다.",
+            "vi_VN": "Các kỹ sư sẽ đào đường hầm xuyên qua ngọn núi để rút ngắn tuyến đường.",
+            "th_TH": "วิศวกรจะขุดอุโมงค์ทะลุภูเขาเพื่อลดระยะทาง"
+          },
+          "definition_translations": {
+            "zh_TW": "挖掘或建造地下通道",
+            "ja_JP": "地下通路を掘る、または作る",
+            "ko_KR": "지하 통로를 파거나 만들다",
+            "vi_VN": "đào hoặc tạo một lối đi ngầm",
+            "th_TH": "ขุดหรือสร้างทางเดินใต้ดิน"
+          },
+          "audio": "audio/tunnel-example-1.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "common tunnel",
+          "translations": {
+            "zh_TW": "共同隧道",
+            "ja_JP": "共同トンネル",
+            "ko_KR": "공동터널",
+            "vi_VN": "đường hầm chung",
+            "th_TH": "อุโมงค์ทั่วไป"
+          }
+        },
+        {
+          "text": "new tunnel",
+          "translations": {
+            "zh_TW": "新隧道",
+            "ja_JP": "新しいトンネル",
+            "ko_KR": "새로운 터널",
+            "vi_VN": "đường hầm mới",
+            "th_TH": "อุโมงค์ใหม่"
+          }
+        },
+        {
+          "text": "use of tunnel",
+          "translations": {
+            "zh_TW": "使用隧道",
+            "ja_JP": "トンネルの使用",
+            "ko_KR": "터널의 이용",
+            "vi_VN": "sử dụng đường hầm",
+            "th_TH": "การใช้อุโมงค์"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/tunnel.webp",
+      "originalImage": "artwork/tunnel.webp",
+      "audio": "audio/tunnel.m4a",
+      "exampleAudio": "audio/tunnel-example-0.m4a",
+      "artwork": {
+        "title": "A Way Through",
+        "titleZh": "穿越之路",
+        "series": "Beyond the Familiar",
+        "seriesZh": "熟悉之外",
+        "medium": "Romantic landscape oil painting",
+        "mediumZh": "浪漫風景油畫",
+        "style": "deep-discovery-oil",
+        "image": "artwork/museum-v1/tunnel.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "cf8b3a617dce38cf3b36b4917b72f2e8",
+      "word": "exploration",
+      "room": 14,
+      "slot": 1,
+      "ipa": "ˌɛksplɚˈeɪʃən",
+      "kk": "ˌɛksplɚˈeʃən",
+      "pos": "n",
+      "definition": "the act of traveling through or studying something unknown",
+      "example": "Human exploration of the unknown reflects our thirst for knowledge, often promoting advancements in technology and culture.",
+      "translations": {
+        "zh_TW": "探索",
+        "ja_JP": "探検",
+        "ko_KR": "탐사",
+        "vi_VN": "khám phá",
+        "th_TH": "การสำรวจ"
+      },
+      "definitionTranslations": {
+        "zh_TW": "穿越或研究未知事物的探索行為",
+        "ja_JP": "未知の場所を移動するか、または研究する行為、探索",
+        "ko_KR": "미지의 것을 탐험하거나 연구하는 행위",
+        "vi_VN": "hành vi đi qua hoặc nghiên cứu một cái gì đó chưa biết",
+        "th_TH": "การเดินทางผ่านหรือการศึกษาบางสิ่งที่ไม่รู้จัก"
+      },
+      "exampleTranslations": {
+        "zh_TW": "人類對於未知事物的探索反映了我們對知識的渴望，經常促進了科技和文化的進步。",
+        "en_US": "Human exploration of the unknown reflects our thirst for knowledge, often promoting advancements in technology and culture.",
+        "ja_JP": "未知の世界を探究する人類の探求は知識への渇望を反映しており、しばしば技術や文化の進歩を促します。",
+        "ko_KR": "미지의 세계를 탐구하는 인간의 탐사는 지식에 대한 우리의 갈망을 반영하며, 종종 기술과 문화의 발전을 촉진합니다.",
+        "vi_VN": "Sự khám phá của con người đối với những điều chưa biết phản ánh khát khao tri thức của chúng ta, và thường thúc đẩy những tiến bộ trong công nghệ và văn hóa.",
+        "th_TH": "ความอยากรู้อยากเห็นของมนุษย์ต่อสิ่งที่ไม่รู้สะท้อนถึงความกระหายในการเรียนรู้ของเรา ซึ่งมักส่งเสริมความก้าวหน้าในด้านเทคโนโลยีและวัฒนธรรม"
+      },
+      "synonyms": [
+        "investigation",
+        "survey",
+        "search"
+      ],
+      "level": 34,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "the act of traveling through or studying something unknown",
+          "synonyms": [
+            "investigation",
+            "survey",
+            "search"
+          ],
+          "example": null,
+          "countability": "both",
+          "translations": {
+            "zh_TW": "探索",
+            "ja_JP": "探検",
+            "ko_KR": "탐사",
+            "vi_VN": "khám phá",
+            "th_TH": "การสำรวจ"
+          },
+          "definition_translations": {
+            "zh_TW": "穿越或研究未知事物的探索行為",
+            "ja_JP": "未知の場所を移動するか、または研究する行為、探索",
+            "ko_KR": "미지의 것을 탐험하거나 연구하는 행위",
+            "vi_VN": "hành vi đi qua hoặc nghiên cứu một cái gì đó chưa biết",
+            "th_TH": "การเดินทางผ่านหรือการศึกษาบางสิ่งที่ไม่รู้จัก"
+          }
+        },
+        {
+          "pos": "n",
+          "gloss": "careful examination of an idea or subject",
+          "synonyms": [
+            "study",
+            "analysis",
+            "examination"
+          ],
+          "example": "The proposal includes an exploration of new sales channels.",
+          "countability": "both",
+          "translations": {
+            "zh_TW": "探討",
+            "ja_JP": "検討",
+            "ko_KR": "검토",
+            "vi_VN": "sự xem xét",
+            "th_TH": "การสำรวจ"
+          },
+          "example_translations": {
+            "zh_TW": "該提案包含對新銷售通路的探討。",
+            "ja_JP": "その提案には新しい販売チャネルの検討が含まれています。",
+            "ko_KR": "그 제안서에는 새로운 판매 채널에 대한 검토가 포함되어 있습니다.",
+            "vi_VN": "Đề xuất bao gồm việc xem xét kỹ các kênh bán hàng mới.",
+            "th_TH": "ข้อเสนอนี้รวมถึงการสำรวจช่องทางการขายใหม่"
+          },
+          "definition_translations": {
+            "zh_TW": "對某個想法或主題的仔細探討或審查",
+            "ja_JP": "アイデアや主題の詳細な調査",
+            "ko_KR": "아이디어나 주제에 대한 신중한 검토",
+            "vi_VN": "sự xem xét cẩn thận một ý tưởng hoặc chủ đề",
+            "th_TH": "การตรวจสอบความคิดหรือประเด็นอย่างละเอียดถี่ถ้วน"
+          },
+          "audio": "audio/exploration-example-1.m4a"
+        }
+      ],
+      "collocations": [
+        {
+          "text": "common exploration",
+          "translations": {
+            "zh_TW": "共同探索",
+            "ja_JP": "共通の探索",
+            "ko_KR": "공동탐사",
+            "vi_VN": "thăm dò chung",
+            "th_TH": "การสำรวจทั่วไป"
+          }
+        },
+        {
+          "text": "new exploration",
+          "translations": {
+            "zh_TW": "新的探索",
+            "ja_JP": "新しい探検",
+            "ko_KR": "새로운 탐험",
+            "vi_VN": "thăm dò mới",
+            "th_TH": "การสำรวจใหม่"
+          }
+        },
+        {
+          "text": "use of exploration",
+          "translations": {
+            "zh_TW": "利用探索",
+            "ja_JP": "探査の使用",
+            "ko_KR": "탐사의 활용",
+            "vi_VN": "sử dụng thăm dò",
+            "th_TH": "การใช้การสำรวจ"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/exploration.webp",
+      "originalImage": "artwork/exploration.webp",
+      "audio": "audio/exploration.m4a",
+      "exampleAudio": "audio/exploration-example-0.m4a",
+      "artwork": {
+        "title": "The Unfamiliar Shore",
+        "titleZh": "未知的岸邊",
+        "series": "Beyond the Familiar",
+        "seriesZh": "熟悉之外",
+        "medium": "Romantic landscape oil painting",
+        "mediumZh": "浪漫風景油畫",
+        "style": "deep-discovery-oil",
+        "image": "artwork/museum-v1/exploration.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "eec845982934b9c2b441c03f04e908f2",
+      "word": "discover",
+      "room": 14,
+      "slot": 2,
+      "ipa": "dɪˈskʌvɚ",
+      "kk": "dɪˈskʌvɚ",
+      "pos": "v",
+      "definition": "to find unexpectedly or during a search; to become aware of a fact or situation",
+      "example": "Scientists work hard to find new methods and techniques to discover the causes of diseases and improve human welfare.",
+      "translations": {
+        "zh_TW": "發現",
+        "ja_JP": "発見する",
+        "ko_KR": "발견하다",
+        "vi_VN": "khám phá",
+        "th_TH": "ค้นพบ"
+      },
+      "definitionTranslations": {
+        "zh_TW": "意外或搜尋時找到；察覺某事實或情況",
+        "ja_JP": "偶然または探索中に見つける；事実や状況に気づく",
+        "ko_KR": "뜻밖에 또는 찾는 중에 발견하다; 사실이나 상황을 알게 되다",
+        "vi_VN": "tìm thấy bất ngờ hoặc khi tìm kiếm; nhận ra một sự việc hay tình huống",
+        "th_TH": "พบโดยบังเอิญหรือระหว่างค้นหา; ตระหนักถึงข้อเท็จจริงหรือสถานการณ์"
+      },
+      "exampleTranslations": {
+        "zh_TW": "科學家們努力尋找新的方法和技術來發現疾病的根源，以改善人們的福祉。",
+        "en_US": "Scientists work hard to find new methods and techniques to discover the causes of diseases and improve human welfare.",
+        "ja_JP": "科学者たちは、病気の原因を発見し、人間の福祉を向上させるために、新しい方法や技術を見つけるために懸命に働いています。",
+        "ko_KR": "과학자들은 질병의 원인을 발견하고 인간 복지를 개선하기 위해 새로운 방법과 기술을 찾는 데 열심히 노력한다.",
+        "vi_VN": "Các nhà khoa học làm việc chăm chỉ để tìm ra những phương pháp và kỹ thuật mới nhằm khám phá nguyên nhân của bệnh tật và cải thiện phúc lợi con người.",
+        "th_TH": "นักวิทยาศาสตร์ทำงานอย่างหนักเพื่อค้นหาวิธีการและเทคนิคใหม่ ๆ เพื่อค้นหาสาเหตุของโรคและปรับปรุงสวัสดิภาพของมนุษย์"
+      },
+      "synonyms": [
+        "find",
+        "locate",
+        "detect",
+        "uncover",
+        "encounter"
+      ],
+      "level": 20,
+      "senses": [
+        {
+          "pos": "v",
+          "gloss": "to find unexpectedly or during a search; to become aware of a fact or situation",
+          "synonyms": [
+            "find",
+            "locate",
+            "detect",
+            "uncover",
+            "encounter"
+          ],
+          "example": null,
+          "transitivity": "transitive",
+          "translations": {
+            "zh_TW": "發現",
+            "ja_JP": "発見する",
+            "ko_KR": "발견하다",
+            "vi_VN": "khám phá",
+            "th_TH": "ค้นพบ"
+          },
+          "definition_translations": {
+            "zh_TW": "意外或搜尋時找到；察覺某事實或情況",
+            "ja_JP": "偶然または探索中に見つける；事実や状況に気づく",
+            "ko_KR": "뜻밖에 또는 찾는 중에 발견하다; 사실이나 상황을 알게 되다",
+            "vi_VN": "tìm thấy bất ngờ hoặc khi tìm kiếm; nhận ra một sự việc hay tình huống",
+            "th_TH": "พบโดยบังเอิญหรือระหว่างค้นหา; ตระหนักถึงข้อเท็จจริงหรือสถานการณ์"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "discover evidence",
+          "translations": {
+            "zh_TW": "發現證據",
+            "ja_JP": "証拠を発見する",
+            "ko_KR": "증거를 발견하다",
+            "vi_VN": "khám phá bằng chứng",
+            "th_TH": "ค้นพบหลักฐาน"
+          }
+        },
+        {
+          "text": "discover the plan",
+          "translations": {
+            "zh_TW": "發現計劃",
+            "ja_JP": "計画を発見する",
+            "ko_KR": "계획을 발견하다",
+            "vi_VN": "khám phá kế hoạch",
+            "th_TH": "ค้นพบแผน"
+          }
+        },
+        {
+          "text": "carefully discover",
+          "translations": {
+            "zh_TW": "仔細發現",
+            "ja_JP": "注意深く発見する",
+            "ko_KR": "조심스럽게 발견하다",
+            "vi_VN": "khám phá cẩn thận",
+            "th_TH": "ค้นพบอย่างระมัดระวัง"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/discover.webp",
+      "originalImage": "artwork/discover.webp",
+      "audio": "audio/discover.m4a",
+      "exampleAudio": "audio/discover-example-0.m4a",
+      "artwork": {
+        "title": "The First Glimpse",
+        "titleZh": "初見的瞬間",
+        "series": "Beyond the Familiar",
+        "seriesZh": "熟悉之外",
+        "medium": "Romantic landscape oil painting",
+        "mediumZh": "浪漫風景油畫",
+        "style": "deep-discovery-oil",
+        "image": "artwork/museum-v1/discover.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "3e0dc7b9021c94182f30f2bda8d9f0ac",
+      "word": "insight",
+      "room": 14,
+      "slot": 3,
+      "ipa": "ˈɪnˌsaɪt",
+      "kk": "ˈɪnˌsaɪt",
+      "pos": "n",
+      "definition": "a deep and clear understanding of a person, situation, or problem",
+      "example": "This profound insight allows readers to gain a new understanding of how society operates.",
+      "translations": {
+        "zh_TW": "洞察",
+        "ja_JP": "洞察",
+        "ko_KR": "통찰",
+        "vi_VN": "cái nhìn sâu sắc",
+        "th_TH": "ความเข้าใจลึกซึ้ง"
+      },
+      "definitionTranslations": {
+        "zh_TW": "對人、情況或問題的深入且清晰的理解",
+        "ja_JP": "人、状況、または問題に対する深く明確な理解",
+        "ko_KR": "사람, 상황 또는 문제에 대한 깊고 명확한 이해",
+        "vi_VN": "sự hiểu biết sâu sắc và rõ ràng về một người, hoàn cảnh hoặc vấn đề",
+        "th_TH": "ความเข้าใจอย่างลึกซึ้งและชัดเจนเกี่ยวกับบุคคล สถานการณ์ หรือปัญหา"
+      },
+      "exampleTranslations": {
+        "zh_TW": "這句話深刻的洞察，使得讀者對於社會的運作有了全新的理解。",
+        "en_US": "This profound insight allows readers to gain a new understanding of how society operates.",
+        "ja_JP": "この深い洞察によって、読者は社会がどのように機能しているのかを新たに理解できます。",
+        "ko_KR": "이 깊은 통찰은 독자들이 사회가 어떻게 작동하는지에 대한 새로운 이해를 얻도록 해 줍니다.",
+        "vi_VN": "Cái nhìn thấu suốt sâu sắc này giúp độc giả có được sự hiểu biết mới về cách xã hội vận hành.",
+        "th_TH": "ความเข้าใจอย่างลึกซึ้งนี้ช่วยให้ผู้อ่านได้เข้าใจใหม่เกี่ยวกับวิธีที่สังคมดำเนินไป"
+      },
+      "synonyms": [
+        "understanding",
+        "perception",
+        "awareness",
+        "discernment"
+      ],
+      "level": 30,
+      "senses": [
+        {
+          "pos": "n",
+          "gloss": "a deep and clear understanding of a person, situation, or problem",
+          "synonyms": [
+            "understanding",
+            "perception",
+            "awareness",
+            "discernment"
+          ],
+          "example": null,
+          "countability": "both",
+          "translations": {
+            "zh_TW": "洞察",
+            "ja_JP": "洞察",
+            "ko_KR": "통찰",
+            "vi_VN": "cái nhìn sâu sắc",
+            "th_TH": "ความเข้าใจลึกซึ้ง"
+          },
+          "definition_translations": {
+            "zh_TW": "對人、情況或問題的深入且清晰的理解",
+            "ja_JP": "人、状況、または問題に対する深く明確な理解",
+            "ko_KR": "사람, 상황 또는 문제에 대한 깊고 명확한 이해",
+            "vi_VN": "sự hiểu biết sâu sắc và rõ ràng về một người, hoàn cảnh hoặc vấn đề",
+            "th_TH": "ความเข้าใจอย่างลึกซึ้งและชัดเจนเกี่ยวกับบุคคล สถานการณ์ หรือปัญหา"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "gain insight",
+          "translations": {
+            "zh_TW": "獲得洞察力",
+            "ja_JP": "洞察力を得る",
+            "ko_KR": "통찰력을 얻다",
+            "vi_VN": "đạt được cái nhìn sâu sắc",
+            "th_TH": "ได้รับข้อมูลเชิงลึก"
+          }
+        },
+        {
+          "text": "common insight",
+          "translations": {
+            "zh_TW": "共同見解",
+            "ja_JP": "共通の洞察",
+            "ko_KR": "공통의 통찰력",
+            "vi_VN": "cái nhìn sâu sắc chung",
+            "th_TH": "ความเข้าใจทั่วไป"
+          }
+        },
+        {
+          "text": "new insight",
+          "translations": {
+            "zh_TW": "新見解",
+            "ja_JP": "新しい洞察",
+            "ko_KR": "새로운 통찰력",
+            "vi_VN": "cái nhìn sâu sắc mới",
+            "th_TH": "ความเข้าใจใหม่"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/insight.webp",
+      "originalImage": "artwork/insight.webp",
+      "audio": "audio/insight.m4a",
+      "exampleAudio": "audio/insight-example-0.m4a",
+      "artwork": {
+        "title": "The Pattern Becomes Clear",
+        "titleZh": "豁然明白",
+        "series": "Beyond the Familiar",
+        "seriesZh": "熟悉之外",
+        "medium": "Romantic landscape oil painting",
+        "mediumZh": "浪漫風景油畫",
+        "style": "deep-discovery-oil",
+        "image": "artwork/museum-v1/insight.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "8acaf93fbc49d4504ae8b7623c08b64c",
+      "word": "remarkable",
+      "room": 14,
+      "slot": 4,
+      "ipa": "ɹɪˈmɑɹkəbəl",
+      "kk": "rɪˈmɑrkəbəl",
+      "pos": "adj",
+      "definition": "unusual or impressive enough to be noticed",
+      "example": "This remarkable scientist made significant contributions to his field and is widely respected.",
+      "translations": {
+        "zh_TW": "非凡的；值得注意的",
+        "ja_JP": "異常な;注目すべき",
+        "ko_KR": "놀랍다",
+        "vi_VN": "phi thường; đáng chú ý",
+        "th_TH": "วิสามัญ; โดดเด่น"
+      },
+      "definitionTranslations": {
+        "zh_TW": "不尋常或令人印象深刻到值得注意",
+        "ja_JP": "注目に値するほど珍しい、または印象的な",
+        "ko_KR": "눈에 띌 만큼 특이하거나 인상적인",
+        "vi_VN": "khác thường hoặc ấn tượng đủ để được chú ý",
+        "th_TH": "แปลกหรือประทับใจมากพอที่จะเป็นที่สังเกต"
+      },
+      "exampleTranslations": {
+        "zh_TW": "這位非凡的科學家在他的領域中做出了顯著的貢獻，並被廣泛尊敬。",
+        "en_US": "This remarkable scientist made significant contributions to his field and is widely respected.",
+        "ja_JP": "この卓越した科学者は自分の分野に大きく貢献し、広く尊敬されている。",
+        "ko_KR": "이 뛰어난 과학자는 자신의 분야에 큰 공헌을 했고 널리 존경받고 있습니다.",
+        "vi_VN": "Nhà khoa học phi thường này đã có những đóng góp đáng kể cho lĩnh vực của mình và được kính trọng rộng rãi.",
+        "th_TH": "นักวิทยาศาสตร์ผู้โดดเด่นคนนี้ได้สร้างผลงานสำคัญให้กับสาขาของเขา และได้รับความเคารพอย่างกว้างขวาง"
+      },
+      "synonyms": [
+        "extraordinary",
+        "notable",
+        "outstanding",
+        "exceptional"
+      ],
+      "level": 42,
+      "senses": [
+        {
+          "pos": "adj",
+          "gloss": "unusual or impressive enough to be noticed",
+          "synonyms": [
+            "extraordinary",
+            "notable",
+            "outstanding",
+            "exceptional"
+          ],
+          "example": null,
+          "translations": {
+            "zh_TW": "非凡的；值得注意的",
+            "ja_JP": "異常な;注目すべき",
+            "ko_KR": "놀랍다",
+            "vi_VN": "phi thường; đáng chú ý",
+            "th_TH": "วิสามัญ; โดดเด่น"
+          },
+          "definition_translations": {
+            "zh_TW": "不尋常或令人印象深刻到值得注意",
+            "ja_JP": "注目に値するほど珍しい、または印象的な",
+            "ko_KR": "눈에 띌 만큼 특이하거나 인상적인",
+            "vi_VN": "khác thường hoặc ấn tượng đủ để được chú ý",
+            "th_TH": "แปลกหรือประทับใจมากพอที่จะเป็นที่สังเกต"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "remarkable approach",
+          "translations": {
+            "zh_TW": "非凡的方法",
+            "ja_JP": "驚くべきアプローチ",
+            "ko_KR": "놀라운 접근 방식",
+            "vi_VN": "cách tiếp cận đáng chú ý",
+            "th_TH": "แนวทางที่โดดเด่น"
+          }
+        },
+        {
+          "text": "highly remarkable",
+          "translations": {
+            "zh_TW": "非常引人注目",
+            "ja_JP": "非常に注目に値する",
+            "ko_KR": "매우 주목할 만한",
+            "vi_VN": "rất đáng chú ý",
+            "th_TH": "น่าทึ่งมาก"
+          }
+        },
+        {
+          "text": "remain remarkable",
+          "translations": {
+            "zh_TW": "保持卓越",
+            "ja_JP": "注目に値する",
+            "ko_KR": "주목할만한 남아",
+            "vi_VN": "vẫn đáng chú ý",
+            "th_TH": "ยังคงโดดเด่น"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/remarkable.webp",
+      "originalImage": "artwork/remarkable.webp",
+      "audio": "audio/remarkable.m4a",
+      "exampleAudio": "audio/remarkable-example-0.m4a",
+      "artwork": {
+        "title": "A Stone Apart",
+        "titleZh": "不凡之石",
+        "series": "Beyond the Familiar",
+        "seriesZh": "熟悉之外",
+        "medium": "Romantic landscape oil painting",
+        "mediumZh": "浪漫風景油畫",
+        "style": "deep-discovery-oil",
+        "image": "artwork/museum-v1/remarkable.webp",
+        "width": 1254,
+        "height": 1254,
+        "provenance": "AI-generated with the built-in image_gen tool"
+      }
+    },
+    {
+      "id": "ccc258be474972f58c7fcfa2b4e438f8",
+      "word": "majestic",
+      "room": 14,
+      "slot": 5,
+      "ipa": "məˈdʒɛstɪk",
+      "kk": "məˈdʒɛstɪk",
+      "pos": "adj",
+      "definition": "impressive and beautiful in a grand or dignified way",
+      "example": "The majestic castle stands tall on the mountaintop, leaving every visitor in awe.",
+      "translations": {
+        "zh_TW": "雄偉的",
+        "ja_JP": "壮大な;堂々とした",
+        "ko_KR": "장엄한",
+        "vi_VN": "tráng lệ",
+        "th_TH": "สง่างาม"
+      },
+      "definitionTranslations": {
+        "zh_TW": "宏偉或莊嚴地令人印象深刻而美麗的",
+        "ja_JP": "壮大または威厳ある形で印象的で美しい",
+        "ko_KR": "장엄하거나 품위 있게 인상적이고 아름다운",
+        "vi_VN": "ấn tượng và đẹp theo cách uy nghi hoặc trang trọng",
+        "th_TH": "น่าประทับใจและงดงามอย่างยิ่งใหญ่หรือสง่างาม"
+      },
+      "exampleTranslations": {
+        "zh_TW": "那座雄偉的城堡矗立在山頂，讓每一個來訪者都感到震撼。",
+        "en_US": "The majestic castle stands tall on the mountaintop, leaving every visitor in awe.",
+        "ja_JP": "その荘厳な城は山頂に堂々とそびえ立ち、訪れる人すべてを畏敬の念に包み込む。",
+        "ko_KR": "그 장엄한 성은 산꼭대기에 우뚝 서 있어 모든 방문객을 경외감에 빠뜨린다.",
+        "vi_VN": "Tòa lâu đài uy nghi sừng sững trên đỉnh núi, khiến mọi du khách đều phải trầm trồ kinh ngạc.",
+        "th_TH": "ปราสาทอันยิ่งใหญ่ตั้งตระหง่านอยู่บนยอดเขา ทำให้ผู้มาเยือนทุกคนรู้สึกทึ่ง"
+      },
+      "synonyms": [
+        "grand",
+        "stately",
+        "splendid",
+        "imposing",
+        "magnificent"
+      ],
+      "level": 56,
+      "senses": [
+        {
+          "pos": "adj",
+          "gloss": "impressive and beautiful in a grand or dignified way",
+          "synonyms": [
+            "grand",
+            "stately",
+            "splendid",
+            "imposing",
+            "magnificent"
+          ],
+          "example": null,
+          "translations": {
+            "zh_TW": "雄偉的",
+            "ja_JP": "壮大な;堂々とした",
+            "ko_KR": "장엄한",
+            "vi_VN": "tráng lệ",
+            "th_TH": "สง่างาม"
+          },
+          "definition_translations": {
+            "zh_TW": "宏偉或莊嚴地令人印象深刻而美麗的",
+            "ja_JP": "壮大または威厳ある形で印象的で美しい",
+            "ko_KR": "장엄하거나 품위 있게 인상적이고 아름다운",
+            "vi_VN": "ấn tượng và đẹp theo cách uy nghi hoặc trang trọng",
+            "th_TH": "น่าประทับใจและงดงามอย่างยิ่งใหญ่หรือสง่างาม"
+          }
+        }
+      ],
+      "collocations": [
+        {
+          "text": "majestic approach",
+          "translations": {
+            "zh_TW": "雄偉的方法",
+            "ja_JP": "雄大なアプローチ",
+            "ko_KR": "장엄한 접근",
+            "vi_VN": "cách tiếp cận hùng vĩ",
+            "th_TH": "วิธีการอันสง่างาม"
+          }
+        },
+        {
+          "text": "highly majestic",
+          "translations": {
+            "zh_TW": "非常雄偉",
+            "ja_JP": "非常に雄大な",
+            "ko_KR": "매우 장엄한",
+            "vi_VN": "rất hùng vĩ",
+            "th_TH": "ตระหง่านอย่างมาก"
+          }
+        },
+        {
+          "text": "remain majestic",
+          "translations": {
+            "zh_TW": "保持雄偉",
+            "ja_JP": "雄大なまま",
+            "ko_KR": "위엄을 유지하다",
+            "vi_VN": "vẫn hùng vĩ",
+            "th_TH": "ยังคงสง่างาม"
+          }
+        }
+      ],
+      "image": "artwork/museum-v1/majestic.webp",
+      "originalImage": "artwork/majestic.webp",
+      "audio": "audio/majestic.m4a",
+      "exampleAudio": "audio/majestic-example-0.m4a",
+      "artwork": {
+        "title": "The Cathedral of Stone",
+        "titleZh": "岩石的大教堂",
+        "series": "Beyond the Familiar",
+        "seriesZh": "熟悉之外",
+        "medium": "Romantic landscape oil painting",
+        "mediumZh": "浪漫風景油畫",
+        "style": "deep-discovery-oil",
+        "image": "artwork/museum-v1/majestic.webp",
         "width": 1254,
         "height": 1254,
         "provenance": "AI-generated with the built-in image_gen tool"

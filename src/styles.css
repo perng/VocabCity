@@ -2816,3 +2816,27 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
   .welcome-card .text-button { margin-top: 1px; padding: 8px 0 0; }
   .welcome-footnote { display: none; }
 }
+
+.expanded-floorplan svg { max-height: 500px; }
+.next-place-link {
+  position: absolute;
+  top: 142px;
+  left: 38px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  color: #465e46;
+  background: #f7f5e9ee;
+  border: 1px solid #ffffffa0;
+  box-shadow: 0 3px 15px #2738250b;
+  font-size: 11px;
+}
+.next-place-link:hover { background: #e7ecda; }
+@media (max-width: 800px) {
+  .next-place-link { left: 18px; top: 116px; padding: 10px; font-size: 9px; gap: 7px; }
+}
+@media (max-width: 540px) {
+  .expanded-floorplan svg { max-height: 410px; }
+  .next-place-link { left: 15px; top: 103px; padding: 8px; max-width: 245px; }
+}

@@ -1,11 +1,11 @@
 import { test, expect } from "@playwright/test";
 import collection from "../src/collection.json" with { type: "json" };
 
-test("all 54 museum artworks load at native resolution, with coordinated halls and a responsive larger view", async ({
+test("all 90 museum artworks load at native resolution, with coordinated halls and a responsive larger view", async ({
   page,
 }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "單字典藏54", exact: true }).click();
+  await page.getByRole("button", { name: "單字典藏90", exact: true }).click();
   const images = page.locator(".collection-art img");
   await expect(images).toHaveCount(collection.exhibits.length);
   await expect
