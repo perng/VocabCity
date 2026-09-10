@@ -100,3 +100,7 @@ Implementation references: [Three.js renderer documentation](https://threejs.org
 Expansion checks cover starting at the mascot gate, walking through the atrium to both wings, all nine gallery destinations, solid wing end walls, new word and sentence recordings, and the Traditional Chinese welcome/map on a phone.
 
 The new environment checks walk the continuous route from the garden to the waterfront rail, visit and play recordings in each setting, exercise every market stall’s painting/check/video controls, explore the wider market square, and follow the localized next-stop buttons on a phone.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
