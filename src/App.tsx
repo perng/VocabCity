@@ -19,7 +19,6 @@ import {
   Compass,
   Expand,
   Footprints,
-  Trees,
   Headphones,
   HelpCircle,
   Map,
@@ -30,34 +29,65 @@ import {
   Pause,
   Play,
   Search,
+  Landmark,
   Sparkles,
+  Sprout,
   Sun,
   Volume2,
   VolumeX,
   X,
 } from "lucide-react";
 import collection from "./collection.json";
-import { Museum, exhibitPlacements, type Pose } from "./museum";
+import { Museum, exhibitPlacements, familyIn, registerFamilySizes, type Pose } from "./museum";
 import {
+  CATHEDRAL_SQUARE,
+  CITY,
+  DISTRICTS,
   ENTRY,
-  ENTRANCE,
-  ENTRANCE_INDEX,
-  galleryTransform,
-  GARDEN,
-  GARDEN_INDEX,
-  PLACE_START,
-  PLACES,
-  isPlaceGallery,
-  OUTDOOR_DISPLAYS,
+  GALLERY_COUNT,
+  LANE_HALF,
+  LANE_ZS,
+  MAP_HEIGHT,
+  MAP_WIDTH,
+  OLD_TOWN,
+  OUTER_EDGE,
+  ROOT_ROOM,
+  ROOT_START,
+  SQUARE_INDEX,
+  STREETS_INDEX,
+  districtFor,
+  isRootRoom,
   mapPoint,
+  rootRoomTransform,
 } from "./layout";
-import { assetUrl, partOfSpeech, type Exhibit } from "./types";
+import { assetUrl, partOfSpeech, type Exhibit, type ExhibitDetails, type HouseKind, type Room } from "./types";
 import { useLocale } from "./i18n";
 import { useExhibitAudio } from "./useExhibitAudio";
 import { YouglishPlayer, YouTubeLogo } from "./YouglishPlayer";
 const exhibits = collection.exhibits as Exhibit[];
-const rooms = collection.rooms;
-const destinations = [...rooms, GARDEN, ENTRANCE];
+const rooms = collection.rooms as Room[];
+if (rooms.length !== GALLERY_COUNT) throw new Error(`Expected ${GALLERY_COUNT} rooms in the collection, found ${rooms.length}.`);
+registerFamilySizes(rooms);
+const destinationFor = (index: number): Room => (index === SQUARE_INDEX ? CATHEDRAL_SQUARE : index === STREETS_INDEX ? OLD_TOWN : rooms[index]);
+const LANDMARKS: [number, string][] = [[1, "Harbour Quay"], [0, "Gate Square"], [3, "The Corso"], [4, "City Park"], [12, "Market Square"], [SQUARE_INDEX, "Cathedral Square"], [5, "Cathedral"], [STREETS_INDEX, "The Old Town"], [14, "Lighthouse Mole"]];
+const houses = rooms.map((room, index) => ({ room, index })).filter(({ room }) => room.house);
+const HOUSE_SECTIONS: [HouseKind, string, string][] = [
+  ["root", "ROOT FAMILY HOUSES", "One Latin or Greek root per house, with the words it built."],
+  ["theme", "THEME HOUSES", "Words that belong to one topic, from Handy 990's theme maps."],
+  ["family", "WORD FAMILY HOUSES", "One stem in several forms: verb, noun, adjective side by side."],
+  ["level", "LEVEL LANES", "Every other word above level 30, six to a house in alphabetical order."],
+];
+const fill = (text: string) => text.replace("{n}", String(exhibits.length)).replace("{houses}", String(houses.length));
+// Root rooms also show words whose home is a thematic gallery or another family.
+const roomExhibits = (room: number) => exhibits.filter((e) => e.room === room || e.families?.some((family) => family.room === room));
+const familyOf = (exhibit: Exhibit, room: number) => roomExhibits(room).filter((e) => e.id !== exhibit.id);
+const nextRootRoom = (room: number) => (room === STREETS_INDEX ? ROOT_START : room === GALLERY_COUNT - 1 ? SQUARE_INDEX : room + 1);
+// Landmarks in walking order, from the quay to the Old Town.
+const DISTRICT_ORDER = [1, 14, 11, 0, 8, 6, 3, 7, 4, 9, 12, 10, 2, 5, 13];
+const nextDistrict = (room: number) => {
+  const at = DISTRICT_ORDER.indexOf(room);
+  return at < 0 || at === DISTRICT_ORDER.length - 1 ? STREETS_INDEX : DISTRICT_ORDER[at + 1];
+};
 const wordClip = (exhibit: Exhibit) => ({
   key: "word",
   url: exhibit.audio,
@@ -185,41 +215,58 @@ function MuseumLogo() {
 }
 function FloorPlan({ pose, compact = false }: { pose: Pose; compact?: boolean }) {
   const { t } = useLocale();
-  const viewBox = compact ? (pose.z < -114 ? "60 12 124 258" : "0 244 244 206") : "0 0 244 450";
-  return <svg viewBox={viewBox} aria-label={t("Museum floor plan")}>
-    <g transform="translate(122 373)">
-      <rect x="-38" y="-358" width="76" height="65" rx="6" fill="#c5ddda" />
-      <rect x="-20" y="-352" width="40" height="22" fill="#e0d5bb" />
-      <rect x="-22" y="-150" width="44" height="36" rx="9" fill="#dbe5c8" />
-      <rect x="-19" y="-294" width="38" height="36" rx="12" fill="#a8b2a7" />
-      {Array.from({ length: 4 }, (_, i) => [-18, 18].map(x => <circle key={`tree-${i}-${x}`} cx={x} cy={-119-i*9} r="4" fill="#9cb589" />))}
-      {[-20, 20].map(x => <rect key={x} x={x-2} y="-222" width="4" height="36" fill="#c8aaa0" />)}
-      <rect x="-30" y="-114" width="60" height="44" rx="2" fill={pose.room === GARDEN_INDEX ? "#ccdabf" : "#dfe5d3"} stroke="#a8b49a" />
-      <path d="M-4-114h8v44h-8z M-30-91h60v6h-60z" fill="#f1edde" />
-      <rect x="9" y="-96" width="8" height="18" fill="#9fbdb4" rx="1" />
-      {[-25, 25].map(x => [-107, -97, -77].map(z => <circle key={`${x}-${z}`} cx={x} cy={z} r="2.3" fill="#97ae80" />))}
-      <text x="38" y="-90" fill="#718166" fontSize="7">{t("GARDEN")}</text>
-      <rect x="-18" y="14" width="36" height="28" fill={pose.room === ENTRANCE_INDEX ? "#d8cfb2" : "#eee7d7"} stroke="#bcb294" />
-      <rect x="-18" y="42" width="36" height="24" fill="#e7e3d5" />
+  const follow = mapPoint(pose.x, pose.z);
+  const viewBox = compact
+    ? `${Math.max(0, Math.min(MAP_WIDTH - 124, follow.x - 62))} ${Math.max(0, Math.min(MAP_HEIGHT - 110, follow.y - 55))} 124 110`
+    : `0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`;
+  const origin = mapPoint(0, 0);
+  const c = CITY;
+  const box = (b: { x0: number; x1: number; z0: number; z1: number }, fill: string, key: string, rx = 0) => (
+    <rect key={key} x={b.x0} y={b.z0} width={b.x1 - b.x0} height={b.z1 - b.z0} rx={rx} fill={fill} stroke="#a5ac99" strokeWidth=".7" />
+  );
+  return <svg viewBox={viewBox} aria-label={t("City map")}>
+    <g transform={`translate(${origin.x} ${origin.y})`}>
+      <rect x={-MAP_WIDTH} y={c.seaEdge} width={MAP_WIDTH * 2} height={400} fill="#bcd5d8" />
+      <rect x={-c.wallX - 3} y={c.wallNorth - 3} width={c.wallX * 2 + 6} height={c.wallSouth - c.wallNorth + 6} fill="#efe9db" stroke="#9a8a66" strokeWidth="2" />
+      <rect x={-c.wallX} y={c.quay.north} width={c.wallX * 2} height={c.quay.south - c.quay.north} fill="#e3d9c3" />
+      {box(c.mole, "#e3d9c3", "mole")}
+      <circle cx={c.lighthouse.x} cy={c.lighthouse.z} r="3" fill="#f4efe3" stroke="#b8453a" strokeWidth="1.2" />
+      {box({ x0: -c.gate.halfWidth, x1: c.gate.halfWidth, z0: c.gate.z0, z1: c.gate.z1 }, "#f1edde", "gate")}
+      {box({ x0: -c.corso.arcade, x1: c.corso.arcade, z0: c.corso.z0, z1: c.corso.z1 }, "#f1edde", "corso")}
+      {box({ x0: -c.cathedralSquare.x, x1: c.cathedralSquare.x, z0: c.cathedralSquare.z0, z1: c.cathedralSquare.z1 }, pose.room === SQUARE_INDEX ? "#d8cfb2" : "#f1edde", "csq")}
+      {[-1, 1].map((side) => box({ x0: side < 0 ? -c.sideLanes.x1 : c.sideLanes.x0, x1: side < 0 ? -c.sideLanes.x0 : c.sideLanes.x1, z0: c.sideLanes.z0, z1: c.sideLanes.z1 }, "#f1edde", `lane-${side}`))}
+      {box({ x0: -c.wallX, x1: c.wallX, z0: c.promenade.z0, z1: c.promenade.z1 }, pose.room === STREETS_INDEX ? "#d8cfb2" : "#f1edde", "promenade")}
+      {box({ x0: -c.canal.street, x1: c.canal.street, z0: c.canal.z0, z1: c.canal.z1 }, "#f1edde", "canalstreet")}
+      <rect x={-c.canal.x} y={c.canal.z0} width={c.canal.x * 2} height={c.canal.z1 - c.canal.z0} fill="#9fbdb4" />
+      {LANE_ZS.map((lz) => <rect key={lz} x={-c.wallX + 1} y={lz - LANE_HALF} width={c.wallX * 2 - 2} height={LANE_HALF * 2} fill="#f1edde" />)}
+      {[-1, 1].map((side) => <rect key={`walk-${side}`} x={side < 0 ? -c.wallX + 1 : OUTER_EDGE} y={c.wallNorth + 1} width={c.wallX - OUTER_EDGE - 1} height={c.promenade.z1 - c.wallNorth - 1} fill="#ebe4d2" />)}
       {rooms.map((room, i) => {
-        const p = galleryTransform(i);
-        const w = isPlaceGallery(i) ? PLACES[i - PLACE_START].width : i < 3 ? 24 : 28;
-        const h = i >= PLACE_START ? 36 : i < 3 ? 28 : 24;
+        if (room.house) {
+          const h = rootRoomTransform(i);
+          return <g key={room.id}>
+            <rect x={h.x - ROOT_ROOM.width / 2} y={h.z - ROOT_ROOM.depth / 2} width={ROOT_ROOM.width} height={ROOT_ROOM.depth} fill={pose.room === i ? `${room.color}99` : `${room.color}30`} stroke="#a5ac99" strokeWidth=".5" />
+            {!compact && <text x={h.x} y={h.z + 2} textAnchor="middle" fill="#52604c" fontSize={room.house.display.length > 8 ? 3.2 : 5.5} fontStyle="italic">{room.house.display.length > 18 ? room.house.display.slice(0, 17) + "…" : room.house.display}</text>}
+          </g>;
+        }
+        const d = districtFor(i);
         return <g key={room.id}>
-          <rect x={p.x-w/2} y={p.z-h/2} width={w} height={h} rx={i >= PLACE_START ? 3 : 0} fill={pose.room === i ? `${room.color}99` : `${room.color}25`} stroke="#a5ac99" strokeWidth=".7" />
-          <text x={p.x} y={p.z+2.5} textAnchor="middle" fill="#52604c" fontSize="7">{String(i+1).padStart(2,"0")}</text>
+          {box(d.box, pose.room === i ? `${room.color}99` : `${room.color}30`, room.id, d.indoor ? 0 : 3)}
+          <text x={(d.box.x0 + d.box.x1) / 2} y={(d.box.z0 + d.box.z1) / 2 + 2.5} textAnchor="middle" fill="#52604c" fontSize="7">{String(i + 1).padStart(2, "0")}</text>
         </g>;
       })}
-      <path d="M-4-330v216m8-216v216 M-4-69v83m8-83v83 M-102 24h84m-84 8h84 M18 24h84m-84 8h84" stroke="#faf7ea" strokeWidth="2" />
-      <text x="-65" y="54" textAnchor="middle" fill="#718166" fontSize="7">{t("WEST WING")}</text>
-      <text x="65" y="54" textAnchor="middle" fill="#718166" fontSize="7">{t("EAST WING")}</text>
-      {!compact && PLACES.map((place, i) => <text key={place.kind} x="32" y={galleryTransform(PLACE_START + i).z + 2} fill="#657571" fontSize="8">{t(place.kind)}</text>)}
-      <circle cx="0" cy="28" r="5" fill="none" stroke="#ad986b" />
-      <path d="M-9 47v3H9v-3" fill="none" stroke="#998562" strokeWidth="2" />
+      <circle cx={c.square.fountain.x} cy={c.square.fountain.z} r="3" fill="none" stroke="#ad986b" />
+      <circle cx="0" cy="-130" r="9" fill="none" stroke="#8c9a8a" strokeWidth="1.5" />
+      <rect x={c.bellTower.x - 3} y={c.bellTower.z - 3} width="6" height="6" fill="#e2d3b4" stroke="#9a8a66" />
+      <circle cx={c.observatory.x} cy={c.observatory.z} r="7" fill="#dfe5d3" stroke="#9ead8d" />
+      {!compact && <>
+        <text x="0" y={c.seaEdge + 14} textAnchor="middle" fill="#5f8d92" fontSize="8" letterSpacing="2">{t("THE SEA")}</text>
+        <text x="0" y={c.promenade.z1 + 26} textAnchor="middle" fill="#718166" fontSize="7">{t("CATHEDRAL SQUARE")}</text>
+        <text x="0" y={c.promenade.z0 - 6} textAnchor="middle" fill="#718166" fontSize="7">{t("THE OLD TOWN")}</text>
+        <text x="0" y={c.observatory.z + 2} textAnchor="middle" fill="#657571" fontSize="5">{t("OBSERVATORY")}</text>
+      </>}
       {exhibits.flatMap(e => exhibitPlacements(e).map(p => <rect key={`${e.id}-${p.area}`} x={p.x-1.2} y={p.z-1.2} width="2.4" height="2.4" rx=".5" fill={rooms[e.room].color} />))}
-      <text x="0" y="72" textAnchor="middle" fill="#868b78" fontSize="7" letterSpacing="1.5">{t("GATE & WELCOME")}</text>
     </g>
-    <g data-world-x={pose.x.toFixed(2)} data-world-z={pose.z.toFixed(2)} transform={`translate(${mapPoint(pose.x, pose.z).x},${mapPoint(pose.x, pose.z).y}) rotate(${(-pose.yaw * 180) / Math.PI})`}>
+    <g data-world-x={pose.x.toFixed(2)} data-world-z={pose.z.toFixed(2)} transform={`translate(${follow.x},${follow.y}) rotate(${(-pose.yaw * 180) / Math.PI})`}>
       <path d="M0-10-5 0H5Z" fill="#56765b" opacity=".25" />
       <circle r="3" fill="#345d47" stroke="#faf9f2" strokeWidth="1.3" />
     </g>
@@ -230,7 +277,7 @@ function MiniMap({ pose, onOpen }: { pose: Pose; onOpen: () => void }) {
   return <button className="minimap" onClick={onOpen} aria-label={t("Open museum floor map")}>
     <span className="map-label">{t("YOUR LITTLE WORLD")}<Expand size={12} /></span>
     <FloorPlan pose={pose} compact />
-    <span className="map-current"><span />{pose.room === GARDEN_INDEX ? t("Garden") : pose.room === ENTRANCE_INDEX ? t("The Welcome Hall") : `${t("Gallery")} ${String(pose.room+1).padStart(2,"0")}`}</span>
+    <span className="map-current"><span />{pose.room === SQUARE_INDEX || pose.room === STREETS_INDEX ? t(destinationFor(pose.room).name) : isRootRoom(pose.room) ? `${t("Root room")} · ${rooms[pose.room].house!.display}` : t(districtFor(pose.room).landmark)}</span>
   </button>;
 }
 function DirectionPad({
@@ -290,10 +337,11 @@ export default function App() {
   const [error, setError] = useState("");
   const [pose, setPose] = useState<Pose>({
     ...ENTRY,
-    room: ENTRANCE_INDEX,
+    room: 1,
   });
   const [intro, setIntro] = useState(true);
   const [selected, setSelected] = useState<Exhibit | null>(null);
+  const [details, setDetails] = useState<(ExhibitDetails & { id: string }) | null>(null);
   const [selectedArea, setSelectedArea] = useState(0);
   const [videoExhibit, setVideoExhibit] = useState<Exhibit | null>(null);
   const [artworkExhibit, setArtworkExhibit] = useState<Exhibit | null>(null);
@@ -376,7 +424,8 @@ export default function App() {
           onReady: () => setReady(true),
           onError: setError,
         });
-      } catch {
+      } catch (failure) {
+        console.error(failure);
         setError(
           "This browser could not start the 3D gallery. You can still explore every word in the Collection. Try a browser with WebGL enabled for the walkable museum.",
         );
@@ -400,6 +449,19 @@ export default function App() {
   useEffect(() => {
     if (videoExhibit) playback.stop();
   }, [videoExhibit, playback.stop]);
+  // Flashcard details (senses, collocations, pronunciation symbols) load on demand.
+  useEffect(() => {
+    if (!selected) return;
+    const id = selected.id;
+    if (details?.id === id) return;
+    let live = true;
+    fetch(assetUrl(`data/exhibits/${id}.json`))
+      .then((response) => (response.ok ? response.json() : Promise.reject(new Error(String(response.status)))))
+      .then((data: ExhibitDetails) => { if (live) setDetails({ ...data, id }); })
+      .catch(() => { if (live) setDetails({ id, ipa: "", kk: "", synonyms: [], senses: [], collocations: [] }); });
+    return () => { live = false; };
+  }, [selected, details?.id]);
+  const current = details?.id === selected?.id ? details : null;
   useEffect(() => {
     museum.current?.setLocale(locale);
   }, [locale, ready]);
@@ -422,7 +484,6 @@ export default function App() {
     },
     [],
   );
-  const nextPlace = pose.room === GARDEN_INDEX ? PLACE_START : pose.room === rooms.length - 1 ? GARDEN_INDEX : pose.room + 1;
   const navigateRoom = (room: number) => {
     setIntro(false);
     setModal(null);
@@ -433,10 +494,11 @@ export default function App() {
     clearTimeout(roomTimer.current);
     roomTimer.current = setTimeout(() => setRoomTransition(false), 350);
   };
-  const visit = (exhibit: Exhibit) => {
-    const area = museum.current?.goToExhibit(exhibit);
+  const visit = (exhibit: Exhibit, preferredArea?: number) => {
+    const area = museum.current?.goToExhibit(exhibit, preferredArea);
     openExhibit(exhibit, area);
   };
+  const filteredRoom = /^room-/.test(filter) ? Number(filter.slice(5)) : undefined;
   const toggleSaved = (exhibit: Exhibit) => {
     const exists = saved.includes(exhibit.id);
     setSaved((current) =>
@@ -500,7 +562,7 @@ export default function App() {
       : -1;
     if (tour && delta === 1 && index === exhibits.length - 1) {
       setTour(false);
-      navigateRoom(ENTRANCE_INDEX);
+      navigateRoom(0);
       showToast(t("All words discovered. Keep your curiosity close."));
       return;
     }
@@ -517,12 +579,12 @@ export default function App() {
   const filtered = exhibits.filter(
     (e) =>
       (filter !== "saved" || saved.includes(e.id)) &&
-      (!/^room-/.test(filter) || e.room === Number(filter.slice(5))) &&
+      (!/^room-/.test(filter) || e.room === Number(filter.slice(5)) || e.families?.some((family) => family.room === Number(filter.slice(5)))) &&
       `${e.word} ${e.definition} ${Object.values(e.translations).join(" ")}`
         .toLowerCase()
         .includes(query.toLowerCase()),
   );
-  const currentRoom = destinations[pose.room];
+  const currentRoom = destinationFor(pose.room);
   return (
     <div className="app-shell">
       <header className="site-header">
@@ -534,12 +596,12 @@ export default function App() {
             setIntro(true);
             museum.current?.goToGate();
           }}
-          aria-label={t("Vocab Hall entrance")}
+          aria-label={t("Vocab City harbour")}
         >
           <MuseumLogo />
           <span>
             vocab<span className="brand-italic">hall</span>
-            <small>{t("A MUSEUM FOR YOUR MIND")}</small>
+            <small>{t("A CITY OF WORDS")}</small>
           </span>
         </button>
         <nav className="main-nav" aria-label={t("Main navigation")}>
@@ -609,7 +671,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="museum-stage" aria-label={t("Museum")}>
+      <main className="museum-stage" aria-label={t("City")}>
         <div
           ref={hostRef}
           className={`scene ${roomTransition ? "room-transition" : ""}`}
@@ -623,13 +685,17 @@ export default function App() {
           </div>
         )}
         <div className="gallery-heading">
-          <span className="eyebrow">{t("THE PERMANENT COLLECTION")}</span>
+          <span className="eyebrow">{t("THE CITY OF WORDS")}</span>
           <button onClick={() => setModal("map")}>
-            <span className="gallery-number">
-              {pose.room === GARDEN_INDEX ? (
-                <Trees size={27} />
+            <span className={`gallery-number ${isRootRoom(pose.room) ? "is-root" : ""}`}>
+              {pose.room === SQUARE_INDEX ? (
+                <Landmark size={27} />
+              ) : pose.room === STREETS_INDEX ? (
+                <Sprout size={27} />
+              ) : isRootRoom(pose.room) ? (
+                rooms[pose.room].house!.display
               ) : (
-                pose.room === ENTRANCE_INDEX ? "⌂" : String(pose.room + 1).padStart(2, "0")
+                String(pose.room + 1).padStart(2, "0")
               )}
             </span>
             <span>
@@ -678,8 +744,8 @@ export default function App() {
               <img src={assetUrl("mascot/welcome.webp")} alt={t("Handy 990 mascot waving hello")} />
               <span className="welcome-tag">{t("YOUR LITTLE MUSEUM GUIDE")}</span>
             </div>
-            <h1>{t("Hello! Welcome to Vocab Hall.")}</h1>
-            <p>{t("Step inside. Discover 90 words in grand halls, a leafy walk, a palace, a street, a market, a cave, and by the water.")}</p>
+            <h1>{t("Hello! Welcome to Vocab City.")}</h1>
+            <p>{fill(t("Step through the sea gate. Discover {n} words on the quay, in the squares, under the arcades, in the cathedral, the park and the market, and in {houses} townhouses of the Old Town."))}</p>
             <button
               className="primary-button"
               onClick={() => {
@@ -696,7 +762,7 @@ export default function App() {
               <span>{exhibits.length} {t("stops")}</span>
             </button>
             <div className="welcome-footnote">
-              <span>01 — 15 + ♧</span>
+              <span>15 {t("LANDMARKS")} · {houses.length} √</span>
               <span>{t("A WORLD TO WANDER. WORDS TO DISCOVER.")}</span>
             </div>
           </section>
@@ -710,21 +776,13 @@ export default function App() {
                 <Play size={12} />
                 {t("Guided tour")}
               </button>
-              <button
-                onClick={() =>
-                  navigateRoom(pose.room === GARDEN_INDEX ? 2 : GARDEN_INDEX)
-                }
-              >
-                {pose.room === GARDEN_INDEX ? (
-                  <ArrowLeft size={13} />
-                ) : (
-                  <Trees size={13} />
-                )}
-                {t(
-                  pose.room === GARDEN_INDEX
-                    ? "Back to the halls"
-                    : "Visit the garden",
-                )}
+              <button onClick={() => navigateRoom(pose.room === SQUARE_INDEX ? 0 : SQUARE_INDEX)}>
+                {pose.room === SQUARE_INDEX ? <ArrowLeft size={13} /> : <Landmark size={13} />}
+                {t(pose.room === SQUARE_INDEX ? "Back to the Gate Square" : "Visit the Cathedral Square")}
+              </button>
+              <button onClick={() => navigateRoom(isRootRoom(pose.room) || pose.room === STREETS_INDEX ? 1 : STREETS_INDEX)}>
+                <Sprout size={13} />
+                {t(isRootRoom(pose.room) || pose.room === STREETS_INDEX ? "Back to the harbour" : "Visit the Old Town")}
               </button>
             </div>
           </div>
@@ -747,40 +805,20 @@ export default function App() {
             </span>
           </div>
         )}
-        {(pose.room === GARDEN_INDEX || isPlaceGallery(pose.room)) && !intro && (
-          <button className="next-place-link" onClick={() => navigateRoom(nextPlace)}>
-            <Trees size={16} />
-            <span>{t("Next stop")} · {t(destinations[nextPlace].name)}</span>
+        {!isRootRoom(pose.room) && pose.room !== STREETS_INDEX && !intro && (
+          <button className="next-place-link" onClick={() => navigateRoom(nextDistrict(pose.room))}>
+            <Landmark size={16} />
+            <span>{t("Next stop")} · {t(destinationFor(nextDistrict(pose.room)).name)}</span>
             <ArrowRight size={15} />
           </button>
         )}
-        {pose.room === GARDEN_INDEX &&
-          !intro &&
-          !selected &&
-          !modal &&
-          !videoExhibit && (
-            <details
-              className="garden-exhibits"
-              aria-label={t("Outdoor exhibits")}
-            >
-              <summary>
-                {t("WORDS IN THE GARDEN")} <ChevronDown size={14} />
-              </summary>
-              <div className="garden-word-list">
-                {OUTDOOR_DISPLAYS.map(({ word }) => (
-                  <button
-                    key={word}
-                    onClick={() =>
-                      visit(exhibits.find((exhibit) => exhibit.word === word)!)
-                    }
-                  >
-                    {word}
-                    <MoveUpRight size={12} />
-                  </button>
-                ))}
-              </div>
-            </details>
-          )}
+        {(isRootRoom(pose.room) || pose.room === STREETS_INDEX) && !intro && (
+          <button className="next-place-link" onClick={() => navigateRoom(nextRootRoom(pose.room))}>
+            <Sprout size={16} />
+            <span>{t(nextRootRoom(pose.room) === SQUARE_INDEX ? "Back to the square" : "Next house")} · {t(destinationFor(nextRootRoom(pose.room)).name)}</span>
+            <ArrowRight size={15} />
+          </button>
+        )}
         <MiniMap pose={pose} onOpen={() => setModal("map")} />
         <div className="bottom-controls">
           <div className="walk-help">
@@ -823,7 +861,7 @@ export default function App() {
           }
         />
         <span className="source-credit">
-          {t("WORDS FROM HANDY 990 · ART BY VOCAB HALL")}
+          {t("WORDS FROM HANDY 990 · ART BY VOCAB CITY")}
         </span>
         {error && (
           <div className="error-banner" role="alert">
@@ -858,9 +896,9 @@ export default function App() {
           <div className="exhibit-sheet">
             <div className="sheet-top">
               <span className="eyebrow">
-                {selectedArea === GARDEN_INDEX
-                  ? t("Garden")
-                  : `${t("GALLERY 0")}${selectedArea + 1}`}{" "}
+                {isRootRoom(selectedArea)
+                  ? `${t(rooms[selectedArea].house!.kind === "root" ? "ROOT FAMILY" : "TOWNHOUSE")} · ${rooms[selectedArea].house!.display}`
+                  : t(districtFor(selectedArea).landmark).toUpperCase()}{" "}
                 <span className="dot-separator">/</span>
                 {t("EXHIBIT")}{" "}
                 {String(exhibits.indexOf(selected) + 1).padStart(2, "0")}
@@ -973,7 +1011,7 @@ export default function App() {
             <div className="exhibit-copy">
               <div className="word-meta">
                 <span>{t(partOfSpeech(selected.pos))}</span>
-                <span>/{selected.ipa}/</span>
+                <span>{current?.ipa ? `/${current.ipa}/` : "…"}</span>
                 <span className="audio-accent">US</span>
               </div>
               <section
@@ -1104,31 +1142,66 @@ export default function App() {
                   <small>{selected.exampleTranslations[locale]}</small>
                 )}
               </div>
-              {selected.collocations.length > 0 && (
+              {current && current.collocations.length > 0 && (
                 <div className="collocations">
                   <span className="eyebrow">{t("OFTEN FOUND WITH")}</span>
                   <div>
-                    {selected.collocations.slice(0, 3).map((phrase) => (
+                    {current.collocations.slice(0, 3).map((phrase) => (
                       <span key={phrase.text}>{phrase.text}</span>
                     ))}
                   </div>
                 </div>
               )}
-              {selected.synonyms.length > 0 && (
+              {current && current.synonyms.length > 0 && (
                 <p className="related">
                   <span>{t("Related words")}</span>
-                  {selected.synonyms.join(" · ")}
+                  {current.synonyms.join(" · ")}
                 </p>
               )}
-              {selected.senses.length > 1 && (
+              {selected.families?.map((family) => (
+                <section className="root-family" aria-label={`${t("Word roots")}: ${family.root}`} key={family.room}>
+                  <span className="eyebrow">{t("WORD ROOTS")}</span>
+                  <div className="root-pieces">
+                    {family.pieces.map((piece, i) => (
+                      <span key={i} className={i === family.rootIndex ? "is-root" : ""}>
+                        <b>{piece.surface}</b>
+                        <small>{(locale && piece.translations[locale]) || piece.gloss}</small>
+                      </span>
+                    ))}
+                  </div>
+                  <p>
+                    <em>{rooms[family.room].root!.display}</em> ·{" "}
+                    {(locale && rooms[family.room].root!.translations[locale]) || rooms[family.room].root!.meaning} ·{" "}
+                    {rooms[family.room].root!.origin}
+                  </p>
+                  {familyOf(selected, family.room).length > 0 && (
+                    <div className="root-links">
+                      <span>{t("Same root")}</span>
+                      {familyOf(selected, family.room).map((relative) => (
+                        <button key={relative.id} onClick={() => visit(relative)}>
+                          {relative.word}
+                          <MoveUpRight size={11} />
+                        </button>
+                      ))}
+                      {family.room !== selectedArea && (
+                        <button className="root-room-link" onClick={() => navigateRoom(family.room)}>
+                          {t("Visit the room")}
+                          <ArrowRight size={11} />
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </section>
+              ))}
+              {current && current.senses.length > 1 && (
                 <details className="more-meanings">
                   <summary>
                     {locale === "zh_TW"
-                      ? `還有 ${selected.senses.length - 1} 個意思`
-                      : `${selected.senses.length - 1} more meanings`}
+                      ? `還有 ${current.senses.length - 1} 個意思`
+                      : `${current.senses.length - 1} more meanings`}
                     <ChevronDown size={14} />
                   </summary>
-                  {selected.senses.slice(1).map((sense, i) => (
+                  {current.senses.slice(1).map((sense, i) => (
                     <div key={i}>
                       <span>{t(partOfSpeech(sense.pos))}</span>
                       <p>{sense.gloss}</p>
@@ -1293,7 +1366,7 @@ export default function App() {
                     />
                     <button
                       className="collection-word"
-                      onClick={() => visit(exhibit)}
+                      onClick={() => visit(exhibit, filteredRoom)}
                       data-long-word={exhibit.word.length > 11}
                     >
                       {exhibit.word}
@@ -1301,9 +1374,9 @@ export default function App() {
                   </div>
                   <button
                     className="collection-art"
-                    onClick={() => visit(exhibit)}
+                    onClick={() => visit(exhibit, filteredRoom)}
                   >
-                    <img src={assetUrl(exhibit.image)} alt={exhibit.word} />
+                    <img src={assetUrl(exhibit.image)} alt={exhibit.word} loading="lazy" />
                     <span>
                       {t("Discover")}
                       <MoveUpRight size={14} />
@@ -1372,9 +1445,7 @@ export default function App() {
               </div>
             )}
             <footer className="collection-footer">
-              {t(
-                "90 words from Handy 990, with original AI-created museum artwork.",
-              )}
+              {fill(t("{n} words from Handy 990, with original AI-created museum artwork."))}
               <span>
                 {visited.length}
                 {t("discovered \u00B7")}
@@ -1408,15 +1479,16 @@ export default function App() {
             </div>
             <p>
               {t(
-                "One continuous walk, many different places. Explore the leafy walk, palace, street, market, cave, and waterfront beyond the garden.",
-              )}
+                "One walled city, many places to learn. Quay and mole, squares and arcades, park and market, cathedral, palazzo, guildhall and cistern.",
+              )}{" "}
+              {fill(t("Beyond the Cathedral Square, the Old Town's canal lanes hold {houses} townhouses: root families, theme houses, word families and level lanes."))}
             </p>
             <div className="expanded-floorplan"><FloorPlan pose={pose} /></div>
             <div className="wing-shortcuts">
-              {[[ENTRANCE_INDEX, "The Welcome Hall"], [0, "Central Gallery"], [3, "West Wing"], [6, "East Wing"], [GARDEN_INDEX, "Garden"], ...PLACES.map((place, i) => [PLACE_START + i, place.kind])].map(([index, label]) => <button key={index} onClick={() => navigateRoom(Number(index))}>{t(String(label))}<ArrowRight size={14} /></button>)}
+              {LANDMARKS.map(([index, label]) => <button key={index} onClick={() => navigateRoom(index)}>{t(label)}<ArrowRight size={14} /></button>)}
             </div>
             <div className="room-list">
-              {destinations.map((room, i) => (
+              {[...rooms.map((room, i) => [room, i] as const).filter(([room]) => !room.root), [CATHEDRAL_SQUARE, SQUARE_INDEX] as const, [OLD_TOWN, STREETS_INDEX] as const].map(([room, i]) => (
                 <button
                   key={room.id}
                   className={pose.room === i ? "current" : ""}
@@ -1426,42 +1498,29 @@ export default function App() {
                     className="room-preview"
                     style={{ background: `${room.color}18` }}
                   >
-                    {i === GARDEN_INDEX ? (
-                      <Trees
-                        className="garden-preview-icon"
-                        size={49}
-                        strokeWidth={1}
-                      />
-                    ) : i === ENTRANCE_INDEX ? (
-                      <img className="mascot-preview" src={assetUrl("mascot/welcome.webp")} alt="" />
+                    {i === SQUARE_INDEX ? (
+                      <Landmark className="garden-preview-icon" size={49} strokeWidth={1} />
+                    ) : i === STREETS_INDEX ? (
+                      <Sprout className="garden-preview-icon" size={49} strokeWidth={1} />
                     ) : (
-                      <img src={assetUrl(exhibits[i * 6].image)} alt="" />
+                      <img src={assetUrl((roomExhibits(i).find((e) => e.room === i) ?? roomExhibits(i)[0]).image)} alt="" />
                     )}
-                    <b>{i === GARDEN_INDEX ? "♧" : i === ENTRANCE_INDEX ? "⌂" : String(i + 1).padStart(2, "0")}</b>
+                    <b>{i === SQUARE_INDEX ? "✚" : i === STREETS_INDEX ? "√" : String(i + 1).padStart(2, "0")}</b>
                   </span>
                   <span className="room-info">
                     <span className="eyebrow">
                       {pose.room === i
                         ? t("YOU ARE HERE")
-                        : i === ENTRANCE_INDEX ? t("GATE & WELCOME")
-                        : isPlaceGallery(i) ? t(PLACES[i - PLACE_START].kind)
-                        : i === GARDEN_INDEX
-                          ? t("OUTDOORS")
-                          : `${t("Gallery")} ${String(i + 1).padStart(2, "0")}`}
+                        : i === SQUARE_INDEX || i === STREETS_INDEX ? t("LANDMARK")
+                        : `${t(districtFor(i).landmark)} · ${t(districtFor(i).indoor ? "INDOORS" : "OPEN AIR")}`}
                     </span>
                     <strong>{t(room.name)}</strong>
                     <small>{t(room.subtitle)}</small>
                     <span className="room-count">
-                      {i === GARDEN_INDEX ? (
-                        t("6 outdoor exhibits · garden curiosities")
-                      ) : i === ENTRANCE_INDEX ? t("Meet your guide · choose a wing") : (
+                      {i === SQUARE_INDEX ? t("Statue, cathedral, palazzo, guildhall") : i === STREETS_INDEX ? fill(t("{houses} townhouses along the canal lanes")) : (
                         <>
-                          {
-                            exhibits.filter(
-                              (e) => e.room === i && visited.includes(e.id),
-                            ).length
-                          }{" "}
-                          {t("/ 6 discovered")}
+                          {roomExhibits(i).filter((e) => visited.includes(e.id)).length}{" "}
+                          {t(`/ ${roomExhibits(i).length} discovered`)}
                         </>
                       )}
                     </span>
@@ -1470,6 +1529,23 @@ export default function App() {
                 </button>
               ))}
             </div>
+            {HOUSE_SECTIONS.map(([kind, title, blurb]) => (
+              <div key={kind}>
+                <div className="root-grid-heading">
+                  <span className="eyebrow">{t(title)} · {houses.filter(({ room }) => room.house!.kind === kind).length}</span>
+                  <p>{t(blurb)}</p>
+                </div>
+                <div className="root-grid" aria-label={t(title)}>
+                  {houses.filter(({ room }) => room.house!.kind === kind).map(({ room, index }) => (
+                    <button key={room.id} className={pose.room === index ? "current" : ""} style={{ borderColor: `${room.color}66` }} onClick={() => navigateRoom(index)}>
+                      <em>{room.house!.display}</em>
+                      <small>{(locale && room.house!.translations[locale]) || room.house!.note}</small>
+                      <span>{roomExhibits(index).filter((e) => visited.includes(e.id)).length} / {roomExhibits(index).length}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
             <button className="text-button" onClick={startTour}>
               <Headphones size={16} />
               {t("Show me around")}
@@ -1558,9 +1634,7 @@ export default function App() {
                 <span>
                   <strong>{t("Let curiosity be your guide")}</strong>
                   <p>
-                    {t(
-                      "Start at the mascot gate, choose a wing, or stroll beyond the garden through six different settings. The map reaches every place; the guided tour visits all 90 exhibits.",
-                    )}
+                    {fill(t("Start on the harbour quay, pass the sea gate, follow the Corso to the Cathedral Square, and wander the Old Town's canal lanes. The map reaches every landmark; the guided tour visits all {n} exhibits."))}
                   </p>
                 </span>
               </div>

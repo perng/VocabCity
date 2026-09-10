@@ -10,7 +10,8 @@ sources = json.loads((ROOT / 'art-direction/generated-sources.json').read_text()
 direction = json.loads((ROOT / 'art-direction/prompts.json').read_text())['artworks']
 collection_path = ROOT / 'src/collection.json'
 collection = json.loads(collection_path.read_text())
-assert {e['word'] for e in collection['exhibits']} <= sources.keys(), 'Generate every artwork before installing the collection.'
+# Artwork is installed as it becomes available; words without a recorded source keep their sticker.
+missing = sorted({e['word'] for e in collection['exhibits']} - sources.keys())
 masters = ROOT / 'output/artwork/masters'
 web = ROOT / 'public/artwork/museum-v1'
 masters.mkdir(parents=True, exist_ok=True)
@@ -18,6 +19,8 @@ web.mkdir(parents=True, exist_ok=True)
 catalog = {}
 for spec in direction:
     word = spec['word']
+    if word not in sources:
+        continue
     source = Path(sources[word])
     header = source.read_bytes()[:24]
     assert header[:8] == b'\x89PNG\r\n\x1a\n', f'{word}: expected PNG master'
@@ -29,10 +32,11 @@ for spec in direction:
     catalog[word] = {k: spec[k] for k in ['title', 'titleZh', 'series', 'seriesZh', 'medium', 'mediumZh', 'style']}
     catalog[word].update(image=f'artwork/museum-v1/{word}.webp', width=width, height=height, provenance='AI-generated with the built-in image_gen tool')
 for exhibit in collection['exhibits']:
-    art = catalog[exhibit['word']]
-    exhibit['originalImage'] = f"artwork/{exhibit['word']}.webp"
+    art = catalog.get(exhibit['word'])
+    if not art:
+        continue
     exhibit['image'] = art['image']
     exhibit['artwork'] = art
 (ROOT / 'art-direction/catalog.json').write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + '\n')
 collection_path.write_text(json.dumps(collection, ensure_ascii=False, indent=2) + '\n')
-print(f'Installed {len(catalog)} native-resolution artworks and preserved their PNG masters.')
+print(f'Installed {len(catalog)} native-resolution artworks and preserved their PNG masters.' + (f' Still missing {len(missing)}: {missing[:12]}{"…" if len(missing) > 12 else ""}' if missing else ''))

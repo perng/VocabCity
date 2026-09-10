@@ -33,8 +33,8 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
       locale === "zh_TW" ? "zh-Hant-TW" : locale.replace("_", "-") || "en";
     document.title =
       locale === "zh_TW"
-        ? "Vocab Hall — 單字博物館"
-        : "Vocab Hall — A museum for your mind";
+        ? "Vocab Hall — 單字之城"
+        : "Vocab Hall — A city of words";
     try {
       localStorage.setItem("vocabhall.locale.v1", locale);
     } catch {

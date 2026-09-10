@@ -35,12 +35,12 @@ test("opening and switching exhibits pronounces each word once and cancels older
   await observeAudio(page);
   await page.goto("/");
   await page.getByRole("button", { name: "Start exploring", exact: true }).click();
-  await page.getByRole("button", { name: "Floor map", exact: true }).click();
-  await page.locator(".room-list > button").filter({ hasText: "Everyday Wonders" }).click();
-  await expect(page.locator(".scene")).not.toHaveClass(/room-transition/);
   expect(await starts(page)).toEqual([]);
-  await page.mouse.click(1160, 446);
+  // Opening from the collection travels to the Gate Square and pronounces the word once.
+  await page.getByRole("button", { name: "The collection493", exact: true }).click();
+  await page.getByRole("button", { name: "curiosity", exact: true }).click();
   await expect(page.getByRole("heading", { name: "curiosity", exact: true })).toBeVisible();
+  await expect(page.locator(".exhibit-sheet")).toContainText("GATE SQUARE");
   expect(await starts(page)).toEqual(["curiosity.m4a"]);
   await expect.poll(() => page.evaluate(() =>
     ((window as any).__pronunciation.clips[0] as HTMLAudioElement).currentTime,
@@ -63,7 +63,7 @@ test("opening and switching exhibits pronounces each word once and cancels older
   await page.getByRole("button", { name: "Close exhibit", exact: true }).click();
   await expect.poll(() => allStopped(page)).toBe(true);
 
-  await page.getByRole("button", { name: "The collection90", exact: true }).click();
+  await page.getByRole("button", { name: "The collection493", exact: true }).click();
   await page.getByRole("button", { name: "curiosity", exact: true }).click();
   expect(await starts(page)).toEqual(["curiosity.m4a", "delicate.m4a", "curiosity.m4a", "curiosity.m4a"]);
   await page.getByRole("checkbox", { name: "Learned: curiosity", exact: true }).check();
@@ -74,7 +74,7 @@ test("opening and switching exhibits pronounces each word once and cancels older
   await expect.poll(() => allStopped(page)).toBe(true);
 });
 
-test("mobile collection and garden exhibits pronounce on opening, with working pause and replay", async ({ page }) => {
+test("mobile collection and Old Town exhibits pronounce on opening, with working pause and replay", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await observeAudio(page);
   await page.goto("/");
@@ -90,11 +90,13 @@ test("mobile collection and garden exhibits pronounce on opening, with working p
   await page.getByRole("button", { name: "Close exhibit", exact: true }).click();
   await expect.poll(() => allStopped(page)).toBe(true);
 
-  await page.getByRole("button", { name: "Visit the garden", exact: true }).click();
-  await page.locator(".garden-exhibits summary").click();
-  await page.getByRole("button", { name: "flourish", exact: true }).click();
-  await expect(page.locator(".exhibit-sheet")).toContainText("Garden /");
-  expect(await starts(page)).toEqual(["serene.m4a", "serene.m4a", "flourish.m4a"]);
+  await page.getByRole("button", { name: "Visit the Old Town", exact: true }).click();
+  await page.getByRole("button", { name: "My words 0", exact: true }).click();
+  await page.getByRole("button", { name: "Explore all exhibits", exact: true }).click();
+  await page.getByRole("combobox", { name: "Filter by gallery" }).selectOption({ label: "Root Family · port" });
+  await page.getByRole("button", { name: "export", exact: true }).click();
+  await expect(page.locator(".exhibit-sheet")).toContainText("ROOT FAMILY · port");
+  expect(await starts(page)).toEqual(["serene.m4a", "serene.m4a", "export.m4a"]);
   await expect.poll(() => page.evaluate(() =>
     ((window as any).__pronunciation.clips.at(-1) as HTMLAudioElement).currentTime,
   )).toBeGreaterThan(0.05);

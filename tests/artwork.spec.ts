@@ -1,11 +1,11 @@
 import { test, expect } from "@playwright/test";
 import collection from "../src/collection.json" with { type: "json" };
 
-test("all 90 museum artworks load at native resolution, with coordinated halls and a responsive larger view", async ({
+test("all 493 museum artworks load at native resolution, with coordinated halls and a responsive larger view", async ({
   page,
 }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "單字典藏90", exact: true }).click();
+  await page.getByRole("button", { name: "單字典藏493", exact: true }).click();
   const images = page.locator(".collection-art img");
   await expect(images).toHaveCount(collection.exhibits.length);
   await expect
@@ -23,12 +23,18 @@ test("all 90 museum artworks load at native resolution, with coordinated halls a
       ),
     )
     .toBe(true);
-  for (let room = 0; room < collection.rooms.length; room++) {
+  for (const [room, info] of collection.rooms.entries()) {
     const works = collection.exhibits.filter(
       (exhibit) => exhibit.room === room,
     );
     expect(new Set(works.map((work) => work.artwork.style)).size).toBe(1);
-    expect(works).toHaveLength(6);
+    // A root room also shows family words that hang in a thematic gallery.
+    const shared = collection.exhibits.filter(
+      (exhibit) => exhibit.families?.some((family) => family.room === room) && exhibit.room !== room,
+    );
+    expect(works.length + shared.length).toBe(
+      "house" in info ? info.house.words.length : 6,
+    );
     expect(works.every((work) => work.originalImage !== work.image)).toBe(true);
   }
   await page.screenshot({

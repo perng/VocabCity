@@ -5,3 +5,7 @@ playwright-report/
 .DS_Store
 __pycache__/
 *.py[cod]
+output/artwork/generated/
+output/artwork/authoring/
+# PNG masters stay on disk but are no longer committed; the 90 originals remain tracked.
+output/artwork/masters/
