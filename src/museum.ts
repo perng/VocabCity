@@ -954,13 +954,13 @@ export class Museum {
           for (const dz of [-2.6, 2.6]) this.box(0.14, 5.6, 0.14, offset + side * (c.canal.street + 0.3), 2.8, lz + dz, "#7c795d");
         }
       }
-      // Laundry lines and lamps make the lanes lived-in.
-      for (let x = -LANE_X + 12; x < LANE_X; x += 24) {
-        if (Math.abs(x) < c.canal.street + 6) continue;
+      // Laundry lines and lamps make the lanes lived-in; both sit on plot boundaries, clear of doors.
+      for (const offset of BLOCK_OFFSETS) for (const boundary of [-72, -40, 40, 72]) {
+        const x = offset + boundary;
         const cord = this.box(0.03, 0.03, LANE_HALF * 2 + 0.4, x, 5.4, lz, "#8a8474");
         cord.castShadow = false;
         for (let k = 0; k < 5; k++) this.box(0.5, 0.7, 0.02, x, 5.0, lz - 2.4 + k * 1.2, ["#d9c9a7", "#8fa4b6", "#c78e7f", "#e9e2d1", "#9aae8c"][k]);
-        this.lamp(x + 12, lz + (row % 2 ? -1 : 1) * (LANE_HALF - 0.6), 3.2);
+        this.lamp(x + 16, lz + (row % 2 ? -1 : 1) * (LANE_HALF - 0.6), 3.2);
       }
     }
     // Houses are zones: built near the visitor, released far away.

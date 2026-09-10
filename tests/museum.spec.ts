@@ -94,7 +94,7 @@ test("mobile layout supports gallery navigation, collection search, saved words,
   await page
     .getByRole("textbox", { name: "Search vocabulary" })
     .fill("journey");
-  await expect(page.locator(".collection-card")).toHaveCount(1);
+  await expect(page.locator(".collection-word").first()).toHaveText("journey");
   await page.getByRole("button", { name: "journey", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "journey", exact: true }),

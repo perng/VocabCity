@@ -143,9 +143,8 @@ test('the Old Town canal blocks the way except at bridges, and lanes open into c
   expect(await z()).toBeGreaterThan(CITY.canal.z1 - 5);
   // Along the east walkway to the first lane, then west across its bridge.
   await hold(page, 'd', async () => (await x()) > 4.5);
-  await page.keyboard.down('Shift');
-  await hold(page, 'w', async () => Math.abs((await z()) - LANE_ZS[0]) < 1.2, 20000);
-  await page.keyboard.up('Shift');
+  // Pose reports arrive every 150 ms, so walk at normal speed and accept the lane's width.
+  await hold(page, 'w', async () => Math.abs((await z()) - LANE_ZS[0]) < 2.2, 20000);
   await hold(page, 'a', async () => (await x()) < -4);
   expect(Math.abs((await z()) - LANE_ZS[0])).toBeLessThan(3);
   await expect(heading(page)).toHaveText('The Old Town');
@@ -228,7 +227,7 @@ test('a phone follows the localized next-stop route through the landmarks and in
   await page.getByRole('button', { name: '下一站 · 舊城區', exact: true }).click();
   await expect(page.locator('.gallery-heading strong')).toHaveText('舊城區');
   for (const root of ['port', 'struct', 'spect']) {
-    await page.getByRole('button', { name: `下一個字根 · 字根家族 · ${root}`, exact: true }).click();
+    await page.getByRole('button', { name: `下一棟小屋 · 字根家族 · ${root}`, exact: true }).click();
     await expect(page.locator('.gallery-heading strong')).toHaveText(`字根家族 · ${root}`);
   }
   await page.screenshot({ path: 'test-results/city-mobile-house.png' });
@@ -237,6 +236,10 @@ test('a phone follows the localized next-stop route through the landmarks and in
   await expect(page.locator('.wing-shortcuts > button')).toHaveCount(9);
   await page.locator('.root-grid').first().locator('> button').last().click();
   await expect(page.locator('.gallery-heading strong')).toHaveText('字根家族 · volv');
+  // Only the last house of all leads back to the square; it sits in the final level lane.
+  await page.getByRole('button', { name: '展館地圖', exact: true }).click();
+  await page.locator('.root-grid').last().locator('> button').last().click();
+  await expect(page.locator('.gallery-heading strong')).toHaveText(zhName(collection.rooms.length - 1));
   await page.getByRole('button', { name: '回到廣場 · 主教座堂廣場', exact: true }).click();
   await expect(page.locator('.gallery-heading strong')).toHaveText('主教座堂廣場');
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);

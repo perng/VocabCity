@@ -1488,7 +1488,7 @@ export default function App() {
               {LANDMARKS.map(([index, label]) => <button key={index} onClick={() => navigateRoom(index)}>{t(label)}<ArrowRight size={14} /></button>)}
             </div>
             <div className="room-list">
-              {[...rooms.map((room, i) => [room, i] as const).filter(([room]) => !room.root), [CATHEDRAL_SQUARE, SQUARE_INDEX] as const, [OLD_TOWN, STREETS_INDEX] as const].map(([room, i]) => (
+              {[...rooms.map((room, i) => [room, i] as const).filter(([room]) => !room.house), [CATHEDRAL_SQUARE, SQUARE_INDEX] as const, [OLD_TOWN, STREETS_INDEX] as const].map(([room, i]) => (
                 <button
                   key={room.id}
                   className={pose.room === i ? "current" : ""}

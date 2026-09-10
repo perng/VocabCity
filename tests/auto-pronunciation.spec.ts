@@ -37,7 +37,7 @@ test("opening and switching exhibits pronounces each word once and cancels older
   await page.getByRole("button", { name: "Start exploring", exact: true }).click();
   expect(await starts(page)).toEqual([]);
   // Opening from the collection travels to the Gate Square and pronounces the word once.
-  await page.getByRole("button", { name: "The collection493", exact: true }).click();
+  await page.getByRole("button", { name: /^The collection/ }).click();
   await page.getByRole("button", { name: "curiosity", exact: true }).click();
   await expect(page.getByRole("heading", { name: "curiosity", exact: true })).toBeVisible();
   await expect(page.locator(".exhibit-sheet")).toContainText("GATE SQUARE");
@@ -63,7 +63,7 @@ test("opening and switching exhibits pronounces each word once and cancels older
   await page.getByRole("button", { name: "Close exhibit", exact: true }).click();
   await expect.poll(() => allStopped(page)).toBe(true);
 
-  await page.getByRole("button", { name: "The collection493", exact: true }).click();
+  await page.getByRole("button", { name: /^The collection/ }).click();
   await page.getByRole("button", { name: "curiosity", exact: true }).click();
   expect(await starts(page)).toEqual(["curiosity.m4a", "delicate.m4a", "curiosity.m4a", "curiosity.m4a"]);
   await page.getByRole("checkbox", { name: "Learned: curiosity", exact: true }).check();
