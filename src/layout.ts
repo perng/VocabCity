@@ -232,7 +232,8 @@ export function withinGrounds(x: number, z: number) {
     { x0: c.cistern.x0, x1: c.cistern.x1, z0: c.cistern.z0, z1: c.cistern.z1 },
     { x0: c.cistern.x0 - 2, x1: c.cistern.x0 + 2, z0: -133, z1: -127 },
     // The promenade runs the whole width of the Old Town, feeding every avenue and the wall walks.
-    { x0: -c.wallX, x1: c.wallX, z0: c.promenade.z0 - 2, z1: c.promenade.z1 + 2 },
+    // It stops at the back walls of the cathedral, palazzo, guildhall and cistern; the side lanes reach down into it.
+    { x0: -c.wallX, x1: c.wallX, z0: c.promenade.z0 - 2, z1: c.promenade.z1 },
     { x0: -c.canal.street, x1: c.canal.street, z0: c.canal.z0, z1: c.canal.z1 + 2 },
     ...BLOCK_OFFSETS.slice(1).map((offset) => ({ x0: offset - c.canal.street, x1: offset + c.canal.street, z0: c.canal.z0, z1: c.canal.z1 + 2 })),
     { x0: -c.wallX, x1: -OUTER_EDGE, z0: c.wallNorth, z1: c.promenade.z1 },

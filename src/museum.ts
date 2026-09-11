@@ -83,6 +83,7 @@ type DisplayFrame = {
   id: string;
   material: THREE.MeshStandardMaterial;
   checkedColor: string;
+  halo?: boolean;
   checkbox: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
   position: THREE.Vector3;
   phase: number;
@@ -1086,19 +1087,15 @@ export class Museum {
       });
     }
     const frameColor = "#9a744f";
-    const frame = this.box(
-      2.64,
-      3.24,
-      0.13,
-      0,
-      3.15,
-      0.06,
-      frameColor,
-      group,
-      true,
-    );
-    this.box(2.36, 2.96, 0.035, 0, 3.15, 0.14, "#eee8d7", group);
-    this.box(2.2, 2.2, 0.012, 0, 2.85, 0.165, "#faf7e9", group);
+    // A mural is painted straight onto the wall: no frame or mat, only a faint halo that glows until the word is checked.
+    const mural = !!exhibit.artwork?.mural;
+    const frame = mural
+      ? this.box(3.0, 3.0, 0.01, 0, 2.85, 0.02, frameColor, group)
+      : this.box(2.64, 3.24, 0.13, 0, 3.15, 0.06, frameColor, group, true);
+    if (!mural) {
+      this.box(2.36, 2.96, 0.035, 0, 3.15, 0.14, "#eee8d7", group);
+      this.box(2.2, 2.2, 0.012, 0, 2.85, 0.165, "#faf7e9", group);
+    }
     let texture = this.paintingTextures.get(exhibit.image);
     this.paintingUses.set(exhibit.image, (this.paintingUses.get(exhibit.image) ?? 0) + 1);
     this.activeZone?.paintings.push(exhibit.image);
@@ -1126,7 +1123,9 @@ export class Museum {
       this.textures.push(texture);
       this.paintingTextures.set(exhibit.image, texture);
     }
-    const art = this.panel(texture, 2.16, 2.16, 0, 2.85, 0.177, group);
+    const art = mural
+      ? this.panel(texture, 2.84, 2.84, 0, 2.85, 0.03, group)
+      : this.panel(texture, 2.16, 2.16, 0, 2.85, 0.177, group);
     const target: ExhibitHit = {
       exhibit,
       action: "open",
@@ -1136,6 +1135,11 @@ export class Museum {
     art.userData.target = target;
     frame.material = this.material(frameColor).clone();
     const isChecked = this.checked.has(exhibit.id);
+    if (mural) {
+      frame.material.transparent = true;
+      frame.material.depthWrite = false;
+      frame.material.opacity = isChecked ? 0 : 0.35;
+    }
     frame.material.color.set(isChecked ? frameColor : "#daa32e");
     frame.material.emissive.set("#ffc43d");
     frame.material.emissiveIntensity = isChecked ? 0 : 0.32;
@@ -1153,6 +1157,7 @@ export class Museum {
       id: exhibit.id,
       material: frame.material,
       checkedColor: frameColor,
+      halo: mural,
       checkbox,
       position: group.position.clone(),
       phase: index * 0.23,
@@ -1632,6 +1637,7 @@ export class Museum {
       display.checkbox.material.map = this.checkTextures[Number(checked)];
       display.material.color.set(checked ? display.checkedColor : "#daa32e");
       display.material.emissiveIntensity = checked ? 0 : 0.32;
+      if (display.halo) display.material.opacity = checked ? 0 : 0.35;
     }
     this.needsRender = true;
   }

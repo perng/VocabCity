@@ -77,6 +77,7 @@ export interface Exhibit {
     medium: string;
     mediumZh: string;
     style: string;
+    mural?: boolean;
     width: number;
     height: number;
     provenance: string;

@@ -15,6 +15,8 @@ test("all source paintings and recordings load, and the canvas renders without e
   page,
   request,
 }) => {
+  // Several hundred asset requests against the external disk take longer than the default budget.
+  test.setTimeout(240000);
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await enter(page);
@@ -47,8 +49,8 @@ test("all source paintings and recordings load, and the canvas renders without e
 test("guided tour covers every exhibit and finishes at the entrance", async ({
   page,
 }) => {
-  // Nearly five hundred stops, with root rooms building on demand along the way.
-  test.setTimeout(900000);
+  // Over 2,500 stops, with houses building on demand along the way.
+  test.setTimeout(1500000);
   await enter(page);
   await page.getByRole("button", { name: /Take a guided tour/ }).click();
   for (let i = 0; i < data.exhibits.length; i++) {

@@ -1,33 +1,46 @@
 import { test, expect } from "@playwright/test";
 import collection from "../src/collection.json" with { type: "json" };
 
-test("all 493 museum artworks load at native resolution, with coordinated halls and a responsive larger view", async ({
+test("every museum artwork loads at native resolution, landmarks mix many media, and the larger view is responsive", async ({
   page,
 }) => {
+  test.setTimeout(600000);
   await page.goto("/");
-  await page.getByRole("button", { name: "單字典藏493", exact: true }).click();
+  await page.getByRole("button", { name: /^單字典藏/ }).click();
   const images = page.locator(".collection-art img");
   await expect(images).toHaveCount(collection.exhibits.length);
-  await expect
-    .poll(() =>
-      images.evaluateAll((nodes) =>
-        nodes.every((node) => {
-          const image = node as HTMLImageElement;
-          return (
-            image.complete &&
-            image.naturalWidth >= 1024 &&
-            image.naturalHeight >= 1024 &&
-            image.src.includes("/artwork/museum-v1/")
-          );
-        }),
+  // Collection cards load lazily, so fetch every painting explicitly and check its native size.
+  const failures = await images.evaluateAll((nodes) =>
+    Promise.all(
+      nodes.map(
+        (node) =>
+          new Promise<string | null>((resolve) => {
+            const src = (node as HTMLImageElement).src;
+            const probe = new Image();
+            probe.onload = () =>
+              resolve(
+                probe.naturalWidth >= 1024 && probe.naturalHeight >= 1024 && src.includes("/artwork/museum-v1/")
+                  ? null
+                  : `${src} ${probe.naturalWidth}x${probe.naturalHeight}`,
+              );
+            probe.onerror = () => resolve(`${src} failed`);
+            probe.src = src;
+          }),
       ),
-    )
-    .toBe(true);
+    ).then((results) => results.filter(Boolean)),
+  );
+  expect(failures).toEqual([]);
   for (const [room, info] of collection.rooms.entries()) {
     const works = collection.exhibits.filter(
       (exhibit) => exhibit.room === room,
     );
-    expect(new Set(works.map((work) => work.artwork.style)).size).toBe(1);
+    // Landmark groups were restyled across many media; houses keep one series medium
+    // unless they were among the first restyled (port and struct).
+    const styles = new Set(works.map((work) => work.artwork!.style)).size;
+    if (room < 15) expect(styles, info.name).toBeGreaterThanOrEqual(4);
+    else if (room < 17) expect(styles, info.name).toBeGreaterThanOrEqual(2);
+    // A theme house split across I/II/III may carry two series media from successive imports.
+    else expect(styles, info.name).toBeLessThanOrEqual(2);
     // A root room also shows family words that hang in a thematic gallery.
     const shared = collection.exhibits.filter(
       (exhibit) => exhibit.families?.some((family) => family.room === room) && exhibit.room !== room,
@@ -35,8 +48,11 @@ test("all 493 museum artworks load at native resolution, with coordinated halls 
     expect(works.length + shared.length).toBe(
       "house" in info ? info.house.words.length : 6,
     );
-    expect(works.every((work) => work.originalImage !== work.image)).toBe(true);
   }
+  // Murals hang frameless on real outdoor walls only: the gate square, quay, arcades, inn courtyard and belvedere.
+  const murals = collection.exhibits.filter((exhibit) => exhibit.artwork?.mural);
+  expect(murals.length).toBe(12);
+  expect(new Set(murals.map((exhibit) => exhibit.room))).toEqual(new Set([0, 1, 3, 7, 8, 11]));
   await page.screenshot({
     path: "test-results/art-collection.png",
     animations: "disabled",

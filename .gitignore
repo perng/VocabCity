@@ -10,3 +10,4 @@ output/artwork/authoring/
 # PNG masters stay on disk but are no longer committed; the 90 originals remain tracked.
 output/artwork/masters/
 .claude/
+output/artwork/retired/
