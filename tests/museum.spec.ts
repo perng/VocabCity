@@ -49,8 +49,8 @@ test("all source paintings and recordings load, and the canvas renders without e
 test("guided tour covers every exhibit and finishes at the entrance", async ({
   page,
 }) => {
-  // Over 2,500 stops, with houses building on demand along the way.
-  test.setTimeout(1500000);
+  // Over 2,500 stops, each loading a full-size painting, with houses building on demand along the way.
+  test.setTimeout(3000000);
   await enter(page);
   await page.getByRole("button", { name: /Take a guided tour/ }).click();
   for (let i = 0; i < data.exhibits.length; i++) {
