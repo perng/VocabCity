@@ -50,7 +50,7 @@ export function rootRoomTransform(room: number) {
   return { x: blockOffset(laneColumn(lane)) + houseColumnX(plot), z, yaw: north ? 0 : Math.PI, walk: lane };
 }
 export const rootRoomLane = (room: number) => Math.floor((room - ROOT_START) / HOUSES_PER_LANE);
-// Displays line the three closed walls; the banner hangs free at the room's centre.
+// Displays line the three closed walls; house information lies flat on the central floor.
 const rootLeft = (z: number) => ({ x: -7.78, z, yaw: Math.PI / 2 });
 const rootRight = (z: number) => ({ x: 7.78, z, yaw: -Math.PI / 2 });
 const rootBack = (x: number) => ({ x, z: -6.78, yaw: 0 });

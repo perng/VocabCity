@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { Botany } from "./botany";
+import type { SceneGame } from "./games";
 import { translate } from "./i18n";
 import { assetUrl, partOfSpeech, type Exhibit, type Room } from "./types";
 import {
@@ -108,6 +109,12 @@ export class Museum {
   private camera = new THREE.PerspectiveCamera(68, 1, 0.08, 330);
   private renderer: THREE.WebGLRenderer;
   private keys = new Set<string>();
+  private game: SceneGame | null = null;
+  private gameGroup: THREE.Group | null = null;
+  private gameTextures: THREE.Texture[] = [];
+  private gameMasks: { mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>; map: THREE.Texture | null }[] = [];
+  private hiddenFloor: THREE.Object3D[] = [];
+  private standingTile: { id: string; since: number; answered: boolean } | null = null;
   private raycaster = new THREE.Raycaster();
   private pointer = new THREE.Vector2();
   private materials = new Map<string, THREE.MeshStandardMaterial>();
@@ -212,6 +219,8 @@ export class Museum {
     canvas.addEventListener("pointermove", this.pointerMove);
     canvas.addEventListener("pointerup", this.pointerUp);
     canvas.addEventListener("pointercancel", this.pointerCancel);
+    canvas.addEventListener("dragover", this.gameDragOver);
+    canvas.addEventListener("drop", this.gameDrop);
     canvas.addEventListener("contextmenu", this.preventContext);
     canvas.addEventListener("webglcontextlost", this.contextLost);
     window.addEventListener("keydown", this.keyDown);
@@ -1213,6 +1222,7 @@ export class Museum {
       group,
     );
     banner.userData.target = target;
+    banner.userData.wordBanner = true;
     const label = this.canvasTexture(
       1024,
       310,
@@ -1249,6 +1259,7 @@ export class Museum {
     );
     const plaque = this.panel(label, 2.52, 0.85, 0, 1, 0.05, group);
     plaque.userData.target = target;
+    plaque.userData.gameCaption = target.area;
     // Examples sit beside the framed sticker, like a museum curator's note.
     const example = this.canvasTexture(
       500,
@@ -1294,7 +1305,7 @@ export class Museum {
       },
       true,
     );
-    this.panel(example, 1.45, 2.2, 2.16, 2.76, 0.03, group);
+    this.panel(example, 1.45, 2.2, 2.16, 2.76, 0.03, group).userData.gameCaption = target.area;
   }
 
   private shadow(x: number, z: number, w: number, d: number) {
@@ -1390,54 +1401,33 @@ export class Museum {
         leaf.position.set(-w / 2 + 0.2, 2.5 + (i % 5) * 0.55, -6 + i * 0.9); leaf.rotation.y = Math.PI / 2; hall.add(leaf);
       }
     }
-    // The banner hangs from the ceiling at the centre of the room, readable from both sides.
-    const banner = this.canvasTexture(1024, 560, (ctx) => {
-      ctx.beginPath();
-      ctx.moveTo(0, 0); ctx.lineTo(1024, 0); ctx.lineTo(1024, 468); ctx.lineTo(512, 558); ctx.lineTo(0, 468); ctx.closePath();
-      ctx.fillStyle = room.color; ctx.fill();
-      ctx.beginPath();
-      ctx.moveTo(22, 22); ctx.lineTo(1002, 22); ctx.lineTo(1002, 456); ctx.lineTo(512, 530); ctx.lineTo(22, 456); ctx.closePath();
-      ctx.strokeStyle = "#ecdfb9"; ctx.lineWidth = 3; ctx.stroke();
+    // A flush floor inlay keeps the house information below every painting sightline.
+    const floorInfo = this.canvasTexture(1536, 1024, (ctx) => {
+      ctx.fillStyle = "#eee7d5"; ctx.fillRect(0, 0, 1536, 1024);
+      ctx.fillStyle = room.color; ctx.fillRect(28, 28, 1480, 968);
+      ctx.fillStyle = "#eee7d5"; ctx.fillRect(42, 42, 1452, 940);
+      ctx.strokeStyle = trim; ctx.lineWidth = 2; ctx.strokeRect(60, 60, 1416, 904);
       ctx.textAlign = "center"; ctx.textBaseline = "middle";
-      ctx.fillStyle = "#e9dfbf"; ctx.font = '500 26px "DM Sans", sans-serif';
-      ctx.fillText(translate(house.kind === "root" ? "ROOT FAMILY" : house.kind === "theme" ? "THEME HOUSE" : house.kind === "family" ? "WORD FAMILY HOUSE" : "LEVEL LANE", this.options.locale), 512, 70, 900);
-      ctx.fillStyle = "#fbf6e8";
-      let fontSize = house.display.length > 12 ? 96 : 210;
+      ctx.fillStyle = "#635f4d"; ctx.font = '500 38px "DM Sans", sans-serif';
+      ctx.fillText(translate(house.kind === "root" ? "ROOT FAMILY" : house.kind === "theme" ? "THEME HOUSE" : house.kind === "family" ? "WORD FAMILY HOUSE" : "LEVEL LANE", this.options.locale), 768, 120, 1300);
+      ctx.fillStyle = "#354638";
+      let fontSize = house.display.length > 12 ? 110 : 220;
       ctx.font = `italic 500 ${fontSize}px "Cormorant Garamond", serif`;
-      while (ctx.measureText(root.display).width > 940 && fontSize > 48) { fontSize -= 6; ctx.font = `italic 500 ${fontSize}px "Cormorant Garamond", serif`; }
-      ctx.fillText(root.display, 512, 208, 940);
-      ctx.fillStyle = "#f6edd3"; ctx.font = '500 54px "DM Sans", sans-serif';
-      ctx.fillText(root.translations[this.options.locale] || root.meaning, 512, 352, 940);
-      ctx.fillStyle = "#dfd4b0"; ctx.font = '28px "DM Sans", sans-serif';
-      ctx.fillText(house.kind === "root" ? room.root!.origin : root.meaning, 512, 418, 900);
-      ctx.font = '25px "DM Sans", sans-serif';
-      ctx.fillText(root.words.join("  ·  "), 512, 470, 780);
+      while (ctx.measureText(root.display).width > 1300 && fontSize > 48) { fontSize -= 6; ctx.font = `italic 500 ${fontSize}px "Cormorant Garamond", serif`; }
+      ctx.fillText(root.display, 768, 285, 1300);
+      ctx.fillStyle = "#354638"; ctx.font = '500 64px "DM Sans", sans-serif';
+      ctx.fillText(root.translations[this.options.locale] || room.root?.meaning || root.meaning, 768, 445, 1290);
+      ctx.strokeStyle = room.color; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(568, 515); ctx.lineTo(968, 515); ctx.stroke();
+      // Origins and the family list wrap instead of squeezing six words onto a line.
+      ctx.fillStyle = "#635f4d"; ctx.font = '38px "DM Sans", sans-serif';
+      this.wrapText(ctx, house.kind === "root" ? room.root!.origin : root.meaning, 768, 590, 1270, 48);
+      ctx.fillStyle = "#354638"; ctx.font = '500 46px "DM Sans", sans-serif';
+      this.wrapText(ctx, root.words.join("  ·  "), 768, 760, 1240, 64);
     }, true);
-    for (const face of [1, -1]) {
-      const cloth = this.panel(banner, 4.2, 2.3, 0, 3.72, face * 0.012, hall);
-      if (face < 0) cloth.rotation.y = Math.PI;
-    }
-    // The banner hangs from a rod: strung wall to wall in a courtyard, from the ceiling in a shop.
-    if (style === "shop") {
-      this.box(4.5, 0.08, 0.08, 0, 4.9, 0, trim, hall);
-      for (const x of [-1.9, 1.9]) this.box(0.03, h - 4.9, 0.03, x, (h + 4.9) / 2, 0, "#6e6958", hall);
-    } else {
-      this.box(w, 0.06, 0.06, 0, 4.9, 0, "#6e6958", hall);
-      this.box(4.5, 0.08, 0.08, 0, 4.88, 0, trim, hall);
-    }
-    const medallion = this.canvasTexture(512, 512, (ctx) => {
-      ctx.beginPath(); ctx.arc(256, 256, 244, 0, Math.PI * 2);
-      ctx.fillStyle = `#${tint.clone().lerp(new THREE.Color("#e6e0cc"), 0.55).getHexString()}`; ctx.fill();
-      ctx.lineWidth = 6; ctx.strokeStyle = trim; ctx.stroke();
-      ctx.beginPath(); ctx.arc(256, 256, 206, 0, Math.PI * 2); ctx.lineWidth = 2; ctx.stroke();
-      ctx.textAlign = "center"; ctx.textBaseline = "middle";
-      ctx.fillStyle = trim; ctx.font = `italic 500 ${house.display.length > 12 ? 70 : 150}px "Cormorant Garamond", serif`;
-      ctx.fillText(root.display, 256, 236, 380);
-      ctx.font = '500 26px "DM Sans", sans-serif';
-      ctx.fillText((house.kind === "root" ? room.root!.meaning : house.kind).toUpperCase(), 256, 352, 360);
-    });
-    const disc = this.panel(medallion, 4.4, 4.4, 0, 0.035, 0, hall);
-    disc.rotation.x = -Math.PI / 2;
+    const floorPlaque = this.panel(floorInfo, 7.2, 4.8, 0, 0.035, 0, hall);
+    floorPlaque.rotation.x = -Math.PI / 2;
+    floorPlaque.userData.floorInfo = index;
     const sign = this.canvasTexture(1024, 200, (ctx) => {
       ctx.fillStyle = room.color; ctx.fillRect(0, 0, 1024, 200);
       ctx.strokeStyle = "#e6dcbd"; ctx.lineWidth = 3; ctx.strokeRect(16, 16, 992, 168);
@@ -1508,6 +1498,7 @@ export class Museum {
     this.camera.aspect = width / Math.max(height, 1);
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height);
+    if (this.game?.mode === "step") this.setGame(this.game);
     this.needsRender = true;
   };
 
@@ -1534,6 +1525,11 @@ export class Museum {
   };
   private pointerUp = (event: PointerEvent) => {
     if (!this.blocked && this.dragging && this.dragDistance < 7) {
+      if (this.game) {
+        this.answerGameAt(event.clientX, event.clientY);
+        this.pointerCancel();
+        return;
+      }
       const hit = this.pick(event.clientX, event.clientY);
       if (hit?.action === "check") {
         const next = new Set(this.checked);
@@ -1557,7 +1553,7 @@ export class Museum {
     );
   };
 
-  private pick(x: number, y: number): ExhibitHit | null {
+  private pickObject(x: number, y: number): THREE.Object3D | null {
     const rect = this.renderer.domElement.getBoundingClientRect();
     this.pointer.set(
       ((x - rect.left) / rect.width) * 2 - 1,
@@ -1568,13 +1564,22 @@ export class Museum {
     const hits = this.raycaster.intersectObjects(this.scene.children, true);
     const first = hits.find(
       (hit) =>
+        hit.object.userData.gameAnswer ||
         !(hit.object as THREE.Mesh).material ||
         !((hit.object as THREE.Mesh).material as THREE.Material).transparent ||
         hit.object.userData.target,
     );
-    return first?.object.userData.target ?? null;
+    return first?.object ?? null;
+  }
+  private pick(x: number, y: number): ExhibitHit | null {
+    return this.pickObject(x, y)?.userData.target ?? null;
   }
   private updateHover(x: number, y: number) {
+    if (this.game) {
+      const object = this.pickObject(x, y);
+      this.renderer.domElement.style.cursor = object?.userData.gameAnswer || object?.userData.target ? "pointer" : "grab";
+      return;
+    }
     const hit = this.pick(x, y);
     const hoverId = hit ? `${hit.exhibit.id}:${hit.action}` : null;
     if (hoverId !== this.hoverId) {
@@ -1734,7 +1739,178 @@ export class Museum {
       };
   }
 
+  private gameTexture(draw: (ctx: CanvasRenderingContext2D) => void) {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1024; canvas.height = 512;
+    draw(canvas.getContext("2d")!);
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
+    this.gameTextures.push(texture);
+    return texture;
+  }
+
+  setGame(game: SceneGame | null) {
+    for (const mask of this.gameMasks) mask.mesh.material.map = mask.map;
+    this.gameMasks = [];
+    for (const floor of this.hiddenFloor) floor.visible = true;
+    this.hiddenFloor = [];
+    this.gameGroup?.traverse(object => {
+      if (object instanceof THREE.Mesh) {
+        object.geometry.dispose();
+        (Array.isArray(object.material) ? object.material : [object.material]).forEach(material => material.dispose());
+      }
+    });
+    this.gameGroup?.removeFromParent();
+    this.gameGroup = null;
+    this.gameTextures.forEach(texture => texture.dispose());
+    this.gameTextures = [];
+    this.game = game;
+    this.needsRender = true;
+    this.hoverId = null;
+    this.options.onHover(null);
+    if (!game) { this.standingTile = null; return; }
+    this.updateZones(true);
+    if (!game.enabled) this.clearInput();
+    if (game.mode === "restore" || game.conceal) {
+      this.scene.traverse(object => {
+        if (!(object instanceof THREE.Mesh) || !object.userData.wordBanner) return;
+        const target: ExhibitHit = object.userData.target;
+        const number = game.exhibits.findIndex(e => e.id === target.exhibit.id);
+        if (target.area !== game.room || number < 0 || (!game.conceal && game.restored.includes(target.exhibit.id))) return;
+        this.gameMasks.push({ mesh: object, map: object.material.map });
+        object.material.map = this.gameTexture(ctx => {
+          ctx.fillStyle = "#ebe1c7"; ctx.fillRect(0, 0, 1024, 512);
+          ctx.strokeStyle = "#8c7351"; ctx.lineWidth = 7; ctx.setLineDash([22, 14]); ctx.strokeRect(24, 24, 976, 464);
+          ctx.fillStyle = "#695839"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+          ctx.font = '500 250px "Cormorant Garamond", serif'; ctx.fillText(String(number + 1).padStart(2, "0"), 512, 268);
+        });
+      });
+    }
+    if (game.mode === "market") { this.buildGameNeighbours(game); return; }
+    this.scene.traverse(object => {
+      if (((game.mode === "step" || game.conceal) && object.userData.floorInfo === game.room) ||
+          (game.conceal && object.userData.gameCaption === game.room)) {
+        object.visible = false; this.hiddenFloor.push(object);
+      }
+    });
+    if (game.mode !== "step") return;
+    const origin = rootRoomTransform(game.room);
+    const group = new THREE.Group();
+    group.position.set(origin.x, 0, origin.z); group.rotation.y = origin.yaw;
+    this.gameGroup = group; this.scene.add(group);
+    const portrait = this.camera.aspect < 0.85;
+    game.exhibits.forEach((exhibit, i) => {
+      const correct = game.restored.includes(exhibit.id);
+      const texture = this.gameTexture(ctx => {
+        ctx.fillStyle = correct ? "#466c54" : "#eee3c8"; ctx.fillRect(0, 0, 1024, 512);
+        ctx.strokeStyle = correct ? "#b9d3ac" : "#92794f"; ctx.lineWidth = 7; ctx.strokeRect(22, 22, 980, 468);
+        ctx.fillStyle = correct ? "#f7f1df" : "#435842"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.font = '500 58px "DM Sans", sans-serif'; ctx.fillText(correct ? "✓" : String(i + 1).padStart(2, "0"), 512, 115);
+        ctx.font = '500 104px "Cormorant Garamond", serif'; ctx.fillText(exhibit.word, 512, 284, 890);
+      });
+      const width = portrait ? 2.6 : 2.85, depth = portrait ? 1.2 : 2;
+      const tile = this.panel(texture, width, depth, portrait ? 0 : i % 2 ? 1.65 : -1.65, 0.045, portrait ? 1.4 - i * 1.6 : i < 2 ? 1.35 : -1.15, group);
+      tile.userData.halfWidth = width / 2;
+      tile.userData.halfDepth = depth / 2;
+      tile.rotation.x = -Math.PI / 2;
+      tile.userData.gameAnswer = exhibit.id;
+    });
+  }
+
+  private buildGameNeighbours(game: SceneGame) {
+    const group = new THREE.Group(); this.gameGroup = group; this.scene.add(group);
+    (game.actors ?? []).forEach((actor, i) => {
+      const neighbour = new THREE.Group(); neighbour.position.set(MARKET_CENTER.x - 1, 0, MARKET_CENTER.z - 6 + i * 6);
+      neighbour.rotation.y = -Math.PI / 2; neighbour.userData.actorId = actor.id; group.add(neighbour);
+      const part = (geometry: THREE.BufferGeometry, color: string, x: number, y: number, z: number) => {
+        const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color, roughness: .85 }));
+        mesh.position.set(x, y, z); mesh.castShadow = true; neighbour.add(mesh); return mesh;
+      };
+      // Small wooden figures stand in the open square, away from all six paintings.
+      for (const x of [-.19, .19]) {
+        part(new THREE.CylinderGeometry(.11, .13, .6, 10), "#625747", x, .37, 0);
+        part(new THREE.SphereGeometry(.15, 12, 8), "#3d493c", x, .13, .08).scale.set(1, .6, 1.5);
+        const arm = part(new THREE.CylinderGeometry(.095, .11, .7, 10), actor.color, x * 2.2, 1.2, .07);
+        arm.rotation.z = x < 0 ? -.2 : .2;
+        part(new THREE.SphereGeometry(.11, 10, 8), "#d9ad7d", x * 2.5, .86, .07);
+      }
+      part(new THREE.CylinderGeometry(.3, .38, .95, 16), actor.color, 0, 1.15, 0);
+      part(new THREE.BoxGeometry(.48, .62, .06), "#eadbb9", 0, 1.04, .32);
+      part(new THREE.SphereGeometry(.28, 20, 14), "#d9ad7d", 0, 1.87, 0);
+      for (const x of [-.1, .1]) part(new THREE.SphereGeometry(.025, 8, 6), "#3f4134", x, 1.91, .254);
+      part(new THREE.SphereGeometry(.045, 10, 8), "#bc895d", 0, 1.85, .28);
+      part(new THREE.CylinderGeometry(.39, .39, .07, 24), i === 0 ? "#f8edd7" : actor.color, 0, 2.12, 0);
+      part(new THREE.CylinderGeometry(.23, .27, i === 0 ? .3 : .12, 20), i === 0 ? "#f8edd7" : actor.color, 0, 2.24, 0);
+      const badge = this.gameTexture(ctx => {
+        ctx.fillStyle = actor.complete ? "#42694e" : actor.active ? "#c59b4d" : "#e5dac1"; ctx.fillRect(0, 0, 1024, 512);
+        ctx.strokeStyle = "#f8efda"; ctx.lineWidth = 7; ctx.strokeRect(22, 22, 980, 468);
+        ctx.fillStyle = actor.complete ? "#fff7e5" : "#374c3b"; ctx.textAlign = "center";
+        ctx.font = '500 90px "DM Sans", sans-serif'; ctx.fillText(actor.complete ? "✓" : String(i + 1).padStart(2, "0"), 512, 170);
+        ctx.font = '500 130px "Cormorant Garamond", serif'; ctx.fillText(actor.name, 512, 340);
+      });
+      const tile = this.panel(badge, 1.85, 1, 0, .04, 1.2, neighbour); tile.rotation.x = -Math.PI / 2;
+      neighbour.traverse(object => { object.userData.gameAnswer = `npc:${actor.id}`; });
+    });
+  }
+
+  visitGameNeighbour(id: string) {
+    const actor = this.gameGroup?.children.find(child => child.userData.actorId === id);
+    if (!actor || this.game?.mode !== "market") return;
+    this.clearInput(); this.transition = null;
+    this.camera.position.set(actor.position.x - 4, EYE_HEIGHT, actor.position.z);
+    this.yaw = -Math.PI / 2; this.pitch = this.camera.aspect < .85 ? -.34 : -.05;
+    this.updateZones(true); this.needsRender = true;
+  }
+
+  resetGamePosition(room: number, floor = false) {
+    // A level starting line lets visitors see all tiles; no answer is under their feet.
+    const pose = roomPose(room);
+    this.clearInput(); this.transition = null; this.standingTile = null;
+    this.camera.position.set(pose.x, EYE_HEIGHT, pose.z);
+    this.yaw = pose.yaw; this.pitch = floor ? -0.48 : room === 12 && this.camera.aspect < .85 ? -.27 : 0.04;
+    this.updateZones(true); this.needsRender = true;
+  }
+
+  private answerGameAt(x: number, y: number) {
+    if (!this.game?.enabled || this.blocked) return;
+    const object = this.pickObject(x, y);
+    if (this.game.mode === "step" || this.game.mode === "market") {
+      if (object?.userData.gameAnswer) this.game.onAnswer(object.userData.gameAnswer);
+    } else {
+      const target: ExhibitHit | undefined = object?.userData.target;
+      if (target?.area === this.game.room) this.game.onAnswer(target.exhibit.id);
+    }
+  }
+  private gameDragOver = (event: DragEvent) => {
+    if (this.game?.mode === "restore" && !this.blocked) event.preventDefault();
+  };
+  private gameDrop = (event: DragEvent) => {
+    if (this.game?.mode !== "restore") return;
+    event.preventDefault(); this.answerGameAt(event.clientX, event.clientY);
+  };
+  private checkGameStep(time: number) {
+    if (this.blocked || !this.game?.enabled || this.game.mode !== "step" || !this.gameGroup || this.transition) return;
+    const local = this.gameGroup.worldToLocal(this.camera.position.clone());
+    const tile = this.gameGroup.children.find(child => Math.abs(local.x - child.position.x) < child.userData.halfWidth && Math.abs(local.z - child.position.z) < child.userData.halfDepth);
+    const id: string | undefined = tile?.userData.gameAnswer;
+    if (!id) { this.standingTile = null; return; }
+    if (this.standingTile?.id !== id) this.standingTile = { id, since: time, answered: false };
+    if (!this.standingTile.answered && time - this.standingTile.since > 600) {
+      this.standingTile.answered = true;
+      this.game.onAnswer(id);
+    }
+  }
+
   private canMove(x: number, z: number) {
+    if (this.game?.mode === "market") {
+      const b = CITY.market;
+      if (x < b.x0 + .7 || x > b.x1 - .7 || z < b.z0 + .7 || z > b.z1 - .7) return false;
+      if (this.gameGroup?.children.some(actor => Math.hypot(x - actor.position.x, z - actor.position.z) < .7)) return false;
+    } else if (this.game) {
+      const origin = rootRoomTransform(this.game.room);
+      if (Math.abs(x - origin.x) > ROOT_ROOM.width / 2 - 0.65 || Math.abs(z - origin.z) > ROOT_ROOM.depth / 2 - 0.65) return false;
+    }
     if (!withinGrounds(x, z)) return false;
     for (const obstacle of this.obstacles)
       if (
@@ -1798,6 +1974,7 @@ export class Museum {
         this.camera.position.z = nextZ;
     }
     this.camera.rotation.set(this.pitch, this.yaw, 0, "YXZ");
+    this.checkGameStep(time);
     if (!this.blocked) this.updateZones();
     if (time - this.lastReport > 150) {
       const { x, z } = this.camera.position;
@@ -1843,6 +2020,7 @@ export class Museum {
 
   dispose() {
     this.disposed = true;
+    this.setGame(null);
     this.renderer.setAnimationLoop(null);
     this.resizeObserver.disconnect();
     const canvas = this.renderer.domElement;
@@ -1850,6 +2028,8 @@ export class Museum {
     canvas.removeEventListener("pointermove", this.pointerMove);
     canvas.removeEventListener("pointerup", this.pointerUp);
     canvas.removeEventListener("pointercancel", this.pointerCancel);
+    canvas.removeEventListener("dragover", this.gameDragOver);
+    canvas.removeEventListener("drop", this.gameDrop);
     canvas.removeEventListener("contextmenu", this.preventContext);
     canvas.removeEventListener("webglcontextlost", this.contextLost);
     window.removeEventListener("keydown", this.keyDown);

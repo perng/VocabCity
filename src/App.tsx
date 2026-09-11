@@ -19,6 +19,7 @@ import {
   Compass,
   Expand,
   Footprints,
+  Gamepad2,
   Headphones,
   HelpCircle,
   Map,
@@ -38,6 +39,7 @@ import {
   X,
 } from "lucide-react";
 import collection from "./collection.json";
+import { MuseumGames } from "./MuseumGames";
 import { Museum, exhibitPlacements, familyIn, registerFamilySizes, type Pose } from "./museum";
 import {
   CATHEDRAL_SQUARE,
@@ -340,6 +342,9 @@ export default function App() {
     room: 1,
   });
   const [intro, setIntro] = useState(true);
+  const [gamesRoom, setGamesRoom] = useState<number | null>(null);
+  const [gamesPlaying, setGamesPlaying] = useState(false);
+  const [gameAudio, setGameAudio] = useState(false);
   const [selected, setSelected] = useState<Exhibit | null>(null);
   const [details, setDetails] = useState<(ExhibitDetails & { id: string }) | null>(null);
   const [selectedArea, setSelectedArea] = useState(0);
@@ -440,9 +445,12 @@ export default function App() {
   }, [openExhibit, toggleChecked]);
   useEffect(() => {
     museum.current?.setBlocked(
-      Boolean(selected || modal || videoExhibit || artworkExhibit),
+      Boolean(selected || modal || videoExhibit || artworkExhibit || (gamesRoom !== null && !gamesPlaying)),
     );
-  }, [selected, modal, videoExhibit, artworkExhibit, ready]);
+  }, [selected, modal, videoExhibit, artworkExhibit, ready, gamesRoom, gamesPlaying]);
+  useEffect(() => {
+    if (selected || modal || videoExhibit || artworkExhibit) setGamesRoom(null);
+  }, [selected, modal, videoExhibit, artworkExhibit]);
   useEffect(() => {
     museum.current?.setChecked(checked);
   }, [checked, ready]);
@@ -471,11 +479,11 @@ export default function App() {
   useEffect(() => {
     if (ambienceRef.current && ambienceGainRef.current)
       ambienceGainRef.current.gain.setTargetAtTime(
-        videoExhibit ? 0 : playback.active ? 0.007 : 0.028,
+        videoExhibit ? 0 : playback.active || gameAudio ? 0.007 : 0.028,
         ambienceRef.current.currentTime,
         0.2,
       );
-  }, [playback.active, videoExhibit]);
+  }, [playback.active, videoExhibit, gameAudio]);
   useEffect(
     () => () => {
       clearTimeout(toastTimer.current);
@@ -485,6 +493,7 @@ export default function App() {
     [],
   );
   const navigateRoom = (room: number) => {
+    setGamesRoom(null);
     setIntro(false);
     setModal(null);
     setSelected(null);
@@ -495,8 +504,10 @@ export default function App() {
     roomTimer.current = setTimeout(() => setRoomTransition(false), 350);
   };
   const visit = (exhibit: Exhibit, preferredArea?: number) => {
+    // Start speech while the click still has browser audio permission, before building a distant room.
+    openExhibit(exhibit, preferredArea ?? exhibit.room);
     const area = museum.current?.goToExhibit(exhibit, preferredArea);
-    openExhibit(exhibit, area);
+    if (area !== undefined) setSelectedArea(area);
   };
   const filteredRoom = /^room-/.test(filter) ? Number(filter.slice(5)) : undefined;
   const toggleSaved = (exhibit: Exhibit) => {
@@ -584,9 +595,13 @@ export default function App() {
         .toLowerCase()
         .includes(query.toLowerCase()),
   );
+  const launchGames = () => {
+    playback.stop(); setSelected(null); setModal(null); setTour(false); setIntro(false);
+    setGamesRoom(isRootRoom(pose.room) ? pose.room : ROOT_START);
+  };
   const currentRoom = destinationFor(pose.room);
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${gamesPlaying ? "is-gaming" : ""}`}>
       <header className="site-header">
         <button
           className="brand"
@@ -594,6 +609,7 @@ export default function App() {
             setSelected(null);
             setModal(null);
             setIntro(true);
+            setGamesRoom(null);
             museum.current?.goToGate();
           }}
           aria-label={t("Vocab City harbour")}
@@ -626,6 +642,7 @@ export default function App() {
           </button>
         </nav>
         <div className="header-actions">
+          <button className="games-launch" onClick={launchGames} disabled={!ready || !!error} aria-label={t("Museum games")}><Gamepad2 size={20} /><span>{t("Games")}</span></button>
           <button
             className="language-button"
             aria-label={
@@ -761,6 +778,7 @@ export default function App() {
               {t("Take a guided tour")}
               <span>{exhibits.length} {t("stops")}</span>
             </button>
+            <button className="text-button" onClick={launchGames}><Gamepad2 size={17} />{t("Play with words")}<ArrowRight size={15} /></button>
             <div className="welcome-footnote">
               <span>15 {t("LANDMARKS")} · {houses.length} √</span>
               <span>{t("A WORLD TO WANDER. WORDS TO DISCOVER.")}</span>
@@ -863,6 +881,8 @@ export default function App() {
         <span className="source-credit">
           {t("WORDS FROM HANDY 990 · ART BY VOCAB CITY")}
         </span>
+        {gamesRoom !== null && <MuseumGames museum={museum} roomIndex={gamesRoom} room={rooms[gamesRoom]} pool={roomExhibits(gamesRoom)} rooms={rooms} exhibits={exhibits} checked={checked}
+          onClose={() => { setGamesRoom(null); hostRef.current?.querySelector("canvas")?.focus(); }} onPlayingChange={setGamesPlaying} onAudioChange={setGameAudio} />}
         {error && (
           <div className="error-banner" role="alert">
             <p>{t(error)}</p>

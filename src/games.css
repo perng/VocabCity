@@ -1,0 +1,215 @@
+.games-launch { display: inline-flex; align-items: center; gap: 7px; color: #42694e; }
+.games-launch svg { flex-shrink: 0; }
+.games-dialog { width: min(920px, calc(100% - 32px)); max-height: calc(100dvh - 40px); border: 1px solid #c8bea4; background: #f7f2e5; color: #344d3c; padding: 48px; box-shadow: 0 25px 120px #20322355; }
+.games-dialog::backdrop { background: #243c3466; backdrop-filter: blur(5px); }
+.games-dialog h1 { font-family: "Cormorant Garamond", serif; font-size: clamp(30px, 4vw, 49px); font-weight: 500; line-height: 1.1; margin: 13px 0; }
+.games-close { position: absolute; top: 15px; right: 15px; }
+.games-intro { display: flex; align-items: center; gap: 27px; }
+.games-intro > img { width: 90px; height: 115px; object-fit: contain; transform: rotate(-6deg); }
+.games-intro p { max-width: 510px; line-height: 1.7; font-size: 13px; color: #6c715d; }
+.games-location { display: flex; align-items: center; gap: 11px; border-top: 1px solid #d9d2bc; border-bottom: 1px solid #d9d2bc; margin: 25px 0; padding: 15px 0; }
+.games-location span { display: flex; align-items: center; gap: 15px; font-size: 12px; }
+.games-location small { margin-left: auto; font-size: 11px; color: #727561; }
+.game-menu { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+.game-menu-card { text-align: left; border: 1px solid #d4c9b2; padding: 21px; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; background: #ece6d3; color: #354b39; transition: transform .2s, box-shadow .2s; }
+.game-menu-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px #344d3c14; }
+.game-menu-restore { background: #eedcbd; }
+.game-menu-step { background: #dce7d8; border-color: #b8cbb1; }
+.game-menu-family { background: #e8e3c6; }
+.game-menu-market { background: #ecd6c7; }
+.game-menu-memory { background: #dee4e6; }
+.game-card-location { display: flex; align-items: center; gap: 5px; font-size: 10px; line-height: 1.5; }
+.game-card-index { width: 100%; display: flex; justify-content: space-between; font-size: 10px; letter-spacing: 2px; color: #7b7863; }
+.game-menu-card h2 { font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: 28px; line-height: 1.08; margin: 0; }
+.game-menu-card p { font-size: 12px; line-height: 1.75; color: #636854; margin: 0 0 10px; flex: 1; }
+.game-card-go { width: 100%; padding-top: 13px; border-top: 1px solid #a9a68b66; display: flex; justify-content: space-between; font-size: 12px; }
+.games-passport { display: flex; align-items: center; gap: 13px; padding: 22px 0 12px; }
+.games-passport span { display: grid; gap: 5px; }
+.games-passport strong { font-size: 13px; }
+.games-passport small { font-size: 10px; color: #747963; }
+.games-passport b { margin-left: auto; font-size: 23px; font-weight: 500; }
+.games-footnote, .passport-note { color: #777966; font-size: 11px; line-height: 1.7; }
+.is-gaming .gallery-heading, .is-gaming .visit-progress, .is-gaming .explore-note, .is-gaming .next-place-link, .is-gaming .minimap, .is-gaming .art-hover, .is-gaming .welcome-card { display: none; }
+.is-gaming .site-header .main-nav, .is-gaming .site-header .brand, .is-gaming .site-header .saved-nav, .is-gaming .site-header .games-launch { pointer-events: none; opacity: .45; }
+.is-gaming .bottom-controls { padding: 10px 18px; }
+.is-gaming .bottom-controls > button { display: none; }
+.is-gaming .bottom-controls .control-divider { display: none; }
+.game-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 8; }
+.game-overlay button, .game-overlay .game-prompt, .game-overlay .game-answer-tray { pointer-events: auto; }
+.game-topbar { position: absolute; top: 18px; left: 25px; right: 25px; display: flex; align-items: center; gap: 20px; padding: 11px 16px; background: #f9f5eaeF; border: 1px solid #e4ddca; box-shadow: 0 3px 20px #24382312; }
+.game-topbar > div:first-of-type { display: grid; gap: 3px; }
+.game-topbar strong { font-size: 14px; font-weight: 500; }
+.game-topbar small { font-size: 10px; color: #767b66; }
+.game-back { display: flex; align-items: center; gap: 7px; font-size: 11px; border-right: 1px solid #cfcbb8; padding-right: 17px; }
+.game-rounds { margin-left: auto; display: flex; gap: 6px; }
+.game-rounds span { border: 1px solid #b5b69e; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; }
+.game-rounds span[data-current=true] { border-color: #42694e; background: #e1e9d6; }
+.game-rounds span[data-complete=true] { background: #42694e; color: #fff9e8; }
+.game-prompt { position: absolute; left: 25px; top: 107px; width: 305px; max-height: calc(100% - 215px); overflow: auto; padding: 24px; background: #f9f5eaf2; border: 1px solid #ddd4bb; box-shadow: 0 7px 30px #23322518; }
+.game-prompt .eyebrow { font-size: 9px; letter-spacing: 1.5px; line-height: 1.7; }
+.game-prompt h2 { font-family: "Cormorant Garamond", serif; font-size: 33px; font-weight: 500; line-height: 1.2; margin: 17px 0; overflow-wrap: anywhere; }
+.game-prompt h2:not(.game-clue) { display: flex; align-items: center; gap: 10px; }
+.game-prompt .game-clue { font-family: inherit; font-size: 19px; line-height: 1.5; }
+.game-prompt p { font-size: 12px; line-height: 1.75; }
+.game-instruction { color: #737762; }
+.game-tools { display: flex; gap: 13px; flex-wrap: wrap; margin-top: 17px; border-top: 1px solid #ded8c4; padding-top: 15px; }
+.game-tools button { display: flex; align-items: center; gap: 5px; font-size: 11px; min-height: 32px; }
+.game-feedback { border-left: 2px solid #b48647; padding-left: 12px; color: #8d6435; }
+.game-hint { background: #ede7d1; padding: 10px; }
+.loose-label { width: 100%; display: flex; align-items: center; gap: 10px; background: #e9d8ac; border: 1px dashed #aa8b51; padding: 17px 12px; margin-top: 18px; cursor: grab; }
+.loose-label span { flex: 1; font: 500 28px "Cormorant Garamond", serif; overflow-wrap: anywhere; }
+.loose-label:active { cursor: grabbing; }
+.game-listen { width: 100%; display: flex; align-items: center; gap: 14px; padding: 20px 0 9px; color: #42694e; }
+.game-listen span { font-size: 19px; }
+.game-example { display: flex; gap: 10px; align-items: flex-start; text-align: left; font-size: 12px; line-height: 1.7; padding: 14px 0; border-top: 1px solid #d5d9c4; margin: 15px 0; }
+.game-example svg { flex-shrink: 0; margin-top: 4px; }
+.game-prompt[data-correct=true] { background: #eaf0e2f5; border-color: #a3b696; }
+.game-prompt .primary-button { width: 100%; }
+.game-answer-tray { position: absolute; right: 25px; top: 107px; width: 290px; max-height: calc(100% - 195px); overflow: auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; background: #f9f5eaf7; border: 1px solid #ded5be; padding: 12px; }
+.game-answer-tray button { min-width: 0; position: relative; border: 1px solid #c4b89d; padding: 5px; background: #ece4d1; }
+.game-answer-tray img { width: 100%; display: block; aspect-ratio: 1; object-fit: cover; }
+.game-answer-tray span { display: inline-block; font-size: 11px; padding: 3px 5px; }
+.game-answer-tray button:disabled { opacity: .4; }
+.tile-answer-tray button { min-height: 86px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px; }
+.tile-answer-tray strong { font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
+.game-audio-error { color: #945433; font-size: 12px; line-height: 1.6; }
+.games-complete { text-align: center; max-width: 620px; margin: auto; }
+.passport-seal { width: 130px; height: 130px; border: 2px solid #5b805e; outline: 1px dashed #5b805e; outline-offset: -8px; border-radius: 50%; margin: 0 auto 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; transform: rotate(-10deg); color: #507153; }
+.passport-seal span { font-size: 9px; letter-spacing: 2px; }
+.games-review { display: grid; gap: 10px; margin: 24px 0; text-align: left; }
+.games-review > div { display: flex; align-items: center; gap: 14px; border-bottom: 1px solid #dcd4bd; padding-bottom: 10px; }
+.games-review img { width: 54px; height: 54px; object-fit: cover; }
+.games-review div div { flex: 1; display: grid; gap: 5px; }
+.games-review strong { font: 500 24px "Cormorant Garamond", serif; }
+.games-review span { font-size: 12px; line-height: 1.5; }
+.games-result-actions { display: flex; justify-content: center; gap: 20px; align-items: center; margin-top: 25px; }
+@media (max-width: 800px) {
+  .games-dialog { padding: 35px 24px; }
+  .game-menu { gap: 10px; }
+  .game-menu-card { padding: 17px; }
+  .game-topbar { top: 12px; left: 12px; right: 12px; gap: 10px; }
+  .game-prompt { left: 12px; top: 98px; width: 250px; padding: 18px; }
+  .game-answer-tray { right: 12px; top: 98px; width: 240px; }
+}
+@media (max-width: 540px) {
+  .games-launch span { display: none; }
+  .games-dialog { width: calc(100% - 20px); max-height: calc(100dvh - 20px); padding: 28px 20px; }
+  .games-intro { gap: 13px; align-items: flex-start; }
+  .games-intro > img { width: 57px; height: 82px; margin-top: 12px; }
+  .games-intro h1 { font-size: 29px; line-height: 1.2; }
+  .games-intro .eyebrow { font-size: 8px; letter-spacing: 1px; }
+  .games-intro p { font-size: 12px; }
+  .games-location { margin: 16px 0; padding: 12px 0; }
+  .games-location span { display: grid; gap: 5px; font-size: 11px; }
+  .game-menu { grid-template-columns: 1fr; gap: 10px; }
+  .game-menu-card { display: grid; grid-template-columns: 32px 1fr; gap: 8px 13px; padding: 15px; }
+  .game-card-index { display: none; }
+  .game-menu-card > svg { grid-row: 1 / 3; }
+  .game-menu-card h2 { font-size: 24px; }
+  .game-menu-card p { grid-column: 2; font-size: 11px; margin: 0; }
+  .game-card-go { grid-column: 2; padding-top: 8px; }
+  .games-passport { gap: 9px; flex-wrap: wrap; }
+  .games-passport > small { width: 100%; text-align: right; }
+  .game-topbar { padding: 9px; gap: 9px; }
+  .game-topbar strong { font-size: 12px; }
+  .game-topbar small { font-size: 9px; }
+  .game-back { padding-right: 8px; }
+  .game-back span { display: none; }
+  .game-rounds { gap: 4px; }
+  .game-rounds span { width: 22px; height: 22px; font-size: 10px; }
+  .game-prompt { top: auto; bottom: 91px; left: 12px; right: 12px; width: auto; max-height: 38%; padding: 14px 17px; }
+  .game-prompt .eyebrow { font-size: 8px; }
+  .game-prompt h2 { margin: 8px 0; font-size: 28px; }
+  .game-prompt .game-clue { font-size: 17px; }
+  .game-prompt p { font-size: 11px; margin: 8px 0; }
+  .game-tools { margin-top: 8px; padding-top: 6px; justify-content: space-between; gap: 4px; }
+  .game-tools button { font-size: 10px; min-height: 30px; }
+  .game-listen { padding: 8px 0 0; }
+  .game-listen span { font-size: 16px; }
+  .loose-label { margin-top: 9px; padding: 10px; }
+  .loose-label span { font-size: 25px; }
+  .game-answer-tray { top: 80px; right: 12px; left: 12px; width: auto; max-height: 28%; grid-template-columns: repeat(3, 1fr); }
+  .game-answer-tray img { max-height: 95px; }
+  .tile-answer-tray { grid-template-columns: repeat(2, 1fr); }
+  .tile-answer-tray button { min-height: 65px; gap: 3px; }
+  .game-example { margin: 8px 0; padding: 9px 0; }
+  .games-result-actions { flex-direction: column; gap: 10px; }
+  .is-gaming .bottom-controls { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .game-menu-card { transition: none; } }
+
+.extra-game-prompt { width: 375px; max-height: calc(100% - 145px); }
+.extra-game-prompt h2 { font-size: 29px; }
+.extra-game-prompt .game-clue { font-size: 18px; }
+.extra-game-prompt h2 .icon-button { margin-left: auto; flex-shrink: 0; }
+.extra-game-prompt .text-button { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; }
+.word-workbench { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; min-height: 70px; padding: 12px; background: #e9dfbd; border: 1px dashed #ac955e; box-shadow: inset 0 2px 7px #84754e12; }
+.word-workbench > span { font-size: 12px; color: #8b8164; }
+.word-workbench button { padding: 9px 10px; background: #526b4b; color: #faf1d6; display: flex; align-items: center; gap: 8px; font-size: 20px; }
+.word-part-tray { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 14px 0; }
+.word-part-tray:has(> button:nth-child(4):last-child) { grid-template-columns: repeat(2, 1fr); }
+.word-part-tray button { display: flex; flex-direction: column; gap: 4px; align-items: center; justify-content: center; min-height: 85px; padding: 9px 6px; border: 1px solid #b9b69b; border-bottom: 3px solid #9ea180; background: #f4eedc; cursor: grab; }
+.word-part-tray strong { font: 500 26px "Cormorant Garamond", serif; }
+.word-part-tray small { font-size: 10px; line-height: 1.35; color: #6e745e; }
+.word-part-tray em { font-style: normal; font-size: 10px; color: #946733; }
+.word-part-tray button:disabled { opacity: .3; cursor: default; }
+.workbench-actions { display: flex; gap: 15px; align-items: center; justify-content: space-between; }
+.workbench-actions > button:first-child { display: flex; align-items: center; gap: 5px; flex-shrink: 0; font-size: 11px; }
+.workbench-actions .primary-button { width: auto; font-size: 12px; padding: 12px 15px; }
+.workbench-actions .primary-button:disabled { opacity: .4; }
+.market-person { display: flex; align-items: center; gap: 16px; margin: 18px 0 12px; }
+.market-person small { font-size: 11px; color: #7e765d; }
+.market-person h2 { margin: 2px 0 0; font-size: 34px; }
+.neighbour-portrait { width: 64px; height: 70px; position: relative; overflow: hidden; background: #e7dcc1; border-radius: 32px 32px 8px 8px; border: 1px solid #cbbd9d; }
+.neighbour-portrait::before { content: ""; position: absolute; width: 24px; height: 28px; border-radius: 40%; background: #d1a374; top: 15px; left: 19px; }
+.neighbour-portrait::after { content: ""; position: absolute; width: 42px; height: 38px; border-radius: 45% 45% 0 0; background: var(--neighbour-color); top: 41px; left: 10px; }
+.neighbour-portrait i { position: absolute; width: 37px; height: 7px; background: var(--neighbour-color); left: 13px; top: 17px; z-index: 1; }
+.neighbour-portrait i::before { content: ""; position: absolute; left: 7px; bottom: 4px; width: 24px; height: 13px; background: var(--neighbour-color); border-radius: 6px 6px 0 0; }
+.neighbour-portrait b { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #484a38; box-shadow: 9px 0 #484a38; top: 29px; left: 25px; }
+.market-request, .memory-sentence { font: 500 21px/1.45 "Cormorant Garamond", serif; margin: 15px 0; color: #4b4f3b; }
+.market-replies { display: grid; gap: 8px; margin: 17px 0; }
+.market-replies button { display: flex; gap: 10px; align-items: center; text-align: left; border: 1px solid #d0c1a7; background: #f3ead9; font-size: 12px; line-height: 1.55; padding: 13px; }
+.market-replies button span { flex: 1; }
+.market-replies svg { flex-shrink: 0; }
+.market-replies button:hover, .memory-choices button:hover { border-color: #6e8865; background: #e8edda; }
+.market-thanks { margin: 15px 0; font: italic 20px/1.5 "Cormorant Garamond", serif; }
+.market-thanks small { display: block; margin-top: 9px; font: 11px/1.75 "DM Sans", sans-serif; color: #6f745f; }
+.market-thanks button { display: flex; gap: 7px; align-items: center; margin-top: 10px; font: 11px "DM Sans", sans-serif; }
+.memory-study { width: 480px; }
+.memory-study-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin: 20px 0; }
+.memory-study-cards button { text-align: left; display: flex; flex-direction: column; gap: 8px; padding: 7px; background: #ece6d7; border: 1px solid #c9c5b4; }
+.memory-study-cards button[data-active=true] { border-color: #5d7a57; box-shadow: 0 0 0 1px #5d7a57; background: #e7ecd9; }
+.memory-study-cards img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+.memory-study-cards strong { font: 500 20px "Cormorant Garamond", serif; overflow-wrap: anywhere; }
+.memory-study-cards span { font-size: 10px; line-height: 1.5; flex: 1; }
+.memory-study-cards svg { align-self: flex-end; flex-shrink: 0; }
+.memory-recall-art { display: block; width: min(100%, 225px); aspect-ratio: 1; object-fit: cover; padding: 6px; background: #d5bc8a; margin: 15px auto; box-shadow: 0 4px 12px #63523522; }
+.memory-choices { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 15px 0; }
+.memory-choices button { border: 1px solid #b9c3b5; background: #eef0e5; padding: 12px 8px; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.memory-revisit { color: #8b744a; border-top: 1px dashed #bfad87; padding-top: 9px; }
+@media (max-width: 800px) and (min-width: 541px) {
+  .extra-game-prompt { width: 330px; }
+  .memory-study { width: 420px; }
+}
+@media (max-width: 540px) {
+  .game-card-location { grid-column: 2; }
+  .extra-game-prompt { width: auto; max-height: 58%; }
+  .extra-game-prompt h2 { font-size: 25px; }
+  .extra-game-prompt .game-clue { font-size: 16px; }
+  .word-part-tray { gap: 6px; margin: 10px 0; }
+  .word-part-tray button { min-height: 70px; padding: 5px; }
+  .word-workbench { min-height: 52px; padding: 8px; }
+  .word-workbench button { font-size: 17px; padding: 6px 8px; }
+  .market-person { margin: 10px 0; gap: 12px; }
+  .neighbour-portrait { transform: scale(.8); transform-origin: left center; margin-right: -12px; margin-top: -5px; margin-bottom: -5px; }
+  .market-request, .memory-sentence { font-size: 20px; margin: 10px 0; }
+  .market-replies { margin: 12px 0; gap: 6px; }
+  .market-replies button { padding: 10px; }
+  .memory-study-cards { gap: 6px; margin: 12px 0; }
+  .memory-study-cards button { gap: 5px; padding: 5px; }
+  .memory-study-cards strong { font-size: 14px; }
+  .memory-study-cards span { font-size: 9px; }
+  .memory-recall-art { width: 125px; margin: 10px auto; }
+  .memory-choices { gap: 6px; margin: 10px 0; }
+  .memory-choices button { padding: 8px; min-height: 40px; font-size: 11px; }
+}

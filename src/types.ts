@@ -31,7 +31,7 @@ export interface RootInfo {
   words: string[];
 }
 export type HouseKind = "root" | "theme" | "family" | "level";
-// Every townhouse in the Old Town: what its banner says and which words hang inside.
+// Every townhouse in the Old Town: its floor-plaque information and exhibited words.
 export interface HouseInfo {
   kind: HouseKind;
   display: string;
