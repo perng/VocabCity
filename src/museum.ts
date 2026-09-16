@@ -1,10 +1,15 @@
 import * as THREE from "three";
 import { Botany } from "./botany";
+import { walkingSpeed } from "./movement";
+import { RESIDENTS, nearbyResident, type Resident } from "./residents";
 import type { SceneGame } from "./games";
 import { translate } from "./i18n";
 import { assetUrl, partOfSpeech, type Exhibit, type Room } from "./types";
 import {
   CITY,
+  CITY_ROADS,
+  houseLocal,
+  lanePoint,
   DISTRICTS,
   ENTRY,
   ROOT_START,
@@ -12,26 +17,20 @@ import {
   ROOT_ROOM,
   LANE_ZS,
   LANE_HALF,
-  LANE_X,
   LANE_COUNT,
   MAX_LANES,
   HOUSES_PER_LANE,
-  BLOCK_OFFSETS,
   OUTER_EDGE,
   MARKET_CENTER,
   areaAt,
-  blockOffset,
   displayPlacement,
   displayScale,
   districtFor,
   freestanding,
-  houseColumnX,
   houseStyle,
   isRootRoom,
-  laneColumn,
   laneHouseCount,
   laneRow,
-  laneZ,
   roomPose,
   rootRoomTransform,
   STREETS_INDEX,
@@ -49,6 +48,7 @@ type MuseumOptions = {
   onSelect: (exhibit: Exhibit, area?: number) => void;
   onHover: (exhibit: Exhibit | null, action?: ExhibitHit["action"]) => void;
   onMove: (pose: Pose) => void;
+  onResident: (resident: Resident) => void;
   onReady: () => void;
   onError: (message: string) => void;
 };
@@ -109,8 +109,10 @@ export class Museum {
   private camera = new THREE.PerspectiveCamera(68, 1, 0.08, 330);
   private renderer: THREE.WebGLRenderer;
   private keys = new Set<string>();
+  private forwardSeconds = 0;
   private game: SceneGame | null = null;
   private gameGroup: THREE.Group | null = null;
+  private residentsEnabled = false;
   private gameTextures: THREE.Texture[] = [];
   private gameMasks: { mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>; map: THREE.Texture | null }[] = [];
   private hiddenFloor: THREE.Object3D[] = [];
@@ -210,6 +212,7 @@ export class Museum {
     this.botany = new Botany((w, h, draw) => this.canvasTexture(w, h, draw));
     this.buildCity();
     this.buildExhibits();
+    this.buildResidents();
     this.resizeObserver = new ResizeObserver(this.resize);
     this.resizeObserver.observe(host);
     this.resize();
@@ -591,7 +594,8 @@ export class Museum {
     this.obstacles.push({ x: f.x, z: f.z, rx: f.r + 0.3, rz: f.r + 0.3 });
     // Arcades along both sides of the square carry the Gate Square paintings.
     for (const side of [-1, 1]) {
-      for (let z = sq.z0 + 2; z <= sq.z1 - 2; z += 4) this.column(side * 18.2, z, 5.2, 0.3);
+      // Put supports in the gaps between paintings, never across their viewing bays.
+      for (const z of [13, 23, 33, 43]) this.column(side * 18.2, z, 5.2, 0.3);
       this.box(0.6, 0.35, sq.z1 - sq.z0, side * 18.2, 5.4, (sq.z0 + sq.z1) / 2, "#c9b691", this.scene, true);
       this.box(4.2, 0.28, sq.z1 - sq.z0, side * 20, 5.6, (sq.z0 + sq.z1) / 2, "#a9906a", this.scene, true);
       const roofStrip = new THREE.Mesh(new THREE.BoxGeometry(4.6, 0.3, sq.z1 - sq.z0), this.tiles);
@@ -693,8 +697,9 @@ export class Museum {
     }
     if (windowsEvery) {
       for (let z = z0 + windowsEvery / 2; z < z1; z += windowsEvery) {
-        if (door.side !== "west" || Math.abs(z - door.z!) > door.width) this.window(x0 - t - 0.02, height * 0.62, z, 1.4, 2.2, -Math.PI / 2);
-        if (door.side !== "east" || Math.abs(z - door.z!) > door.width) this.window(x1 + t + 0.02, height * 0.62, z, 1.4, 2.2, Math.PI / 2);
+        // The square-facing walls are exhibition surfaces; windows would overlap their art and banners.
+        if (box !== CITY.townHall && (door.side !== "west" || Math.abs(z - door.z!) > door.width)) this.window(x0 - t - 0.02, height * 0.62, z, 1.4, 2.2, -Math.PI / 2);
+        if (box !== CITY.inn && (door.side !== "east" || Math.abs(z - door.z!) > door.width)) this.window(x1 + t + 0.02, height * 0.62, z, 1.4, 2.2, Math.PI / 2);
       }
     }
     for (const side of [x0 - t, x1 + t]) this.box(0.1, 0.2, z1 - z0, side + (side < (x0 + x1) / 2 ? t + 0.05 : -t - 0.05), 0.1, (z0 + z1) / 2, "#b5a07e");
@@ -707,7 +712,7 @@ export class Museum {
     const facades = ["#d9b18a", "#e2cfa7", "#c8a08c", "#d6c1a0", "#b9b3a1", "#e0b99a"];
     for (const side of [-1, 1]) {
       // Ground-floor arcade with the paintings on the house fronts; upper floors above.
-      for (let z = k.z1 - 2; z > k.z0; z -= 5) {
+      for (const z of [10, 1, -9, -19, -29, -39, -49, -59, -69]) {
         if (Math.abs(z - k.passageZ) < 4) continue;
         this.column(side * k.x, z, 5, 0.3);
       }
@@ -925,68 +930,80 @@ export class Museum {
     this.obstacles.push({ x: (ci.x0 + ci.x1) / 2, z: (ci.z0 + ci.z1) / 2, rx: 3.4, rz: 5.4 });
   }
 
+  private streetSurface(points: { x: number; z: number }[], halfWidth: number) {
+    const vertices: number[] = [], uv: number[] = [], indices: number[] = [];
+    let distance = 0;
+    points.forEach((p, i) => {
+      const before = points[Math.max(0, i - 1)], after = points[Math.min(points.length - 1, i + 1)];
+      const length = Math.hypot(after.x - before.x, after.z - before.z) || 1;
+      const nx = -(after.z - before.z) / length, nz = (after.x - before.x) / length;
+      if (i) distance += Math.hypot(p.x - before.x, p.z - before.z);
+      for (const side of [-1, 1]) {
+        vertices.push(p.x + nx * halfWidth * side, .008, p.z + nz * halfWidth * side);
+        uv.push((side + 1) * halfWidth / 12, distance / 18);
+      }
+      if (i) { const k = i * 2; indices.push(k - 2, k - 1, k, k - 1, k + 1, k); }
+    });
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
+    geometry.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2)); geometry.setIndex(indices); geometry.computeVertexNormals();
+    const mesh = new THREE.Mesh(geometry, this.cobbles); mesh.receiveShadow = true; this.scene.add(mesh);
+  }
+
   private buildOldTown() {
     const c = CITY;
-    // Promenade across the whole Old Town, then the canal street and the lanes.
-    this.ground(-c.wallX, c.wallX, c.promenade.z0 - 1, c.promenade.z1 + 1, this.cobbles, 0.003);
+    // Grass separates the houses. Keep the canal open below the bridges.
+    for (const side of [-1, 1]) this.ground(side < 0 ? -c.wallX : c.canal.x, side < 0 ? -c.canal.x : c.wallX,
+      c.wallNorth, c.promenade.z1, this.material("#acb990"), -.015);
+    this.ground(-c.wallX, c.wallX, c.promenade.z0 - 1, c.promenade.z1 + 1, this.cobbles, .003);
     for (const side of [-1, 1]) {
-      this.ground(side > 0 ? OUTER_EDGE : -c.wallX, side > 0 ? c.wallX : -OUTER_EDGE, c.wallNorth, c.promenade.z0, this.cobbles, 0.003);
+      this.ground(side < 0 ? -c.wallX : OUTER_EDGE, side < 0 ? -OUTER_EDGE : c.wallX, c.wallNorth, c.promenade.z0, this.cobbles, .003);
+      this.ground(side < 0 ? -c.canal.street : c.canal.x, side < 0 ? -c.canal.x : c.canal.street,
+        c.canal.z0, c.canal.z1, this.cobbles, .003);
     }
-    for (const offset of BLOCK_OFFSETS) {
-      this.ground(offset - c.canal.street, offset + c.canal.street, c.canal.z0 - 1, c.canal.z1 + 1, this.cobbles, 0.003);
-      if (offset === 0) {
-        // The canal: sunken water between stone walls, crossed by a bridge at every lane.
-        const water = new THREE.Mesh(new THREE.PlaneGeometry(c.canal.x * 2, c.canal.z1 - c.canal.z0), new THREE.MeshStandardMaterial({ color: "#5f8e93", roughness: 0.2, metalness: 0.35 }));
-        water.rotation.x = -Math.PI / 2; water.position.set(0, -1.1, (c.canal.z0 + c.canal.z1) / 2); this.scene.add(water);
-        for (const side of [-1, 1]) {
-          this.box(0.3, 1.6, c.canal.z1 - c.canal.z0, side * c.canal.x, -0.8, (c.canal.z0 + c.canal.z1) / 2, "#a99a7c");
-          this.box(0.4, 0.6, c.canal.z1 - c.canal.z0, side * (c.canal.x + 0.2), 0.3, (c.canal.z0 + c.canal.z1) / 2, "#c7c5ab");
-        }
-        for (const lz of [...LANE_ZS, c.canal.z1 - 2, c.canal.z0 + 2]) {
-          this.box(c.canal.x * 2 + 1.2, 0.5, LANE_HALF * 2, 0, 0.02, lz, "#d3c8ad", this.scene, true);
-          for (const side of [-1, 1]) this.box(c.canal.x * 2 + 1.2, 0.9, 0.25, 0, 0.7, lz + side * LANE_HALF, "#bfae8d");
-        }
-        for (let z = c.canal.z1 - 8; z > c.canal.z0; z -= 16) { this.lamp(-c.canal.street + 1.2, z, 3.4); this.lamp(c.canal.street - 1.2, z + 8, 3.4); }
-      } else {
-        for (let z = c.canal.z1 - 8; z > c.canal.z0; z -= 20) { this.tree(offset - 4, z, 1.3, z); this.tree(offset + 4, z - 10, 1.3, z + 1); }
+    for (const road of CITY_ROADS) if (road.id !== "avenue-0") this.streetSurface(road.points, road.halfWidth);
+    const water = new THREE.Mesh(new THREE.PlaneGeometry(c.canal.x * 2, c.canal.z1 - c.canal.z0),
+      new THREE.MeshStandardMaterial({ color: "#5f8e93", roughness: .2, metalness: .35 }));
+    water.rotation.x = -Math.PI / 2; water.position.set(0, -1.1, (c.canal.z0 + c.canal.z1) / 2); this.scene.add(water);
+    for (const side of [-1, 1]) this.box(.3, 1.6, c.canal.z1 - c.canal.z0, side * c.canal.x, -.8, (c.canal.z0 + c.canal.z1) / 2, "#a99a7c");
+    for (const z of [...LANE_ZS, c.canal.z1 - 2, c.canal.z0 + 2]) {
+      this.box(c.canal.x * 2 + 1.2, .3, LANE_HALF * 2, 0, -.16, z, "#d3c8ad", this.scene, true);
+      for (const side of [-1, 1]) this.box(c.canal.x * 2 + 1.2, .7, .2, 0, .45, z + side * (LANE_HALF + .1), "#bfae8d");
+    }
+    for (let z = c.canal.z1 - 10; z > c.canal.z0; z -= 25) {
+      if (LANE_ZS.some(lz => Math.abs(z - lz) < 8)) continue;
+      this.lamp(-6.8, z, 3.4); this.lamp(6.8, z, 3.4);
+    }
+    for (let lane = 0; lane < LANE_COUNT; lane++) {
+      const center = lanePoint(lane, 0), count = laneHouseCount(lane);
+      const marker = this.canvasTexture(512, 256, ctx => {
+        ctx.fillStyle = "#ece4ce"; ctx.fillRect(0, 0, 512, 256); ctx.strokeStyle = "#9b8962"; ctx.lineWidth = 4; ctx.strokeRect(10, 10, 492, 236);
+        ctx.fillStyle = "#53634d"; ctx.textAlign = "center"; ctx.font = '500 58px "DM Sans"';
+        ctx.fillText(`${translate("LANE", this.options.locale)} ${lane + 1}`, 256, 102);
+        ctx.font = '30px "DM Sans"'; ctx.fillText(`${count} ${translate("HOUSES", this.options.locale)}`, 256, 183);
+      }, true);
+      const plaque = this.panel(marker, 4.5, 2.25, center.x, .027, center.z, this.scene); plaque.rotation.x = -Math.PI / 2;
+      // Pocket gardens sit between the back walls of successive lanes.
+      if (laneRow(lane) < MAX_LANES - 1 && lane + 1 < LANE_COUNT) for (const side of [-1, 1]) {
+        const a = lanePoint(lane, side * 64), b = lanePoint(lane + 1, side * 64);
+        const x = (a.x + b.x) / 2, z = (a.z + b.z) / 2;
+        const lawn = new THREE.Mesh(new THREE.CircleGeometry(10, 32), this.material("#91a67c"));
+        lawn.rotation.x = -Math.PI / 2; lawn.position.set(x, -.006, z); this.scene.add(lawn);
+        this.tree(x - 4, z - 3, 1.25, lane * 7 + side, true);
+        this.tree(x + 4, z + 3, 1.1, lane * 7 + 3, true);
+        this.bench(x, z + 7, Math.PI / 8 * side);
       }
     }
-    for (const [row, lz] of LANE_ZS.entries()) {
-      this.ground(-c.wallX, c.wallX, lz - LANE_HALF - 0.4, lz + LANE_HALF + 0.4, this.cobbles, 0.003);
-      // Lane signs at each canal bridge list the roots along the lane.
-      for (const column of BLOCK_OFFSETS.keys()) {
-        const lane = column * MAX_LANES + row, count = laneHouseCount(lane);
-        if (count <= 0) continue;
-        const roots = Array.from({ length: count }, (_, i) => this.options.rooms[ROOT_START + lane * HOUSES_PER_LANE + i].house!.display);
-        const offset = BLOCK_OFFSETS[column];
-        for (const side of [-1, 1]) {
-          this.sign(() => `${translate("LANE", this.options.locale)} ${lane + 1} · ${count} ${translate("HOUSES", this.options.locale)}`, roots.slice(0, 8).join("  ·  ") + (roots.length > 8 ? "  ·  …" : ""), offset + side * (c.canal.street + 0.3), 4.6, lz, side > 0 ? -Math.PI / 2 : Math.PI / 2, 5.8);
-          for (const dz of [-2.6, 2.6]) this.box(0.14, 5.6, 0.14, offset + side * (c.canal.street + 0.3), 2.8, lz + dz, "#7c795d");
-        }
-      }
-      // Laundry lines and lamps make the lanes lived-in; both sit on plot boundaries, clear of doors.
-      for (const offset of BLOCK_OFFSETS) for (const boundary of [-72, -40, 40, 72]) {
-        const x = offset + boundary;
-        const cord = this.box(0.03, 0.03, LANE_HALF * 2 + 0.4, x, 5.4, lz, "#8a8474");
-        cord.castShadow = false;
-        for (let k = 0; k < 5; k++) this.box(0.5, 0.7, 0.02, x, 5.0, lz - 2.4 + k * 1.2, ["#d9c9a7", "#8fa4b6", "#c78e7f", "#e9e2d1", "#9aae8c"][k]);
-        this.lamp(x + 16, lz + (row % 2 ? -1 : 1) * (LANE_HALF - 0.6), 3.2);
-      }
-    }
-    // Houses are zones: built near the visitor, released far away.
     for (let i = 0; i < ROOT_COUNT; i++) {
       const origin = rootRoomTransform(ROOT_START + i);
       this.zones.push({ room: ROOT_START + i, x: origin.x, z: origin.z, group: null, textures: [], localized: [], frames: [], paintings: [] });
     }
-    // Empty plots on the last lane become a small orchard.
-    const lastLane = LANE_COUNT - 1, used = laneHouseCount(lastLane);
-    for (let slot = used; slot < HOUSES_PER_LANE; slot++) {
-      const north = slot % 2 === 0, plot = Math.floor(slot / 2);
-      const x = blockOffset(laneColumn(lastLane)) + houseColumnX(plot), z = laneZ(laneRow(lastLane)) + (north ? -1 : 1) * (LANE_HALF + ROOT_ROOM.depth / 2);
-      this.ground(x - 8, x + 8, z - 7, z + 7, this.material("#8a9c72"), 0.004);
-      this.tree(x - 3, z, 1.2, slot + 60); this.tree(x + 4, z + (north ? -3 : 3), 1.1, slot + 61);
+    const lastLane = LANE_COUNT - 1;
+    for (let slot = laneHouseCount(lastLane); slot < HOUSES_PER_LANE; slot++) {
+      const h = rootRoomTransform(ROOT_START + lastLane * HOUSES_PER_LANE + slot);
+      this.tree(h.x - 3, h.z, 1.2, slot + 60, true); this.tree(h.x + 4, h.z + 3, 1.1, slot + 61, true);
     }
-    this.sign("THE OLD TOWN", "ROOT FAMILIES · THEME HOUSES · WORD FAMILIES · LEVEL LANES", 0, 5.6, c.promenade.z1 + 0.5, 0, 9);
+    this.sign("THE OLD TOWN", "ROOT FAMILIES · THEME HOUSES · WORD FAMILIES · LEVEL LANES", 0, 5.6, c.promenade.z1 + .5, 0, 9);
   }
 
   private buildLandmarks() {
@@ -1348,6 +1365,7 @@ export class Museum {
     const wall = `#${tint.clone().lerp(new THREE.Color("#f2ede1"), 0.66).getHexString()}`;
     const facade = `#${tint.clone().lerp(new THREE.Color("#e8c9a0"), 0.5).getHexString()}`;
     const trim = `#${tint.clone().lerp(new THREE.Color("#5b5340"), 0.35).getHexString()}`;
+    this.box(9, .035, origin.setback + 1, 0, -.015, d / 2 + origin.setback / 2, "#d5cdb7", hall);
     this.box(w, 0.12, d, 0, -0.06, 0, "#d9d3bf", hall);
     this.box(4, 0.014, d, 0, 0.012, 0, "#e9e3d2", hall);
     for (let z = -d / 2 + 2; z < d / 2; z += 2) this.box(w, 0.009, 0.025, 0, 0.02, z, "#c9c2ad", hall);
@@ -1530,7 +1548,14 @@ export class Museum {
         this.pointerCancel();
         return;
       }
-      const hit = this.pick(event.clientX, event.clientY);
+      const object = this.pickObject(event.clientX, event.clientY);
+      const resident = this.residentsEnabled && nearbyResident({ ...this.camera.position, room: areaAt(this.camera.position.x, this.camera.position.z) });
+      if (resident && object?.userData.residentId === resident.id) {
+        this.clearInput();
+        this.options.onResident(resident);
+        return;
+      }
+      const hit: ExhibitHit | null = object?.userData.target ?? null;
       if (hit?.action === "check") {
         const next = new Set(this.checked);
         if (next.has(hit.exhibit.id)) next.delete(hit.exhibit.id);
@@ -1565,14 +1590,12 @@ export class Museum {
     const first = hits.find(
       (hit) =>
         hit.object.userData.gameAnswer ||
+        hit.object.userData.residentId ||
         !(hit.object as THREE.Mesh).material ||
         !((hit.object as THREE.Mesh).material as THREE.Material).transparent ||
         hit.object.userData.target,
     );
     return first?.object ?? null;
-  }
-  private pick(x: number, y: number): ExhibitHit | null {
-    return this.pickObject(x, y)?.userData.target ?? null;
   }
   private updateHover(x: number, y: number) {
     if (this.game) {
@@ -1580,13 +1603,15 @@ export class Museum {
       this.renderer.domElement.style.cursor = object?.userData.gameAnswer || object?.userData.target ? "pointer" : "grab";
       return;
     }
-    const hit = this.pick(x, y);
+    const object = this.pickObject(x, y);
+    const hit: ExhibitHit | null = object?.userData.target ?? null;
     const hoverId = hit ? `${hit.exhibit.id}:${hit.action}` : null;
     if (hoverId !== this.hoverId) {
       this.hoverId = hoverId;
       this.options.onHover(hit?.exhibit ?? null, hit?.action);
     }
-    this.renderer.domElement.style.cursor = hit ? "pointer" : "grab";
+    const resident = this.residentsEnabled && nearbyResident({ ...this.camera.position, room: areaAt(this.camera.position.x, this.camera.position.z) });
+    this.renderer.domElement.style.cursor = hit || (resident && object?.userData.residentId === resident.id) ? "pointer" : "grab";
   }
   private keyDown = (event: KeyboardEvent) => {
     if (
@@ -1621,20 +1646,74 @@ export class Museum {
       this.transition = null;
     }
   };
-  private keyUp = (event: KeyboardEvent) => this.keys.delete(event.code);
+  private keyUp = (event: KeyboardEvent) => {
+    this.keys.delete(event.code);
+    if (!this.keys.has("KeyW") && !this.keys.has("ArrowUp")) this.forwardSeconds = 0;
+  };
   private clearInput = () => {
     this.keys.clear();
+    this.forwardSeconds = 0;
     this.dragging = false;
   };
 
-  setBlocked(blocked: boolean) {
+  setBlocked(blocked: boolean, stopTravel = false) {
     this.blocked = blocked;
     this.clearInput();
     if (blocked) {
+      if (stopTravel) this.transition = null;
       this.hoverId = null;
       this.options.onHover(null);
     }
   }
+  setResidentsEnabled(enabled: boolean) { this.residentsEnabled = enabled; }
+
+  visitResident(id: string) {
+    const resident = RESIDENTS.find(npc => npc.id === id);
+    if (!resident) return;
+    this.clearInput(); this.transition = null;
+    this.camera.position.set(resident.x + Math.sin(resident.yaw) * 3.5, EYE_HEIGHT, resident.z + Math.cos(resident.yaw) * 3.5);
+    this.yaw = resident.yaw; this.pitch = 0;
+    this.updateZones(true); this.needsRender = true;
+  }
+
+  private buildResidents() {
+    for (const resident of RESIDENTS) {
+      const group = new THREE.Group();
+      group.name = `resident:${resident.id}`;
+      group.position.set(resident.x, 0, resident.z); group.rotation.y = resident.yaw;
+      this.scene.add(group);
+      const part = (geometry: THREE.BufferGeometry, color: string, x: number, y: number, z: number) => {
+        const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color, roughness: .85 }));
+        mesh.position.set(x, y, z); mesh.castShadow = true; group.add(mesh); return mesh;
+      };
+      for (const x of [-.18, .18]) {
+        part(new THREE.CylinderGeometry(.1, .12, .65, 10), "#655b49", x, .43, 0);
+        part(new THREE.SphereGeometry(.15, 10, 8), "#3c483d", x, .13, .09).scale.set(1, .6, 1.5);
+        const arm = part(new THREE.CylinderGeometry(.09, .11, .65, 10), resident.color, x * 2.3, 1.23, .03);
+        arm.rotation.z = x < 0 ? -.18 : .18;
+        part(new THREE.SphereGeometry(.11, 10, 8), "#c9976c", x * 2.5, .91, .03);
+      }
+      part(new THREE.CylinderGeometry(.28, .36, .92, 16), resident.color, 0, 1.15, 0);
+      part(new THREE.SphereGeometry(.28, 18, 12), "#c9976c", 0, 1.87, 0);
+      for (const x of [-.095, .095]) part(new THREE.SphereGeometry(.026, 8, 6), "#343c32", x, 1.91, .254);
+      part(new THREE.SphereGeometry(.045, 8, 6), "#b47f58", 0, 1.85, .28);
+      const hat = resident.id === "gardener" || resident.id === "guide" ? "#d8bb79" : resident.id === "sailor" ? "#eee8d5" : resident.color;
+      part(new THREE.CylinderGeometry(.37, .37, .07, 20), hat, 0, 2.11, 0);
+      part(new THREE.CylinderGeometry(.22, .27, .17, 18), hat, 0, 2.22, 0);
+      const book = part(new THREE.BoxGeometry(.35, .42, .12), "#e9d8ab", .34, 1.04, .25);
+      book.rotation.z = -.2;
+      const badge = this.canvasTexture(512, 256, ctx => {
+        ctx.fillStyle = "#fcf5df"; ctx.beginPath(); ctx.roundRect(4, 4, 504, 226, 30); ctx.fill();
+        ctx.fillStyle = resident.color; ctx.textAlign = "center";
+        ctx.font = '600 62px "DM Sans", sans-serif'; ctx.fillText(`?  ${resident.name}`, 256, 94);
+        ctx.font = '400 34px "DM Sans", sans-serif'; ctx.fillText(translate("Vocab chat", this.options.locale), 256, 165);
+      }, true);
+      const sign = new THREE.Sprite(new THREE.SpriteMaterial({ map: badge, depthTest: true }));
+      sign.position.set(0, 2.92, 0); sign.scale.set(1.8, .9, 1); group.add(sign);
+      group.traverse(object => { object.userData.residentId = resident.id; });
+    }
+  }
+
   setChecked(ids: string[]) {
     this.checked = new Set(ids);
     for (const display of this.displayFrames) {
@@ -1662,7 +1741,10 @@ export class Museum {
     if (active) {
       this.keys.add(key);
       this.transition = null;
-    } else this.keys.delete(key);
+    } else {
+      this.keys.delete(key);
+      if (direction === "forward") this.forwardSeconds = 0;
+    }
   }
   setEvening(evening: boolean) {
     this.needsRender = true;
@@ -1903,13 +1985,14 @@ export class Museum {
   }
 
   private canMove(x: number, z: number) {
+    if (RESIDENTS.some(npc => Math.hypot(x - npc.x, z - npc.z) < .65)) return false;
     if (this.game?.mode === "market") {
       const b = CITY.market;
       if (x < b.x0 + .7 || x > b.x1 - .7 || z < b.z0 + .7 || z > b.z1 - .7) return false;
       if (this.gameGroup?.children.some(actor => Math.hypot(x - actor.position.x, z - actor.position.z) < .7)) return false;
     } else if (this.game) {
-      const origin = rootRoomTransform(this.game.room);
-      if (Math.abs(x - origin.x) > ROOT_ROOM.width / 2 - 0.65 || Math.abs(z - origin.z) > ROOT_ROOM.depth / 2 - 0.65) return false;
+      const local = houseLocal(this.game.room, x, z);
+      if (Math.abs(local.x) > ROOT_ROOM.width / 2 - .65 || Math.abs(local.z) > ROOT_ROOM.depth / 2 - .65) return false;
     }
     if (!withinGrounds(x, z)) return false;
     for (const obstacle of this.obstacles)
@@ -1963,15 +2046,18 @@ export class Museum {
       const direction = new THREE.Vector3(strafe, 0, -forward)
         .normalize()
         .applyAxisAngle(Y_AXIS, this.yaw);
-      const speed =
-        (this.keys.has("ShiftLeft") || this.keys.has("ShiftRight") ? 8 : 4.2) *
-        dt;
-      const nextX = this.camera.position.x + direction.x * speed;
-      const nextZ = this.camera.position.z + direction.z * speed;
-      if (this.canMove(nextX, this.camera.position.z))
-        this.camera.position.x = nextX;
-      if (this.canMove(this.camera.position.x, nextZ))
-        this.camera.position.z = nextZ;
+      this.forwardSeconds = forward > 0 ? this.forwardSeconds + dt : 0;
+      const speed = walkingSpeed(this.forwardSeconds, this.keys.has("ShiftLeft") || this.keys.has("ShiftRight"), !!this.game) * dt;
+      // Test short steps so running cannot skip a thin wall or a canal edge.
+      const steps = Math.max(1, Math.ceil(speed / .18));
+      const oldX = this.camera.position.x, oldZ = this.camera.position.z;
+      for (let step = 0; step < steps; step++) {
+        const nextX = this.camera.position.x + direction.x * speed / steps;
+        const nextZ = this.camera.position.z + direction.z * speed / steps;
+        if (this.canMove(nextX, this.camera.position.z)) this.camera.position.x = nextX;
+        if (this.canMove(this.camera.position.x, nextZ)) this.camera.position.z = nextZ;
+      }
+      if (Math.hypot(this.camera.position.x - oldX, this.camera.position.z - oldZ) < .001) this.forwardSeconds = 0;
     }
     this.camera.rotation.set(this.pitch, this.yaw, 0, "YXZ");
     this.checkGameStep(time);
@@ -2036,6 +2122,7 @@ export class Museum {
     window.removeEventListener("keyup", this.keyUp);
     window.removeEventListener("blur", this.clearInput);
     this.scene.traverse((object) => {
+      if (object instanceof THREE.Sprite) object.material.dispose();
       if (object instanceof THREE.Mesh) {
         object.geometry.dispose();
         const mats = Array.isArray(object.material)

@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import { PerspectiveCamera, Vector3 } from 'three';
 import collection from '../src/collection.json' with { type: 'json' };
-import { displayPlacement, displayScale, ROOT_START, rootRoomTransform } from '../src/layout';
+import { displayPlacement, displayScale, ROOT_START, houseLocal } from '../src/layout';
 import { addStamp, makeRounds, PASSPORT_KEY } from '../src/games';
 const words = collection.exhibits;
 const pool = words.filter(e => e.room === ROOT_START || e.families?.some(f => f.room === ROOT_START));
@@ -89,14 +89,14 @@ test('listen and step accepts walking, tile clicks, and answer buttons, then rem
     const tile = g.children.find((p: any) => p.userData.gameAnswer === id);
     return { x: tile.position.x, z: tile.position.z };
   }, target.id);
-  const origin = rootRoomTransform(ROOT_START);
   const world = async (axis: string) => Number(await page.locator(`.minimap [data-world-${axis}]`).getAttribute(`data-world-${axis}`));
+  const local = async () => houseLocal(ROOT_START, await world('x'), await world('z'));
   // Move sideways on the starting line, then walk across the tile and stop on it.
   await page.keyboard.down(tile.x < 0 ? 'a' : 'd');
-  try { await expect.poll(async () => Math.abs((await world('x')) - (origin.x + tile.x)), { intervals: [50] }).toBeLessThan(.35); }
+  try { await expect.poll(async () => Math.abs((await local()).x - tile.x), { intervals: [50] }).toBeLessThan(.35); }
   finally { await page.keyboard.up(tile.x < 0 ? 'a' : 'd'); }
   await page.keyboard.down('w');
-  try { await expect.poll(async () => Math.abs((await world('z')) - (origin.z + tile.z)), { intervals: [50] }).toBeLessThan(.3); }
+  try { await expect.poll(async () => Math.abs((await local()).z - tile.z), { intervals: [50] }).toBeLessThan(.3); }
   finally { await page.keyboard.up('w'); }
   await expect(page.locator('.game-prompt[data-correct=true] h2')).toHaveText(target.word);
   await page.getByRole('button', { name: 'Next word', exact: true }).click();

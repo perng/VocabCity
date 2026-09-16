@@ -18,21 +18,21 @@ export const STREETS_INDEX = 100001;
 export const isRootRoom = (room: number) => room >= ROOT_START && room < GALLERY_COUNT;
 export const isWallArcade = (room: number) => room >= GALLERY_COUNT && room < SQUARE_INDEX;
 
-// Old Town grid: rows of twenty townhouses (ten a side) on a lane, stacked north; after
-// MAX_LANES rows a new block column opens beside the previous ones.
-export const LANE_PITCH = 34;
-export const LANE_HALF = 3;
+// Old Town districts: winding lanes with ten houses on each side, spaced among gardens.
+// After MAX_LANES, a new district opens east or west with diagonal connecting streets.
+export const LANE_PITCH = 78;
+export const LANE_HALF = 5;
 export const HOUSES_PER_LANE = 20;
 export const MAX_LANES = 8;
 export const LANE_COUNT = Math.ceil(ROOT_COUNT / HOUSES_PER_LANE);
 export const LANE_ROWS = Math.min(LANE_COUNT, MAX_LANES);
 export const BLOCK_COLUMNS = Math.ceil(LANE_COUNT / MAX_LANES);
 export const ROOT_ROOM = { width: 16, depth: 14, height: 7 } as const;
-export const LANE_X = 88;
-export const AVENUE_WIDTH = 16;
+export const LANE_X = 128;
+export const AVENUE_WIDTH = 38;
 export const BLOCK_PITCH = LANE_X * 2 + AVENUE_WIDTH;
-export const FIRST_LANE_Z = -186;
-export const laneZ = (row: number) => FIRST_LANE_Z - row * LANE_PITCH;
+export const FIRST_LANE_Z = -208;
+export const laneZ = (row: number) => FIRST_LANE_Z - row * LANE_PITCH - [0, 6, 0, 10, 4, 15, 8, 18][row % MAX_LANES];
 export const LANE_ZS = Array.from({ length: LANE_ROWS }, (_, row) => laneZ(row));
 // Column 0 sits on the canal; later columns alternate east, west, east…
 export const blockOffset = (column: number) => (column === 0 ? 0 : (column % 2 ? 1 : -1) * Math.ceil(column / 2) * BLOCK_PITCH);
@@ -40,14 +40,55 @@ export const BLOCK_OFFSETS = Array.from({ length: BLOCK_COLUMNS }, (_, column) =
 export const laneRow = (lane: number) => lane % MAX_LANES;
 export const laneColumn = (lane: number) => Math.floor(lane / MAX_LANES);
 export const laneHouseCount = (lane: number) => Math.max(0, Math.min(HOUSES_PER_LANE, ROOT_COUNT - lane * HOUSES_PER_LANE));
-export const houseColumnX = (column: number) => (column < 5 ? -80 + column * 16 : 16 + (column - 5) * 16);
+export const houseColumnX = (column: number) => (column < 5 ? -112 + column * 24 : 16 + (column - 5) * 24);
 export const houseStyle = (room: number): "courtyard" | "shop" => ((room - ROOT_START) % 2 === 0 ? "courtyard" : "shop");
+export type StreetPoint = { x: number; z: number };
+// Every lane bends differently. The canal crossings stay level and wide.
+export function lanePoint(lane: number, x: number): StreetPoint {
+  const column = laneColumn(lane), row = laneRow(lane);
+  const drift = column === 0 ? 0 : Math.sin(row * .85 + column) * 15;
+  const phase = row * .9 + column * .65;
+  const bend = 12 * (Math.sin(x / 48 + phase) - Math.sin(phase));
+  // Keep the nearest houses parallel to the canal, clear of both towpaths.
+  const bridge = column === 0 ? Math.min(1, Math.max(0, (Math.abs(x) - 24) / 48)) : 1;
+  return { x: blockOffset(column) + drift + x, z: laneZ(row) + (column === 0 ? 0 : [0, -7, 8, -3][column % 4]) + bend * bridge };
+}
+const houseOrigins = new Map<number, { x: number; z: number; yaw: number; walk: number; setback: number }>();
 export function rootRoomTransform(room: number) {
+  const cached = houseOrigins.get(room); if (cached) return cached;
   const index = room - ROOT_START, lane = Math.floor(index / HOUSES_PER_LANE), slot = index % HOUSES_PER_LANE;
-  const north = slot % 2 === 0, plot = Math.floor(slot / 2);
-  const z = laneZ(laneRow(lane)) + (north ? -1 : 1) * (LANE_HALF + ROOT_ROOM.depth / 2);
-  // Local +z always points through the open front toward the lane.
-  return { x: blockOffset(laneColumn(lane)) + houseColumnX(plot), z, yaw: north ? 0 : Math.PI, walk: lane };
+  const north = slot % 2 === 0, plot = Math.floor(slot / 2), x = houseColumnX(plot);
+  const road = lanePoint(lane, x), before = lanePoint(lane, x - .2), after = lanePoint(lane, x + .2);
+  const tangent = -Math.atan2(after.z - before.z, after.x - before.x);
+  const setback = [2, 4, 1, 5, 2][(plot + lane + (north ? 0 : 2)) % 5];
+  const yaw = tangent + (north ? 0 : Math.PI), distance = LANE_HALF + ROOT_ROOM.depth / 2 + setback;
+  const origin = { x: road.x - Math.sin(yaw) * distance, z: road.z - Math.cos(yaw) * distance, yaw, walk: lane, setback };
+  houseOrigins.set(room, origin); return origin;
+}
+export function houseLocal(room: number, x: number, z: number) {
+  const h = rootRoomTransform(room), dx = x - h.x, dz = z - h.z;
+  return { x: dx * Math.cos(h.yaw) - dz * Math.sin(h.yaw), z: dx * Math.sin(h.yaw) + dz * Math.cos(h.yaw) };
+}
+export const HOUSE_POSITIONS = Array.from({ length: ROOT_COUNT }, (_, i) => ({ room: ROOT_START + i, ...rootRoomTransform(ROOT_START + i) }));
+export const CITY_ROADS: { id: string; kind: "lane" | "avenue" | "connector"; points: StreetPoint[]; halfWidth: number }[] = [];
+for (let lane = 0; lane < LANE_COUNT; lane++) {
+  CITY_ROADS.push({ id: `lane-${lane}`, kind: "lane", halfWidth: LANE_HALF,
+    points: Array.from({ length: 65 }, (_, i) => lanePoint(lane, -LANE_X + i * LANE_X / 32)) });
+}
+for (let column = 0; column < BLOCK_COLUMNS; column++) {
+  const lanes = Array.from({ length: Math.min(MAX_LANES, LANE_COUNT - column * MAX_LANES) }, (_, row) => column * MAX_LANES + row);
+  CITY_ROADS.push({ id: `avenue-${column}`, kind: "avenue", halfWidth: 8,
+    points: [{ x: blockOffset(column), z: -157 }, ...lanes.map(lane => lanePoint(lane, 0)), { ...lanePoint(lanes.at(-1)!, 0), z: laneZ(LANE_ROWS - 1) - 34 }] });
+}
+// Diagonal links stitch neighbouring districts together instead of extending every lane across the whole city.
+const columnsByX = BLOCK_OFFSETS.map((x, column) => ({ x, column })).sort((a, b) => a.x - b.x);
+for (let i = 1; i < columnsByX.length; i++) {
+  const west = columnsByX[i - 1].column, east = columnsByX[i].column;
+  for (const row of [0, 3, 6]) {
+    const a = west * MAX_LANES + row, b = east * MAX_LANES + row;
+    if (a < LANE_COUNT && b < LANE_COUNT) CITY_ROADS.push({ id: `link-${west}-${east}-${row}`, kind: "connector", halfWidth: 5,
+      points: [lanePoint(a, LANE_X), lanePoint(b, -LANE_X)] });
+  }
 }
 export const rootRoomLane = (room: number) => Math.floor((room - ROOT_START) / HOUSES_PER_LANE);
 // Displays line the three closed walls; house information lies flat on the central floor.
@@ -63,10 +104,10 @@ const ROOT_SLOTS: Record<number, { x: number; z: number; yaw: number }[]> = {
 };
 export const rootRoomSlot = (slot: number, count: number) => ROOT_SLOTS[Math.min(6, Math.max(2, count))][slot];
 
-// City extents follow the Old Town grid.
-export const OUTER_EDGE = Math.max(...BLOCK_OFFSETS.map(Math.abs)) + LANE_X;
+// City extents follow the outermost houses and streets.
+export const OUTER_EDGE = Math.max(...BLOCK_OFFSETS.map(Math.abs)) + LANE_X + 24;
 export const WALL_WALK = 5;
-const northEdge = laneZ(LANE_ROWS - 1) - LANE_HALF - ROOT_ROOM.depth;
+const northEdge = Math.min(...HOUSE_POSITIONS.map(h => h.z)) - ROOT_ROOM.depth - 12;
 export const CITY = {
   wallX: OUTER_EDGE + WALL_WALK, wallSouth: 48, wallNorth: northEdge - 8,
   quay: { south: 62, north: 50 }, seaEdge: 62,
@@ -106,7 +147,9 @@ const N = Math.PI, S = 0, E = Math.PI / 2, W = -Math.PI / 2;
 const c = CITY;
 export const DISTRICTS: District[] = [
   { kind: "square", landmark: "Gate Square", indoor: false, box: { x0: -c.square.x, x1: c.square.x, z0: c.square.z0, z1: c.square.z1 }, pose: { x: 0, z: 42, yaw: 0 },
-    slots: [18, 28, 38].flatMap((z) => [{ x: -21.6, z, yaw: E }, { x: 21.6, z, yaw: W }]) },
+    // The exterior walls reach ±21.4, with door trim projecting farther into the square.
+    // Keep even frameless murals in front of both surfaces.
+    slots: [18, 28, 38].flatMap((z) => [{ x: -21.1, z, yaw: E }, { x: 21.1, z, yaw: W }]) },
   { kind: "quay", landmark: "Harbour Quay", indoor: false, box: { x0: -56, x1: 62, z0: c.quay.north, z1: c.quay.south }, pose: { x: 0.35, z: 58, yaw: 0 },
     slots: [-36, -26, -16, 16, 26, 36].map((x) => ({ x, z: 48.7, yaw: S })) },
   { kind: "hall", landmark: "Guildhall", indoor: true, box: { x0: c.guildhall.x0, x1: c.guildhall.x1, z0: c.guildhall.z0, z1: c.guildhall.z1 }, pose: { x: 33, z: -90, yaw: -Math.PI / 2 },
@@ -181,21 +224,12 @@ export function roomPose(room: number) {
 
 const inside = (x: number, z: number, box: { x0: number; x1: number; z0: number; z1: number }, margin = 0) =>
   x >= box.x0 + margin && x <= box.x1 - margin && z >= box.z0 + margin && z <= box.z1 - margin;
-const nearestBlock = (x: number) => BLOCK_OFFSETS.reduce((best, offset) => (Math.abs(x - offset) < Math.abs(x - best) ? offset : best), BLOCK_OFFSETS[0]);
 export function areaAt(x: number, z: number) {
   if (z <= c.promenade.z1 + 0.01) {
-    // Old Town lanes, avenues, canal street and houses.
-    if (Math.abs(x) >= OUTER_EDGE) return STREETS_INDEX;
-    const offset = nearestBlock(x), local = x - offset, column = BLOCK_OFFSETS.indexOf(offset);
-    if (Math.abs(local) < c.canal.street) return STREETS_INDEX;
-    for (let row = 0; row < LANE_ROWS; row++) {
-      const lz = laneZ(row);
-      if (Math.abs(z - lz) <= LANE_HALF) return STREETS_INDEX;
-      if (Math.abs(z - lz) <= LANE_HALF + ROOT_ROOM.depth && Math.abs(local) <= LANE_X) {
-        const plot = Math.min(9, Math.max(0, local < 0 ? Math.floor((local + LANE_X) / 16) : 5 + Math.floor((local - c.canal.street) / 16)));
-        const room = ROOT_START + (column * MAX_LANES + row) * HOUSES_PER_LANE + plot * 2 + (z < lz ? 0 : 1);
-        return room < GALLERY_COUNT ? room : STREETS_INDEX;
-      }
+    for (const house of HOUSE_POSITIONS) {
+      if (Math.abs(x - house.x) > 12 || Math.abs(z - house.z) > 12) continue;
+      const local = houseLocal(house.room, x, z);
+      if (Math.abs(local.x) <= ROOT_ROOM.width / 2 && Math.abs(local.z) <= ROOT_ROOM.depth / 2) return house.room;
     }
     return STREETS_INDEX;
   }
@@ -206,6 +240,20 @@ export function areaAt(x: number, z: number) {
 }
 export function withinGrounds(x: number, z: number) {
   const m = 0.6;
+  if (z <= c.promenade.z1) {
+    if (Math.abs(x) > c.wallX - m || z < c.wallNorth + m) return false;
+    const overCanal = Math.abs(x) < c.canal.x + m && z < c.canal.z1 - 4 && z > c.canal.z0 + 4;
+    if (overCanal && !LANE_ZS.some(lz => Math.abs(z - lz) <= LANE_HALF - m)) return false;
+    for (const house of HOUSE_POSITIONS) {
+      if (Math.abs(x - house.x) > 12 || Math.abs(z - house.z) > 12) continue;
+      const p = houseLocal(house.room, x, z), hw = ROOT_ROOM.width / 2, hd = ROOT_ROOM.depth / 2;
+      if (Math.abs(p.x) > hw + m || Math.abs(p.z) > hd + m) continue;
+      if (Math.abs(p.x) <= hw - m && Math.abs(p.z) <= hd - m) continue;
+      if (Math.abs(p.x) < 4.3 && p.z > hd - m) continue; // generous front opening
+      return false;
+    }
+    return true; // gardens and spaces between houses can be explored too
+  }
   const rects: { x0: number; x1: number; z0: number; z1: number }[] = [
     { x0: -c.wallX, x1: c.mole.x0 + 2, z0: c.quay.north, z1: c.quay.south },
     { x0: c.mole.x0, x1: c.mole.x1, z0: c.mole.z0 - 2, z1: c.mole.z1 },
@@ -244,12 +292,6 @@ export function withinGrounds(x: number, z: number) {
     const overCanal = Math.abs(x) < c.canal.x + m && z < c.canal.z1 - 4 && z > c.canal.z0 + 4;
     const onBridge = LANE_ZS.some((lz) => Math.abs(z - lz) <= LANE_HALF - m);
     return !overCanal || onBridge;
-  }
-  for (const lz of LANE_ZS) if (Math.abs(z - lz) <= LANE_HALF - m && Math.abs(x) <= c.wallX - m) return true;
-  for (let i = 0; i < ROOT_COUNT; i++) {
-    const house = rootRoomTransform(ROOT_START + i), lz = laneZ(laneRow(house.walk));
-    if (Math.abs(x - house.x) <= ROOT_ROOM.width / 2 - m && Math.abs(z - house.z) <= ROOT_ROOM.depth / 2 - m) return true;
-    if (Math.abs(x - house.x) <= 4.4 && Math.abs(z - lz) <= LANE_HALF + ROOT_ROOM.depth / 2) return true;
   }
   return false;
 }

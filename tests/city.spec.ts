@@ -36,6 +36,7 @@ async function clickDisplay(page: Page, roomIndex: number, slot: number, x: numb
 async function visitFromCollection(page: Page, word: string, filterLabel?: string) {
   await page.getByRole('button', { name: `The collection${collection.exhibits.length}`, exact: true }).click();
   if (filterLabel) await page.getByRole('combobox', { name: 'Filter by gallery' }).selectOption({ label: filterLabel });
+  await page.getByRole('textbox', { name: 'Search vocabulary' }).fill(word);
   await page.getByRole('button', { name: word, exact: true }).click();
   await page.getByRole('button', { name: 'Close exhibit', exact: true }).click();
   await expect(page.locator('.scene')).not.toHaveClass(/room-transition/);
@@ -106,6 +107,22 @@ test('the Town Hall opens through its door, and open-air displays in the park an
   await expect(page.getByRole('heading', { name: grove.word, exact: true })).toBeVisible();
   await expect(page.locator('.exhibit-sheet')).toContainText(DISTRICTS[9].landmark.toUpperCase());
   await page.screenshot({ path: 'test-results/city-park-exhibit.png' });
+});
+
+test('Gate Square and Corso paintings have clear views across their full width', async ({ page }) => {
+  test.setTimeout(120000);
+  await enter(page);
+  for (const exhibit of collection.exhibits.filter(e => [0, 3, 7].includes(e.room))) {
+    await visitFromCollection(page, exhibit.word);
+    // Exercise the actual rendered scene, including columns and other solid objects.
+    for (const x of [-0.85, 0, 0.85]) {
+      await clickDisplay(page, exhibit.room, exhibit.slot, x, 2.85, 0.18);
+      await expect(page.getByRole('heading', { name: exhibit.word, exact: true }), `${exhibit.word} at horizontal offset ${x}`).toBeVisible();
+      await page.getByRole('button', { name: 'Close exhibit', exact: true }).click();
+    }
+  }
+  await visitFromCollection(page, 'serene');
+  await page.screenshot({ path: 'test-results/serene-clear-view.png', animations: 'disabled' });
 });
 
 test('a Gate Square painting opens by raycast; meanings, audio, saved words, and discovery persist', async ({ page }) => {

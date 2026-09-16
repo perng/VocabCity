@@ -1,0 +1,77 @@
+{
+  "generator": "built-in image_gen",
+  "artworks": [
+    {
+      "word": "mineral",
+      "title": "The Earth, Held to the Light",
+      "titleZh": "掌心裡的地光",
+      "medium": "Fine-art macro photography",
+      "mediumZh": "藝術微距攝影",
+      "style": "fine-art-macro",
+      "subject": "A translucent quartz crystal and banded malachite mineral specimens on dark slate, extraordinary natural inclusions and facets, a narrow beam of daylight passing through crystal, tactile geological wonder. A composed fine-art macro photograph with black shadows and subdued emerald and honey colors.",
+      "prompt": "Use case: stylized-concept. Asset type: a high-resolution square artwork exhibited in the Vocab Hall virtual museum for the vocabulary word 'mineral'. Create a completely new finished artwork, not a depiction of a framed artwork or a sticker. A translucent quartz crystal and banded malachite mineral specimens on dark slate, extraordinary natural inclusions and facets, a narrow beam of daylight passing through crystal, tactile geological wonder. A composed fine-art macro photograph with black shadows and subdued emerald and honey colors. Composition fills the square edge to edge. Request native resolution at least 1536x1536 with rich detail. No text, labels, signatures, logos, picture frames, white sticker outline, clip art, collage grids or plastic CGI.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/mineral-20260912.png",
+      "image": "artwork/museum-v1/mineral-20260912.webp"
+    },
+    {
+      "word": "texture",
+      "title": "Crust and Crumb",
+      "titleZh": "麵包的表情",
+      "medium": "Contemporary watercolor painting",
+      "mediumZh": "當代水彩畫",
+      "style": "modern-watercolor",
+      "subject": "A cut rustic bread loaf with its airy soft crumb, a crackled crust, and a linen cloth on a flour-dusted wooden baker's table. Contemporary watercolor with beautiful granulation, expressive dry-brush edges, warm ochre and soft sage shadows. The contrast between soft, crunchy and woven textures is the central subject.",
+      "prompt": "Use case: stylized-concept. Asset type: a high-resolution square artwork exhibited in the Vocab Hall virtual museum for the vocabulary word 'texture'. Create a completely new finished artwork, not a depiction of a framed artwork or a sticker. A cut rustic bread loaf with its airy soft crumb, a crackled crust, and a linen cloth on a flour-dusted wooden baker's table. Contemporary watercolor with beautiful granulation, expressive dry-brush edges, warm ochre and soft sage shadows. The contrast between soft, crunchy and woven textures is the central subject. Composition fills the square edge to edge. Request native resolution at least 1536x1536 with rich detail. No text, labels, signatures, logos, picture frames, white sticker outline, clip art, collage grids or plastic CGI.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/texture-20260912.png",
+      "image": "artwork/museum-v1/texture-20260912.webp"
+    },
+    {
+      "word": "surface",
+      "title": "The Potter's Last Glaze",
+      "titleZh": "陶人的最後一道釉",
+      "medium": "Fine-art still-life photography",
+      "mediumZh": "藝術靜物攝影",
+      "style": "fine-art-still-life",
+      "subject": "A handmade blue-grey ceramic bowl seen very close, emphasizing the outer glazed surface: softly shining glaze, tiny crazing lines, a single curved reflection of a studio window. A potter's brush rests on a quiet stone ledge beside it. Sophisticated fine-art still-life photograph, subtle warm light, contemplative space.",
+      "prompt": "Use case: stylized-concept. Asset type: a high-resolution square artwork exhibited in the Vocab Hall virtual museum for the vocabulary word 'surface'. Create a completely new finished artwork, not a depiction of a framed artwork or a sticker. A handmade blue-grey ceramic bowl seen very close, emphasizing the outer glazed surface: softly shining glaze, tiny crazing lines, a single curved reflection of a studio window. A potter's brush rests on a quiet stone ledge beside it. Sophisticated fine-art still-life photograph, subtle warm light, contemplative space. Composition fills the square edge to edge. Request native resolution at least 1536x1536 with rich detail. No text, labels, signatures, logos, picture frames, white sticker outline, clip art, collage grids or plastic CGI.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/surface-20260912.png",
+      "image": "artwork/museum-v1/surface-20260912.webp"
+    },
+    {
+      "word": "formation",
+      "title": "Time Folded into Stone",
+      "titleZh": "時間摺進岩層",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "impressionist-oil",
+      "subject": "A vast river canyon with dramatic folded rock strata and a distant mountain ridge under luminous morning mist. Show the geological formation of layered earth with rhythmic thick oil brushwork, warm russet rock, pale lavender distance and cerulean water. Fine museum landscape painting, subtle impressionist light, strong spatial depth.",
+      "prompt": "Use case: stylized-concept. Asset type: a high-resolution square artwork exhibited in the Vocab Hall virtual museum for the vocabulary word 'formation'. Create a completely new finished artwork, not a depiction of a framed artwork or a sticker. A vast river canyon with dramatic folded rock strata and a distant mountain ridge under luminous morning mist. Show the geological formation of layered earth with rhythmic thick oil brushwork, warm russet rock, pale lavender distance and cerulean water. Fine museum landscape painting, subtle impressionist light, strong spatial depth. Composition fills the square edge to edge. Request native resolution at least 1536x1536 with rich detail. No text, labels, signatures, logos, picture frames, white sticker outline, clip art, collage grids or plastic CGI.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/formation-20260912.png",
+      "image": "artwork/museum-v1/formation-20260912.webp"
+    },
+    {
+      "word": "structure",
+      "title": "The Quiet Geometry of Shelter",
+      "titleZh": "庇護的安靜幾何",
+      "medium": "Architectural ink and wash",
+      "mediumZh": "建築水墨淡彩",
+      "style": "architectural-ink-wash",
+      "subject": "A lofty timber market hall, elegant beams and arches clearly supporting its roof, sunlight describing the load-bearing columns and ordered framework. A sophisticated architectural ink and watercolor work on warm paper, delicate expressive linework, transparent indigo shadow and ochre light. Spacious interior perspective showing how a building is arranged and supported.",
+      "prompt": "Use case: stylized-concept. Asset type: a high-resolution square artwork exhibited in the Vocab Hall virtual museum for the vocabulary word 'structure'. Create a completely new finished artwork, not a depiction of a framed artwork or a sticker. A lofty timber market hall, elegant beams and arches clearly supporting its roof, sunlight describing the load-bearing columns and ordered framework. A sophisticated architectural ink and watercolor work on warm paper, delicate expressive linework, transparent indigo shadow and ochre light. Spacious interior perspective showing how a building is arranged and supported. Composition fills the square edge to edge. Request native resolution at least 1536x1536 with rich detail. No text, labels, signatures, logos, picture frames, white sticker outline, clip art, collage grids or plastic CGI.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/structure-20260912.png",
+      "image": "artwork/museum-v1/structure-20260912.webp"
+    },
+    {
+      "word": "durable",
+      "title": "A Hundred Quiet Mornings",
+      "titleZh": "一百個安靜的清晨",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "impressionist-oil",
+      "subject": "An old sturdy oak cafe stool beside a workbench, lovingly worn yet solid, visible strong mortise-and-tenon joints, polished seat softened by years of use. A copper kettle and morning light in a modest workshop. Museum-quality impressionist oil still life, impasto wood grain, muted sage, warm ochre and deep umber. Convey endurance and lasting craftsmanship.",
+      "prompt": "Use case: stylized-concept. Asset type: a high-resolution square artwork exhibited in the Vocab Hall virtual museum for the vocabulary word 'durable'. Create a completely new finished artwork, not a depiction of a framed artwork or a sticker. An old sturdy oak cafe stool beside a workbench, lovingly worn yet solid, visible strong mortise-and-tenon joints, polished seat softened by years of use. A copper kettle and morning light in a modest workshop. Museum-quality impressionist oil still life, impasto wood grain, muted sage, warm ochre and deep umber. Convey endurance and lasting craftsmanship. Composition fills the square edge to edge. Request native resolution at least 1536x1536 with rich detail. No text, labels, signatures, logos, picture frames, white sticker outline, clip art, collage grids or plastic CGI.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/durable-20260912.png",
+      "image": "artwork/museum-v1/durable-20260912.webp"
+    }
+  ]
+}

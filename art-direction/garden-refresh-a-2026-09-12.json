@@ -1,0 +1,58 @@
+{
+  "generator": "built-in image_gen",
+  "date": "2026-09-12",
+  "artworks": [
+    {
+      "word": "ecosystem",
+      "title": "The Pond Holds a World",
+      "titleZh": "一池，萬物",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "impressionist-oil",
+      "prompt": "Use case: stylized-concept. Asset type: high-resolution artwork exhibited as a large painting inside a 3D vocabulary museum. Create one finished square fine-art image, 1536 by 1536 or higher native resolution, richly detailed and beautiful at close range. The composition should fill the canvas edge to edge with no picture frame, border, mat, title, labels, typography, signature, logos, watermark, sticker outline, collage panels, cartoon mascot, or flat clip-art look. Cohesive botanical gallery palette: sage and forest greens, muted ochre, soft atmospheric blue. Depict an ecosystem: an interconnected community of living things in their environment. A lush freshwater pond at golden morning, luminous lily leaves and reeds, small fish visible beneath translucent foreground water, a heron quietly at the far bank, dragonflies above the water, an old willow sheltering the edge and a living patchwork of wetland plants. These are believable elements of one continuous natural scene, not a diagram. Impressionist oil painting with sophisticated broken-color brushwork and impasto glints, natural light shimmering across water, painterly depth and calm grandeur. Wide pond surface draws the eye through a balanced square composition.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/ecosystem-20260912.png",
+      "image": "artwork/museum-v1/ecosystem-20260912.webp",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "word": "ecology",
+      "title": "Observations at the Living Shore",
+      "titleZh": "岸邊的生命觀察",
+      "medium": "Naturalist ink and watercolor",
+      "mediumZh": "自然觀察墨線水彩",
+      "style": "architectural-ink-wash",
+      "prompt": "Use case: stylized-concept. Asset type: high-resolution artwork exhibited as a large painting inside a 3D vocabulary museum. Create one finished square fine-art image, 1536 by 1536 or higher native resolution, richly detailed and beautiful at close range. The composition should fill the canvas edge to edge with no picture frame, border, mat, title, labels, typography, signature, logos, watermark, sticker outline, collage panels, cartoon mascot, or flat clip-art look. Cohesive botanical gallery palette: sage and forest greens, muted ochre, soft atmospheric blue. Depict ecology: careful study of relationships between organisms and their environment. A sensitive naturalist field study of a stream bank seen close enough to observe intricate relationships: willow roots holding the soil, fern fronds, wildflowers visited by a bee, a snail on a damp stone, clear water flowing through the roots and stones, and a partially visible field hand gently using a small magnifying glass to observe a leaf without disturbing it. This is a single continuous artwork, not a diagram or labeled notebook. Exquisite fine ink lines and translucent watercolor washes on textured warm paper, precise observational detail, generous breathing room and sophisticated museum drawing quality; subtly architectural confidence in linework and organic botanical rhythm.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/ecology-20260912.png",
+      "image": "artwork/museum-v1/ecology-20260912.webp",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "word": "conservation",
+      "title": "A Forest Kept for Tomorrow",
+      "titleZh": "為明天留下的森林",
+      "medium": "Hand-carved color linocut",
+      "mediumZh": "手刻套色油氈版畫",
+      "style": "linocut",
+      "prompt": "Use case: stylized-concept. Asset type: high-resolution artwork exhibited as a large painting inside a 3D vocabulary museum. Create one finished square fine-art image, 1536 by 1536 or higher native resolution, richly detailed and beautiful at close range. The composition should fill the canvas edge to edge with no picture frame, border, mat, title, labels, typography, signature, logos, watermark, sticker outline, collage panels, cartoon mascot, or flat clip-art look. Cohesive botanical gallery palette: sage and forest greens, muted ochre, soft atmospheric blue. Depict conservation: the protection and careful stewardship of a living forest. A mature woodland with tall interlocking trunks, a quiet stream, a small healthy sapling foreground protected by a modest open wooden support, and two distant caretakers gently tending young trees while leaving the habitat intact. A bird and woodland foliage imply biodiversity. One unified richly layered fine-art color linocut landscape with deliberate hand-carved marks, tactile ink textures and elegant rhythms of foliage, subtle misregistration, masterful sage, ochre, blue and deep evergreen color separations. Understated hopeful dignity, no slogan and no environmental poster aesthetic.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/conservation-20260912.png",
+      "image": "artwork/museum-v1/conservation-20260912.webp",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "word": "preserve",
+      "title": "A Sanctuary Under Glass",
+      "titleZh": "玻璃下的庇護所",
+      "medium": "Contemporary watercolor",
+      "mediumZh": "當代水彩",
+      "style": "modern-watercolor",
+      "prompt": "Use case: stylized-concept. Asset type: high-resolution artwork exhibited as a large painting inside a 3D vocabulary museum. Create one finished square fine-art image, 1536 by 1536 or higher native resolution, richly detailed and beautiful at close range. The composition should fill the canvas edge to edge with no picture frame, border, mat, title, labels, typography, signature, logos, watermark, sticker outline, collage panels, cartoon mascot, or flat clip-art look. Cohesive botanical gallery palette: sage and forest greens, muted ochre, soft atmospheric blue. Depict preserve: protecting something so it survives undamaged for future generations. A beautifully cared-for historic greenhouse sanctuary with slender weathered iron arches and translucent glass panes, sheltering mature rare ferns, an old citrus tree and delicate propagated seedlings. Warm light passes through the glass onto moss-flecked stone and terracotta pots; a gardener's careful gloved hands in the near foreground gently support a young plant beside its thriving older parent. A sophisticated contemporary watercolor painting with luminous layered transparent washes, wet-on-wet foliage, fine dry-brush architectural detail and paper granulation, expressive but botanically grounded, quiet preservation made tangible. One coherent scene with spatial depth.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/preserve-20260912.png",
+      "image": "artwork/museum-v1/preserve-20260912.webp",
+      "width": 1254,
+      "height": 1254
+    }
+  ]
+}

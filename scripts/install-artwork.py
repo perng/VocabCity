@@ -30,23 +30,25 @@ for spec in direction:
     assert min(width, height) >= 1024, f'{word}: insufficient native resolution'
     if not (masters / f'{word}.png').exists() or (masters / f'{word}.png').stat().st_mtime < source.stat().st_mtime:
         shutil.copy2(source, masters / f'{word}.png')
-    target = web / f'{word}.webp'
+    filename = f"{word}-{spec['revision']}.webp" if spec.get('revision') else f'{word}.webp'
+    target = web / filename
     if not target.exists() or target.stat().st_mtime < source.stat().st_mtime:
-        conversions.append((source, target))
+        conversions.append((word, source, target))
     catalog[word] = {k: spec[k] for k in ['title', 'titleZh', 'series', 'seriesZh', 'medium', 'mediumZh', 'style']}
     if spec.get('mural'):
         catalog[word]['mural'] = True
-    catalog[word].update(image=f'artwork/museum-v1/{word}.webp', width=width, height=height, provenance='AI-generated with the built-in image_gen tool')
+    catalog[word].update(image=f'artwork/museum-v1/{filename}', width=width, height=height, provenance='AI-generated with the built-in image_gen tool')
 # Format conversion only: retain native pixel dimensions and the PNG master. Only changed masters are converted.
 def convert(pair):
-    result = subprocess.run(['cwebp', '-quiet', '-q', '92', '-m', '6', str(pair[0]), '-o', str(pair[1])], capture_output=True, text=True)
-    return pair[0].stem if result.returncode else None
+    result = subprocess.run(['cwebp', '-quiet', '-q', '92', '-m', '6', str(pair[1]), '-o', str(pair[2])], capture_output=True, text=True)
+    return pair[0] if result.returncode else None
 with ThreadPoolExecutor(max_workers=8) as pool:
     broken = [word for word in pool.map(convert, conversions) if word]
 for word in broken:
-    # A truncated master keeps its sticker until it is generated again.
-    catalog.pop(word, None)
-    (web / f'{word}.webp').unlink(missing_ok=True)
+    # Keep the previous exhibit image if a new master could not be converted.
+    art = catalog.pop(word, None)
+    if art:
+        (ROOT / 'public' / art['image']).unlink(missing_ok=True)
 for exhibit in collection['exhibits']:
     art = catalog.get(exhibit['word'])
     if not art:

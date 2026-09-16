@@ -1,0 +1,57 @@
+{
+  "generator": "built-in image_gen",
+  "artworks": [
+    {
+      "word": "restore",
+      "title": "The Color Beneath Time",
+      "titleZh": "歲月之下的色彩",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "impressionist-oil",
+      "prompt": "Use case: stylized-concept.\nAsset type: finished square artwork for a three-dimensional vocabulary art museum. Generate a high-resolution 1536 by 1536 square image with rich native detail. Full-bleed art only: no gallery wall, no frame, no border, no caption, no typography, no signature, no logo, no watermark, no sticker outline, no infographic layout. A sophisticated museum exhibit, composed to remain compelling at a distance and reward close looking.\nSubject: to restore, meaning to bring something back to its former condition. A thoughtful art conservator carefully restores a weathered wall fresco in a quiet sunlit studio, using a tiny brush on a small section. The fresco depicts a timeless leafy garden and its large surface visibly transitions from muted dust and damage into luminous recovered sage green and ochre pigments, with delicate repaired cracks. Hands and tools believable and understated; restoration and the damaged-to-renewed surface are the central story. Medium: accomplished impressionist oil painting, atmospheric loose brushwork with fine focal detail, tactile paint and warm plaster. An intimate asymmetric crop, conservator in profile at one side, fresco occupying most of the composition. Raking morning light, dusty ultramarine shadows, soft sage, warm ochre and ivory. Original museum-quality artwork, tranquil and humane, no illustration or sticker aesthetic.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/restore-20260912.png",
+      "image": "artwork/museum-v1/restore-20260912.webp",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "word": "shelter",
+      "title": "A Light Against the Rain",
+      "titleZh": "雨中的一盞燈",
+      "medium": "Fine-art landscape photography",
+      "mediumZh": "藝術風景攝影",
+      "style": "fine-art-photography",
+      "prompt": "Use case: photorealistic-natural.\nAsset type: finished square artwork for a three-dimensional vocabulary art museum. Generate a high-resolution 1536 by 1536 square image with rich native detail. Full-bleed art only: no gallery wall, no frame, no border, no caption, no typography, no signature, no logo, no watermark, no sticker outline, no infographic layout. A sophisticated museum exhibit, composed to remain compelling at a distance and reward close looking.\nSubject: shelter, a place that provides protection or temporary housing. A solitary weathered stone mountain refuge with a deep wooden porch, photographed during gentle steady rain in a misty alpine valley. A rain-damp hiker quietly rests fully under the protective roof with a pack at their feet, small in the scene, making its purpose clear. Warm amber light from a small window contrasts with soft blue-grey rain, rich sage meadow grass, wet slate and old honey-colored timber. Fine-art landscape photography with exquisite natural textures, plausible scale, subtle film grain and restrained dynamic range, no oversaturated HDR. A contemplative spacious composition where the sturdy refuge anchors the lower-right and mountains dissolve into cloud; raindrops and reflected light in foreground stones reward close inspection. No signs, readable text or logos.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/shelter-20260912.png",
+      "image": "artwork/museum-v1/shelter-20260912.webp",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "word": "wildlife",
+      "title": "Where the Forest Drinks",
+      "titleZh": "森林飲水的地方",
+      "medium": "Fine-art wildlife photography",
+      "mediumZh": "野生自然藝術攝影",
+      "style": "fine-art-photography",
+      "prompt": "Use case: photorealistic-natural.\nAsset type: finished square artwork for a three-dimensional vocabulary art museum. Generate a high-resolution 1536 by 1536 square image with rich native detail. Full-bleed art only: no gallery wall, no frame, no border, no caption, no typography, no signature, no logo, no watermark, no sticker outline, no infographic layout. A sophisticated museum exhibit, composed to remain compelling at a distance and reward close looking.\nSubject: wildlife, animals and plants living naturally. An unspoiled temperate woodland riverbank at first light: a red deer doe and her fawn drink quietly at shallow water while a small grey heron stands farther downstream. The animals are entirely free in their natural habitat, with no people, fences, buildings, collars or staged props. A mature natural woodland ecosystem rendered in exceptional photographic detail: mossy roots, ferns, broad leaves, small wildflowers, ripples, morning mist and individual soft hairs. Fine-art wildlife photography, authentic animal anatomy and behavior, immersive and tranquil rather than a catalog of animals. Sage-green foliage and ochre forest floor, cool blue water, warm shaft of dawn sunlight. Eye-level from the opposite bank, elegant layered depth with animals clearly readable at mid-distance and delicate natural texture throughout.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/wildlife-20260912.png",
+      "image": "artwork/museum-v1/wildlife-20260912.webp",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "word": "species",
+      "title": "Three Ways to Belong to the River",
+      "titleZh": "河流裡的三種生命",
+      "medium": "Modern naturalist watercolor",
+      "mediumZh": "現代自然觀察水彩",
+      "style": "modern-watercolor",
+      "prompt": "Use case: stylized-concept.\nAsset type: finished square artwork for a three-dimensional vocabulary art museum. Generate a high-resolution 1536 by 1536 square image with rich native detail. Full-bleed art only: no gallery wall, no frame, no border, no caption, no typography, no signature, no logo, no watermark, no sticker outline, no infographic layout. A sophisticated museum exhibit, composed to remain compelling at a distance and reward close looking.\nSubject: species, different groups of living things with distinct common features. A refined modern naturalist watercolor of three distinctly recognizable living bird species sharing a natural river edge: a blue-and-orange common kingfisher perches on a willow branch, a long-legged grey heron wades in the shallows, and a mallard duck with a green head floats below. Each bird has accurate characteristic proportions, beak, plumage and scale; all belong in one coherent habitat, not separate panels, no labels or diagrams. Elegant vertical foliage, willow leaves, grasses and softly mirrored blue water unite the composition. Museum-quality transparent watercolor with luminous pigment blooms, controlled drybrush feather detail and subtle cold-pressed paper texture across the full image. Sage green, ochre reeds, mineral blue and restrained warm accents, gentle daylight, sophisticated loose-to-precise painting, no cartoon or sticker style.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/species-20260912.png",
+      "image": "artwork/museum-v1/species-20260912.webp",
+      "width": 1254,
+      "height": 1254
+    }
+  ]
+}

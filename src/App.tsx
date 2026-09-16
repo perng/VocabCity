@@ -23,6 +23,7 @@ import {
   Headphones,
   HelpCircle,
   Map,
+  MessageCircle,
   Maximize2,
   Moon,
   Mouse,
@@ -40,15 +41,16 @@ import {
 } from "lucide-react";
 import collection from "./collection.json";
 import { MuseumGames } from "./MuseumGames";
+import { ResidentQuiz } from "./ResidentQuiz";
+import { RESIDENTS, nearbyResident, type Resident } from "./residents";
 import { Museum, exhibitPlacements, familyIn, registerFamilySizes, type Pose } from "./museum";
 import {
   CATHEDRAL_SQUARE,
   CITY,
+  CITY_ROADS,
   DISTRICTS,
   ENTRY,
   GALLERY_COUNT,
-  LANE_HALF,
-  LANE_ZS,
   MAP_HEIGHT,
   MAP_WIDTH,
   OLD_TOWN,
@@ -230,6 +232,7 @@ function FloorPlan({ pose, compact = false }: { pose: Pose; compact?: boolean })
     <g transform={`translate(${origin.x} ${origin.y})`}>
       <rect x={-MAP_WIDTH} y={c.seaEdge} width={MAP_WIDTH * 2} height={400} fill="#bcd5d8" />
       <rect x={-c.wallX - 3} y={c.wallNorth - 3} width={c.wallX * 2 + 6} height={c.wallSouth - c.wallNorth + 6} fill="#efe9db" stroke="#9a8a66" strokeWidth="2" />
+      <rect x={-c.wallX} y={c.wallNorth} width={c.wallX * 2} height={c.promenade.z0 - c.wallNorth} fill="#d9e0ca" />
       <rect x={-c.wallX} y={c.quay.north} width={c.wallX * 2} height={c.quay.south - c.quay.north} fill="#e3d9c3" />
       {box(c.mole, "#e3d9c3", "mole")}
       <circle cx={c.lighthouse.x} cy={c.lighthouse.z} r="3" fill="#f4efe3" stroke="#b8453a" strokeWidth="1.2" />
@@ -240,13 +243,13 @@ function FloorPlan({ pose, compact = false }: { pose: Pose; compact?: boolean })
       {box({ x0: -c.wallX, x1: c.wallX, z0: c.promenade.z0, z1: c.promenade.z1 }, pose.room === STREETS_INDEX ? "#d8cfb2" : "#f1edde", "promenade")}
       {box({ x0: -c.canal.street, x1: c.canal.street, z0: c.canal.z0, z1: c.canal.z1 }, "#f1edde", "canalstreet")}
       <rect x={-c.canal.x} y={c.canal.z0} width={c.canal.x * 2} height={c.canal.z1 - c.canal.z0} fill="#9fbdb4" />
-      {LANE_ZS.map((lz) => <rect key={lz} x={-c.wallX + 1} y={lz - LANE_HALF} width={c.wallX * 2 - 2} height={LANE_HALF * 2} fill="#f1edde" />)}
+      {CITY_ROADS.filter(road => road.id !== "avenue-0").map(road => <polyline key={road.id} points={road.points.map(p => `${p.x},${p.z}`).join(" ")} fill="none" stroke="#f1edde" strokeWidth={road.halfWidth * 2} strokeLinejoin="round" />)}
       {[-1, 1].map((side) => <rect key={`walk-${side}`} x={side < 0 ? -c.wallX + 1 : OUTER_EDGE} y={c.wallNorth + 1} width={c.wallX - OUTER_EDGE - 1} height={c.promenade.z1 - c.wallNorth - 1} fill="#ebe4d2" />)}
       {rooms.map((room, i) => {
         if (room.house) {
           const h = rootRoomTransform(i);
           return <g key={room.id}>
-            <rect x={h.x - ROOT_ROOM.width / 2} y={h.z - ROOT_ROOM.depth / 2} width={ROOT_ROOM.width} height={ROOT_ROOM.depth} fill={pose.room === i ? `${room.color}99` : `${room.color}30`} stroke="#a5ac99" strokeWidth=".5" />
+            <rect transform={`rotate(${-h.yaw * 180 / Math.PI} ${h.x} ${h.z})`} x={h.x - ROOT_ROOM.width / 2} y={h.z - ROOT_ROOM.depth / 2} width={ROOT_ROOM.width} height={ROOT_ROOM.depth} fill={pose.room === i ? `${room.color}99` : `${room.color}30`} stroke="#a5ac99" strokeWidth=".5" />
             {!compact && <text x={h.x} y={h.z + 2} textAnchor="middle" fill="#52604c" fontSize={room.house.display.length > 8 ? 3.2 : 5.5} fontStyle="italic">{room.house.display.length > 18 ? room.house.display.slice(0, 17) + "…" : room.house.display}</text>}
           </g>;
         }
@@ -268,6 +271,9 @@ function FloorPlan({ pose, compact = false }: { pose: Pose; compact?: boolean })
       </>}
       {exhibits.flatMap(e => exhibitPlacements(e).map(p => <rect key={`${e.id}-${p.area}`} x={p.x-1.2} y={p.z-1.2} width="2.4" height="2.4" rx=".5" fill={rooms[e.room].color} />))}
     </g>
+    {RESIDENTS.map(npc => { const point = mapPoint(npc.x, npc.z); return <g key={npc.id} transform={`translate(${point.x} ${point.y})`}>
+      <title>{npc.name} · {t(npc.role)}</title><circle r={compact ? 2.4 : 3.5} fill={npc.color} stroke="#fff7e2" strokeWidth="1" />
+    </g>; })}
     <g data-world-x={pose.x.toFixed(2)} data-world-z={pose.z.toFixed(2)} transform={`translate(${follow.x},${follow.y}) rotate(${(-pose.yaw * 180) / Math.PI})`}>
       <path d="M0-10-5 0H5Z" fill="#56765b" opacity=".25" />
       <circle r="3" fill="#345d47" stroke="#faf9f2" strokeWidth="1.3" />
@@ -345,6 +351,7 @@ export default function App() {
   const [gamesRoom, setGamesRoom] = useState<number | null>(null);
   const [gamesPlaying, setGamesPlaying] = useState(false);
   const [gameAudio, setGameAudio] = useState(false);
+  const [resident, setResident] = useState<Resident | null>(null);
   const [selected, setSelected] = useState<Exhibit | null>(null);
   const [details, setDetails] = useState<(ExhibitDetails & { id: string }) | null>(null);
   const [selectedArea, setSelectedArea] = useState(0);
@@ -426,6 +433,7 @@ export default function App() {
             setHoverAction(action);
           },
           onMove: setPose,
+          onResident: setResident,
           onReady: () => setReady(true),
           onError: setError,
         });
@@ -445,9 +453,15 @@ export default function App() {
   }, [openExhibit, toggleChecked]);
   useEffect(() => {
     museum.current?.setBlocked(
-      Boolean(selected || modal || videoExhibit || artworkExhibit || (gamesRoom !== null && !gamesPlaying)),
+      Boolean(resident || selected || modal || videoExhibit || artworkExhibit || (gamesRoom !== null && !gamesPlaying)),
+      Boolean(resident),
     );
-  }, [selected, modal, videoExhibit, artworkExhibit, ready, gamesRoom, gamesPlaying]);
+  }, [resident, selected, modal, videoExhibit, artworkExhibit, ready, gamesRoom, gamesPlaying]);
+  const encountersEnabled = ready && !error && !intro && !resident && !selected && !modal && !videoExhibit && !artworkExhibit && gamesRoom === null;
+  const nearby = encountersEnabled ? nearbyResident(pose) : null;
+  useEffect(() => { museum.current?.setResidentsEnabled(encountersEnabled); }, [encountersEnabled]);
+  useEffect(() => { if (resident) playback.stop(); }, [resident, playback.stop]);
+  const closeResident = () => { setResident(null); hostRef.current?.querySelector("canvas")?.focus(); };
   useEffect(() => {
     if (selected || modal || videoExhibit || artworkExhibit) setGamesRoom(null);
   }, [selected, modal, videoExhibit, artworkExhibit]);
@@ -848,7 +862,7 @@ export default function App() {
                 <kbd>D</kbd>
               </span>
             </span>
-            <span>{t("Move around")}</span>
+            <span>{t("Hold W to accelerate")}</span>
           </div>
           <span className="control-divider" />
           <div className="look-help">
@@ -883,6 +897,9 @@ export default function App() {
         </span>
         {gamesRoom !== null && <MuseumGames museum={museum} roomIndex={gamesRoom} room={rooms[gamesRoom]} pool={roomExhibits(gamesRoom)} rooms={rooms} exhibits={exhibits} checked={checked}
           onClose={() => { setGamesRoom(null); hostRef.current?.querySelector("canvas")?.focus(); }} onPlayingChange={setGamesPlaying} onAudioChange={setGameAudio} />}
+        {nearby && <button className="resident-invite" onClick={() => setResident(nearby)} aria-label={`${t("Talk to")} ${nearby.name}`}>
+          <MessageCircle size={23} /><span><strong>{t("Talk to")} {nearby.name}</strong><small>{t(nearby.role)} · {t("Three quick vocabulary questions")}</small></span><ArrowRight size={17} />
+        </button>}
         {error && (
           <div className="error-banner" role="alert">
             <p>{t(error)}</p>
@@ -906,6 +923,9 @@ export default function App() {
         )}
       </main>
 
+      {resident && <Dialog className="resident-dialog" label={`${t("Vocab chat")}: ${resident.name}`} onClose={closeResident}>
+        <ResidentQuiz key={resident.id} resident={resident} exhibits={exhibits} checked={checked} onClose={closeResident} onAudioChange={setGameAudio} />
+      </Dialog>}
       {selected && (
         <Dialog
           className="exhibit-dialog"
@@ -1504,6 +1524,14 @@ export default function App() {
               {fill(t("Beyond the Cathedral Square, the Old Town's canal lanes hold {houses} townhouses: root families, theme houses, word families and level lanes."))}
             </p>
             <div className="expanded-floorplan"><FloorPlan pose={pose} /></div>
+            <section className="resident-directory" aria-label={t("City neighbours")}>
+              <h3>{t("City neighbours")}</h3><p>{t("Find a neighbour for three vocabulary questions. Walk up and say hello.")}</p>
+              <div>{RESIDENTS.map(npc => <button key={npc.id} disabled={!ready || Boolean(error)} onClick={() => {
+                setIntro(false); setModal(null); setTour(false); setHovered(null);
+                museum.current?.visitResident(npc.id);
+                hostRef.current?.querySelector("canvas")?.focus();
+              }}><strong>{npc.name} · {t(npc.role)}</strong><small>{t(npc.location)}</small></button>)}</div>
+            </section>
             <div className="wing-shortcuts">
               {LANDMARKS.map(([index, label]) => <button key={index} onClick={() => navigateRoom(index)}>{t(label)}<ArrowRight size={14} /></button>)}
             </div>
@@ -1611,7 +1639,7 @@ export default function App() {
                   <strong>{t("Wander at your own pace")}</strong>
                   <p>
                     {t(
-                      "Use W A S D to walk. Arrow keys move forward, backward, and turn. Hold Shift to walk faster, or use the on-screen arrows.",
+                      "Use W A S D to walk. Hold W to gradually accelerate; release it to return to walking speed. Arrow keys and on-screen forward controls work too. Shift gives an immediate speed boost.",
                     )}
                   </p>
                 </span>

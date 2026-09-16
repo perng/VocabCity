@@ -1,0 +1,57 @@
+{
+  "generator": "built-in image_gen",
+  "artworks": [
+    {
+      "word": "diversity",
+      "title": "A Garden of Many Lives",
+      "titleZh": "萬物共生的花園",
+      "medium": "Chinese ink and mineral color on paper",
+      "mediumZh": "紙本水墨設色",
+      "style": "chinese-ink-wash",
+      "prompt": "Use case: stylized-concept. Asset type: original fine-art museum painting for a 3D vocabulary museum, square format, high resolution at least 1024 by 1024. Primary request: A richly observed garden flourishing with strikingly different kinds of plants together: curling ferns, broad lotus leaves and lotus blossoms beside water, fine bamboo, a gnarled flowering plum, spiky grasses and soft moss. Make their distinct forms beautifully legible as a single harmonious natural community. This expresses diversity: including many different types of things. Style and medium: Chinese ink and mineral color on paper. Create sophisticated gallery-quality art with composition, subtle material texture and luminous depth characteristic of this medium, never clip art. Cohesive restrained nature palette of sage green, ochre, muted indigo and warm paper tones. Full-bleed artwork covers the entire square canvas. No words, letters, numbers, lettering, labels, signatures, watermarks, borders, frames, museum wall, sticker outlines or white margins. Depict a real composed scene rather than an isolated icon. Request native 1536 by 1536 or larger if available.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/diversity-20260912.png",
+      "image": "artwork/museum-v1/diversity-20260912.webp",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "word": "observe",
+      "title": "The Reedbed Watcher",
+      "titleZh": "蘆葦間的觀察者",
+      "medium": "Linocut print",
+      "mediumZh": "油氈版畫",
+      "style": "linocut",
+      "prompt": "Use case: stylized-concept. Asset type: original fine-art museum painting for a 3D vocabulary museum, square format, high resolution at least 1024 by 1024. Primary request: A quiet birdwatcher in profile immersed in tall reeds, lifting binoculars correctly to their eyes and carefully watching a small heron by a pool on the opposite side of the composition. The binoculars and attentive watching posture must read clearly. This expresses observe: to watch or notice something carefully. Style and medium: Linocut print. Create sophisticated gallery-quality art with composition, subtle material texture and luminous depth characteristic of this medium, never clip art. Cohesive restrained nature palette of sage green, ochre, muted indigo and warm paper tones. Full-bleed artwork covers the entire square canvas. No words, letters, numbers, lettering, labels, signatures, watermarks, borders, frames, museum wall, sticker outlines or white margins. Depict a real composed scene rather than an isolated icon. Request native 1536 by 1536 or larger if available.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/observe-20260912.png",
+      "image": "artwork/museum-v1/observe-20260912.webp",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "word": "encounter",
+      "title": "At the Bend in the Garden",
+      "titleZh": "轉角處的相遇",
+      "medium": "Impressionist oil painting",
+      "mediumZh": "印象派油畫",
+      "style": "impressionist-oil",
+      "prompt": "Use case: stylized-concept. Asset type: original fine-art museum painting for a 3D vocabulary museum, square format, high resolution at least 1024 by 1024. Primary request: Two adult travellers approaching from opposite directions unexpectedly meet at a bend in a garden trail. One pauses mid-step in gentle surprise while the other raises a hand in recognition. The winding trail and their separate directions clearly suggest a chance meeting, surrounded by softly flowering trees. This expresses encounter: to meet something especially unexpectedly. Style and medium: Impressionist oil painting. Create sophisticated gallery-quality art with composition, subtle material texture and luminous depth characteristic of this medium, never clip art. Cohesive restrained nature palette of sage green, ochre, muted indigo and warm paper tones. Full-bleed artwork covers the entire square canvas. No words, letters, numbers, lettering, labels, signatures, watermarks, borders, frames, museum wall, sticker outlines or white margins. Depict a real composed scene rather than an isolated icon. Request native 1536 by 1536 or larger if available.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/encounter-20260912.png",
+      "image": "artwork/museum-v1/encounter-20260912.webp",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "word": "environment",
+      "title": "The Valley That Holds Us",
+      "titleZh": "滋養萬物的山谷",
+      "medium": "Contemporary watercolor on paper",
+      "mediumZh": "當代紙本水彩",
+      "style": "modern-watercolor",
+      "prompt": "Use case: stylized-concept. Asset type: original fine-art museum painting for a 3D vocabulary museum, square format, high resolution at least 1024 by 1024. Primary request: A wide, deeply layered landscape composition within a square canvas: a clean meandering river connects foreground reeds and wildflowers, mature trees with small birds, a tiny peaceful village with a few people, cultivated terraces, and distant blue mountains under open sky. Emphasize the connected surroundings in which humans, animals and plants live. This expresses environment: the surroundings and conditions in which living beings live. Style and medium: Contemporary watercolor on paper. Create sophisticated gallery-quality art with composition, subtle material texture and luminous depth characteristic of this medium, never clip art. Cohesive restrained nature palette of sage green, ochre, muted indigo and warm paper tones. Full-bleed artwork covers the entire square canvas. No words, letters, numbers, lettering, labels, signatures, watermarks, borders, frames, museum wall, sticker outlines or white margins. Depict a real composed scene rather than an isolated icon. Request native 1536 by 1536 or larger if available.",
+      "source": "/Volumes/SSD2TB/VocabHall/output/artwork/generated/environment-20260912.png",
+      "image": "artwork/museum-v1/environment-20260912.webp",
+      "width": 1254,
+      "height": 1254
+    }
+  ]
+}
