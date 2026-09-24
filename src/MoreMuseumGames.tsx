@@ -4,6 +4,8 @@ import type { Museum } from "./museum";
 import { assetUrl, type Exhibit, type Room } from "./types";
 import { useLocale } from "./i18n";
 import { useExhibitAudio } from "./useExhibitAudio";
+import { playSfx } from "./sfx";
+import { celebrate } from "./Celebrations";
 import { addStamp, assembleWord, GAME_TITLES, makeFamilyRounds, makeRounds, MARKET_MISSIONS, memorySentence, PASSPORT_KEY, readPassport, shuffle,
   type ExtraGameMode, type FamilyRound, type GameRound, type MarketMission, type Stamp as PassportStamp, type WordTile } from "./games";
 
@@ -59,12 +61,14 @@ export function MoreMuseumGames({ mode, museum, roomIndex, room, pool, checked, 
   const answer = (id: string) => {
     if (!target || lock.current || done || phase === "study") return;
     if (id !== target.id) {
+      playSfx("wrong");
       if (mode !== "memory") { setFeedback("Not quite. Try another one, or ask for a hint."); return; }
       // A missed word is recalled again after the other words, rather than counted as mastered.
       if (!queue.slice(cursor + 1).includes(queue[cursor])) setQueue([...queue, queue[cursor]]);
       lock.current = true; setResult("retry"); listen(target); return;
     }
     lock.current = true; setResult("correct"); setFeedback(""); setHint(false);
+    playSfx("correct"); celebrate("spark");
     setSolved(previous => previous.includes(id) ? previous : [...previous, id]);
     listen(target);
   };
@@ -115,17 +119,20 @@ export function MoreMuseumGames({ mode, museum, roomIndex, room, pool, checked, 
     if (finishReady) {
       const stamps = addStamp(readPassport(), { mode, room: room.id, earnedAt: new Date().toISOString() });
       try { localStorage.setItem(PASSPORT_KEY, JSON.stringify(stamps)); } catch { setStorageNote(true); }
-      onStamp(stamps); setDone(true); return;
+      onStamp(stamps); setDone(true);
+      playSfx("stamp"); setTimeout(() => celebrate("confetti"), 380); return;
     }
     lock.current = false; setCursor(cursor + 1); setResult(null); setFeedback(""); setHint(false);
     setTiles([]); setBuilt(false); setTalking(false); setAlternatives(false); setAudioError("");
   };
-  const addTile = (tile: WordTile) => setTiles(previous => previous.some(p => p.key === tile.key) ? previous : [...previous, tile]);
+  const addTile = (tile: WordTile) => { playSfx("tap"); setTiles(previous => previous.some(p => p.key === tile.key) ? previous : [...previous, tile]); };
   const buildWord = () => {
     if (!target || !round.family) return;
     if (assembleWord(tiles).toLowerCase() !== target.word.toLowerCase()) {
+      playSfx("wrong");
       setFeedback("The pieces do not form the word yet. Remove a piece and try a different order."); return;
     }
+    playSfx("correct");
     setBuilt(true); setFeedback(""); setHint(false); listen(target);
   };
   const startRecall = () => {
@@ -198,7 +205,7 @@ export function MoreMuseumGames({ mode, museum, roomIndex, room, pool, checked, 
           <blockquote className="market-request">“{mission.request}”</blockquote>
           <button className="text-button request-audio" onClick={meet}><Volume2 size={17} />{t("Listen to the request")}</button>
           <div className="market-replies" aria-label={t("Choose a reply")}>{mission.choices.map(choice => <button key={choice.word} onClick={() => {
-            if (choice.word === mission.word) answer(target.id); else setFeedback(choice.feedback!);
+            if (choice.word === mission.word) answer(target.id); else { playSfx("wrong"); setFeedback(choice.feedback!); }
           }}><span>{choice.reply}</span><ArrowRight size={15} /></button>)}</div>
         </>}
       </> : <>

@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { Botany } from "./botany";
 import { walkingSpeed } from "./movement";
-import { RESIDENTS, nearbyResident, type Resident } from "./residents";
+import { RESIDENTS, nearbyResident, residentHat, type Resident } from "./residents";
 import type { SceneGame } from "./games";
 import { translate } from "./i18n";
 import { assetUrl, partOfSpeech, type Exhibit, type Room } from "./types";
@@ -1697,7 +1697,7 @@ export class Museum {
       part(new THREE.SphereGeometry(.28, 18, 12), "#c9976c", 0, 1.87, 0);
       for (const x of [-.095, .095]) part(new THREE.SphereGeometry(.026, 8, 6), "#343c32", x, 1.91, .254);
       part(new THREE.SphereGeometry(.045, 8, 6), "#b47f58", 0, 1.85, .28);
-      const hat = resident.id === "gardener" || resident.id === "guide" ? "#d8bb79" : resident.id === "sailor" ? "#eee8d5" : resident.color;
+      const hat = residentHat(resident);
       part(new THREE.CylinderGeometry(.37, .37, .07, 20), hat, 0, 2.11, 0);
       part(new THREE.CylinderGeometry(.22, .27, .17, 18), hat, 0, 2.22, 0);
       const book = part(new THREE.BoxGeometry(.35, .42, .12), "#e9d8ab", .34, 1.04, .25);

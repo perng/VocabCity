@@ -28,6 +28,9 @@ export const RESIDENTS: Resident[] = [
     greeting: "Welcome to the root houses. A few familiar pieces can unlock a whole family of words." },
 ];
 
+export const residentHat = (npc: Pick<Resident, "id" | "color">) =>
+  npc.id === "gardener" || npc.id === "guide" ? "#d8bb79" : npc.id === "sailor" ? "#eee8d5" : npc.color;
+
 export const ENCOUNTER_DISTANCE = 4.8;
 export function nearbyResident(pose: { x: number; z: number; room: number }) {
   return RESIDENTS.find(npc => npc.area === pose.room && Math.hypot(pose.x - npc.x, pose.z - npc.z) <= ENCOUNTER_DISTANCE) ?? null;

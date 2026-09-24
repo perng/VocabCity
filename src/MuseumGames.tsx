@@ -8,6 +8,8 @@ import { useExhibitAudio } from "./useExhibitAudio";
 import { addStamp, familyPieces, GAME_TITLES, makeRounds, PASSPORT_KEY, readPassport, shuffle, type ClassicGameMode, type ExtraGameMode, type GameMode, type GameRound } from "./games";
 import { MoreMuseumGames } from "./MoreMuseumGames";
 import { ROOT_START } from "./layout";
+import { playSfx } from "./sfx";
+import { celebrate } from "./Celebrations";
 import "./games.css";
 
 type Session = { mode: ClassicGameMode; rounds: GameRound[]; paintings: Exhibit[]; index: number; solved: string[]; done: boolean };
@@ -62,12 +64,14 @@ export function MuseumGames({ museum, roomIndex, room, pool, rooms, exhibits, ch
   const answer = (id: string) => {
     if (!session || session.done || !round || locked.current) return;
     if (id !== round.target.id) {
+      playSfx("wrong");
       setFeedback(session.mode === "restore" && !session.paintings.some(e => e.id === id)
         ? "Choose one of the numbered paintings."
         : "Not quite. Try another one, or ask for a hint.");
       return;
     }
     locked.current = true;
+    playSfx("correct"); celebrate("spark");
     setFeedback(""); setHint(false);
     setSession({ ...session, solved: [...session.solved, id] });
     void playback.start([wordAudio(round.target)]);
@@ -114,6 +118,7 @@ export function MuseumGames({ museum, roomIndex, room, pool, rooms, exhibits, ch
       setPassport(updated);
       try { localStorage.setItem(PASSPORT_KEY, JSON.stringify(updated)); } catch { setStorageNote(true); }
       setSession({ ...session, done: true });
+      playSfx("stamp"); setTimeout(() => celebrate("confetti"), 380);
       return;
     }
     const index = session.index + 1;

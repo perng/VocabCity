@@ -213,3 +213,13 @@
   .memory-choices { gap: 6px; margin: 10px 0; }
   .memory-choices button { padding: 8px; min-height: 40px; font-size: 11px; }
 }
+/* The passport stamp lands with a little weight. */
+.games-complete .passport-seal { animation: stamp-slam .55s cubic-bezier(.3, 1.6, .5, 1) both; }
+@keyframes stamp-slam {
+  0% { opacity: 0; transform: scale(2.3) rotate(-28deg); }
+  60% { opacity: 1; transform: scale(.94) rotate(-8deg); }
+  100% { transform: scale(1) rotate(-10deg); }
+}
+.game-prompt[data-correct=true] h2 { animation: word-pop .45s cubic-bezier(.3, 1.6, .5, 1) both; }
+@keyframes word-pop { 0% { transform: scale(.85); opacity: .4; } 100% { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .games-complete .passport-seal, .game-prompt[data-correct=true] h2 { animation: none; } }

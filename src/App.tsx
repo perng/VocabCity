@@ -10,6 +10,8 @@ import {
   ArrowLeft,
   ArrowRight,
   ArrowUp,
+  Bell,
+  BellOff,
   Bookmark,
   BookOpen,
   Check,
@@ -68,6 +70,8 @@ import { assetUrl, partOfSpeech, type Exhibit, type ExhibitDetails, type HouseKi
 import { useLocale } from "./i18n";
 import { useExhibitAudio } from "./useExhibitAudio";
 import { YouglishPlayer, YouTubeLogo } from "./YouglishPlayer";
+import { playSfx, setSfxEnabled, useSfxEnabled } from "./sfx";
+import { Celebrations, celebrate } from "./Celebrations";
 const exhibits = collection.exhibits as Exhibit[];
 const rooms = collection.rooms as Room[];
 if (rooms.length !== GALLERY_COUNT) throw new Error(`Expected ${GALLERY_COUNT} rooms in the collection, found ${rooms.length}.`);
@@ -369,8 +373,15 @@ export default function App() {
   const [checked, setChecked] = useProgress("vocabhall.learned.v1");
   const checkedRef = useRef(checked);
   checkedRef.current = checked;
+  const visitedRef = useRef(visited);
+  visitedRef.current = visited;
+  const sfx = useSfxEnabled();
   const toggleChecked = useCallback(
     (exhibit: Exhibit) => {
+      if (!checkedRef.current.includes(exhibit.id)) {
+        playSfx("learned");
+        celebrate("spark");
+      }
       setChecked((current) =>
         current.includes(exhibit.id)
           ? current.filter((id) => id !== exhibit.id)
@@ -406,6 +417,7 @@ export default function App() {
       setModal(null);
       // Play inside the opening gesture so mobile browsers allow pronunciation.
       void playback.start([wordClip(exhibit)]);
+      if (!visitedRef.current.includes(exhibit.id)) playSfx("discover");
       setVisited((current) =>
         current.includes(exhibit.id) ? current : [...current, exhibit.id],
       );
@@ -616,6 +628,7 @@ export default function App() {
   const currentRoom = destinationFor(pose.room);
   return (
     <div className={`app-shell ${gamesPlaying ? "is-gaming" : ""}`}>
+      <Celebrations />
       <header className="site-header">
         <button
           className="brand"
@@ -884,6 +897,18 @@ export default function App() {
             <span>
               {t("Ambience")}
               {ambient ? t("on") : t("off")}
+            </span>
+          </button>
+          <span className="control-divider" />
+          <button
+            onClick={() => { setSfxEnabled(!sfx); if (!sfx) setTimeout(() => playSfx("tap")); }}
+            aria-pressed={sfx}
+            aria-label={sfx ? t("Turn off sound effects") : t("Turn on sound effects")}
+          >
+            {sfx ? <Bell size={17} /> : <BellOff size={17} />}
+            <span>
+              {t("Effects")}
+              {sfx ? t("on") : t("off")}
             </span>
           </button>
         </div>

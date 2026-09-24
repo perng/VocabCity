@@ -2981,3 +2981,23 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
   .expanded-floorplan svg { max-height: 410px; }
   .next-place-link { left: 15px; top: 103px; padding: 8px; max-width: 245px; }
 }
+
+/* Celebration sparkles and confetti (see Celebrations.tsx). */
+.celebrations { position: fixed; inset: 0; width: 100vw; height: 100vh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; overflow: hidden; pointer-events: none; z-index: 60; }
+.celebrations:popover-open { display: block; }
+.burst i { position: absolute; display: block; border-radius: 2px; transform: translate(-50%, -50%); opacity: 0; will-change: transform, opacity; }
+.burst i[data-round=true] { border-radius: 50%; }
+.burst-spark i { animation: spark-fly 0.9s cubic-bezier(.2, .7, .3, 1) forwards; box-shadow: 0 0 6px currentColor; }
+.burst-confetti i { animation: confetti-fly 2.4s cubic-bezier(.15, .6, .35, 1) forwards; }
+@keyframes spark-fly {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.3); }
+}
+@keyframes confetti-fly {
+  0% { opacity: 1; transform: translate(-50%, -50%) rotate(0); }
+  45% { opacity: 1; transform: translate(calc(-50% + var(--dx) * .8), calc(-50% + var(--dy) * .8)) rotate(calc(var(--spin) * .5)); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy) * .4 + 380px)) rotate(var(--spin)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .burst i { animation: none !important; opacity: 0; }
+}

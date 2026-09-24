@@ -45,3 +45,11 @@
   .resident-choices button { min-height: 46px; padding: 12px; }
   .resident-actions { flex-wrap: wrap; }
 }
+.resident-portrait { overflow: hidden; background: color-mix(in srgb, var(--resident-color) 22%, #fbf6e8); align-items: end; }
+.resident-avatar { width: 58px; height: 66px; display: block; transform-origin: 50% 90%; }
+.resident-avatar[data-mood=happy] { animation: resident-hop .5s cubic-bezier(.3, 1.5, .5, 1); }
+.resident-avatar[data-mood=puzzled] { animation: resident-tilt .5s ease-in-out; transform: rotate(-7deg); }
+.resident-avatar[data-mood=cheer] { animation: resident-hop .5s cubic-bezier(.3, 1.5, .5, 1) 3; }
+@keyframes resident-hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-9px) scale(1.04); } }
+@keyframes resident-tilt { 0% { transform: rotate(0); } 30% { transform: rotate(-12deg); } 60% { transform: rotate(-4deg); } 100% { transform: rotate(-7deg); } }
+@media (prefers-reduced-motion: reduce) { .resident-avatar { animation: none !important; } }
