@@ -1,4 +1,4 @@
-import { exhibitPlacements } from "./museum";
+import { exhibitPlacements } from "./placements";
 import type { Exhibit } from "./types";
 
 // Today's walk: five paintings close to one another, chosen fresh each day from words

@@ -144,7 +144,7 @@ test('a Gate Square painting opens by raycast; meanings, audio, saved words, and
   await page.reload();
   await page.getByRole('button', { name: 'My words 1', exact: true }).click();
   await expect(page.locator('.collection-card')).toHaveCount(1);
-  await expect(page.locator('.visit-progress strong')).toContainText('2');
+  await expect(page.locator('.visit-progress .city-count')).toContainText('2');
 });
 
 test('the Old Town canal blocks the way except at bridges, and lanes open into courtyard and shop houses', async ({ page }) => {

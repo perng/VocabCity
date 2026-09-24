@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { Botany } from "./botany";
+import { exhibitPlacements, familyIn, registerFamilySizes } from "./placements";
 import { CityLife } from "./ambient";
 import { walkingSpeed } from "./movement";
 import { RESIDENTS, nearbyResident, residentHat, type Resident } from "./residents";
@@ -58,24 +59,7 @@ const EYE_HEIGHT = 1.78;
 const Y_AXIS = new THREE.Vector3(0, 1, 0);
 const clamp = THREE.MathUtils.clamp;
 
-export function exhibitPlacement(exhibit: Pick<Exhibit, "room" | "slot">) {
-  return displayPlacement(exhibit.room, exhibit.slot, familySize(exhibit.room));
-}
-
-// Root rooms hold between two and six family words; slots are laid out per room size.
-const familySizes = new Map<number, number>();
-export function registerFamilySizes(rooms: Room[]) {
-  rooms.forEach((room, index) => { if (room.root) familySizes.set(index, room.root.words.length); });
-}
-const familySize = (room: number) => familySizes.get(room) ?? 6;
-export function exhibitPlacements(exhibit: Exhibit) {
-  return [
-    exhibitPlacement(exhibit),
-    // A word hangs once in every root family it belongs to, besides its home district.
-    ...(exhibit.families ?? []).filter((family) => family.room !== exhibit.room).map((family) => exhibitPlacement(family)),
-  ];
-}
-export const familyIn = (exhibit: Exhibit, room: number) => exhibit.families?.find((family) => family.room === room);
+export { exhibitPlacement, exhibitPlacements, familyIn, registerFamilySizes } from "./placements";
 
 type ExhibitHit = {
   exhibit: Exhibit;

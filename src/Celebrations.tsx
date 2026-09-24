@@ -59,12 +59,18 @@ export function Celebrations() {
       setBursts((current) => [...current.slice(-4), { id, kind, items: particles(kind, x, y) }]);
       setTimeout(() => setBursts((current) => current.filter((burst) => burst.id !== id)), kind === "confetti" ? 2600 : 1100);
     };
+    // Milestones queue up, so a finished house and a finished walk each get their moment.
     let bannerTimer: ReturnType<typeof setTimeout> | undefined;
+    const queue: { title: string; detail: string }[] = [];
+    const showNext = () => {
+      const next = queue.shift();
+      setBanner(next ? { id: nextId++, ...next } : null);
+      bannerTimer = next ? setTimeout(showNext, queue.length ? 2600 : 3600) : undefined;
+    };
     const onAnnounce = (event: Event) => {
-      const { title, detail } = (event as CustomEvent<{ title: string; detail: string }>).detail;
-      setBanner({ id: nextId++, title, detail });
-      clearTimeout(bannerTimer);
-      bannerTimer = setTimeout(() => setBanner(null), 3600);
+      queue.push((event as CustomEvent<{ title: string; detail: string }>).detail);
+      if (!bannerTimer) showNext();
+      else if (queue.length === 1) { clearTimeout(bannerTimer); bannerTimer = setTimeout(showNext, 2600); }
     };
     window.addEventListener("pointerdown", remember, true);
     window.addEventListener(EVENT, onBurst);
@@ -75,7 +81,7 @@ export function Celebrations() {
     };
   }, []);
   return <div ref={layer} className="celebrations" popover="manual">
-    <p className="milestone-live" role="status" aria-live="polite">{banner ? `${banner.title}. ${banner.detail}` : ""}</p>
+    <p className="milestone-live" role="status" aria-live="polite">{banner ? `${banner.title}${/[.!?！。]$/.test(banner.title) ? "" : "."} ${banner.detail}` : ""}</p>
     {banner && <div key={banner.id} className="milestone-banner" aria-hidden="true"><strong>{banner.title}</strong>{banner.detail && <span>{banner.detail}</span>}</div>}
     {bursts.map((burst) => <div key={burst.id} className={`burst burst-${burst.kind}`} aria-hidden="true">
       {burst.items.map((p) => <i key={p.id} data-round={p.round} style={{

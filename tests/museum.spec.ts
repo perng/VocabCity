@@ -73,7 +73,7 @@ test("guided tour covers every exhibit and finishes at the entrance", async ({
   await expect(page.locator(".gallery-heading strong")).toHaveText(
     data.rooms[0].name,
   );
-  await expect(page.locator(".visit-progress strong")).toHaveText(`${data.exhibits.length} / ${data.exhibits.length}`);
+  await expect(page.locator(".visit-progress .city-count")).toHaveText(`${data.exhibits.length} / ${data.exhibits.length}`);
 });
 
 test("mobile layout supports gallery navigation, collection search, saved words, and touch controls", async ({
