@@ -5,6 +5,7 @@ import { assetUrl, type Exhibit, type Room } from "./types";
 import { useLocale } from "./i18n";
 import { useExhibitAudio } from "./useExhibitAudio";
 import { playSfx } from "./sfx";
+import { recordMiss, recordRight, reviewIds } from "./review";
 import { celebrate } from "./Celebrations";
 import { addStamp, assembleWord, GAME_TITLES, makeFamilyRounds, makeRounds, MARKET_MISSIONS, memorySentence, PASSPORT_KEY, readPassport, shuffle,
   type ExtraGameMode, type FamilyRound, type GameRound, type MarketMission, type Stamp as PassportStamp, type WordTile } from "./games";
@@ -17,11 +18,11 @@ export function MoreMuseumGames({ mode, museum, roomIndex, room, pool, checked, 
 }) {
   const { t, locale } = useLocale();
   const [rounds] = useState<Round[]>(() => mode === "family"
-    ? makeFamilyRounds(pool, roomIndex, checked).map(family => ({ ...family, family }))
+    ? makeFamilyRounds(pool, roomIndex, checked, reviewIds()).map(family => ({ ...family, family }))
     : mode === "market" ? MARKET_MISSIONS.flatMap(mission => {
       const target = pool.find(e => e.word === mission.word);
       return target ? [{ target, mission: { ...mission, choices: shuffle(mission.choices) }, choices: [] }] : [];
-    }) : makeRounds(pool, checked));
+    }) : makeRounds(pool, checked, reviewIds()));
   const [queue, setQueue] = useState(() => rounds.map((_, i) => i));
   const [cursor, setCursor] = useState(0);
   const [solved, setSolved] = useState<string[]>([]);
@@ -38,6 +39,7 @@ export function MoreMuseumGames({ mode, museum, roomIndex, room, pool, checked, 
   const [storageNote, setStorageNote] = useState(false);
   const [audioError, setAudioError] = useState("");
   const lock = useRef(false);
+  const missed = useRef(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const playback = useExhibitAudio("more-museum-games", useCallback((message: string) => setAudioError(message), []));
   const round = rounds[queue[cursor]], target = round?.target, mission = round?.mission;
@@ -61,7 +63,7 @@ export function MoreMuseumGames({ mode, museum, roomIndex, room, pool, checked, 
   const answer = (id: string) => {
     if (!target || lock.current || done || phase === "study") return;
     if (id !== target.id) {
-      playSfx("wrong");
+      playSfx("wrong"); recordMiss(target.id); missed.current = true;
       if (mode !== "memory") { setFeedback("Not quite. Try another one, or ask for a hint."); return; }
       // A missed word is recalled again after the other words, rather than counted as mastered.
       if (!queue.slice(cursor + 1).includes(queue[cursor])) setQueue([...queue, queue[cursor]]);
@@ -69,6 +71,7 @@ export function MoreMuseumGames({ mode, museum, roomIndex, room, pool, checked, 
     }
     lock.current = true; setResult("correct"); setFeedback(""); setHint(false);
     playSfx("correct"); celebrate("spark");
+    if (!missed.current) recordRight(id);
     setSolved(previous => previous.includes(id) ? previous : [...previous, id]);
     listen(target);
   };
@@ -122,7 +125,7 @@ export function MoreMuseumGames({ mode, museum, roomIndex, room, pool, checked, 
       onStamp(stamps); setDone(true);
       playSfx("stamp"); setTimeout(() => celebrate("confetti"), 380); return;
     }
-    lock.current = false; setCursor(cursor + 1); setResult(null); setFeedback(""); setHint(false);
+    lock.current = false; missed.current = false; setCursor(cursor + 1); setResult(null); setFeedback(""); setHint(false);
     setTiles([]); setBuilt(false); setTalking(false); setAlternatives(false); setAudioError("");
   };
   const addTile = (tile: WordTile) => { playSfx("tap"); setTiles(previous => previous.some(p => p.key === tile.key) ? previous : [...previous, tile]); };
@@ -205,7 +208,7 @@ export function MoreMuseumGames({ mode, museum, roomIndex, room, pool, checked, 
           <blockquote className="market-request">“{mission.request}”</blockquote>
           <button className="text-button request-audio" onClick={meet}><Volume2 size={17} />{t("Listen to the request")}</button>
           <div className="market-replies" aria-label={t("Choose a reply")}>{mission.choices.map(choice => <button key={choice.word} onClick={() => {
-            if (choice.word === mission.word) answer(target.id); else { playSfx("wrong"); setFeedback(choice.feedback!); }
+            if (choice.word === mission.word) answer(target.id); else { playSfx("wrong"); recordMiss(target.id); missed.current = true; setFeedback(choice.feedback!); }
           }}><span>{choice.reply}</span><ArrowRight size={15} /></button>)}</div>
         </>}
       </> : <>

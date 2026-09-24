@@ -14,6 +14,7 @@ import {
   Flame,
   Heart,
   Images,
+  RotateCcw,
   Mail,
   Star,
   Bell,
@@ -81,6 +82,7 @@ import { playSfx, setSfxEnabled, useSfxEnabled } from "./sfx";
 import { Soundscape } from "./soundscape";
 import { sendPostcard } from "./postcard";
 import { Celebrations, announce, celebrate } from "./Celebrations";
+import { recordMiss, recordRight, useReviewIds } from "./review";
 import { labelChoices, readLabels, saveLabels, todaysLabels, type LostLabels } from "./labels";
 import { styleMilestone, styleOf, styleSets } from "./album";
 import { favourFound, favourWords, readFavours, saveFavours, type FavourBook } from "./favours";
@@ -511,6 +513,7 @@ export default function App() {
   const [filter, setFilter] = useState("all");
   const [toast, setToast] = useState("");
   const [postcardBusy, setPostcardBusy] = useState(false);
+  const revisit = useReviewIds();
   const [roomTransition, setRoomTransition] = useState(false);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
@@ -608,10 +611,11 @@ export default function App() {
   const restoreLabel = (choice: Exhibit) => {
     if (!labelQuiz) return;
     if (choice.id !== labelQuiz.exhibit.id) {
-      playSfx("wrong");
+      playSfx("wrong"); recordMiss(labelQuiz.exhibit.id);
       setLabelQuiz({ ...labelQuiz, wrong: [...labelQuiz.wrong, choice.id] });
       return;
     }
+    if (!labelQuiz.wrong.length) recordRight(choice.id);
     const today = labelsRef.current;
     const next = { ...today, restored: [...today.restored, choice.id], total: today.total + 1 };
     labelsRef.current = next;
@@ -805,6 +809,7 @@ export default function App() {
   const filtered = exhibits.filter(
     (e) =>
       (filter !== "saved" || saved.includes(e.id)) &&
+      (filter !== "revisit" || revisit.includes(e.id)) &&
       (!/^room-/.test(filter) || e.room === Number(filter.slice(5)) || e.families?.some((family) => family.room === Number(filter.slice(5)))) &&
       `${e.word} ${e.definition} ${Object.values(e.translations).join(" ")}`
         .toLowerCase()
@@ -1586,6 +1591,15 @@ export default function App() {
                   {t("My words")}
                   <span>{saved.length}</span>
                 </button>
+                <button
+                  className={filter === "revisit" ? "active" : ""}
+                  onClick={() => setFilter("revisit")}
+                  title={t("Words you missed in a chat or a game. Answer each one right on two different days to clear it.")}
+                >
+                  <RotateCcw size={14} />
+                  {t("To revisit")}
+                  <span>{revisit.length}</span>
+                </button>
                 <select
                   aria-label={t("Filter by gallery")}
                   value={filter.startsWith("room-") ? filter : ""}
@@ -1813,6 +1827,9 @@ export default function App() {
               })}
             </ol>
             <p className="walk-note">{t("Finish every walk to keep your streak. A new route appears tomorrow.")}</p>
+            {revisit.length > 0 && <button className="text-button revisit-link" onClick={() => { setFilter("revisit"); setModal("collection"); }}>
+              <RotateCcw size={15} />{t("To revisit")} · {revisit.length}<small>{t("Chats and games ask these first.")}</small><ArrowRight size={15} />
+            </button>}
             {visited.length >= LOST_LABELS_AFTER && <div className="lost-summary">
               <strong>{labels.restored.length} / {labels.ids.length}</strong>
               <span>{t("Lost labels restored today. The wind blew one word off a painting in every landmark and in a few Old Town houses: look for a banner showing ? ? ?")}</span>

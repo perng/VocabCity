@@ -28,11 +28,15 @@ export function shuffle<T>(items: readonly T[]): T[] {
   }
   return result;
 }
-export function makeRounds(pool: Exhibit[], checked: string[]): GameRound[] {
+export function makeRounds(pool: Exhibit[], checked: string[], revisit: string[] = []): GameRound[] {
   const unique = [...new Map(pool.map(e => [e.id, e])).values()];
+  // Words to revisit come first, then unchecked words, then the rest.
+  const again = unique.filter(e => revisit.includes(e.id));
+  const rest = unique.filter(e => !revisit.includes(e.id));
   const targets = [
-    ...shuffle(unique.filter(e => !checked.includes(e.id))),
-    ...shuffle(unique.filter(e => checked.includes(e.id))),
+    ...shuffle(again),
+    ...shuffle(rest.filter(e => !checked.includes(e.id))),
+    ...shuffle(rest.filter(e => checked.includes(e.id))),
   ].slice(0, 3);
   return targets.map(target => ({ target, choices: shuffle([target, ...shuffle(unique.filter(e => e.id !== target.id)).slice(0, 3)]) }));
 }
@@ -52,9 +56,9 @@ export function familyPieces(exhibit: Exhibit, room: number): RootPiece[] | null
 }
 export type WordTile = { key: string; piece: RootPiece };
 export type FamilyRound = GameRound & { pieces: RootPiece[]; tiles: WordTile[] };
-export function makeFamilyRounds(pool: Exhibit[], room: number, checked: string[]): FamilyRound[] {
+export function makeFamilyRounds(pool: Exhibit[], room: number, checked: string[], revisit: string[] = []): FamilyRound[] {
   const eligible = pool.filter(e => familyPieces(e, room));
-  return makeRounds(eligible, checked).map(round => {
+  return makeRounds(eligible, checked, revisit).map(round => {
     const pieces = familyPieces(round.target, room)!;
     const extras = [...new Map(eligible.flatMap(e => familyPieces(e, room)!)
       .filter(p => !pieces.some(own => own.joined === p.joined)).map(p => [p.joined, p])).values()];

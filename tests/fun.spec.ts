@@ -292,3 +292,37 @@ test('a painting that lost its label asks for its word before opening, then gets
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.labels.v1')!));
   expect(saved).toEqual({ day, ids: [target.id], restored: [target.id], total: 5 });
 });
+
+test('a missed word comes back first and clears after right answers on two days', async ({ page }) => {
+  test.setTimeout(90000);
+  await enter(page);
+  await page.getByRole('button', { name: 'Talk to Luca', exact: true }).click();
+  const clue = await page.locator('.resident-clue').innerText();
+  const target = exhibits.find((e) => e.definition === clue)!;
+  await page.locator('.resident-choices button').filter({ hasNotText: target.word }).first().click();
+  const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.review.v1')!));
+  expect(Object.keys(stored)).toEqual([target.id]);
+  expect(stored[target.id].misses).toBe(1);
+  // A right answer on the same day does not clear it yet.
+  await page.getByRole('button', { name: target.word, exact: true }).click();
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /^The collection/ }).click();
+  await page.getByRole('button', { name: /^To revisit/ }).click();
+  await expect(page.locator('.collection-card')).toHaveCount(1);
+  await expect(page.locator('.collection-word')).toHaveText(target.word);
+  await page.keyboard.press('Escape');
+  // Later chats ask it first; right answers on two different days clear it.
+  for (const day of ['2000-01-01', '2000-01-02']) {
+    await page.evaluate(([id, day]) => {
+      const book = JSON.parse(localStorage.getItem('vocabhall.review.v1')!);
+      book[id].last = day; localStorage.setItem('vocabhall.review.v1', JSON.stringify(book));
+    }, [target.id, day]);
+    await page.reload();
+    await page.getByRole('button', { name: 'Start exploring', exact: true }).click();
+    await page.getByRole('button', { name: 'Talk to Luca', exact: true }).click();
+    await expect(page.locator('.resident-clue')).toHaveText(target.definition);
+    await page.getByRole('button', { name: target.word, exact: true }).click();
+    await page.keyboard.press('Escape');
+  }
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.review.v1')!))).toEqual({});
+});

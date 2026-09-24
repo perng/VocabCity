@@ -56,9 +56,9 @@ export function residentPool(npc: Resident, exhibits: Exhibit[]) {
   return pool.filter((e, i) => e.definition.trim() && pool.findIndex(other =>
     other.word.toLowerCase() === e.word.toLowerCase() || other.definition.toLowerCase() === e.definition.toLowerCase()) === i);
 }
-export function residentRounds(npc: Resident, exhibits: Exhibit[], checked: string[], practiced: string[]): GameRound[] {
+export function residentRounds(npc: Resident, exhibits: Exhibit[], checked: string[], practiced: string[], revisit: string[] = []): GameRound[] {
   // Use the collection's source meanings, with one distinct word and meaning per option.
   const unique = residentPool(npc, exhibits);
   if (unique.length < 2) return [];
-  return makeRounds(unique, [...checked, ...practiced]);
+  return makeRounds(unique, [...checked, ...practiced], revisit);
 }

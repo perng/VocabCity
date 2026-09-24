@@ -9,6 +9,7 @@ import { addStamp, familyPieces, GAME_TITLES, makeRounds, PASSPORT_KEY, readPass
 import { MoreMuseumGames } from "./MoreMuseumGames";
 import { ROOT_START } from "./layout";
 import { playSfx } from "./sfx";
+import { recordMiss, recordRight, reviewIds } from "./review";
 import { celebrate } from "./Celebrations";
 import "./games.css";
 
@@ -39,6 +40,7 @@ export function MuseumGames({ museum, roomIndex, room, pool, rooms, exhibits, ch
   const [passport, setPassport] = useState(readPassport);
   const [storageNote, setStorageNote] = useState(false);
   const locked = useRef(false);
+  const missed = useRef(false);
   const modal = useRef<HTMLDialogElement>(null);
   const playback = useExhibitAudio("museum-games", useCallback((message: string) => setAudioError(message), []));
   const playing = extraMode ? extraPlaying : !!session && !session.done;
@@ -65,6 +67,8 @@ export function MuseumGames({ museum, roomIndex, room, pool, rooms, exhibits, ch
     if (!session || session.done || !round || locked.current) return;
     if (id !== round.target.id) {
       playSfx("wrong");
+      // Picking an unnumbered painting in Restore the Labels is not a vocabulary miss.
+      if (session.mode !== "restore" || session.paintings.some(e => e.id === id)) { recordMiss(round.target.id); missed.current = true; }
       setFeedback(session.mode === "restore" && !session.paintings.some(e => e.id === id)
         ? "Choose one of the numbered paintings."
         : "Not quite. Try another one, or ask for a hint.");
@@ -72,6 +76,7 @@ export function MuseumGames({ museum, roomIndex, room, pool, rooms, exhibits, ch
     }
     locked.current = true;
     playSfx("correct"); celebrate("spark");
+    if (!missed.current) recordRight(round.target.id);
     setFeedback(""); setHint(false);
     setSession({ ...session, solved: [...session.solved, id] });
     void playback.start([wordAudio(round.target)]);
@@ -95,7 +100,8 @@ export function MuseumGames({ museum, roomIndex, room, pool, rooms, exhibits, ch
     if (mode === "family" || mode === "market" || mode === "memory") {
       setSession(null); setExtraPlaying(true); setExtraMode(mode); return;
     }
-    const rounds = makeRounds(pool, checked);
+    const rounds = makeRounds(pool, checked, reviewIds());
+    missed.current = false;
     if (!rounds.length) return;
     const next = { mode, rounds, paintings: mode === "restore" ? shuffle(rounds.map(r => r.target)) : pool, index: 0, solved: [], done: false };
     // Claim audio permission inside the gesture before loading the playroom.
@@ -122,7 +128,7 @@ export function MuseumGames({ museum, roomIndex, room, pool, rooms, exhibits, ch
       return;
     }
     const index = session.index + 1;
-    locked.current = false; setFeedback(""); setHint(false); setAlternatives(false); setAudioError("");
+    locked.current = false; missed.current = false; setFeedback(""); setHint(false); setAlternatives(false); setAudioError("");
     setSession({ ...session, index });
     if (session.mode !== "quest") void playback.start([wordAudio(session.rounds[index].target)]);
     if (session.mode === "step") museum.current?.resetGamePosition(roomIndex, true);
