@@ -153,6 +153,7 @@ export class Museum {
   private hemisphere: THREE.HemisphereLight;
   private reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
     .matches;
+  private touchDevice = window.matchMedia("(pointer: coarse)").matches;
   private obstacles: { x: number; z: number; rx: number; rz: number }[] = [];
   private placeStates: PlaceState[] = [];
   private friendship: Record<string, number> = {};
@@ -2308,8 +2309,8 @@ export class Museum {
       this.lastPulse = time;
     }
     // Boats, gulls, pigeons and residents move while the visitor is nearby.
-    // About 30 fps while walking, 20 fps while standing and watching.
-    if (!this.blocked && !this.reducedMotion && !document.hidden && time - this.lastLife > (this.keys.size || this.dragging ? 33 : 50)) {
+    // About 30 fps while walking, 20 fps while standing and watching (and always on phones and tablets).
+    if (!this.blocked && !this.reducedMotion && !document.hidden && time - this.lastLife > ((this.keys.size || this.dragging) && !this.touchDevice ? 33 : 50)) {
       const lifeDt = Math.min((time - this.lastLife) / 1000, 0.1);
       if (this.life.step(time / 1000, lifeDt, this.camera.position)) this.needsRender = true;
       this.lastLife = time;
