@@ -232,3 +232,5 @@
 .games-adventures strong { font-size: 12px; font-weight: 600; }
 .games-adventures small { font-size: 11px; color: #747963; }
 @media (max-width: 600px) { .games-adventures { grid-template-columns: 1fr; } }
+button.games-passport { width: 100%; text-align: left; border-top: 1px solid transparent; }
+button.games-passport:hover { background: #f7efd5; }

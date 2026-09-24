@@ -14,6 +14,7 @@ import {
   Flame,
   Heart,
   Images,
+  Stamp,
   RotateCcw,
   Mail,
   Star,
@@ -54,6 +55,7 @@ import { MuseumGames } from "./MuseumGames";
 import { ResidentQuiz } from "./ResidentQuiz";
 import { RESIDENTS, nearbyResident, type Resident } from "./residents";
 import { readPassport } from "./games";
+import { PassportStamps } from "./Passport";
 import { Museum, exhibitPlacements, familyIn, registerFamilySizes, type Pose } from "./museum";
 import {
   CATHEDRAL_SQUARE,
@@ -448,7 +450,7 @@ export default function App() {
   const [hoverAction, setHoverAction] = useState<"open" | "check" | "video">(
     "open",
   );
-  const [modal, setModal] = useState<"map" | "collection" | "help" | "walk" | "album" | "journal" | null>(
+  const [modal, setModal] = useState<"map" | "collection" | "help" | "walk" | "album" | "journal" | "passport" | null>(
     null,
   );
   const [visited, setVisited] = useProgress("vocabhall.visited.v1");
@@ -1810,6 +1812,7 @@ export default function App() {
             <div className="journal-tiles">{tiles.map(([label, value, total]) => <div key={label}><strong>{value}<small>{total}</small></strong><span>{label}</span></div>)}</div>
             <div className="journal-links">
               <button className="text-button" onClick={() => setModal("album")}><Images size={15} />{t("The collector's album")}<ArrowRight size={14} /></button>
+              <button className="text-button" onClick={() => setModal("passport")}><Stamp size={15} />{t("Your explorer passport")}<ArrowRight size={14} /></button>
               <button className="text-button" onClick={() => setModal("walk")}><Star size={15} />{t("Today's walk")}<ArrowRight size={14} /></button>
               {revisit.length > 0 && <button className="text-button" onClick={() => { setFilter("revisit"); setModal("collection"); }}><RotateCcw size={15} />{t("To revisit")} · {revisit.length}<ArrowRight size={14} /></button>}
             </div>
@@ -1828,6 +1831,22 @@ export default function App() {
           </section>
         </Dialog>;
       })()}
+
+      {modal === "passport" && (
+        <Dialog className="passport-dialog" label={t("Your explorer passport")} onClose={() => setModal(null)}>
+          <section>
+            <div className="modal-heading">
+              <div>
+                <span className="eyebrow">{t("ONE STAMP PER GAME IN EACH ROOM")}</span>
+                <h2>{t("Your explorer passport")}<span>.</span></h2>
+              </div>
+              <button className="icon-button" onClick={() => setModal(null)} aria-label={t("Close passport")}><X size={21} /></button>
+            </div>
+            <PassportStamps stamps={readPassport()} rooms={rooms} />
+            <button className="primary-button" onClick={launchGames}><Gamepad2 size={17} />{t("Play with words")}<ArrowRight size={16} /></button>
+          </section>
+        </Dialog>
+      )}
 
       {modal === "album" && (
         <Dialog className="album-dialog" label={t("The collector's album")} onClose={() => setModal(null)}>

@@ -24,7 +24,7 @@ const descriptions: Record<GameMode, string> = {
   memory: "Meet three paintings, then remember their words, sounds, and sentences. Missed words return for another look.",
 };
 
-export type Adventures = { walk: [number, number]; labels: [number, number] | null; favours: number; onOpen: (target: "walk" | "map") => void };
+export type Adventures = { walk: [number, number]; labels: [number, number] | null; favours: number; onOpen: (target: "walk" | "map" | "passport") => void };
 export function MuseumGames({ museum, roomIndex, room, pool, rooms, exhibits, checked, onClose, onPlayingChange, onAudioChange, adventures }: {
   museum: RefObject<Museum | null>; roomIndex: number; room: Room; pool: Exhibit[]; checked: string[];
   rooms: Room[]; exhibits: Exhibit[]; adventures?: Adventures;
@@ -191,8 +191,9 @@ export function MuseumGames({ museum, roomIndex, room, pool, rooms, exhibits, ch
           <span className="game-card-go">{t("Let’s play")} <ArrowRight size={18} /></span>
         </button>;
       })}</div>
-      <div className="games-passport"><StampIcon size={24} /><span><strong>{t("Your explorer passport")}</strong><small>{t("Collect a stamp from every game and every room.")}</small></span>
-        <b>{completeCount} / 6</b><small>{passport.length} {t("stamps in total")}</small></div>
+      <button className="games-passport" onClick={() => { if (adventures) { leave(); adventures.onOpen("passport"); } }} aria-label={`${t("Your explorer passport")}: ${passport.length} ${t("stamps in total")}`}>
+        <StampIcon size={24} /><span><strong>{t("Your explorer passport")}</strong><small>{t("Collect a stamp from every game and every room.")}</small></span>
+        <b>{completeCount} / 6</b><small>{passport.length} {t("stamps in total")}</small></button>
       <p className="games-footnote">{t("Play in any Old Town house. Word building uses a root house; market missions take you to the square. Elsewhere, start in the port courtyard.")}</p>
     </>}
     {audioError && <p className="game-audio-error" role="alert">{t(audioError)}</p>}

@@ -3178,3 +3178,17 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
 .visit-progress button.place-progress:hover { background-color: #fffbee; }
 .journal-links { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 14px; }
 .journal-links .text-button { margin: 0; display: inline-flex; align-items: center; gap: 6px; }
+
+/* The passport book. */
+.passport-dialog { width: 640px; }
+.passport-dialog > section { padding: 35px 38px; }
+.passport-empty { margin: 20px 0; font-size: 14px; color: var(--muted); }
+.passport-stamps { list-style: none; margin: 22px 0; padding: 18px; display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 18px 12px;
+  background: repeating-linear-gradient(0deg, #f6efdc 0 27px, #eadfc2 27px 28px); border: 1px solid #d9c79c; }
+.passport-stamps li { display: grid; justify-items: center; gap: 4px; text-align: center; }
+.passport-stamp { width: 88px; height: 88px; border-radius: 50%; display: grid; place-items: center; align-content: center; gap: 4px; color: var(--ink);
+  border: 3px solid var(--ink); outline: 1.5px dashed var(--ink); outline-offset: -9px; transform: rotate(var(--tilt)); opacity: .88; background: #fbf6e833; }
+.passport-stamp b { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+.passport-stamps strong { font-size: 12px; font-weight: 600; color: #3d463a; }
+.passport-stamps small { font-size: 11px; color: #6c7565; }
+@media (max-width: 540px) { .passport-dialog > section { padding: 24px 18px; } }
