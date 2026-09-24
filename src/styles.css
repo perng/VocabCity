@@ -3110,6 +3110,7 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
 .album-set header em { display: block; margin-top: 3px; font-style: normal; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #b8871f; }
 .visit-progress .place-progress > div { min-width: 0; }
 @media (max-width: 1000px) { .album-nav { display: inline-flex; } .main-nav > .album-tab { display: none; } }
+@media (max-width: 540px) { .album-nav { display: none; } }
 .milestone-banner { padding-left: 92px; min-height: 96px; align-content: center; }
 .milestone-banner img { position: absolute; left: 10px; bottom: -6px; width: 78px; height: auto; transform-origin: 50% 100%; animation: mascot-cheer .9s cubic-bezier(.3, 1.6, .5, 1) .15s both; }
 @keyframes mascot-cheer { 0% { transform: translateY(24px) scale(.6); opacity: 0; } 60% { transform: translateY(-6px) rotate(-6deg); opacity: 1; } 100% { transform: none; } }
@@ -3169,3 +3170,11 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
   .journal-goals li { grid-template-columns: 18px 1fr; }
   .journal-goals button { grid-column: 1 / -1; justify-content: center; }
 }
+.welcome-news { display: flex; gap: 8px; align-items: flex-start; width: 100%; margin: 6px 0 2px; padding: 9px 10px; text-align: left; font-size: 11px; line-height: 1.5; color: #5f6a58; background: #f3ecd4; border: 1px solid #e0c98f; }
+.welcome-news svg { flex-shrink: 0; margin-top: 2px; color: #b8871f; }
+.welcome-news b { color: #7a5a12; font-weight: 600; }
+.welcome-news:hover { background: #f7efd5; }
+.visit-progress button.place-progress { width: 100%; text-align: left; }
+.visit-progress button.place-progress:hover { background-color: #fffbee; }
+.journal-links { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 14px; }
+.journal-links .text-button { margin: 0; display: inline-flex; align-items: center; gap: 6px; }

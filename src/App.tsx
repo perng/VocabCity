@@ -349,7 +349,7 @@ function ProgressCard({ room, visited, checked, states, onJournal }: { room: num
   const seen = new Set(visited), learned = new Set(checked);
   const explored = states.filter((p) => p.state === "explored" || p.state === "mastered").length;
   return <div className="visit-progress" data-state={place?.state ?? "city"}>
-    {place ? <div className="place-progress">
+    {place ? <button className="place-progress" onClick={onJournal} aria-label={`${t("Your city journal")}: ${placeLabel(room, locale)} ${place.discovered} / ${place.total}`}>
       <Ring value={place.discovered} total={place.total} />
       <div>
         <small className="place-name">{rooms[room].house ? `${t(rooms[room].house!.kind === "root" ? "Root house" : "Townhouse")} · ${placeLabel(room, locale)}` : placeLabel(room, locale)}</small>
@@ -360,7 +360,7 @@ function ProgressCard({ room, visited, checked, states, onJournal }: { room: num
         </span>
       </div>
       {(place.state === "explored" || place.state === "mastered") && <Trophy className="place-badge" size={17} />}
-    </div> : null}
+    </button> : null}
     <button className="city-progress" onClick={onJournal} aria-label={`${t("Your city journal")}: ${visited.length} / ${exhibits.length} ${t("words discovered")}`}>
       <span className="progress-flower"><Sparkles size={15} /></span>
       <div>
@@ -998,6 +998,9 @@ export default function App() {
             </button>
             <button className="text-button" onClick={() => { setIntro(false); setModal("walk"); }}><Star size={16} />{t("Today's walk")}<span>{WALK_SIZE} {t("paintings to find")}</span></button>
             <button className="text-button" onClick={launchGames}><Gamepad2 size={17} />{t("Play with words")}<ArrowRight size={15} /></button>
+            <button className="welcome-news" onClick={() => setModal("help")}>
+              <Sparkles size={14} /><span><b>{t("New in the city")}</b> {t("A daily walk, neighbours' favours, lost labels, an art album, postcards and a glowing evening.")}</span>
+            </button>
             <div className="welcome-footnote">
               <span>15 {t("LANDMARKS")} · {houses.length} √</span>
               <span>{t("A WORLD TO WANDER. WORDS TO DISCOVER.")}</span>
@@ -1790,6 +1793,11 @@ export default function App() {
               <button className="icon-button" onClick={() => setModal(null)} aria-label={t("Close journal")}><X size={21} /></button>
             </div>
             <div className="journal-tiles">{tiles.map(([label, value, total]) => <div key={label}><strong>{value}<small>{total}</small></strong><span>{label}</span></div>)}</div>
+            <div className="journal-links">
+              <button className="text-button" onClick={() => setModal("album")}><Images size={15} />{t("The collector's album")}<ArrowRight size={14} /></button>
+              <button className="text-button" onClick={() => setModal("walk")}><Star size={15} />{t("Today's walk")}<ArrowRight size={14} /></button>
+              {revisit.length > 0 && <button className="text-button" onClick={() => { setFilter("revisit"); setModal("collection"); }}><RotateCcw size={15} />{t("To revisit")} · {revisit.length}<ArrowRight size={14} /></button>}
+            </div>
             {(nearlyPlaces.length > 0 || nearlyStyles.length > 0 || walk.found.length < walk.ids.length) && <>
               <h3>{t("Almost there")}</h3>
               <ul className="journal-goals">
