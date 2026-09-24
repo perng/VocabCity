@@ -249,3 +249,16 @@ test('the album groups every painting into styles and celebrates rare finds', as
   await empty.click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
 });
+
+test('a flashcard sends a postcard image of its painting and word', async ({ page }) => {
+  await enter(page);
+  const exhibit = exhibits[95];
+  await openFromCollection(page, exhibit);
+  const download = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Send a postcard', exact: true }).click();
+  const file = await download;
+  expect(file.suggestedFilename()).toBe(`vocab-city-${exhibit.word}.png`);
+  const size = (await (await import('node:fs/promises')).stat(await file.path())).size;
+  expect(size).toBeGreaterThan(200_000);
+  await expect(page.locator('.milestone-live')).toContainText('A postcard from Vocab City! Saved as an image.');
+});

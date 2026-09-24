@@ -14,6 +14,7 @@ import {
   Flame,
   Heart,
   Images,
+  Mail,
   Star,
   Bell,
   BellOff,
@@ -78,6 +79,7 @@ import { useExhibitAudio } from "./useExhibitAudio";
 import { YouglishPlayer, YouTubeLogo } from "./YouglishPlayer";
 import { playSfx, setSfxEnabled, useSfxEnabled } from "./sfx";
 import { Soundscape } from "./soundscape";
+import { sendPostcard } from "./postcard";
 import { Celebrations, announce, celebrate } from "./Celebrations";
 import { styleMilestone, styleOf, styleSets } from "./album";
 import { favourFound, favourWords, readFavours, saveFavours, type FavourBook } from "./favours";
@@ -501,6 +503,7 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
   const [toast, setToast] = useState("");
+  const [postcardBusy, setPostcardBusy] = useState(false);
   const [roomTransition, setRoomTransition] = useState(false);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
@@ -1453,6 +1456,22 @@ export default function App() {
                 {saved.includes(selected.id)
                   ? t("Saved to my words")
                   : t("Keep this word")}
+              </button>
+              <button
+                className="postcard-button"
+                disabled={postcardBusy}
+                onClick={async () => {
+                  setPostcardBusy(true);
+                  try {
+                    const place = selectedArea < rooms.length ? (rooms[selectedArea].house ? rooms[selectedArea].house!.display : translate(districtFor(selectedArea).landmark, "")) : "Vocab City";
+                    const result = await sendPostcard(selected, place, (locale && selected.translations[locale]) || "", locale);
+                    if (result !== "cancelled") { playSfx("stamp"); announce(t("A postcard from Vocab City!"), t(result === "shared" ? "Sent on its way." : "Saved as an image.")); }
+                  } catch {
+                    announce(t("The postcard could not be made."), t("Please try again."));
+                  } finally { setPostcardBusy(false); }
+                }}
+              >
+                <Mail size={16} /> {t("Send a postcard")}
               </button>
             </div>
             <footer className="exhibit-footer">

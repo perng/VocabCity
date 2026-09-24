@@ -3116,3 +3116,6 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
 @keyframes mascot-cheer { 0% { transform: translateY(24px) scale(.6); opacity: 0; } 60% { transform: translateY(-6px) rotate(-6deg); opacity: 1; } 100% { transform: none; } }
 @media (prefers-reduced-motion: reduce) { .milestone-banner img { animation: none; } }
 @media (max-width: 540px) { .milestone-banner { padding-left: 74px; } .milestone-banner img { width: 62px; } .milestone-banner strong { font-size: 24px; } }
+.postcard-button { border: 1px dashed #c9a86a; display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; padding: 12px; font-size: 10px; margin-top: 8px; color: #7a5a12; background: #fbf6e8; }
+.postcard-button:hover:not(:disabled) { background: #f7efd5; }
+.postcard-button:disabled { opacity: .6; }
