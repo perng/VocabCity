@@ -20,7 +20,7 @@ const descriptions: Record<GameMode, string> = {
   restore: "A few paintings have lost their labels. Carry each word back to its artwork.",
   step: "Listen closely, then walk onto the matching word tile. Your feet are the answer.",
   family: "Join word parts at the workbench, then find the painting your new word belongs to.",
-  market: "Meet the baker, the furniture maker, and the potter. A few words can make their day.",
+  market: "Meet the square's shopkeepers and makers, three at a time. A few words can make their day.",
   memory: "Meet three paintings, then remember their words, sounds, and sentences. Missed words return for another look.",
 };
 
