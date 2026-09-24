@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { Botany } from "./botany";
 import { exhibitPlacements, familyIn, registerFamilySizes } from "./placements";
 import { CityLife } from "./ambient";
+import { buildGift } from "./gifts";
 import { walkingSpeed } from "./movement";
 import { RESIDENTS, nearbyResident, residentHat, type Resident } from "./residents";
 import type { SceneGame } from "./games";
@@ -156,6 +157,7 @@ export class Museum {
   private placeStates: PlaceState[] = [];
   private friendship: Record<string, number> = {};
   private residentBadges = new Map<string, () => void>();
+  private residentGroups = new Map<string, THREE.Group>();
   private cheers = new Map<string, { pending: boolean; from: number }>();
   private walkMarkers: { sprite: THREE.Sprite; stop: () => void }[] = [];
   private walkStar: THREE.Texture | null = null;
@@ -1577,6 +1579,11 @@ export class Museum {
   /** Friendship hearts on each resident's sign. */
   setFriendship(levels: Record<string, number>) {
     for (const [id, redraw] of this.residentBadges) if ((levels[id] ?? 0) !== (this.friendship[id] ?? 0)) { this.friendship[id] = levels[id] ?? 0; redraw(); }
+    // A first finished favour leaves a gift beside the resident.
+    for (const resident of RESIDENTS) {
+      const group = this.residentGroups.get(resident.id);
+      if (group && (levels[resident.id] ?? 0) > 0 && !group.getObjectByName(`gift:${resident.id}`)) { group.add(buildGift(resident.id, resident.color)); this.renderer.shadowMap.needsUpdate = true; }
+    }
     this.needsRender = true;
   }
   /** Queue a little hop of joy for when the visitor next sees this resident. */
@@ -1842,6 +1849,7 @@ export class Museum {
     for (const resident of RESIDENTS) {
       const group = new THREE.Group();
       group.name = `resident:${resident.id}`;
+      this.residentGroups.set(resident.id, group);
       group.position.set(resident.x, 0, resident.z); group.rotation.y = resident.yaw;
       this.scene.add(group);
       const part = (geometry: THREE.BufferGeometry, color: string, x: number, y: number, z: number) => {
@@ -1904,6 +1912,8 @@ export class Museum {
         raise += ((waving ? 2.55 : .18) - raise) * Math.min(1, dt * 5);
         shoulder.rotation.z = raise + (waving ? Math.sin(t * 7) * .35 : 0);
         sign.position.y = 2.92 + Math.sin(t * 1.3 + phase) * .05;
+        const pennant = group.getObjectByName("pennant");
+        if (pennant) pennant.rotation.y = Math.sin(t * 3.1 + phase) * .35;
       } });
     }
   }

@@ -212,6 +212,7 @@ test('a neighbour\'s favour sends you looking by meaning, then grows the friends
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.favours.v1')!).sailor);
   expect(saved).toEqual({ level: 1, active: null, asked: favour.active.ids });
   expect(await page.evaluate(() => (window as any).__museum.friendship.sailor)).toBe(1);
+  expect(await page.evaluate(() => !!(window as any).__museum.scene.getObjectByName('gift:sailor'))).toBe(true);
   await page.keyboard.press('Escape');
   await expect(chip).toHaveCount(0);
   // Luca hops for joy once the chat closes.
