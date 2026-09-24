@@ -28,11 +28,13 @@ export function shuffle<T>(items: readonly T[]): T[] {
   }
   return result;
 }
-export function makeRounds(pool: Exhibit[], checked: string[], revisit: string[] = []): GameRound[] {
+export function makeRounds(pool: Exhibit[], checked: string[], revisit: string[] = [], notAsked: string[] = []): GameRound[] {
   const unique = [...new Map(pool.map(e => [e.id, e])).values()];
-  // Words to revisit come first, then unchecked words, then the rest.
-  const again = unique.filter(e => revisit.includes(e.id));
-  const rest = unique.filter(e => !revisit.includes(e.id));
+  // Words to revisit come first, then unchecked words, then the rest; words in notAsked
+  // may still appear as wrong choices but are never the question (unless nothing else is left).
+  const askable = unique.filter(e => !notAsked.includes(e.id)).length >= 3 ? unique.filter(e => !notAsked.includes(e.id)) : unique;
+  const again = askable.filter(e => revisit.includes(e.id));
+  const rest = askable.filter(e => !revisit.includes(e.id));
   const targets = [
     ...shuffle(again),
     ...shuffle(rest.filter(e => !checked.includes(e.id))),
@@ -103,7 +105,51 @@ export const MARKET_MISSIONS: MarketMission[] = [
       { word: "mineral", reply: "Add a mineral to the clay inside.", feedback: "The bowl is already made. I need to cover a mark on the outside." },
     ], thanks: "The surface is smooth again. This little bowl is ready for its new home.",
     thanksTranslation: "表面又光滑了！這個小碗準備好迎接新主人了。" },
+  { word: "mineral", name: "Rosa", role: "The greengrocer", color: "#8f76a8",
+    request: "A customer wants spinach because it has lots of iron. What should my little sign say iron is?",
+    translation: "有位客人想買菠菜，因為它含有很多鐵。我的小立牌上該怎麼介紹鐵呢？",
+    choices: [
+      { word: "mineral", reply: "Iron is a mineral the body needs." },
+      { word: "texture", reply: "Iron gives spinach its texture.", feedback: "Texture is how food feels. Iron is something inside the food that helps the body." },
+      { word: "formation", reply: "Iron is the formation of spinach.", feedback: "Formation is how something is made. I need the name for a natural substance from the earth." },
+    ], thanks: "Yes! A mineral from the earth, right there in a leaf. My customers will love that.",
+    thanksTranslation: "沒錯！來自大地的礦物質，就藏在一片葉子裡。客人一定會喜歡。" },
+  { word: "formation", name: "Omar", role: "The stonemason", color: "#8a8468",
+    request: "Children ask me how this striped stone got its layers over millions of years. What should I explain to them?",
+    translation: "孩子們問我，這塊有條紋的石頭是怎麼在幾百萬年裡形成一層層的。我該跟他們解釋什麼呢？",
+    choices: [
+      { word: "formation", reply: "Explain the stone's formation." },
+      { word: "durable", reply: "Explain that the stone is durable.", feedback: "It is strong, yes, but they want to know how the layers were made." },
+      { word: "surface", reply: "Explain the stone's surface.", feedback: "The surface is only the outside. The layers tell the story of how the stone was made." },
+    ], thanks: "Perfect. Layer by layer, the formation of a stone is a very slow story.",
+    thanksTranslation: "太好了。一層又一層，石頭的形成是一個很慢很慢的故事。" },
+  { word: "structure", name: "Lina", role: "The toy builder", color: "#c2735a",
+    request: "My wooden tower keeps falling over. Should I look at how the pieces fit together, or at the paint?",
+    translation: "我的木頭塔一直倒下來。我該檢查積木怎麼組合，還是看看油漆呢？",
+    choices: [
+      { word: "structure", reply: "Look at the tower's structure." },
+      { word: "texture", reply: "Change the texture of the paint.", feedback: "Rough or smooth paint will not hold the tower up. It is how the pieces fit together." },
+      { word: "mineral", reply: "Add a mineral to the wood.", feedback: "The wood is fine. The problem is how the pieces are arranged." },
+    ], thanks: "You are right! With a stronger structure, my tower stands tall.",
+    thanksTranslation: "你說得對！結構更穩固之後，我的塔站得好高。" },
 ];
+export const MARKET_KEY = "vocabhall.market.v1";
+export const MARKET_ROUND = 3;
+/** Three missions per visit, those not yet solved first, in their authored order. */
+export function marketMissions(): MarketMission[] {
+  let solved: string[] = [];
+  try { const data = JSON.parse(localStorage.getItem(MARKET_KEY) || "[]"); if (Array.isArray(data)) solved = data.filter((w): w is string => typeof w === "string"); } catch { /* start fresh */ }
+  return [...MARKET_MISSIONS.filter((m) => !solved.includes(m.word)), ...MARKET_MISSIONS.filter((m) => solved.includes(m.word))].slice(0, MARKET_ROUND);
+}
+export function markMissionSolved(word: string) {
+  try {
+    const data = JSON.parse(localStorage.getItem(MARKET_KEY) || "[]");
+    const solved = Array.isArray(data) ? data.filter((w): w is string => typeof w === "string") : [];
+    // Once every mission is solved, start the rotation again.
+    const next = solved.includes(word) ? solved : [...solved, word];
+    localStorage.setItem(MARKET_KEY, JSON.stringify(next.length >= MARKET_MISSIONS.length ? [] : next));
+  } catch { /* The rotation simply restarts. */ }
+}
 
 export function memorySentence(exhibit: Exhibit): string | null {
   const escaped = exhibit.word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

@@ -1313,6 +1313,9 @@ export class Museum {
     const plaque = this.panel(label, 2.52, 0.85, 0, 1, 0.05, group);
     plaque.userData.target = target;
     plaque.userData.gameCaption = target.area;
+    // In root houses the plaque spells out the word's pieces, so it hides with a lost label.
+    plaque.userData.captionFor = exhibit.id;
+    this.applyLostLabel(plaque);
     // Examples sit beside the framed sticker, like a museum curator's note.
     const example = this.canvasTexture(
       500,
@@ -1372,6 +1375,10 @@ export class Museum {
     const lost = this.lostLabels.has(id);
     if (mesh.userData.captionFor) { mesh.visible = !lost; return; }
     const material = mesh.material as THREE.MeshBasicMaterial;
+    // While a game covers this banner, work on the texture the game will put back.
+    const mask = this.gameMasks.find((m) => m.mesh === mesh);
+    const current = () => (mask ? mask.map : material.map);
+    const show = (map: THREE.Texture | null) => { if (mask) mask.map = map; else material.map = map; };
     if (lost && !mesh.userData.foundMap) {
       // Shared by every house, so it must not belong to the zone being built.
       const zone = this.activeZone; this.activeZone = null;
@@ -1382,10 +1389,10 @@ export class Museum {
         ctx.font = 'italic 500 150px "Cormorant Garamond", serif'; ctx.fillText("?  ?  ?", 512, 132);
       });
       this.activeZone = zone;
-      mesh.userData.foundMap = material.map;
-      material.map = this.lostTexture;
+      mesh.userData.foundMap = current();
+      show(this.lostTexture);
     } else if (!lost && mesh.userData.foundMap) {
-      material.map = mesh.userData.foundMap;
+      show(mesh.userData.foundMap);
       delete mesh.userData.foundMap;
     }
   }
@@ -2085,7 +2092,8 @@ export class Museum {
     this.scene.traverse(object => {
       if (((game.mode === "step" || game.conceal) && object.userData.floorInfo === game.room) ||
           (game.conceal && object.userData.gameCaption === game.room)) {
-        object.visible = false; this.hiddenFloor.push(object);
+        // Leave meshes that are already hidden (a lost label's note) out, so ending the game does not reveal them.
+        if (object.visible) { object.visible = false; this.hiddenFloor.push(object); }
       }
     });
     if (game.mode !== "step") return;
@@ -2313,6 +2321,10 @@ export class Museum {
     if (!this.blocked && !this.reducedMotion && !document.hidden && time - this.lastLife > ((this.keys.size || this.dragging) && !this.touchDevice ? 33 : 50)) {
       const lifeDt = Math.min((time - this.lastLife) / 1000, 0.1);
       if (this.life.step(time / 1000, lifeDt, this.camera.position)) this.needsRender = true;
+      this.lastLife = time;
+    }
+    else if (this.reducedMotion && !this.blocked && time - this.lastLife > 200) {
+      if (this.life.follow(this.camera.position)) this.needsRender = true;
       this.lastLife = time;
     }
     // Leave the static scene alone while reading a flashcard or standing still.

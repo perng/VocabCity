@@ -2,7 +2,8 @@ import { useSyncExternalStore } from "react";
 import { dayKey } from "./daily";
 
 // Words to revisit: a word missed in a chat, a game or a lost-label question comes back
-// first in later chats and games, until it has been answered right on two separate days.
+// first in chats and games from the next day on, until it has been answered right on two
+// separate days.
 export const REVIEW_KEY = "vocabhall.review.v1";
 export const RIGHT_TO_CLEAR = 2;
 type Entry = { misses: number; right: number; last: string };
@@ -37,6 +38,8 @@ export function recordRight(id: string) {
   else commit({ ...book, [id]: { ...entry, right, last: today } });
 }
 export const reviewIds = () => ids;
+/** Words due again: missed (or last answered) before today, so practice is spaced out. */
+export const dueReviewIds = () => { const today = dayKey(); return ids.filter((id) => book[id].last !== today); };
 export function useReviewIds() {
   return useSyncExternalStore((listener) => { listeners.add(listener); return () => listeners.delete(listener); }, reviewIds);
 }

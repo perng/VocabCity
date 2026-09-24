@@ -5,9 +5,9 @@ import { assetUrl, type Exhibit, type Room } from "./types";
 import { useLocale } from "./i18n";
 import { useExhibitAudio } from "./useExhibitAudio";
 import { playSfx } from "./sfx";
-import { recordMiss, recordRight, reviewIds } from "./review";
+import { dueReviewIds, recordMiss, recordRight } from "./review";
 import { celebrate } from "./Celebrations";
-import { addStamp, assembleWord, GAME_TITLES, makeFamilyRounds, makeRounds, MARKET_MISSIONS, memorySentence, PASSPORT_KEY, readPassport, shuffle,
+import { addStamp, assembleWord, GAME_TITLES, makeFamilyRounds, makeRounds, markMissionSolved, marketMissions, memorySentence, PASSPORT_KEY, readPassport, shuffle,
   type ExtraGameMode, type FamilyRound, type GameRound, type MarketMission, type Stamp as PassportStamp, type WordTile } from "./games";
 
 type Round = GameRound & { family?: FamilyRound; mission?: MarketMission };
@@ -18,11 +18,11 @@ export function MoreMuseumGames({ mode, museum, roomIndex, room, pool, checked, 
 }) {
   const { t, locale } = useLocale();
   const [rounds] = useState<Round[]>(() => mode === "family"
-    ? makeFamilyRounds(pool, roomIndex, checked, reviewIds()).map(family => ({ ...family, family }))
-    : mode === "market" ? MARKET_MISSIONS.flatMap(mission => {
+    ? makeFamilyRounds(pool, roomIndex, checked, dueReviewIds()).map(family => ({ ...family, family }))
+    : mode === "market" ? marketMissions().flatMap(mission => {
       const target = pool.find(e => e.word === mission.word);
       return target ? [{ target, mission: { ...mission, choices: shuffle(mission.choices) }, choices: [] }] : [];
-    }) : makeRounds(pool, checked, reviewIds()));
+    }) : makeRounds(pool, checked, dueReviewIds()));
   const [queue, setQueue] = useState(() => rounds.map((_, i) => i));
   const [cursor, setCursor] = useState(0);
   const [solved, setSolved] = useState<string[]>([]);
@@ -72,6 +72,7 @@ export function MoreMuseumGames({ mode, museum, roomIndex, room, pool, checked, 
     lock.current = true; setResult("correct"); setFeedback(""); setHint(false);
     playSfx("correct"); celebrate("spark");
     if (!missed.current) recordRight(id);
+    if (mode === "market" && mission) markMissionSolved(mission.word);
     setSolved(previous => previous.includes(id) ? previous : [...previous, id]);
     listen(target);
   };

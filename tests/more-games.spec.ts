@@ -103,7 +103,8 @@ test('market neighbours accept a scene click, speak requests, offer specific ret
   camera.position.set(scene.x, scene.y, scene.z); camera.rotation.set(scene.pitch, scene.yaw, 0, 'YXZ'); camera.updateMatrixWorld();
   const point = new Vector3(scene.ax, 1.4, scene.az).project(camera);
   await page.mouse.click(rect.x + (point.x + 1) * rect.width / 2, rect.y + (1 - point.y) * rect.height / 2);
-  for (let i = 0; i < MARKET_MISSIONS.length; i++) {
+  // A first visit meets the first three neighbours; later visits rotate in the others.
+  for (let i = 0; i < 3; i++) {
     const mission = MARKET_MISSIONS[i];
     if (i > 0) await page.getByRole('button', { name: 'Meet this neighbour', exact: true }).click();
     await expect(page.locator('.market-request')).toContainText(mission.request);
@@ -219,4 +220,20 @@ test('theme houses keep local memory words while the workshop chooses a reviewed
   await page.keyboard.press('Escape');
   await expect(page.locator('.game-overlay')).toHaveCount(0);
   expect(await masks(page)).toMatchObject({ banners: 0, hidden: 0, props: 0 });
+});
+
+test('market missions rotate so later visits meet new neighbours', async ({ page }) => {
+  const market = exhibits.filter(e => e.room === 12).map(e => e.word);
+  expect(MARKET_MISSIONS.length).toBe(6);
+  for (const mission of MARKET_MISSIONS) {
+    expect(market).toContain(mission.word);
+    expect(mission.choices.filter(c => c.word === mission.word)).toHaveLength(1);
+    expect(mission.choices.every(c => market.includes(c.word))).toBe(true);
+    expect(mission.choices.filter(c => c.word !== mission.word).every(c => c.feedback)).toBe(true);
+  }
+  await page.addInitScript(words => localStorage.setItem('vocabhall.market.v1', JSON.stringify(words)), MARKET_MISSIONS.slice(0, 3).map(m => m.word));
+  await enter(page);
+  await page.getByRole('button', { name: 'Market Missions', exact: true }).click();
+  await page.getByRole('button', { name: 'Meet this neighbour', exact: true }).click();
+  await expect(page.locator('.market-request')).toContainText(MARKET_MISSIONS[3].request);
 });

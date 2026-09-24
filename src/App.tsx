@@ -470,7 +470,9 @@ export default function App() {
         setLabels(todaysLabels(labelsRef.current, exhibits, ROOT_START, checkedRef.current, dayKey()));
     };
     document.addEventListener("visibilitychange", refresh);
-    return () => document.removeEventListener("visibilitychange", refresh);
+    // A tab left open past midnight also turns the page, checked once a minute.
+    const clock = setInterval(refresh, 60_000);
+    return () => { document.removeEventListener("visibilitychange", refresh); clearInterval(clock); };
   }, []);
   const [favours, setFavours] = useState<FavourBook>(() => readFavours(RESIDENTS, validIds));
   const favoursRef = useRef(favours);
@@ -1897,7 +1899,7 @@ export default function App() {
             </ol>
             <p className="walk-note">{t("Finish every walk to keep your streak. A new route appears tomorrow.")}</p>
             {revisit.length > 0 && <button className="text-button revisit-link" onClick={() => { setFilter("revisit"); setModal("collection"); }}>
-              <RotateCcw size={15} />{t("To revisit")} · {revisit.length}<small>{t("Chats and games ask these first.")}</small><ArrowRight size={15} />
+              <RotateCcw size={15} />{t("To revisit")} · {revisit.length}<small>{t("From the next day, chats and games ask these first.")}</small><ArrowRight size={15} />
             </button>}
             {visited.length >= LOST_LABELS_AFTER && <div className="lost-summary">
               <strong>{labels.restored.length} / {labels.ids.length}</strong>

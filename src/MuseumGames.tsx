@@ -9,7 +9,7 @@ import { addStamp, familyPieces, GAME_TITLES, makeRounds, PASSPORT_KEY, readPass
 import { MoreMuseumGames } from "./MoreMuseumGames";
 import { ROOT_START } from "./layout";
 import { playSfx } from "./sfx";
-import { recordMiss, recordRight, reviewIds } from "./review";
+import { dueReviewIds, recordMiss, recordRight } from "./review";
 import { celebrate } from "./Celebrations";
 import "./games.css";
 
@@ -101,7 +101,7 @@ export function MuseumGames({ museum, roomIndex, room, pool, rooms, exhibits, ch
     if (mode === "family" || mode === "market" || mode === "memory") {
       setSession(null); setExtraPlaying(true); setExtraMode(mode); return;
     }
-    const rounds = makeRounds(pool, checked, reviewIds());
+    const rounds = makeRounds(pool, checked, dueReviewIds());
     missed.current = false;
     if (!rounds.length) return;
     const next = { mode, rounds, paintings: mode === "restore" ? shuffle(rounds.map(r => r.target)) : pool, index: 0, solved: [], done: false };

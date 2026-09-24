@@ -56,9 +56,10 @@ export function residentPool(npc: Resident, exhibits: Exhibit[]) {
   return pool.filter((e, i) => e.definition.trim() && pool.findIndex(other =>
     other.word.toLowerCase() === e.word.toLowerCase() || other.definition.toLowerCase() === e.definition.toLowerCase()) === i);
 }
-export function residentRounds(npc: Resident, exhibits: Exhibit[], checked: string[], practiced: string[], revisit: string[] = []): GameRound[] {
+export function residentRounds(npc: Resident, exhibits: Exhibit[], checked: string[], practiced: string[], revisit: string[] = [], exclude: string[] = []): GameRound[] {
   // Use the collection's source meanings, with one distinct word and meaning per option.
+  // Words in an open favour are never asked, so the chat does not answer its riddle.
   const unique = residentPool(npc, exhibits);
   if (unique.length < 2) return [];
-  return makeRounds(unique, [...checked, ...practiced], revisit);
+  return makeRounds(unique, [...checked, ...practiced], revisit, exclude);
 }

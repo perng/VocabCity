@@ -6,7 +6,7 @@ import { ENCOUNTERS_KEY, readEncounters, residentHat, residentRounds, type Resid
 import { playSfx } from "./sfx";
 import { announce, celebrate } from "./Celebrations";
 import { favourFound, type Friendship } from "./favours";
-import { recordMiss, recordRight, reviewIds } from "./review";
+import { dueReviewIds, recordMiss, recordRight } from "./review";
 import type { Exhibit } from "./types";
 import "./residents.css";
 
@@ -74,7 +74,7 @@ export function ResidentQuiz({ resident, exhibits, checked, onClose, onAudioChan
   const { locale, t } = useLocale();
   const [progress, setProgress] = useState(readEncounters);
   const favourIds = friendship?.active?.ids ?? [];
-  const [rounds, setRounds] = useState(() => residentRounds(resident, exhibits, checked, [...(progress[resident.id]?.words ?? []), ...favourIds], reviewIds()));
+  const [rounds, setRounds] = useState(() => residentRounds(resident, exhibits, checked, progress[resident.id]?.words ?? [], dueReviewIds(), favourIds));
   const [index, setIndex] = useState(0);
   const [wrong, setWrong] = useState<string[]>([]);
   const [correct, setCorrect] = useState(false);
@@ -136,7 +136,7 @@ export function ResidentQuiz({ resident, exhibits, checked, onClose, onAudioChan
       <p className="resident-saved">{t(storageError ? "This visit could not be saved in this browser." : "Your visit is saved in this browser.")}</p>
       <button className="primary-button" onClick={onClose}>{t("Keep wandering")}<ArrowRight size={17} /></button>
       <button className="text-button" onClick={() => {
-        audio.stop(); setRounds(residentRounds(resident, exhibits, checked, [...progress[resident.id].words, ...favourIds], reviewIds()));
+        audio.stop(); setRounds(residentRounds(resident, exhibits, checked, progress[resident.id].words, dueReviewIds(), favourIds));
         setIndex(0); setWrong([]); setCorrect(false); setScore(0); setHint(false); setComplete(false); setMood("idle"); setError(""); setStorageError(false);
       }}>{t("Try three more")}</button>
     </div> : <>

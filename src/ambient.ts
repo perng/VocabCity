@@ -10,10 +10,13 @@ export type Living = {
   reach: number;
   /** Skip this entry while it has nothing to show (for example, fireflies by day). */
   active?: () => boolean;
+  /** Keep following the visitor even when motion is reduced (the star dome). */
+  follow?: boolean;
   /** Return false when nothing moved, so the frame can be skipped. */
   update: (t: number, dt: number, viewer: THREE.Vector3) => void | boolean;
 };
 
+const FAR = new THREE.Vector3(1e6, 0, 1e6);
 const material = (color: string, extra: THREE.MeshStandardMaterialParameters = {}) =>
   new THREE.MeshStandardMaterial({ color, roughness: 0.85, ...extra });
 
@@ -25,7 +28,17 @@ export class CityLife {
   /** Register a moving thing; the returned function stops animating it. */
   add(entry: Living) {
     this.living.push(entry);
+    // Place it once right away (as if the visitor were far off), so nothing waits at the
+    // world origin for its first frame, and reduced-motion visitors see a still scene.
+    entry.update(0, 0, FAR);
     return () => { this.living = this.living.filter((other) => other !== entry); };
+  }
+
+  /** With reduced motion, only keep things that must travel with the visitor in place. */
+  follow(viewer: THREE.Vector3) {
+    let moved = false;
+    for (const entry of this.living) if (entry.follow && entry.active?.() !== false && entry.update(0, 0, viewer) !== false) moved = true;
+    return moved;
   }
 
   /** Advance nearby life; returns true when anything moved and a frame is needed. */
@@ -167,7 +180,7 @@ export class CityLife {
     const stars = new THREE.Points(geometry, this.keep(new THREE.PointsMaterial({ color: "#fff6dc", size: 1.3, sizeAttenuation: false, fog: false, transparent: true, opacity: 0.85 })));
     stars.frustumCulled = false; stars.visible = false; stars.renderOrder = -1;
     this.scene.add(stars);
-    this.add({ x: 0, z: 0, reach: Infinity, active: visible, update: (_t, _dt, viewer) => {
+    this.add({ x: 0, z: 0, reach: Infinity, active: visible, follow: true, update: (_t, _dt, viewer) => {
       if (stars.position.x === viewer.x && stars.position.z === viewer.z + 80) return false;
       stars.position.set(viewer.x, 0, viewer.z + 80);
     } });
