@@ -593,7 +593,7 @@ export default function App() {
         const count = visitedRef.current.length + 1, l = localeRef.current;
         if (WORD_MILESTONES.includes(count) || count === exhibits.length)
           setTimeout(() => { playSfx("complete"); celebrate("confetti"); announce(`${count} ${translate("words discovered", l)}${l === "zh_TW" ? "！" : "!"}`, translate(count === exhibits.length ? "Every word in the city. Bravo!" : "Keep wandering. The city has more to show you.", l)); }, 1200);
-        playSfx("discover");
+        playSfx("discover"); celebrate("spark");
         celebratePlaces(newlyComplete(roomsOf(exhibit), ROOM_WORDS, new Set(visitedRef.current), exhibit.id), "explored", localeRef.current);
       }
       setVisited((current) =>
