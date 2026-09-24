@@ -546,6 +546,22 @@ export class Museum {
     const lantern = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.2, 2.4, 12), this.material("#fff0c2").clone());
     (lantern.material as THREE.MeshStandardMaterial).emissive.set("#ffe39a"); (lantern.material as THREE.MeshStandardMaterial).emissiveIntensity = 1.4;
     lantern.position.set(light.x, 19.4, light.z); this.scene.add(lantern);
+    // After dusk the lighthouse sweeps two soft beams across the sea.
+    const beams = new THREE.Group(); beams.position.set(light.x, 19.4, light.z); beams.visible = false;
+    // Bright at the lamp, fading to nothing along the beam.
+    const fade = this.canvasTexture(4, 128, (ctx) => {
+      const g = ctx.createLinearGradient(0, 0, 0, 128);
+      g.addColorStop(0, "#fff"); g.addColorStop(0.4, "#666"); g.addColorStop(1, "#000");
+      ctx.fillStyle = g; ctx.fillRect(0, 0, 4, 128);
+    });
+    fade.colorSpace = THREE.NoColorSpace;
+    const beamMaterial = new THREE.MeshBasicMaterial({ color: "#fff2c4", alphaMap: fade, transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, fog: false });
+    for (const side of [0, Math.PI]) {
+      const beam = new THREE.Mesh(new THREE.ConeGeometry(4.5, 70, 20, 1, true), beamMaterial);
+      beam.rotation.z = Math.PI / 2; beam.position.x = 35; const arm = new THREE.Group(); arm.rotation.y = side; arm.add(beam); beams.add(arm);
+    }
+    this.scene.add(beams); this.eveningOnly.push(beams);
+    this.life.add({ x: light.x, z: light.z, reach: 260, active: () => this.evening, update: (t) => { beams.rotation.y = t * 0.45; } });
     const cap = new THREE.Mesh(new THREE.ConeGeometry(1.6, 1.4, 12), this.material("#b8453a"));
     cap.position.set(light.x, 21.3, light.z); this.scene.add(cap);
     // Moored boats and a distant sail.

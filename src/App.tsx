@@ -514,6 +514,8 @@ export default function App() {
     [setChecked],
   );
   const [evening, setEvening] = useState(false);
+  // After six in the evening (local time), suggest the evening light once per visit.
+  const [duskHint, setDuskHint] = useState(() => { const hour = new Date().getHours(); return hour >= 18 || hour < 5; });
   const [ambient, setAmbient] = useState(false);
   const [tour, setTour] = useState(false);
   const [query, setQuery] = useState("");
@@ -986,6 +988,9 @@ export default function App() {
             <Heart size={14} fill={done ? "currentColor" : "none"} /><span>{npc.name}</span><b>{favour.found.length} / {favour.ids.length}</b>
           </button>;
         })}</div>}
+        {!intro && duskHint && !evening && <button className="dusk-chip" aria-label={t("It's evening where you are. Light the lamps?")} onClick={() => { setEvening(true); setDuskHint(false); }}>
+          <Moon size={14} /><span>{t("It's evening where you are. Light the lamps?")}</span>
+        </button>}
         </div>
 
         {intro && ready && !error && (

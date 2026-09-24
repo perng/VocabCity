@@ -3192,3 +3192,6 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
 .passport-stamps strong { font-size: 12px; font-weight: 600; color: #3d463a; }
 .passport-stamps small { font-size: 11px; color: #6c7565; }
 @media (max-width: 540px) { .passport-dialog > section { padding: 24px 18px; } }
+.dusk-chip { display: flex; align-items: center; gap: 7px; max-width: 230px; padding: 8px 11px; text-align: left; font-size: 12px; line-height: 1.35; color: #eef0f7; background: #4b5577e6; border: 1px solid #8f9bc4; }
+.dusk-chip:hover { background: #56628ae6; }
+@media (max-width: 760px) { .dusk-chip > span { display: none; } }
