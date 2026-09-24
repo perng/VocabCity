@@ -37,8 +37,8 @@ export function ResidentAvatar({ resident, mood }: { resident: Resident; mood: M
   </svg>;
 }
 
-function FavourCard({ resident, friendship, exhibits, onAsk, onHandOver }: {
-  resident: Resident; friendship?: Friendship; exhibits: Exhibit[]; onAsk: () => void; onHandOver: () => void;
+export function FavourCard({ resident, friendship, exhibits, onAsk, onHandOver, readOnly = false }: {
+  resident: Resident; friendship?: Friendship; exhibits: Exhibit[]; onAsk: () => void; onHandOver: () => void; readOnly?: boolean;
 }) {
   const { locale, t } = useLocale();
   const level = friendship?.level ?? 0, active = friendship?.active, words = FAVOURS[resident.id];
@@ -54,7 +54,7 @@ function FavourCard({ resident, friendship, exhibits, onAsk, onHandOver }: {
       <button className="text-button favour-ask" onClick={onAsk}><Search size={15} />{t("I'll look for them")}<ArrowRight size={15} /></button>
     </> : favourFound(active) ? <>
       <p>{t("You found all three!")}</p>
-      <button className="primary-button" onClick={onHandOver}><Heart size={16} />{t("Hand them over")}</button>
+      {!readOnly && <button className="primary-button" onClick={onHandOver}><Heart size={16} />{t("Hand them over")}</button>}
     </> : <>
       <p>{t("Find the paintings with these meanings nearby, and open each one.")}</p>
       <ol className="favour-list">{active.ids.map((id) => {

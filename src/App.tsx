@@ -52,7 +52,7 @@ import {
 } from "lucide-react";
 import collection from "./collection.json";
 import { MuseumGames } from "./MuseumGames";
-import { ResidentQuiz } from "./ResidentQuiz";
+import { FavourCard, ResidentAvatar, ResidentQuiz } from "./ResidentQuiz";
 import { RESIDENTS, nearbyResident, type Resident } from "./residents";
 import { readPassport } from "./games";
 import { PassportStamps } from "./Passport";
@@ -610,6 +610,7 @@ export default function App() {
   const lostNow = visited.length >= LOST_LABELS_AFTER ? labels.ids.filter((id) => !labels.restored.includes(id)) : [];
   const lostRef = useRef(lostNow);
   lostRef.current = lostNow;
+  const [favourView, setFavourView] = useState<Resident | null>(null);
   const [labelQuiz, setLabelQuiz] = useState<{ exhibit: Exhibit; area: number; wrong: string[] } | null>(null);
   const sceneSelect = useCallback((exhibit: Exhibit, area?: number) => {
     if (lostRef.current.includes(exhibit.id)) {
@@ -677,10 +678,10 @@ export default function App() {
   }, [sceneSelect, toggleChecked]);
   useEffect(() => {
     museum.current?.setBlocked(
-      Boolean(resident || selected || modal || videoExhibit || artworkExhibit || labelQuiz || (gamesRoom !== null && !gamesPlaying)),
+      Boolean(resident || selected || modal || videoExhibit || artworkExhibit || labelQuiz || favourView || (gamesRoom !== null && !gamesPlaying)),
       Boolean(resident),
     );
-  }, [resident, selected, modal, videoExhibit, artworkExhibit, labelQuiz, ready, gamesRoom, gamesPlaying]);
+  }, [resident, selected, modal, videoExhibit, artworkExhibit, labelQuiz, favourView, ready, gamesRoom, gamesPlaying]);
   const encountersEnabled = ready && !error && !intro && !resident && !selected && !modal && !videoExhibit && !artworkExhibit && !labelQuiz && gamesRoom === null;
   const nearby = encountersEnabled ? nearbyResident(pose) : null;
   useEffect(() => { museum.current?.setResidentsEnabled(encountersEnabled); }, [encountersEnabled]);
@@ -983,7 +984,7 @@ export default function App() {
         {!intro && <div className="favour-chips">{RESIDENTS.filter((npc) => favours[npc.id]?.active).map((npc) => {
           const favour = favours[npc.id].active!, done = favourFound(favour);
           return <button key={npc.id} className="favour-chip" data-ready={done} style={{ "--resident-color": npc.color } as React.CSSProperties}
-            onClick={() => { setModal(null); setSelected(null); setIntro(false); museum.current?.visitResident(npc.id); hostRef.current?.querySelector("canvas")?.focus(); }}
+            onClick={() => { setSelected(null); setIntro(false); setFavourView(npc); }}
             aria-label={`${t("Favour for")} ${npc.name}: ${favour.found.length} / ${favour.ids.length}${done ? `. ${t("Bring them back to")} ${npc.name}` : ""}`}>
             <Heart size={14} fill={done ? "currentColor" : "none"} /><span>{npc.name}</span><b>{favour.found.length} / {favour.ids.length}</b>
           </button>;
@@ -1761,6 +1762,23 @@ export default function App() {
                 {t("saved on this device")}
               </span>
             </footer>
+          </section>
+        </Dialog>
+      )}
+
+      {favourView && (
+        <Dialog className="resident-dialog favour-dialog" label={`${t("Favour for")} ${favourView.name}`} onClose={() => setFavourView(null)}>
+          <section className="resident-sheet" style={{ "--resident-color": favourView.color } as React.CSSProperties}>
+            <header className="resident-heading">
+              <div className="resident-portrait" aria-hidden="true"><ResidentAvatar resident={favourView} mood={favourFound(favours[favourView.id]?.active) ? "happy" : "idle"} /></div>
+              <div><span className="eyebrow">{t(favourView.location)}</span><h2>{favourView.name}<small>{t(favourView.role)}</small></h2></div>
+              <button className="icon-button" onClick={() => setFavourView(null)} aria-label={t("Close")}><X size={20} /></button>
+            </header>
+            <FavourCard resident={favourView} friendship={favours[favourView.id]} exhibits={exhibits} onAsk={() => undefined} onHandOver={() => undefined} readOnly />
+            <button className="primary-button" disabled={!ready || Boolean(error)} onClick={() => {
+              const npc = favourView; setFavourView(null); setModal(null);
+              museum.current?.visitResident(npc.id); hostRef.current?.querySelector("canvas")?.focus();
+            }}>{`${t(favourFound(favours[favourView.id]?.active) ? "Bring them back to" : "Walk back to")} ${favourView.name}`}<ArrowRight size={17} /></button>
           </section>
         </Dialog>
       )}

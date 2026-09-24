@@ -202,7 +202,11 @@ test('a neighbour\'s favour sends you looking by meaning, then grows the friends
     await expect(chip).toContainText(`${i + 1} / 3`);
   }
   await expect(chip).toHaveAttribute('data-ready', 'true');
+  // The chip shows the clues, then walks you back to the neighbour.
   await chip.click();
+  await expect(page.getByRole('dialog', { name: 'Favour for Luca' }).locator('.favour-list li[data-found=true]')).toHaveCount(0);
+  await expect(page.getByRole('dialog', { name: 'Favour for Luca' })).toContainText('You found all three!');
+  await page.getByRole('button', { name: 'Bring them back to Luca', exact: true }).click();
   await page.getByRole('button', { name: 'Talk to Luca', exact: true }).click();
   await expect(page.locator('.favour-card')).toContainText('You found all three!');
   await page.getByRole('button', { name: 'Hand them over', exact: true }).click();

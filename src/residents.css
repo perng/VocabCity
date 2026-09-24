@@ -71,3 +71,5 @@
 @keyframes favour-ready { 50% { box-shadow: 0 0 0 4px #c0504a33; } }
 @media (prefers-reduced-motion: reduce) { .favour-chip[data-ready=true] { animation: none; } }
 @media (max-width: 760px) { .favour-chip > span { display: none; } }
+.favour-dialog .favour-card { margin-top: 18px; }
+.favour-dialog .primary-button { margin: 4px 0 0; display: inline-flex; align-items: center; gap: 8px; }
