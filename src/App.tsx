@@ -53,6 +53,7 @@ import collection from "./collection.json";
 import { MuseumGames } from "./MuseumGames";
 import { ResidentQuiz } from "./ResidentQuiz";
 import { RESIDENTS, nearbyResident, type Resident } from "./residents";
+import { readPassport } from "./games";
 import { Museum, exhibitPlacements, familyIn, registerFamilySizes, type Pose } from "./museum";
 import {
   CATHEDRAL_SQUARE,
@@ -342,7 +343,7 @@ function Ring({ value, total }: { value: number; total: number }) {
   </svg>;
 }
 // The place you stand in is a goal you can finish; the whole city stays in view below it.
-function ProgressCard({ room, visited, checked, states }: { room: number; visited: string[]; checked: string[]; states: ReturnType<typeof roomStates> }) {
+function ProgressCard({ room, visited, checked, states, onJournal }: { room: number; visited: string[]; checked: string[]; states: ReturnType<typeof roomStates>; onJournal: () => void }) {
   const { t, locale } = useLocale();
   const place = room >= 0 && room < rooms.length ? states[room] : null;
   const seen = new Set(visited), learned = new Set(checked);
@@ -360,14 +361,14 @@ function ProgressCard({ room, visited, checked, states }: { room: number; visite
       </div>
       {(place.state === "explored" || place.state === "mastered") && <Trophy className="place-badge" size={17} />}
     </div> : null}
-    <div className="city-progress">
+    <button className="city-progress" onClick={onJournal} aria-label={`${t("Your city journal")}: ${visited.length} / ${exhibits.length} ${t("words discovered")}`}>
       <span className="progress-flower"><Sparkles size={15} /></span>
       <div>
         <strong className="city-count">{visited.length}<span> / {exhibits.length}</span></strong>
         <small>{t("words discovered")} · {explored} {t("places explored")}</small>
       </div>
       {!place && <Ring value={visited.length} total={exhibits.length} />}
-    </div>
+    </button>
   </div>;
 }
 function DirectionPad({
@@ -445,7 +446,7 @@ export default function App() {
   const [hoverAction, setHoverAction] = useState<"open" | "check" | "video">(
     "open",
   );
-  const [modal, setModal] = useState<"map" | "collection" | "help" | "walk" | "album" | null>(
+  const [modal, setModal] = useState<"map" | "collection" | "help" | "walk" | "album" | "journal" | null>(
     null,
   );
   const [visited, setVisited] = useProgress("vocabhall.visited.v1");
@@ -954,7 +955,7 @@ export default function App() {
           </button>
         </div>
         <div className="hud-right">
-        <ProgressCard room={pose.room} visited={visited} checked={checked} states={states} />
+        <ProgressCard room={pose.room} visited={visited} checked={checked} states={states} onJournal={() => setModal("journal")} />
         {!intro && <button className="walk-chip" data-complete={walk.found.length === walk.ids.length} onClick={() => setModal("walk")}
           aria-label={`${t("Today's walk")}: ${walk.found.length} / ${walk.ids.length}`}>
           <Star size={15} fill={walk.found.length === walk.ids.length ? "currentColor" : "none"} />
@@ -1759,6 +1760,51 @@ export default function App() {
           </section>
         </Dialog>
       )}
+
+      {modal === "journal" && (() => {
+        const explored = states.filter((p) => p.state === "explored" || p.state === "mastered").length;
+        const mastered = states.filter((p) => p.state === "mastered").length;
+        const friends = RESIDENTS.reduce((sum, npc) => sum + (favours[npc.id]?.level ?? 0), 0);
+        const stamps = readPassport().length;
+        const nearlyPlaces = states.map((p, i) => ({ p, i })).filter(({ p }) => p.state === "started" && p.total - p.discovered <= 2)
+          .sort((a, b) => (a.p.total - a.p.discovered) - (b.p.total - b.p.discovered)).slice(0, 3);
+        const nearlyStyles = STYLE_SETS.filter((set) => set.rare && set.ids.filter((id) => !visitedSet.has(id)).length === 1).slice(0, 3);
+        const tiles: [string, string | number, string][] = [
+          [t("words discovered"), visited.length, `/ ${exhibits.length}`],
+          [t("words learned"), checked.length, `/ ${exhibits.length}`],
+          [t("places explored"), explored, `/ ${rooms.length}`],
+          [t("places mastered"), mastered, `/ ${rooms.length}`],
+          [t("styles complete"), stylesComplete, `/ ${STYLE_SETS.length}`],
+          [t("passport stamps"), stamps, ""],
+          [t("friendship hearts"), friends, ""],
+          [t("days in a row"), walkStreak, ""],
+          [t("labels restored"), labels.total, ""],
+        ];
+        return <Dialog className="journal-dialog" label={t("Your city journal")} onClose={() => setModal(null)}>
+          <section>
+            <div className="modal-heading">
+              <div>
+                <span className="eyebrow">{t("EVERYTHING YOU HAVE GATHERED")}</span>
+                <h2>{t("Your city journal")}<span>.</span></h2>
+              </div>
+              <button className="icon-button" onClick={() => setModal(null)} aria-label={t("Close journal")}><X size={21} /></button>
+            </div>
+            <div className="journal-tiles">{tiles.map(([label, value, total]) => <div key={label}><strong>{value}<small>{total}</small></strong><span>{label}</span></div>)}</div>
+            {(nearlyPlaces.length > 0 || nearlyStyles.length > 0 || walk.found.length < walk.ids.length) && <>
+              <h3>{t("Almost there")}</h3>
+              <ul className="journal-goals">
+                {walk.found.length < walk.ids.length && <li><Star size={16} /><span>{t("Today's walk")} · {walk.ids.length - walk.found.length} {t("paintings to find")}</span>
+                  <button onClick={() => setModal("walk")}>{t("Open")}<ArrowRight size={14} /></button></li>}
+                {nearlyPlaces.map(({ p, i }) => <li key={i}><Trophy size={16} /><span>{rooms[i].house ? `${t(rooms[i].house!.kind === "root" ? "Root house" : "Townhouse")} ` : ""}{placeLabel(i, locale)} · {p.total - p.discovered} {t(p.total - p.discovered === 1 ? "painting left to explore" : "paintings left to explore")}</span>
+                  <button disabled={!ready || Boolean(error)} onClick={() => navigateRoom(i)}>{t("Take me there")}<ArrowRight size={14} /></button></li>)}
+                {nearlyStyles.map((set) => { const missing = EXHIBIT_BY_ID.get(set.ids.find((id) => !visitedSet.has(id))!)!;
+                  return <li key={set.key}><Images size={16} /><span>{locale === "zh_TW" ? set.mediumZh : set.medium} · {t("one painting from complete")}</span>
+                    <button disabled={!ready || Boolean(error)} onClick={() => navigateRoom(missing.room)}>{t("Take me nearby")}<ArrowRight size={14} /></button></li>; })}
+              </ul>
+            </>}
+          </section>
+        </Dialog>;
+      })()}
 
       {modal === "album" && (
         <Dialog className="album-dialog" label={t("The collector's album")} onClose={() => setModal(null)}>

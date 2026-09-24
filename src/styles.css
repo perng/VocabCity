@@ -3146,3 +3146,26 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
 @media (max-width: 1100px) { .hud-right { right: 23px; top: 42px; } }
 @media (max-width: 800px) { .hud-right { right: 18px; top: 41px; max-height: calc(100% - 360px); } }
 @media (max-width: 540px) { .hud-right { right: 14px; top: 38px; gap: 6px; } }
+
+/* The city journal. */
+.visit-progress button.city-progress { width: 100%; text-align: left; }
+.visit-progress button.city-progress:hover { background: #fffbee; }
+.journal-dialog { width: 640px; }
+.journal-dialog > section { padding: 35px 38px; }
+.journal-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 22px; }
+.journal-tiles > div { padding: 14px; border: 1px solid var(--line); background: #fffdf6; display: grid; gap: 4px; }
+.journal-tiles strong { font: 500 30px/1 var(--serif); color: #3d5a44; }
+.journal-tiles strong small { font: 400 13px "DM Sans", sans-serif; color: #8a8f7c; margin-left: 4px; }
+.journal-tiles span { font-size: 12px; color: #6c7565; }
+.journal-dialog h3 { margin: 26px 0 10px; font: 500 22px/1.2 var(--serif); }
+.journal-goals { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.journal-goals li { display: grid; grid-template-columns: 18px 1fr auto; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid #e0b04066; background: #fbf6e8; font-size: 13px; }
+.journal-goals li > svg { color: #b8871f; }
+.journal-goals button { display: inline-flex; align-items: center; gap: 5px; padding: 7px 10px; border: 1px solid #b6a078; font-size: 12px; white-space: nowrap; }
+.journal-goals button:hover:not(:disabled) { background: #fffbee; }
+@media (max-width: 540px) {
+  .journal-dialog > section { padding: 24px 18px; }
+  .journal-tiles { grid-template-columns: 1fr 1fr; }
+  .journal-goals li { grid-template-columns: 18px 1fr; }
+  .journal-goals button { grid-column: 1 / -1; justify-content: center; }
+}
