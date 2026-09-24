@@ -58,6 +58,8 @@ type MuseumOptions = {
 const EYE_HEIGHT = 1.78;
 const Y_AXIS = new THREE.Vector3(0, 1, 0);
 const clamp = THREE.MathUtils.clamp;
+// After dusk, learned words glow warmly in their frames: the city shines with what you know.
+const LEARNED_GLOW = 0.5;
 
 export { exhibitPlacement, exhibitPlacements, familyIn, registerFamilySizes } from "./placements";
 
@@ -159,6 +161,9 @@ export class Museum {
   private walkStar: THREE.Texture | null = null;
   private lostLabels = new Set<string>();
   private lostTexture: THREE.Texture | null = null;
+  private lampBulbs: THREE.MeshStandardMaterial[] = [];
+  private eveningOnly: THREE.Object3D[] = [];
+  private lampHalo: THREE.Texture | null = null;
   private evening = false;
 
   constructor(
@@ -210,6 +215,7 @@ export class Museum {
     this.botany = new Botany((w, h, draw) => this.canvasTexture(w, h, draw));
     this.buildCity();
     this.buildExhibits();
+    this.eveningOnly.push(this.life.addStars(() => this.evening), this.life.addFireflies(CITY.park, 60, () => this.evening));
     this.buildResidents();
     this.resizeObserver = new ResizeObserver(this.resize);
     this.resizeObserver.observe(host);
@@ -424,6 +430,16 @@ export class Museum {
     (bulb.material as THREE.MeshStandardMaterial).emissive.set("#ffe8ba");
     (bulb.material as THREE.MeshStandardMaterial).emissiveIntensity = 1;
     bulb.position.set(x, height + 0.15, z); this.scene.add(bulb);
+    this.lampBulbs.push(bulb.material as THREE.MeshStandardMaterial);
+    // A soft halo that only shows after dusk.
+    this.lampHalo ??= this.canvasTexture(64, 64, (ctx) => {
+      const glow = ctx.createRadialGradient(32, 32, 2, 32, 32, 32);
+      glow.addColorStop(0, "rgba(255,226,160,.9)"); glow.addColorStop(0.35, "rgba(255,210,130,.35)"); glow.addColorStop(1, "rgba(255,200,120,0)");
+      ctx.fillStyle = glow; ctx.fillRect(0, 0, 64, 64);
+    });
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.lampHalo, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
+    halo.position.copy(bulb.position); halo.scale.setScalar(2.6); halo.visible = false;
+    this.scene.add(halo); this.eveningOnly.push(halo);
     this.obstacles.push({ x, z, rx: 0.3, rz: 0.3 });
   }
   private bench(x: number, z: number, yaw: number) {
@@ -1184,7 +1200,7 @@ export class Museum {
     }
     frame.material.color.set(isChecked ? frameColor : "#daa32e");
     frame.material.emissive.set("#ffc43d");
-    frame.material.emissiveIntensity = isChecked ? 0 : 0.32;
+    frame.material.emissiveIntensity = isChecked ? (this.evening ? LEARNED_GLOW : 0) : 0.32;
     const checkbox = this.panel(
       this.checkTextures[Number(this.checked.has(exhibit.id))],
       0.58,
@@ -1898,7 +1914,7 @@ export class Museum {
       const checked = this.checked.has(display.id);
       display.checkbox.material.map = this.checkTextures[Number(checked)];
       display.material.color.set(checked ? display.checkedColor : "#daa32e");
-      display.material.emissiveIntensity = checked ? 0 : 0.32;
+      display.material.emissiveIntensity = checked ? (this.evening ? LEARNED_GLOW : 0) : 0.32;
       if (display.halo) display.material.opacity = checked ? 0 : 0.35;
     }
     this.needsRender = true;
@@ -1928,6 +1944,11 @@ export class Museum {
     this.needsRender = true;
     this.evening = evening;
     for (const zone of this.zones) this.applyPlaceState(zone);
+    for (const bulb of this.lampBulbs) bulb.emissiveIntensity = evening ? 3.2 : 1;
+    for (const object of this.eveningOnly) object.visible = evening;
+    (this.scene.background as THREE.Color).set(evening ? "#56648a" : "#cfe0e6");
+    (this.scene.fog as THREE.Fog).color.set(evening ? "#6f7390" : "#d9e4de");
+    this.setChecked([...this.checked]);
     this.renderer.toneMappingExposure = evening ? 0.78 : 1.22;
     this.hemisphere.color.set(evening ? "#e5d7c5" : "#fcf4e5");
     this.hemisphere.intensity = evening ? 1.7 : 2.3;

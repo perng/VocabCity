@@ -8,7 +8,10 @@ export type Living = {
   z: number;
   /** Only animate while the visitor is within this distance. */
   reach: number;
-  update: (t: number, dt: number, viewer: THREE.Vector3) => void;
+  /** Skip this entry while it has nothing to show (for example, fireflies by day). */
+  active?: () => boolean;
+  /** Return false when nothing moved, so the frame can be skipped. */
+  update: (t: number, dt: number, viewer: THREE.Vector3) => void | boolean;
 };
 
 const material = (color: string, extra: THREE.MeshStandardMaterialParameters = {}) =>
@@ -29,9 +32,8 @@ export class CityLife {
   step(t: number, dt: number, viewer: THREE.Vector3) {
     let moved = false;
     for (const entry of this.living) {
-      if (Math.hypot(entry.x - viewer.x, entry.z - viewer.z) > entry.reach) continue;
-      entry.update(t, dt, viewer);
-      moved = true;
+      if (Math.hypot(entry.x - viewer.x, entry.z - viewer.z) > entry.reach || entry.active?.() === false) continue;
+      if (entry.update(t, dt, viewer) !== false) moved = true;
     }
     return moved;
   }
@@ -151,6 +153,47 @@ export class CityLife {
         }
       } });
     });
+  }
+
+  /** A dome of stars that travels with the visitor, hidden until evening. */
+  addStars(visible: () => boolean) {
+    const count = 700, positions = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      const a = Math.random() * Math.PI * 2, h = 0.12 + Math.pow(Math.random(), 0.7) * 0.85, r = 300;
+      positions.set([Math.cos(a) * Math.cos(h) * r, Math.sin(h) * r, Math.sin(a) * Math.cos(h) * r - 80], i * 3);
+    }
+    const geometry = this.keep(new THREE.BufferGeometry());
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    const stars = new THREE.Points(geometry, this.keep(new THREE.PointsMaterial({ color: "#fff6dc", size: 1.3, sizeAttenuation: false, fog: false, transparent: true, opacity: 0.85 })));
+    stars.frustumCulled = false; stars.visible = false; stars.renderOrder = -1;
+    this.scene.add(stars);
+    this.add({ x: 0, z: 0, reach: Infinity, active: visible, update: (_t, _dt, viewer) => {
+      if (stars.position.x === viewer.x && stars.position.z === viewer.z + 80) return false;
+      stars.position.set(viewer.x, 0, viewer.z + 80);
+    } });
+    return stars;
+  }
+
+  /** Fireflies drifting low over a lawn; hidden (and still) until evening. */
+  addFireflies(box: { x0: number; x1: number; z0: number; z1: number }, count: number, visible: () => boolean) {
+    const positions = new Float32Array(count * 3);
+    const geometry = this.keep(new THREE.BufferGeometry());
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    const flies = new THREE.Points(geometry, this.keep(new THREE.PointsMaterial({
+      color: "#e9ff9a", size: 5, sizeAttenuation: false, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false,
+    })));
+    flies.frustumCulled = false; flies.visible = false;
+    this.scene.add(flies);
+    const seeds = Array.from({ length: count }, () => ({
+      x: box.x0 + Math.random() * (box.x1 - box.x0), z: box.z0 + Math.random() * (box.z1 - box.z0), p: Math.random() * 10, s: 0.2 + Math.random() * 0.3,
+    }));
+    const material = flies.material as THREE.PointsMaterial;
+    this.add({ x: (box.x0 + box.x1) / 2, z: (box.z0 + box.z1) / 2, reach: 90, active: visible, update: (t) => {
+      seeds.forEach((f, i) => positions.set([f.x + Math.sin(t * f.s + f.p) * 2.2, 0.6 + Math.sin(t * f.s * 1.7 + f.p) * 0.5 + 0.5, f.z + Math.cos(t * f.s * 0.8 + f.p) * 2.2], i * 3));
+      material.opacity = 0.55 + Math.sin(t * 2.3) * 0.35;
+      geometry.attributes.position.needsUpdate = true;
+    } });
+    return flies;
   }
 
   dispose() { this.disposables.forEach((item) => item.dispose()); this.living = []; }
