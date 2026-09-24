@@ -862,7 +862,7 @@ export default function App() {
             <span>{exhibits.length}</span>
           </button>
           <button
-            className={modal === "album" ? "active" : ""}
+            className={`album-tab ${modal === "album" ? "active" : ""}`}
             onClick={() => setModal("album")}
           >
             {t("Album")}
@@ -953,6 +953,7 @@ export default function App() {
             <ChevronDown size={16} />
           </button>
         </div>
+        <div className="hud-right">
         <ProgressCard room={pose.room} visited={visited} checked={checked} states={states} />
         {!intro && <button className="walk-chip" data-complete={walk.found.length === walk.ids.length} onClick={() => setModal("walk")}
           aria-label={`${t("Today's walk")}: ${walk.found.length} / ${walk.ids.length}`}>
@@ -969,6 +970,7 @@ export default function App() {
             <Heart size={14} fill={done ? "currentColor" : "none"} /><span>{npc.name}</span><b>{favour.found.length} / {favour.ids.length}</b>
           </button>;
         })}</div>}
+        </div>
 
         {intro && ready && !error && (
           <section className="welcome-card">

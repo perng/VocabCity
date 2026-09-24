@@ -3045,7 +3045,7 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
 .map-legend span[data-state=mastered] { border: 2px solid #b8871f; background: #ecd08a; margin-left: 8px; }
 
 /* Today's walk. */
-.walk-chip { position: absolute; z-index: 2; top: 292px; right: 37px; display: flex; align-items: center; gap: 8px; padding: 9px 13px; background: #f8f7eeef; border: 1px solid #e0b04099; font-size: 12px; color: #4d5a47; }
+.walk-chip { display: flex; align-items: center; gap: 8px; padding: 9px 13px; background: #f8f7eeef; border: 1px solid #e0b04099; font-size: 12px; color: #4d5a47; }
 .walk-chip svg { color: #c38f1f; }
 .walk-chip b { font-weight: 600; }
 .walk-chip em { display: inline-flex; align-items: center; gap: 2px; font-style: normal; color: #b8601f; font-weight: 600; }
@@ -3072,9 +3072,8 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
 .walk-list button:hover:not(:disabled) { background: #fffbee; }
 .walk-dialog .walk-note { font-size: 12px; }
 .walk-target { filter: drop-shadow(0 0 1.5px #b8871f); }
-@media (max-width: 1100px) { .walk-chip { right: 18px; top: 272px; } }
 @media (max-width: 760px) {
-  .walk-chip { top: 118px; right: 18px; padding: 7px 10px; }
+  .walk-chip { padding: 7px 10px; }
   .walk-chip > span { display: none; }
   .walk-dialog > section { padding: 24px 20px; }
   .walk-list li { grid-template-columns: 52px 1fr; }
@@ -3110,7 +3109,7 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
 .album-nav { display: none; }
 .album-set header em { display: block; margin-top: 3px; font-style: normal; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #b8871f; }
 .visit-progress .place-progress > div { min-width: 0; }
-@media (max-width: 540px) { .album-nav { display: grid; } }
+@media (max-width: 1000px) { .album-nav { display: inline-flex; } .main-nav > .album-tab { display: none; } }
 .milestone-banner { padding-left: 92px; min-height: 96px; align-content: center; }
 .milestone-banner img { position: absolute; left: 10px; bottom: -6px; width: 78px; height: auto; transform-origin: 50% 100%; animation: mascot-cheer .9s cubic-bezier(.3, 1.6, .5, 1) .15s both; }
 @keyframes mascot-cheer { 0% { transform: translateY(24px) scale(.6); opacity: 0; } 60% { transform: translateY(-6px) rotate(-6deg); opacity: 1; } 100% { transform: none; } }
@@ -3138,3 +3137,12 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
 .lost-summary span { font-size: 12px; line-height: 1.6; color: #6c7565; }
 .revisit-link { display: flex !important; align-items: center; gap: 8px; margin-top: 12px; }
 .revisit-link small { color: #75806d; font-size: 11px; margin-left: 4px; }
+
+/* The progress card and its chips stack in one column, clear of the minimap below. */
+.hud-right { position: absolute; z-index: 2; top: 48px; right: 37px; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; max-height: calc(100% - 330px); overflow: hidden; pointer-events: none; }
+.hud-right > * { pointer-events: auto; flex-shrink: 0; }
+.hud-right .visit-progress { position: static; }
+@media (min-width: 1600px) { .hud-right { right: 50px; } }
+@media (max-width: 1100px) { .hud-right { right: 23px; top: 42px; } }
+@media (max-width: 800px) { .hud-right { right: 18px; top: 41px; max-height: calc(100% - 360px); } }
+@media (max-width: 540px) { .hud-right { right: 14px; top: 38px; gap: 6px; } }

@@ -64,11 +64,10 @@
 .favour-list li[data-found=true] svg { color: #56735c; }
 .favour-list li[data-found=true] > span > span { color: #8a8f7c; }
 .favour-list small { display: block; color: #75806d; font-size: 12px; }
-.favour-chips { position: absolute; z-index: 2; top: 340px; right: 37px; display: grid; gap: 6px; justify-items: end; }
+.favour-chips { display: grid; gap: 6px; justify-items: end; }
 .favour-chip { display: flex; align-items: center; gap: 7px; padding: 7px 11px; background: #f8f7eeef; border: 1px solid color-mix(in srgb, var(--resident-color) 55%, transparent); font-size: 12px; color: #4d5a47; }
 .favour-chip svg { color: #c0504a; }
 .favour-chip[data-ready=true] { background: #fbe9e3; animation: favour-ready 1.6s ease-in-out infinite; }
 @keyframes favour-ready { 50% { box-shadow: 0 0 0 4px #c0504a33; } }
 @media (prefers-reduced-motion: reduce) { .favour-chip[data-ready=true] { animation: none; } }
-@media (max-width: 1100px) { .favour-chips { right: 18px; top: 318px; } }
-@media (max-width: 760px) { .favour-chips { top: 160px; right: 18px; } .favour-chip > span { display: none; } }
+@media (max-width: 760px) { .favour-chip > span { display: none; } }
