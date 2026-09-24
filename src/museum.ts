@@ -157,6 +157,8 @@ export class Museum {
   private cheers = new Map<string, { pending: boolean; from: number }>();
   private walkMarkers: { sprite: THREE.Sprite; stop: () => void }[] = [];
   private walkStar: THREE.Texture | null = null;
+  private lostLabels = new Set<string>();
+  private lostTexture: THREE.Texture | null = null;
   private evening = false;
 
   constructor(
@@ -1254,6 +1256,7 @@ export class Museum {
     );
     banner.userData.target = target;
     banner.userData.wordBanner = true;
+    this.applyLostLabel(banner);
     const label = this.canvasTexture(
       1024,
       310,
@@ -1336,8 +1339,45 @@ export class Museum {
       },
       true,
     );
-    this.panel(example, 1.45, 2.2, 2.16, 2.76, 0.03, group).userData.gameCaption = target.area;
+    const note = this.panel(example, 1.45, 2.2, 2.16, 2.76, 0.03, group);
+    note.userData.gameCaption = target.area;
+    note.userData.captionFor = exhibit.id;
+    this.applyLostLabel(note);
   }
+
+  // A lost label shows a question mark on the word banner and hides the curator's note,
+  // whose example sentence would give the word away.
+  private applyLostLabel(mesh: THREE.Mesh) {
+    const id: string | undefined = mesh.userData.captionFor ?? (mesh.userData.wordBanner ? mesh.userData.target.exhibit.id : undefined);
+    if (!id) return;
+    const lost = this.lostLabels.has(id);
+    if (mesh.userData.captionFor) { mesh.visible = !lost; return; }
+    const material = mesh.material as THREE.MeshBasicMaterial;
+    if (lost && !mesh.userData.foundMap) {
+      // Shared by every house, so it must not belong to the zone being built.
+      const zone = this.activeZone; this.activeZone = null;
+      this.lostTexture ??= this.canvasTexture(1024, 256, (ctx) => {
+        ctx.fillStyle = "#efe3c4"; ctx.fillRect(0, 0, 1024, 256);
+        ctx.strokeStyle = "#a8834a"; ctx.lineWidth = 8; ctx.setLineDash([26, 16]); ctx.strokeRect(18, 18, 988, 220);
+        ctx.fillStyle = "#8a6a34"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.font = 'italic 500 150px "Cormorant Garamond", serif'; ctx.fillText("?  ?  ?", 512, 132);
+      });
+      this.activeZone = zone;
+      mesh.userData.foundMap = material.map;
+      material.map = this.lostTexture;
+    } else if (!lost && mesh.userData.foundMap) {
+      material.map = mesh.userData.foundMap;
+      delete mesh.userData.foundMap;
+    }
+  }
+
+  /** Paintings whose word banner blew away today. */
+  setLostLabels(ids: string[]) {
+    this.lostLabels = new Set(ids);
+    this.scene.traverse((object) => { if (object instanceof THREE.Mesh) this.applyLostLabel(object); });
+    this.needsRender = true;
+  }
+  isLostLabel(id: string) { return this.lostLabels.has(id); }
 
   private shadow(x: number, z: number, w: number, d: number) {
     const texture = this.canvasTexture(128, 128, (ctx) => {

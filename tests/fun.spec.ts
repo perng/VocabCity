@@ -262,3 +262,33 @@ test('a flashcard sends a postcard image of its painting and word', async ({ pag
   expect(size).toBeGreaterThan(200_000);
   await expect(page.locator('.milestone-live')).toContainText('A postcard from Vocab City! Saved as an image.');
 });
+
+test('a painting that lost its label asks for its word before opening, then gets its label back', async ({ page }) => {
+  test.setTimeout(90000);
+  const today = new Date();
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const day = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+  const target = exhibits.find((e) => e.room === 0)!;
+  const settled = exhibits.filter((e) => e.room > 20).slice(0, 12).map((e) => e.id);
+  await enter(page, { 'vocabhall.visited.v1': settled, 'vocabhall.labels.v1': { day, ids: [target.id], restored: [], total: 4 } });
+  const state = () => page.evaluate((id) => {
+    const m = (window as any).__museum; let banner = false, note = true;
+    m.scene.traverse((o: any) => {
+      if (o.userData.wordBanner && o.userData.target.exhibit.id === id) banner = o.material.map === m.lostTexture;
+      if (o.userData.captionFor === id) note = o.visible;
+    });
+    return { banner, note };
+  }, target.id);
+  await expect.poll(state).toEqual({ banner: true, note: false });
+  await page.evaluate((id) => { const m = (window as any).__museum; m.options.onSelect(m.options.exhibits.find((e: any) => e.id === id), 0); }, target.id);
+  const dialog = page.getByRole('dialog', { name: 'A label blew away!' });
+  await expect(dialog.locator('.label-choices button')).toHaveCount(3);
+  await dialog.locator('.label-choices button').filter({ hasNotText: new RegExp(`^${target.word}$`) }).first().click();
+  await expect(dialog.locator('.label-hint')).toContainText(target.definition);
+  await dialog.getByRole('button', { name: target.word, exact: true }).click();
+  await expect(page.getByRole('dialog', { name: `Vocabulary exhibit: ${target.word}` })).toBeVisible();
+  await expect(page.locator('.milestone-live')).toContainText('Label restored! 1 / 1');
+  await expect.poll(state).toEqual({ banner: false, note: true });
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.labels.v1')!));
+  expect(saved).toEqual({ day, ids: [target.id], restored: [target.id], total: 5 });
+});

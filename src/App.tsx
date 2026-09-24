@@ -81,6 +81,7 @@ import { playSfx, setSfxEnabled, useSfxEnabled } from "./sfx";
 import { Soundscape } from "./soundscape";
 import { sendPostcard } from "./postcard";
 import { Celebrations, announce, celebrate } from "./Celebrations";
+import { labelChoices, readLabels, saveLabels, todaysLabels, type LostLabels } from "./labels";
 import { styleMilestone, styleOf, styleSets } from "./album";
 import { favourFound, favourWords, readFavours, saveFavours, type FavourBook } from "./favours";
 import { WALK_SIZE, dayKey, readDaily, saveDaily, streak, todaysWalk, type DailyWalk } from "./daily";
@@ -99,6 +100,8 @@ const HOUSE_SECTIONS: [HouseKind, string, string][] = [
   ["level", "LEVEL LANES", "Every other word above level 30, six to a house in alphabetical order."],
 ];
 const ROOM_WORDS = roomWordIds(exhibits, rooms.length);
+// The wind only starts taking labels once a visitor has settled in.
+const LOST_LABELS_AFTER = 12;
 const STYLE_SETS = styleSets(exhibits);
 const placeLabel = (index: number, locale: string) => {
   const room = rooms[index];
@@ -456,6 +459,8 @@ export default function App() {
     const refresh = () => {
       if (document.visibilityState === "visible" && walkRef.current.day !== dayKey())
         setWalk(todaysWalk(walkRef.current, exhibits, visitedRef.current, checkedRef.current));
+      if (document.visibilityState === "visible" && labelsRef.current.day !== dayKey())
+        setLabels(todaysLabels(labelsRef.current, exhibits, ROOT_START, checkedRef.current, dayKey()));
     };
     document.addEventListener("visibilitychange", refresh);
     return () => document.removeEventListener("visibilitychange", refresh);
@@ -581,6 +586,39 @@ export default function App() {
     },
     [setVisited, playback.start],
   );
+  // Lost labels: paintings clicked in the city may first ask for their missing word.
+  const [labels, setLabels] = useState<LostLabels>(() => todaysLabels(readLabels(validIds), exhibits, ROOT_START, checked, dayKey()));
+  const labelsRef = useRef(labels);
+  labelsRef.current = labels;
+  useEffect(() => { saveLabels(labels); }, [labels]);
+  const lostNow = visited.length >= LOST_LABELS_AFTER ? labels.ids.filter((id) => !labels.restored.includes(id)) : [];
+  const lostRef = useRef(lostNow);
+  lostRef.current = lostNow;
+  const [labelQuiz, setLabelQuiz] = useState<{ exhibit: Exhibit; area: number; wrong: string[] } | null>(null);
+  const sceneSelect = useCallback((exhibit: Exhibit, area?: number) => {
+    if (lostRef.current.includes(exhibit.id)) {
+      setIntro(false);
+      setLabelQuiz({ exhibit, area: area ?? exhibit.room, wrong: [] });
+      return;
+    }
+    openExhibit(exhibit, area);
+  }, [openExhibit]);
+  const restoreLabel = (choice: Exhibit) => {
+    if (!labelQuiz) return;
+    if (choice.id !== labelQuiz.exhibit.id) {
+      playSfx("wrong");
+      setLabelQuiz({ ...labelQuiz, wrong: [...labelQuiz.wrong, choice.id] });
+      return;
+    }
+    const today = labelsRef.current;
+    const next = { ...today, restored: [...today.restored, choice.id], total: today.total + 1 };
+    labelsRef.current = next;
+    setLabels(next);
+    setLabelQuiz(null);
+    playSfx("correct"); celebrate("confetti");
+    announce(t("Label restored!"), `${next.restored.length} / ${next.ids.length} ${t("lost labels found today")}`);
+    openExhibit(choice, labelQuiz.area);
+  };
   useEffect(() => {
     let live = true;
     void Promise.allSettled([
@@ -596,7 +634,7 @@ export default function App() {
           onToggleChecked: toggleChecked,
           onVideo: setVideoExhibit,
           locale: localeRef.current,
-          onSelect: openExhibit,
+          onSelect: sceneSelect,
           onHover: (exhibit, action = "open") => {
             setHovered(exhibit);
             setHoverAction(action);
@@ -619,14 +657,14 @@ export default function App() {
       museum.current?.dispose();
       museum.current = null;
     };
-  }, [openExhibit, toggleChecked]);
+  }, [sceneSelect, toggleChecked]);
   useEffect(() => {
     museum.current?.setBlocked(
-      Boolean(resident || selected || modal || videoExhibit || artworkExhibit || (gamesRoom !== null && !gamesPlaying)),
+      Boolean(resident || selected || modal || videoExhibit || artworkExhibit || labelQuiz || (gamesRoom !== null && !gamesPlaying)),
       Boolean(resident),
     );
-  }, [resident, selected, modal, videoExhibit, artworkExhibit, ready, gamesRoom, gamesPlaying]);
-  const encountersEnabled = ready && !error && !intro && !resident && !selected && !modal && !videoExhibit && !artworkExhibit && gamesRoom === null;
+  }, [resident, selected, modal, videoExhibit, artworkExhibit, labelQuiz, ready, gamesRoom, gamesPlaying]);
+  const encountersEnabled = ready && !error && !intro && !resident && !selected && !modal && !videoExhibit && !artworkExhibit && !labelQuiz && gamesRoom === null;
   const nearby = encountersEnabled ? nearbyResident(pose) : null;
   useEffect(() => { museum.current?.setResidentsEnabled(encountersEnabled); }, [encountersEnabled]);
   useEffect(() => { if (resident) playback.stop(); }, [resident, playback.stop]);
@@ -641,6 +679,9 @@ export default function App() {
   useEffect(() => {
     museum.current?.setFriendship(Object.fromEntries(RESIDENTS.map((npc) => [npc.id, favours[npc.id]?.level ?? 0])));
   }, [friendshipKey, ready]);
+  useEffect(() => {
+    museum.current?.setLostLabels(lostNow);
+  }, [lostNow.join(), ready]);
   useEffect(() => {
     museum.current?.setWalkTargets(walkTargets);
   }, [walkTargets.join(), ready]);
@@ -976,7 +1017,7 @@ export default function App() {
         {hovered && !selected && !modal && !videoExhibit && (
           <div className="art-hover">
             <span>{t("DISCOVER THIS WORD")}</span>
-            <strong>{hovered.word}</strong>
+            <strong>{lostNow.includes(hovered.id) ? t("A label blew away!") : hovered.word}</strong>
             <span>
               {t(
                 hoverAction === "video"
@@ -1680,6 +1721,27 @@ export default function App() {
         </Dialog>
       )}
 
+      {labelQuiz && (
+        <Dialog className="label-dialog" label={t("A label blew away!")} onClose={() => setLabelQuiz(null)}>
+          <section>
+            <div className="modal-heading">
+              <div>
+                <span className="eyebrow">{t("LOST AND FOUND")}</span>
+                <h2>{t("A label blew away!")}</h2>
+              </div>
+              <button className="icon-button" onClick={() => setLabelQuiz(null)} aria-label={t("Close")}><X size={21} /></button>
+            </div>
+            <p>{t("The wind took this painting's word. Which one belongs to it?")}</p>
+            <img className="label-art" src={assetUrl(labelQuiz.exhibit.image)} alt={t("The painting without its label")} />
+            <div className="label-choices">
+              {labelChoices(labelQuiz.exhibit, exhibits, labels.day).map((choice) => <button key={choice.id} disabled={labelQuiz.wrong.includes(choice.id)}
+                data-wrong={labelQuiz.wrong.includes(choice.id)} onClick={() => restoreLabel(choice)}>{choice.word}</button>)}
+            </div>
+            {labelQuiz.wrong.length > 0 && <p className="label-hint" role="status">{t("Not this one. Here is its meaning:")} <span lang="en">{labelQuiz.exhibit.definition}</span></p>}
+          </section>
+        </Dialog>
+      )}
+
       {modal === "album" && (
         <Dialog className="album-dialog" label={t("The collector's album")} onClose={() => setModal(null)}>
           <section>
@@ -1749,6 +1811,10 @@ export default function App() {
               })}
             </ol>
             <p className="walk-note">{t("Finish every walk to keep your streak. A new route appears tomorrow.")}</p>
+            {visited.length >= LOST_LABELS_AFTER && <div className="lost-summary">
+              <strong>{labels.restored.length} / {labels.ids.length}</strong>
+              <span>{t("Lost labels restored today. The wind blew one word off a painting in every landmark and in a few Old Town houses: look for a banner showing ? ? ?")}</span>
+            </div>}
           </section>
         </Dialog>
       )}

@@ -3119,3 +3119,20 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
 .postcard-button { border: 1px dashed #c9a86a; display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; padding: 12px; font-size: 10px; margin-top: 8px; color: #7a5a12; background: #fbf6e8; }
 .postcard-button:hover:not(:disabled) { background: #f7efd5; }
 .postcard-button:disabled { opacity: .6; }
+
+/* Lost labels. */
+.label-dialog { width: 520px; }
+.label-dialog > section { padding: 32px 36px; }
+.label-dialog > section > p { font-size: 14px; line-height: 1.7; margin-top: 12px; color: var(--muted); }
+.label-art { display: block; width: 100%; max-height: 46vh; object-fit: contain; margin: 16px 0; border: 6px solid #fbf6e8; outline: 2px dashed #a8834a; background: #efe9d8; }
+.label-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.label-choices button { padding: 14px 8px; border: 1px solid #c9b691; background: #fffdf6; font: 500 20px/1.2 var(--serif); overflow-wrap: anywhere; }
+.label-choices button:hover:not(:disabled) { background: #f7efd5; border-color: #b8871f; }
+.label-choices button[data-wrong=true] { opacity: .45; text-decoration: line-through; animation: label-shake .35s; }
+@keyframes label-shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+.label-hint { font-size: 13px !important; background: #ede9d9; padding: 10px 12px; }
+@media (max-width: 540px) { .label-dialog > section { padding: 22px 18px; } .label-choices { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .label-choices button[data-wrong=true] { animation: none; } }
+.lost-summary { display: flex; gap: 12px; align-items: baseline; margin-top: 14px; padding: 12px 14px; border: 1px dashed #a8834a; background: #fbf6e8; }
+.lost-summary strong { font: 500 24px/1 var(--serif); color: #8a6a34; white-space: nowrap; }
+.lost-summary span { font-size: 12px; line-height: 1.6; color: #6c7565; }
