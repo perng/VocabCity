@@ -339,3 +339,11 @@ test('the city journal gathers progress and points at places that are almost don
   await goal.getByRole('button', { name: 'Take me there' }).click();
   await expect(dialog).toBeHidden();
 });
+
+test('the corner tour continues from the first unseen painting where you stand', async ({ page }) => {
+  const quay = ROOM_WORDS[1].map((id) => exhibits.find((e) => e.id === id)!);
+  await enter(page, { 'vocabhall.visited.v1': [quay[0].id] });
+  await page.getByRole('button', { name: 'Tour from here', exact: true }).click();
+  await expect(page.getByRole('heading', { name: quay[1].word, exact: true })).toBeVisible();
+  await expect(page.locator('.exhibit-footer')).toContainText('YOUR GUIDED TOUR');
+});

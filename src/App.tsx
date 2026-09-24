@@ -803,6 +803,13 @@ export default function App() {
     setTour(true);
     visit(exhibits[0]);
   };
+  // Continue the tour from the first painting not yet seen where the visitor stands.
+  const tourFromHere = () => {
+    const here = pose.room < rooms.length ? ROOM_WORDS[pose.room].map((id) => EXHIBIT_BY_ID.get(id)!) : [];
+    const next = here.find((e) => !visitedSet.has(e.id)) ?? exhibits.find((e) => !visitedSet.has(e.id)) ?? exhibits[0];
+    setTour(true);
+    visit(next, pose.room < rooms.length ? pose.room : undefined);
+  };
   const closeExhibit = () => {
     setSelected(null);
     setTour(false);
@@ -1012,9 +1019,9 @@ export default function App() {
             <span className="eyebrow">{t("TAKE YOUR TIME")}</span>
             <p>{t(currentRoom.subtitle)}</p>
             <div className="explore-links">
-              <button onClick={startTour}>
+              <button onClick={tourFromHere}>
                 <Play size={12} />
-                {t("Guided tour")}
+                {t("Tour from here")}
               </button>
               <button onClick={() => navigateRoom(pose.room === SQUARE_INDEX ? 0 : SQUARE_INDEX)}>
                 {pose.room === SQUARE_INDEX ? <ArrowLeft size={13} /> : <Landmark size={13} />}
