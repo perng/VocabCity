@@ -1,5 +1,11 @@
 import { defineConfig } from "@playwright/test";
 
+// Lost labels change daily; tests start with none blown away so painting clicks open
+// their flashcards. Tests of the feature seed their own labels.
+const now = new Date(), pad = (n: number) => String(n).padStart(2, "0");
+const today = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+const noLostLabels = { name: "vocabhall.labels.v1", value: JSON.stringify({ day: today, ids: [], restored: [], total: 0 }) };
+
 export default defineConfig({
   testDir: "./tests",
   fullyParallel: false,
@@ -11,6 +17,7 @@ export default defineConfig({
     viewport: { width: 1440, height: 960 },
     screenshot: "only-on-failure",
     trace: "retain-on-failure",
+    storageState: { cookies: [], origins: [{ origin: "http://127.0.0.1:5173", localStorage: [noLostLabels] }] },
   },
   webServer: {
     command: "npm run dev",
