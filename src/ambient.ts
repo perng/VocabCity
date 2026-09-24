@@ -19,7 +19,11 @@ export class CityLife {
   private disposables: { dispose: () => void }[] = [];
   constructor(private scene: THREE.Scene) {}
 
-  add(entry: Living) { this.living.push(entry); }
+  /** Register a moving thing; the returned function stops animating it. */
+  add(entry: Living) {
+    this.living.push(entry);
+    return () => { this.living = this.living.filter((other) => other !== entry); };
+  }
 
   /** Advance nearby life; returns true when anything moved and a frame is needed. */
   step(t: number, dt: number, viewer: THREE.Vector3) {

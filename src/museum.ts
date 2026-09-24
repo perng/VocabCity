@@ -4,6 +4,7 @@ import { CityLife } from "./ambient";
 import { walkingSpeed } from "./movement";
 import { RESIDENTS, nearbyResident, residentHat, type Resident } from "./residents";
 import type { SceneGame } from "./games";
+import type { PlaceState } from "./progress";
 import { translate } from "./i18n";
 import { assetUrl, partOfSpeech, type Exhibit, type Room } from "./types";
 import {
@@ -101,6 +102,7 @@ type Zone = {
   localized: (() => void)[];
   frames: DisplayFrame[];
   paintings: string[];
+  marks?: { glass: THREE.MeshStandardMaterial[]; stars: THREE.Object3D[] };
 };
 const ZONE_BUILD_DISTANCE = 64;
 const ZONE_RELEASE_DISTANCE = 104;
@@ -165,6 +167,10 @@ export class Museum {
   private reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
     .matches;
   private obstacles: { x: number; z: number; rx: number; rz: number }[] = [];
+  private placeStates: PlaceState[] = [];
+  private walkMarkers: { sprite: THREE.Sprite; stop: () => void }[] = [];
+  private walkStar: THREE.Texture | null = null;
+  private evening = false;
 
   constructor(
     private host: HTMLElement,
@@ -1479,6 +1485,8 @@ export class Museum {
       ctx.fillText(`${translate(house.kind === "root" ? "ROOT FAMILY" : "TOWNHOUSE", this.options.locale)} · ${root.words.length} ${translate("words", this.options.locale)}`, 560, 130, 430);
     }, true);
     this.panel(sign, 5.6, 1.1, 0, h - 0.7, d / 2 + 0.18, hall);
+    zone.marks = this.houseMarks(hall, h, d);
+    this.applyPlaceState(zone);
     for (const [exhibitIndex, exhibit] of this.options.exhibits.entries())
       for (const placement of exhibitPlacements(exhibit))
         if (placement.area === index) this.buildDisplay(exhibit, exhibitIndex, placement, zoneGroup);
@@ -1486,6 +1494,87 @@ export class Museum {
     this.displayFrames.push(...zone.frames);
     this.scene.add(zoneGroup);
     this.renderer.shadowMap.needsUpdate = true;
+    this.needsRender = true;
+  }
+
+  // Two door lanterns on every house: dark until the house is explored, lit once every
+  // painting has been opened, and joined by gold stars beside the sign once it is mastered.
+  private houseMarks(hall: THREE.Group, h: number, d: number) {
+    const glass: THREE.MeshStandardMaterial[] = [], stars: THREE.Object3D[] = [];
+    for (const side of [-1, 1]) {
+      this.box(0.07, 0.07, 0.45, side * 4.9, 3.95, d / 2 + 0.42, "#4d4a3f", hall);
+      const material = new THREE.MeshStandardMaterial({ color: "#6f6a5c", roughness: 0.4, emissive: "#ffcf73", emissiveIntensity: 0 });
+      const lamp = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.13, 0.4, 10), material);
+      lamp.position.set(side * 4.9, 3.66, d / 2 + 0.62); hall.add(lamp); glass.push(material);
+      const cap = new THREE.Mesh(new THREE.ConeGeometry(0.2, 0.18, 10), this.material("#4d4a3f"));
+      cap.position.set(side * 4.9, 3.95, d / 2 + 0.62); hall.add(cap);
+      const shape = new THREE.Shape();
+      for (let i = 0; i < 10; i++) {
+        const r = i % 2 ? 0.14 : 0.34, a = Math.PI / 2 + (i * Math.PI) / 5;
+        if (i) shape.lineTo(Math.cos(a) * r, Math.sin(a) * r); else shape.moveTo(Math.cos(a) * r, Math.sin(a) * r);
+      }
+      const star = new THREE.Mesh(new THREE.ExtrudeGeometry(shape, { depth: 0.06, bevelEnabled: false }),
+        new THREE.MeshStandardMaterial({ color: "#e0b040", metalness: 0.6, roughness: 0.3, emissive: "#b8871f", emissiveIntensity: 0.35 }));
+      star.position.set(side * 3.25, h - 0.7, d / 2 + 0.2); star.visible = false; hall.add(star); stars.push(star);
+    }
+    return { glass, stars };
+  }
+
+  private applyPlaceState(zone: Zone) {
+    if (!zone.marks) return;
+    const state = this.placeStates[zone.room] ?? "new";
+    const lit = state === "explored" || state === "mastered";
+    for (const glass of zone.marks.glass) {
+      glass.color.set(lit ? (state === "mastered" ? "#ffd56b" : "#ffdf9a") : "#6f6a5c");
+      glass.emissiveIntensity = lit ? (this.evening ? 2.4 : 1.2) : 0;
+    }
+    for (const star of zone.marks.stars) star.visible = state === "mastered";
+  }
+
+  /** Gold stars bob above the paintings on today's walk until each one is found. */
+  setWalkTargets(ids: string[]) {
+    for (const marker of this.walkMarkers) { marker.stop(); this.scene.remove(marker.sprite); marker.sprite.material.dispose(); }
+    this.walkMarkers = [];
+    this.walkStar ??= this.canvasTexture(128, 128, (ctx) => {
+      const glow = ctx.createRadialGradient(64, 64, 8, 64, 64, 62);
+      glow.addColorStop(0, "rgba(255,226,140,.95)"); glow.addColorStop(1, "rgba(255,226,140,0)");
+      ctx.fillStyle = glow; ctx.fillRect(0, 0, 128, 128);
+      ctx.beginPath();
+      for (let i = 0; i < 10; i++) {
+        const r = i % 2 ? 17 : 40, a = -Math.PI / 2 + (i * Math.PI) / 5;
+        ctx.lineTo(64 + Math.cos(a) * r, 64 + Math.sin(a) * r);
+      }
+      ctx.closePath(); ctx.fillStyle = "#e0a92c"; ctx.fill();
+      ctx.lineWidth = 4; ctx.strokeStyle = "#fff4d0"; ctx.stroke();
+    });
+    for (const id of ids) {
+      const exhibit = this.options.exhibits.find((e) => e.id === id);
+      if (!exhibit) continue;
+      for (const placement of exhibitPlacements(exhibit)) {
+        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.walkStar, depthWrite: false }));
+        // Beside the top left of the frame, level with the word banner (display-local units).
+        const scale = displayScale(placement.area);
+        const offset = new THREE.Vector3(-1.9 * scale, 0, 0.45 * scale).applyAxisAngle(Y_AXIS, placement.yaw);
+        const base = 4.45 * scale;
+        sprite.position.set(placement.x + offset.x, base, placement.z + offset.z);
+        sprite.scale.setScalar(0.85);
+        sprite.name = `walk:${id}`;
+        this.scene.add(sprite);
+        const phase = placement.x * 0.3;
+        const stop = this.life.add({ x: placement.x, z: placement.z, reach: 30, update: (t) => {
+          sprite.position.y = base + Math.sin(t * 2 + phase) * 0.12;
+          sprite.material.rotation = Math.sin(t * 1.3 + phase) * 0.15;
+        } });
+        this.walkMarkers.push({ sprite, stop });
+      }
+    }
+    this.needsRender = true;
+  }
+
+  /** Light the lanterns of explored houses and add stars to mastered ones. */
+  setPlaceStates(states: PlaceState[]) {
+    this.placeStates = states;
+    for (const zone of this.zones) this.applyPlaceState(zone);
     this.needsRender = true;
   }
 
@@ -1516,6 +1605,7 @@ export class Museum {
     zone.localized = [];
     zone.frames = [];
     zone.paintings = [];
+    zone.marks = undefined;
     this.needsRender = true;
   }
 
@@ -1792,6 +1882,8 @@ export class Museum {
   }
   setEvening(evening: boolean) {
     this.needsRender = true;
+    this.evening = evening;
+    for (const zone of this.zones) this.applyPlaceState(zone);
     this.renderer.toneMappingExposure = evening ? 0.78 : 1.22;
     this.hemisphere.color.set(evening ? "#e5d7c5" : "#fcf4e5");
     this.hemisphere.intensity = evening ? 1.7 : 2.3;

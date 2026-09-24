@@ -1,6 +1,7 @@
 import {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type ReactNode,
@@ -10,6 +11,8 @@ import {
   ArrowLeft,
   ArrowRight,
   ArrowUp,
+  Flame,
+  Star,
   Bell,
   BellOff,
   Bookmark,
@@ -37,6 +40,7 @@ import {
   Sparkles,
   Sprout,
   Sun,
+  Trophy,
   Volume2,
   VolumeX,
   X,
@@ -67,11 +71,13 @@ import {
   rootRoomTransform,
 } from "./layout";
 import { assetUrl, partOfSpeech, type Exhibit, type ExhibitDetails, type HouseKind, type Room } from "./types";
-import { useLocale } from "./i18n";
+import { translate, useLocale } from "./i18n";
 import { useExhibitAudio } from "./useExhibitAudio";
 import { YouglishPlayer, YouTubeLogo } from "./YouglishPlayer";
 import { playSfx, setSfxEnabled, useSfxEnabled } from "./sfx";
-import { Celebrations, celebrate } from "./Celebrations";
+import { Celebrations, announce, celebrate } from "./Celebrations";
+import { WALK_SIZE, dayKey, readDaily, saveDaily, streak, todaysWalk, type DailyWalk } from "./daily";
+import { newlyComplete, placeProgress, roomWordIds, roomsOf, type PlaceState } from "./progress";
 const exhibits = collection.exhibits as Exhibit[];
 const rooms = collection.rooms as Room[];
 if (rooms.length !== GALLERY_COUNT) throw new Error(`Expected ${GALLERY_COUNT} rooms in the collection, found ${rooms.length}.`);
@@ -85,6 +91,23 @@ const HOUSE_SECTIONS: [HouseKind, string, string][] = [
   ["family", "WORD FAMILY HOUSES", "One stem in several forms: verb, noun, adjective side by side."],
   ["level", "LEVEL LANES", "Every other word above level 30, six to a house in alphabetical order."],
 ];
+const ROOM_WORDS = roomWordIds(exhibits, rooms.length);
+const placeLabel = (index: number, locale: string) => {
+  const room = rooms[index];
+  return room.house ? `${room.house.display}` : translate(districtFor(index).landmark, locale);
+};
+function roomStates(visited: string[], checked: string[]) {
+  const seen = new Set(visited), learned = new Set(checked);
+  return ROOM_WORDS.map((ids) => placeProgress(ids, seen, learned));
+}
+// Celebrate a place the moment its last painting is opened or its last word is learned.
+function celebratePlaces(done: number[], kind: "explored" | "mastered", locale: string) {
+  if (!done.length) return;
+  const index = done[0], house = Boolean(rooms[index].house);
+  const title = translate(kind === "mastered" ? (house ? "House mastered!" : "Landmark mastered!") : (house ? "House explored!" : "Landmark explored!"), locale);
+  const detail = `${placeLabel(index, locale)} · ${ROOM_WORDS[index].length} ${translate(kind === "mastered" ? "words learned" : "words discovered", locale)}`;
+  setTimeout(() => { playSfx("complete"); celebrate("confetti"); announce(title, detail); }, kind === "explored" ? 900 : 250);
+}
 const fill = (text: string) => text.replace("{n}", String(exhibits.length)).replace("{houses}", String(houses.length));
 // Root rooms also show words whose home is a thematic gallery or another family.
 const roomExhibits = (room: number) => exhibits.filter((e) => e.room === room || e.families?.some((family) => family.room === room));
@@ -221,7 +244,8 @@ function MuseumLogo() {
     </svg>
   );
 }
-function FloorPlan({ pose, compact = false }: { pose: Pose; compact?: boolean }) {
+const PLACE_STROKE: Record<PlaceState, [string, number]> = { new: ["#a5ac99", .5], started: ["#a5ac99", .5], explored: ["#d9a22e", 1.4], mastered: ["#b8871f", 2] };
+function FloorPlan({ pose, compact = false, states, targets = [] }: { pose: Pose; compact?: boolean; states: ReturnType<typeof roomStates>; targets?: string[] }) {
   const { t } = useLocale();
   const follow = mapPoint(pose.x, pose.z);
   const viewBox = compact
@@ -253,13 +277,14 @@ function FloorPlan({ pose, compact = false }: { pose: Pose; compact?: boolean })
         if (room.house) {
           const h = rootRoomTransform(i);
           return <g key={room.id}>
-            <rect transform={`rotate(${-h.yaw * 180 / Math.PI} ${h.x} ${h.z})`} x={h.x - ROOT_ROOM.width / 2} y={h.z - ROOT_ROOM.depth / 2} width={ROOT_ROOM.width} height={ROOT_ROOM.depth} fill={pose.room === i ? `${room.color}99` : `${room.color}30`} stroke="#a5ac99" strokeWidth=".5" />
+            <rect transform={`rotate(${-h.yaw * 180 / Math.PI} ${h.x} ${h.z})`} x={h.x - ROOT_ROOM.width / 2} y={h.z - ROOT_ROOM.depth / 2} width={ROOT_ROOM.width} height={ROOT_ROOM.depth} fill={states[i].state === "mastered" ? "#ecd08a" : pose.room === i ? `${room.color}99` : `${room.color}30`} stroke={PLACE_STROKE[states[i].state][0]} strokeWidth={PLACE_STROKE[states[i].state][1]} data-state={states[i].state} />
             {!compact && <text x={h.x} y={h.z + 2} textAnchor="middle" fill="#52604c" fontSize={room.house.display.length > 8 ? 3.2 : 5.5} fontStyle="italic">{room.house.display.length > 18 ? room.house.display.slice(0, 17) + "…" : room.house.display}</text>}
           </g>;
         }
         const d = districtFor(i);
         return <g key={room.id}>
-          {box(d.box, pose.room === i ? `${room.color}99` : `${room.color}30`, room.id, d.indoor ? 0 : 3)}
+          {box(d.box, states[i].state === "mastered" ? "#ecd08a" : pose.room === i ? `${room.color}99` : `${room.color}30`, room.id, d.indoor ? 0 : 3)}
+          {(states[i].state === "explored" || states[i].state === "mastered") && <rect x={d.box.x0} y={d.box.z0} width={d.box.x1 - d.box.x0} height={d.box.z1 - d.box.z0} rx={d.indoor ? 0 : 3} fill="none" stroke={PLACE_STROKE[states[i].state][0]} strokeWidth={PLACE_STROKE[states[i].state][1] * 1.5} />}
           <text x={(d.box.x0 + d.box.x1) / 2} y={(d.box.z0 + d.box.z1) / 2 + 2.5} textAnchor="middle" fill="#52604c" fontSize="7">{String(i + 1).padStart(2, "0")}</text>
         </g>;
       })}
@@ -274,6 +299,8 @@ function FloorPlan({ pose, compact = false }: { pose: Pose; compact?: boolean })
         <text x="0" y={c.observatory.z + 2} textAnchor="middle" fill="#657571" fontSize="5">{t("OBSERVATORY")}</text>
       </>}
       {exhibits.flatMap(e => exhibitPlacements(e).map(p => <rect key={`${e.id}-${p.area}`} x={p.x-1.2} y={p.z-1.2} width="2.4" height="2.4" rx=".5" fill={rooms[e.room].color} />))}
+      {targets.flatMap(id => { const e = exhibits.find(x => x.id === id); return e ? exhibitPlacements(e).map(p => <path key={`walk-${id}-${p.area}`} className="walk-target"
+        transform={`translate(${p.x} ${p.z}) scale(${compact ? 1 : 1.6})`} d="M0-4 1.2-1.3 4-1.2 1.8.7 2.5 3.6 0 2 -2.5 3.6 -1.8.7 -4-1.2 -1.2-1.3Z" fill="#e0a92c" stroke="#fff7e2" strokeWidth=".6" />) : []; })}
     </g>
     {RESIDENTS.map(npc => { const point = mapPoint(npc.x, npc.z); return <g key={npc.id} transform={`translate(${point.x} ${point.y})`}>
       <title>{npc.name} · {t(npc.role)}</title><circle r={compact ? 2.4 : 3.5} fill={npc.color} stroke="#fff7e2" strokeWidth="1" />
@@ -284,13 +311,49 @@ function FloorPlan({ pose, compact = false }: { pose: Pose; compact?: boolean })
     </g>
   </svg>;
 }
-function MiniMap({ pose, onOpen }: { pose: Pose; onOpen: () => void }) {
+function MiniMap({ pose, onOpen, states, targets }: { pose: Pose; onOpen: () => void; states: ReturnType<typeof roomStates>; targets: string[] }) {
   const { t } = useLocale();
   return <button className="minimap" onClick={onOpen} aria-label={t("Open museum floor map")}>
     <span className="map-label">{t("YOUR LITTLE WORLD")}<Expand size={12} /></span>
-    <FloorPlan pose={pose} compact />
+    <FloorPlan pose={pose} compact states={states} targets={targets} />
     <span className="map-current"><span />{pose.room === SQUARE_INDEX || pose.room === STREETS_INDEX ? t(destinationFor(pose.room).name) : isRootRoom(pose.room) ? `${t("Root room")} · ${rooms[pose.room].house!.display}` : t(districtFor(pose.room).landmark)}</span>
   </button>;
+}
+function Ring({ value, total }: { value: number; total: number }) {
+  return <svg viewBox="0 0 32 32" aria-hidden="true">
+    <circle cx="16" cy="16" r="12" fill="none" stroke="#d1d1be" strokeWidth="2" />
+    <circle cx="16" cy="16" r="12" fill="none" stroke="#56735c" strokeWidth="2" strokeLinecap="round"
+      strokeDasharray={`${total ? (value / total) * 75.4 : 0} 75.4`} transform="rotate(-90 16 16)" />
+  </svg>;
+}
+// The place you stand in is a goal you can finish; the whole city stays in view below it.
+function ProgressCard({ room, visited, checked, states }: { room: number; visited: string[]; checked: string[]; states: ReturnType<typeof roomStates> }) {
+  const { t, locale } = useLocale();
+  const place = room >= 0 && room < rooms.length ? states[room] : null;
+  const seen = new Set(visited), learned = new Set(checked);
+  const explored = states.filter((p) => p.state === "explored" || p.state === "mastered").length;
+  return <div className="visit-progress" data-state={place?.state ?? "city"}>
+    {place ? <div className="place-progress">
+      <Ring value={place.discovered} total={place.total} />
+      <div>
+        <small className="place-name">{rooms[room].house ? `${t(rooms[room].house!.kind === "root" ? "Root house" : "Townhouse")} · ${placeLabel(room, locale)}` : placeLabel(room, locale)}</small>
+        <strong>{place.discovered}<span> / {place.total}</span></strong>
+        <small>{t(place.state === "mastered" ? "every word learned" : place.state === "explored" ? "explored · check words to master" : "discovered here")}</small>
+        <span className="word-dots" role="img" aria-label={`${place.discovered} / ${place.total} ${t("discovered")}, ${place.learned} ${t("learned")}`}>
+          {ROOM_WORDS[room].map((id) => <i key={id} data-state={learned.has(id) ? "learned" : seen.has(id) ? "seen" : "new"} />)}
+        </span>
+      </div>
+      {(place.state === "explored" || place.state === "mastered") && <Trophy className="place-badge" size={17} />}
+    </div> : null}
+    <div className="city-progress">
+      <span className="progress-flower"><Sparkles size={15} /></span>
+      <div>
+        <strong className="city-count">{visited.length}<span> / {exhibits.length}</span></strong>
+        <small>{t("words discovered")} · {explored} {t("places explored")}</small>
+      </div>
+      {!place && <Ring value={visited.length} total={exhibits.length} />}
+    </div>
+  </div>;
 }
 function DirectionPad({
   onMove,
@@ -365,7 +428,7 @@ export default function App() {
   const [hoverAction, setHoverAction] = useState<"open" | "check" | "video">(
     "open",
   );
-  const [modal, setModal] = useState<"map" | "collection" | "help" | null>(
+  const [modal, setModal] = useState<"map" | "collection" | "help" | "walk" | null>(
     null,
   );
   const [visited, setVisited] = useProgress("vocabhall.visited.v1");
@@ -373,6 +436,22 @@ export default function App() {
   const [checked, setChecked] = useProgress("vocabhall.learned.v1");
   const checkedRef = useRef(checked);
   checkedRef.current = checked;
+  const states = useMemo(() => roomStates(visited, checked), [visited, checked]);
+  const [walk, setWalk] = useState<DailyWalk>(() => todaysWalk(readDaily(validIds), exhibits, visited, checked));
+  const walkRef = useRef(walk);
+  walkRef.current = walk;
+  useEffect(() => { saveDaily(walk); }, [walk]);
+  // A new day brings a new walk, even if the tab stayed open overnight.
+  useEffect(() => {
+    const refresh = () => {
+      if (document.visibilityState === "visible" && walkRef.current.day !== dayKey())
+        setWalk(todaysWalk(walkRef.current, exhibits, visitedRef.current, checkedRef.current));
+    };
+    document.addEventListener("visibilitychange", refresh);
+    return () => document.removeEventListener("visibilitychange", refresh);
+  }, []);
+  const walkTargets = walk.ids.filter((id) => !walk.found.includes(id));
+  const walkStreak = streak(walk.completed, walk.day);
   const visitedRef = useRef(visited);
   visitedRef.current = visited;
   const sfx = useSfxEnabled();
@@ -381,6 +460,7 @@ export default function App() {
       if (!checkedRef.current.includes(exhibit.id)) {
         playSfx("learned");
         celebrate("spark");
+        celebratePlaces(newlyComplete(roomsOf(exhibit), ROOM_WORDS, new Set(checkedRef.current), exhibit.id), "mastered", localeRef.current);
       }
       setChecked((current) =>
         current.includes(exhibit.id)
@@ -417,7 +497,30 @@ export default function App() {
       setModal(null);
       // Play inside the opening gesture so mobile browsers allow pronunciation.
       void playback.start([wordClip(exhibit)]);
-      if (!visitedRef.current.includes(exhibit.id)) playSfx("discover");
+      const today = walkRef.current;
+      if (today.ids.includes(exhibit.id) && !today.found.includes(exhibit.id)) {
+        const found = [...today.found, exhibit.id];
+        const done = found.length === today.ids.length;
+        const completed = done && !today.completed.includes(today.day) ? [...today.completed, today.day] : today.completed;
+        const next = { ...today, found, completed };
+        walkRef.current = next;
+        setWalk(next);
+        const l = localeRef.current;
+        setTimeout(() => {
+          if (done) {
+            playSfx("complete"); celebrate("confetti");
+            const days = streak(completed, today.day);
+            announce(translate("Today's walk is complete!", l), `${days} ${translate(days === 1 ? "day in a row" : "days in a row", l)}`);
+          } else {
+            playSfx("correct"); celebrate("spark");
+            announce(translate("A star for today's walk!", l), `${found.length} / ${today.ids.length} ${translate("found", l)}`);
+          }
+        }, 700);
+      }
+      if (!visitedRef.current.includes(exhibit.id)) {
+        playSfx("discover");
+        celebratePlaces(newlyComplete(roomsOf(exhibit), ROOM_WORDS, new Set(visitedRef.current), exhibit.id), "explored", localeRef.current);
+      }
       setVisited((current) =>
         current.includes(exhibit.id) ? current : [...current, exhibit.id],
       );
@@ -480,6 +583,14 @@ export default function App() {
   useEffect(() => {
     museum.current?.setChecked(checked);
   }, [checked, ready]);
+  useEffect(() => {
+    museum.current?.setWalkTargets(walkTargets);
+  }, [walkTargets.join(), ready]);
+  const placeStateList = states.map((place) => place.state).join();
+  useEffect(() => {
+    museum.current?.setPlaceStates(states.map((place) => place.state));
+    // Only resend when a place changes state, not on every discovery.
+  }, [placeStateList, ready]);
   useEffect(() => {
     if (videoExhibit) playback.stop();
   }, [videoExhibit, playback.stop]);
@@ -749,38 +860,14 @@ export default function App() {
             <ChevronDown size={16} />
           </button>
         </div>
-        <div className="visit-progress">
-          <span className="progress-flower">
-            <Sparkles size={16} />
-          </span>
-          <div>
-            <strong>
-              {visited.length}
-              <span> / {exhibits.length}</span>
-            </strong>
-            <small>{t("words discovered")}</small>
-          </div>
-          <svg viewBox="0 0 32 32" aria-hidden="true">
-            <circle
-              cx="16"
-              cy="16"
-              r="12"
-              fill="none"
-              stroke="#d1d1be"
-              strokeWidth="2"
-            />
-            <circle
-              cx="16"
-              cy="16"
-              r="12"
-              fill="none"
-              stroke="#56735c"
-              strokeWidth="2"
-              strokeDasharray={`${(visited.length / exhibits.length) * 75.4} 75.4`}
-              transform="rotate(-90 16 16)"
-            />
-          </svg>
-        </div>
+        <ProgressCard room={pose.room} visited={visited} checked={checked} states={states} />
+        {!intro && <button className="walk-chip" data-complete={walk.found.length === walk.ids.length} onClick={() => setModal("walk")}
+          aria-label={`${t("Today's walk")}: ${walk.found.length} / ${walk.ids.length}`}>
+          <Star size={15} fill={walk.found.length === walk.ids.length ? "currentColor" : "none"} />
+          <span>{t("Today's walk")}</span>
+          <b>{walk.found.length} / {walk.ids.length}</b>
+          {walkStreak > 0 && <em title={t("days in a row")}><Flame size={13} />{walkStreak}</em>}
+        </button>}
 
         {intro && ready && !error && (
           <section className="welcome-card">
@@ -805,6 +892,7 @@ export default function App() {
               {t("Take a guided tour")}
               <span>{exhibits.length} {t("stops")}</span>
             </button>
+            <button className="text-button" onClick={() => { setIntro(false); setModal("walk"); }}><Star size={16} />{t("Today's walk")}<span>{WALK_SIZE} {t("paintings to find")}</span></button>
             <button className="text-button" onClick={launchGames}><Gamepad2 size={17} />{t("Play with words")}<ArrowRight size={15} /></button>
             <div className="welcome-footnote">
               <span>15 {t("LANDMARKS")} · {houses.length} √</span>
@@ -864,7 +952,7 @@ export default function App() {
             <ArrowRight size={15} />
           </button>
         )}
-        <MiniMap pose={pose} onOpen={() => setModal("map")} />
+        <MiniMap pose={pose} onOpen={() => setModal("map")} states={states} targets={walkTargets} />
         <div className="bottom-controls">
           <div className="walk-help">
             <span className="key-group">
@@ -1522,6 +1610,43 @@ export default function App() {
         </Dialog>
       )}
 
+      {modal === "walk" && (
+        <Dialog className="walk-dialog" label={t("Today's walk")} onClose={() => setModal(null)}>
+          <section>
+            <div className="modal-heading">
+              <div>
+                <span className="eyebrow">{t("A NEW LITTLE ROUTE EVERY DAY")}</span>
+                <h2>{t("Today's walk")}<span>.</span></h2>
+              </div>
+              <button className="icon-button" onClick={() => setModal(null)} aria-label={t("Close today's walk")}><X size={21} /></button>
+            </div>
+            <p>{t("Five paintings hang close together somewhere in the city. Walk to each one and open it. Gold stars float above them, and the map marks where they are.")}</p>
+            <div className="walk-summary">
+              <strong>{walk.found.length} / {walk.ids.length}</strong><span>{t("found today")}</span>
+              <em><Flame size={16} />{walkStreak ? `${walkStreak} ${t(walkStreak === 1 ? "day in a row" : "days in a row")}` : t("Start a streak today")}</em>
+            </div>
+            <ol className="walk-list">
+              {walk.ids.map((id, i) => {
+                const exhibit = exhibits.find((e) => e.id === id)!;
+                const found = walk.found.includes(id);
+                const place = isRootRoom(exhibit.room) ? rooms[exhibit.room].house!.display : t(districtFor(exhibit.room).landmark);
+                return <li key={id} data-found={found}>
+                  <img src={assetUrl(exhibit.image)} alt="" />
+                  <div>
+                    <span className="eyebrow">{String(i + 1).padStart(2, "0")} · {place}</span>
+                    <strong>{found ? exhibit.word : t("A painting to find")}</strong>
+                    <small>{found ? (exhibit.translations[locale] || exhibit.definition) : t("Look for the gold star above it.")}</small>
+                  </div>
+                  {found ? <button className="walk-open" onClick={() => visit(exhibit)}><Check size={16} />{t("Open")}</button>
+                    : <button className="walk-go" disabled={!ready || Boolean(error)} onClick={() => navigateRoom(exhibit.room)}>{t("Take me nearby")}<ArrowRight size={15} /></button>}
+                </li>;
+              })}
+            </ol>
+            <p className="walk-note">{t("Finish every walk to keep your streak. A new route appears tomorrow.")}</p>
+          </section>
+        </Dialog>
+      )}
+
       {modal === "map" && (
         <Dialog
           className="map-dialog"
@@ -1548,7 +1673,8 @@ export default function App() {
               )}{" "}
               {fill(t("Beyond the Cathedral Square, the Old Town's canal lanes hold {houses} townhouses: root families, theme houses, word families and level lanes."))}
             </p>
-            <div className="expanded-floorplan"><FloorPlan pose={pose} /></div>
+            <div className="expanded-floorplan"><FloorPlan pose={pose} states={states} targets={walkTargets} /></div>
+            <p className="map-legend"><span data-state="explored" />{t("Explored: every painting opened")}<span data-state="mastered" />{t("Mastered: every word learned")}</p>
             <section className="resident-directory" aria-label={t("City neighbours")}>
               <h3>{t("City neighbours")}</h3><p>{t("Find a neighbour for three vocabulary questions. Walk up and say hello.")}</p>
               <div>{RESIDENTS.map(npc => <button key={npc.id} disabled={!ready || Boolean(error)} onClick={() => {
@@ -1565,6 +1691,7 @@ export default function App() {
                 <button
                   key={room.id}
                   className={pose.room === i ? "current" : ""}
+                  data-state={i < rooms.length ? states[i].state : undefined}
                   onClick={() => navigateRoom(i)}
                 >
                   <span
@@ -1610,7 +1737,7 @@ export default function App() {
                 </div>
                 <div className="root-grid" aria-label={t(title)}>
                   {houses.filter(({ room }) => room.house!.kind === kind).map(({ room, index }) => (
-                    <button key={room.id} className={pose.room === index ? "current" : ""} style={{ borderColor: `${room.color}66` }} onClick={() => navigateRoom(index)}>
+                    <button key={room.id} className={pose.room === index ? "current" : ""} data-state={states[index].state} style={{ borderColor: `${room.color}66` }} onClick={() => navigateRoom(index)}>
                       <em>{room.house!.display}</em>
                       <small>{(locale && room.house!.translations[locale]) || room.house!.note}</small>
                       <span>{roomExhibits(index).filter((e) => visited.includes(e.id)).length} / {roomExhibits(index).length}</span>

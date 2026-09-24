@@ -15,6 +15,12 @@ export function celebrate(kind: Burst = "spark", at?: { x: number; y: number }) 
   window.dispatchEvent(new CustomEvent(EVENT, { detail: { kind, x: origin.x, y: origin.y } }));
 }
 
+const ANNOUNCE = "vocabhall:announce";
+/** A short ribbon over everything, for milestones such as a finished house. */
+export function announce(title: string, detail = "") {
+  window.dispatchEvent(new CustomEvent(ANNOUNCE, { detail: { title, detail } }));
+}
+
 let nextId = 0;
 function particles(kind: Burst, x: number, y: number): Particle[] {
   const count = kind === "confetti" ? 70 : 16;
@@ -33,6 +39,7 @@ function particles(kind: Burst, x: number, y: number): Particle[] {
 
 export function Celebrations() {
   const [bursts, setBursts] = useState<{ id: number; kind: Burst; items: Particle[] }[]>([]);
+  const [banner, setBanner] = useState<{ id: number; title: string; detail: string } | null>(null);
   const layer = useRef<HTMLDivElement>(null);
   // Modal dialogs live in the browser's top layer; re-open this popover on each burst
   // so the sparkles land above whichever dialog is open.
@@ -41,9 +48,9 @@ export function Celebrations() {
     if (!element?.showPopover) return;
     try {
       if (element.matches(":popover-open")) element.hidePopover();
-      if (bursts.length) element.showPopover();
+      if (bursts.length || banner) element.showPopover();
     } catch { /* Older browsers keep the fixed layer below dialogs. */ }
-  }, [bursts]);
+  }, [bursts, banner]);
   useEffect(() => {
     const remember = (event: PointerEvent) => { lastPointer = { x: event.clientX, y: event.clientY, at: performance.now() }; };
     const onBurst = (event: Event) => {
@@ -52,12 +59,25 @@ export function Celebrations() {
       setBursts((current) => [...current.slice(-4), { id, kind, items: particles(kind, x, y) }]);
       setTimeout(() => setBursts((current) => current.filter((burst) => burst.id !== id)), kind === "confetti" ? 2600 : 1100);
     };
+    let bannerTimer: ReturnType<typeof setTimeout> | undefined;
+    const onAnnounce = (event: Event) => {
+      const { title, detail } = (event as CustomEvent<{ title: string; detail: string }>).detail;
+      setBanner({ id: nextId++, title, detail });
+      clearTimeout(bannerTimer);
+      bannerTimer = setTimeout(() => setBanner(null), 3600);
+    };
     window.addEventListener("pointerdown", remember, true);
     window.addEventListener(EVENT, onBurst);
-    return () => { window.removeEventListener("pointerdown", remember, true); window.removeEventListener(EVENT, onBurst); };
+    window.addEventListener(ANNOUNCE, onAnnounce);
+    return () => {
+      clearTimeout(bannerTimer);
+      window.removeEventListener("pointerdown", remember, true); window.removeEventListener(EVENT, onBurst); window.removeEventListener(ANNOUNCE, onAnnounce);
+    };
   }, []);
-  return <div ref={layer} className="celebrations" popover="manual" aria-hidden="true">
-    {bursts.map((burst) => <div key={burst.id} className={`burst burst-${burst.kind}`}>
+  return <div ref={layer} className="celebrations" popover="manual">
+    <p className="milestone-live" role="status" aria-live="polite">{banner ? `${banner.title}. ${banner.detail}` : ""}</p>
+    {banner && <div key={banner.id} className="milestone-banner" aria-hidden="true"><strong>{banner.title}</strong>{banner.detail && <span>{banner.detail}</span>}</div>}
+    {bursts.map((burst) => <div key={burst.id} className={`burst burst-${burst.kind}`} aria-hidden="true">
       {burst.items.map((p) => <i key={p.id} data-round={p.round} style={{
         left: p.x, top: p.y, width: p.size, height: p.round ? p.size : p.size * 0.5, background: p.color,
         animationDelay: `${p.delay}ms`, "--dx": `${p.dx}px`, "--dy": `${p.dy}px`, "--spin": `${p.spin}deg`,
