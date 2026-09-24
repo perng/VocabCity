@@ -558,9 +558,8 @@ export default function App() {
           }
         }, 700);
       }
-      const book = favoursRef.current;
       for (const npc of RESIDENTS) {
-        const favour = book[npc.id]?.active;
+        const book = favoursRef.current, favour = book[npc.id]?.active;
         if (!favour?.ids.includes(exhibit.id) || favour.found.includes(exhibit.id)) continue;
         const found = [...favour.found, exhibit.id];
         const next = { ...book, [npc.id]: { ...book[npc.id], active: { ...favour, found } } };
