@@ -1127,6 +1127,8 @@ export default function App() {
           {t("WORDS FROM HANDY 990 · ART BY VOCAB CITY")}
         </span>
         {gamesRoom !== null && <MuseumGames museum={museum} roomIndex={gamesRoom} room={rooms[gamesRoom]} pool={roomExhibits(gamesRoom)} rooms={rooms} exhibits={exhibits} checked={checked}
+          adventures={{ walk: [walk.found.length, walk.ids.length], labels: visited.length >= LOST_LABELS_AFTER ? [labels.restored.length, labels.ids.length] : null,
+            favours: RESIDENTS.filter((npc) => favours[npc.id]?.active).length, onOpen: (target) => setModal(target) }}
           onClose={() => { setGamesRoom(null); hostRef.current?.querySelector("canvas")?.focus(); }} onPlayingChange={setGamesPlaying} onAudioChange={setGameAudio} />}
         {nearby && <button className="resident-invite" onClick={() => setResident(nearby)} aria-label={`${t("Talk to")} ${nearby.name}`}>
           <MessageCircle size={23} /><span><strong>{t("Talk to")} {nearby.name}</strong><small>{t(nearby.role)} · {t("Three quick vocabulary questions")}</small></span><ArrowRight size={17} />
