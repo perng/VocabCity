@@ -734,6 +734,7 @@ export default function App() {
     soundscapeRef.current?.setVolume(videoExhibit ? 0 : playback.active || gameAudio ? 0.25 : 0.9);
   }, [playback.active, videoExhibit, gameAudio]);
   useEffect(() => { soundscapeRef.current?.setPosition(pose); }, [pose]);
+  useEffect(() => { soundscapeRef.current?.setEvening(evening); }, [evening]);
   useEffect(
     () => () => {
       clearTimeout(toastTimer.current);
@@ -790,6 +791,7 @@ export default function App() {
         ambienceRef.current = ctx;
         soundscapeRef.current = new Soundscape(ctx);
         soundscapeRef.current.setPosition(poseRef.current);
+        soundscapeRef.current.setEvening(evening);
       }
       if (ambient) await ambienceRef.current.suspend();
       else await ambienceRef.current.resume();
