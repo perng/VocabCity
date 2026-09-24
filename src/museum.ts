@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { Botany } from "./botany";
+import { CityLife } from "./ambient";
 import { walkingSpeed } from "./movement";
 import { RESIDENTS, nearbyResident, residentHat, type Resident } from "./residents";
 import type { SceneGame } from "./games";
@@ -106,6 +107,8 @@ const ZONE_RELEASE_DISTANCE = 104;
 
 export class Museum {
   private scene = new THREE.Scene();
+  private life = new CityLife(this.scene);
+  private lastLife = 0;
   private camera = new THREE.PerspectiveCamera(68, 1, 0.08, 330);
   private renderer: THREE.WebGLRenderer;
   private keys = new Set<string>();
@@ -483,11 +486,17 @@ export class Museum {
     // Sea to the south, with the quay, the mole and the lighthouse.
     const sea = new THREE.Mesh(new THREE.PlaneGeometry(1400, 700), new THREE.MeshStandardMaterial({ color: "#6f9fa4", metalness: 0.25, roughness: 0.32 }));
     sea.rotation.x = -Math.PI / 2; sea.position.set(0, -0.6, c.seaEdge + 330); this.scene.add(sea);
+    const ripples = new THREE.Group(); this.scene.add(ripples);
     for (let i = 0; i < 160; i++) {
       const x = Math.sin(i * 6.7) * 300, z = c.seaEdge + 8 + (i * 13.7) % 260;
       if (x > c.mole.x0 - 3 && x < c.mole.x1 + 3 && z < c.mole.z1 + 4) continue;
-      this.box(1 + i % 4, 0.008, 0.04, x, -0.55, z, i % 3 ? "#a6cac4" : "#5f9598");
+      this.box(1 + i % 4, 0.008, 0.04, x, -0.55, z, i % 3 ? "#a6cac4" : "#5f9598", ripples);
     }
+    // The ripples drift with a slow swell; the sea surface rises and falls a few centimetres.
+    this.life.add({ x: 0, z: c.seaEdge, reach: 220, update: (t) => {
+      ripples.position.set(Math.sin(t * 0.21) * 1.6, Math.sin(t * 0.8) * 0.03, Math.sin(t * 0.33) * 0.9);
+      sea.position.y = -0.6 + Math.sin(t * 0.8) * 0.03;
+    } });
     this.ground(-c.wallX - 2, c.wallX + 2, c.quay.north - 2, c.quay.south, this.cobbles, 0.002);
     this.box(c.wallX * 2 + 4, 1.3, 0.5, 0, -0.65, c.quay.south + 0.25, "#a99a7c");
     // Railing along the sea edge, leaving the mole open.
@@ -526,16 +535,26 @@ export class Museum {
     const cap = new THREE.Mesh(new THREE.ConeGeometry(1.6, 1.4, 12), this.material("#b8453a"));
     cap.position.set(light.x, 21.3, light.z); this.scene.add(cap);
     // Moored boats and a distant sail.
-    for (const [x, z, color] of [[-30, 68, "#b37661"], [30, 69, "#73959e"], [-70, 72, "#c9a55a"], [110, 110, "#f3e7cc"]] as const) {
+    for (const [i, [x, z, color]] of ([[-30, 68, "#b37661"], [30, 69, "#73959e"], [-70, 72, "#c9a55a"], [110, 110, "#f3e7cc"]] as const).entries()) {
+      const boat = new THREE.Group(); boat.position.set(x, 0, z); this.scene.add(boat);
       const hull = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 10), this.material(color));
-      hull.scale.set(1.4, 0.75, 3.2); hull.position.set(x, -0.9, z); this.scene.add(hull);
-      this.box(2.1, 0.12, 4.8, x, -0.36, z, "#d6ba87");
+      hull.scale.set(1.4, 0.75, 3.2); hull.position.set(0, -0.9, 0); boat.add(hull);
+      this.box(2.1, 0.12, 4.8, 0, -0.36, 0, "#d6ba87", boat);
       const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.065, 7, 8), this.material("#a8926a"));
-      mast.position.set(x, 3.05, z); this.scene.add(mast);
+      mast.position.set(0, 3.05, 0); boat.add(mast);
       const sailGeometry = new THREE.BufferGeometry();
       sailGeometry.setAttribute("position", new THREE.Float32BufferAttribute([0, 6.2, 0, 0, 0.7, 0, 0, 0.7, 3.1], 3)); sailGeometry.computeVertexNormals();
-      const sail = new THREE.Mesh(sailGeometry, new THREE.MeshStandardMaterial({ color: "#f3e7cc", side: THREE.DoubleSide })); sail.position.set(x, -0.6, z); this.scene.add(sail);
+      const sail = new THREE.Mesh(sailGeometry, new THREE.MeshStandardMaterial({ color: "#f3e7cc", side: THREE.DoubleSide })); sail.position.set(0, -0.6, 0); boat.add(sail);
+      // Moored boats rock gently; the distant sail drifts along the horizon.
+      const distant = i === 3;
+      this.life.add({ x, z, reach: 200, update: (t) => {
+        boat.position.y = Math.sin(t * 0.9 + i * 1.7) * 0.12;
+        boat.rotation.z = Math.sin(t * 0.7 + i) * 0.045;
+        boat.rotation.x = Math.sin(t * 0.55 + i * 2.3) * 0.02;
+        if (distant) boat.position.x = x + Math.sin(t * 0.02) * 60;
+      } });
     }
+    this.life.addGulls({ x: 0, z: c.quay.south + 16 }, 7);
     // Belvedere: a pergola and benches at the western end of the quay.
     for (const x of [-86, -74, -62]) for (const z of [52, 60]) { this.box(0.24, 3.7, 0.24, x, 1.85, z, "#a68d64", this.scene, true); this.obstacles.push({ x, z, rx: 0.45, rz: 0.45 }); }
     for (const z of [52, 60]) this.box(26, 0.25, 0.3, -74, 3.65, z, "#ae946c", this.scene, true);
@@ -591,6 +610,8 @@ export class Museum {
     stem.position.set(f.x, 2, f.z); this.scene.add(stem);
     const bowl = new THREE.Mesh(new THREE.CylinderGeometry(1.4, 0.6, 0.4, 24), this.material("#d9d0b8"));
     bowl.position.set(f.x, 3.2, f.z); this.scene.add(bowl);
+    this.life.addFountain(f.x, f.z, 3.4, 0.95, f.r);
+    this.life.addPigeons([[-6, 19], [-5, 20.5], [-7, 21.2], [7, 35], [6.1, 36], [8, 36.4], [3, 16.5], [-9, 38]].map(([x, z]) => ({ x, z })));
     this.obstacles.push({ x: f.x, z: f.z, rx: f.r + 0.3, rz: f.r + 0.3 });
     // Arcades along both sides of the square carry the Gate Square paintings.
     for (const side of [-1, 1]) {
@@ -1689,9 +1710,17 @@ export class Museum {
       for (const x of [-.18, .18]) {
         part(new THREE.CylinderGeometry(.1, .12, .65, 10), "#655b49", x, .43, 0);
         part(new THREE.SphereGeometry(.15, 10, 8), "#3c483d", x, .13, .09).scale.set(1, .6, 1.5);
-        const arm = part(new THREE.CylinderGeometry(.09, .11, .65, 10), resident.color, x * 2.3, 1.23, .03);
-        arm.rotation.z = x < 0 ? -.18 : .18;
-        part(new THREE.SphereGeometry(.11, 10, 8), "#c9976c", x * 2.5, .91, .03);
+        if (x < 0) {
+          const arm = part(new THREE.CylinderGeometry(.09, .11, .65, 10), resident.color, x * 2.3, 1.23, .03);
+          arm.rotation.z = -.18;
+          part(new THREE.SphereGeometry(.11, 10, 8), "#c9976c", x * 2.5, .91, .03);
+        }
+      }
+      // The right arm hangs from a shoulder pivot so the resident can wave.
+      const shoulder = new THREE.Group(); shoulder.position.set(.36, 1.52, .03); shoulder.rotation.z = .18; group.add(shoulder);
+      for (const [geometry, color, y] of [[new THREE.CylinderGeometry(.09, .11, .65, 10), resident.color, -.3], [new THREE.SphereGeometry(.11, 10, 8), "#c9976c", -.64]] as const) {
+        const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color, roughness: .85 }));
+        mesh.position.y = y; mesh.castShadow = true; shoulder.add(mesh);
       }
       part(new THREE.CylinderGeometry(.28, .36, .92, 16), resident.color, 0, 1.15, 0);
       part(new THREE.SphereGeometry(.28, 18, 12), "#c9976c", 0, 1.87, 0);
@@ -1711,6 +1740,21 @@ export class Museum {
       const sign = new THREE.Sprite(new THREE.SpriteMaterial({ map: badge, depthTest: true }));
       sign.position.set(0, 2.92, 0); sign.scale.set(1.8, .9, 1); group.add(sign);
       group.traverse(object => { object.userData.residentId = resident.id; });
+      // Residents breathe, turn to greet a visitor who comes close, and wave within chatting distance.
+      let facing = resident.yaw, raise = .18;
+      const phase = resident.x * .37;
+      this.life.add({ x: resident.x, z: resident.z, reach: 45, update: (t, dt, viewer) => {
+        const distance = Math.hypot(viewer.x - resident.x, viewer.z - resident.z);
+        const goal = distance < 11 ? Math.atan2(viewer.x - resident.x, viewer.z - resident.z) : resident.yaw;
+        const turn = Math.atan2(Math.sin(goal - facing), Math.cos(goal - facing));
+        facing += turn * Math.min(1, dt * 3);
+        group.rotation.y = facing;
+        group.scale.y = 1 + Math.sin(t * 1.6 + phase) * .012;
+        const waving = distance < 5.5 && this.residentsEnabled;
+        raise += ((waving ? 2.55 : .18) - raise) * Math.min(1, dt * 5);
+        shoulder.rotation.z = raise + (waving ? Math.sin(t * 7) * .35 : 0);
+        sign.position.y = 2.92 + Math.sin(t * 1.3 + phase) * .05;
+      } });
     }
   }
 
@@ -2096,6 +2140,12 @@ export class Museum {
       }
       this.lastPulse = time;
     }
+    // Boats, gulls, pigeons and residents move at about 30 fps while the visitor is nearby.
+    if (!this.blocked && !this.reducedMotion && !document.hidden && time - this.lastLife > 33) {
+      const lifeDt = Math.min((time - this.lastLife) / 1000, 0.1);
+      if (this.life.step(time / 1000, lifeDt, this.camera.position)) this.needsRender = true;
+      this.lastLife = time;
+    }
     // Leave the static scene alone while reading a flashcard or standing still.
     // This also gives slower devices time for interface and audio interactions.
     if (this.needsRender) {
@@ -2107,6 +2157,7 @@ export class Museum {
   dispose() {
     this.disposed = true;
     this.setGame(null);
+    this.life.dispose();
     this.renderer.setAnimationLoop(null);
     this.resizeObserver.disconnect();
     const canvas = this.renderer.domElement;

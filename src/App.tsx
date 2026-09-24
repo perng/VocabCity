@@ -895,7 +895,7 @@ export default function App() {
           >
             {ambient ? <Volume2 size={18} /> : <VolumeX size={18} />}
             <span>
-              {t("Ambience")}
+              {t("Ambience")}{" "}
               {ambient ? t("on") : t("off")}
             </span>
           </button>
@@ -907,7 +907,7 @@ export default function App() {
           >
             {sfx ? <Bell size={17} /> : <BellOff size={17} />}
             <span>
-              {t("Effects")}
+              {t("Effects")}{" "}
               {sfx ? t("on") : t("off")}
             </span>
           </button>
