@@ -68,6 +68,8 @@ export function Celebrations() {
       bannerTimer = next ? setTimeout(showNext, queue.length ? 2600 : 3600) : undefined;
     };
     const onAnnounce = (event: Event) => {
+      // Keep the line short when milestones arrive quickly, as on a fast guided tour.
+      if (queue.length >= 2) queue.pop();
       queue.push((event as CustomEvent<{ title: string; detail: string }>).detail);
       if (!bannerTimer) showNext();
       else if (queue.length === 1) { clearTimeout(bannerTimer); bannerTimer = setTimeout(showNext, 2600); }
