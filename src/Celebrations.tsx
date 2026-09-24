@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { assetUrl } from "./types";
 
 // A small burst of paper sparkles where something good just happened: a checked word,
 // a right answer, a stamp or a finished house. Pure decoration, hidden from assistive tech.
@@ -84,7 +85,10 @@ export function Celebrations() {
   }, []);
   return <div ref={layer} className="celebrations" popover="manual">
     <p className="milestone-live" role="status" aria-live="polite">{banner ? `${banner.title}${/[.!?！。]$/.test(banner.title) ? "" : "."} ${banner.detail}` : ""}</p>
-    {banner && <div key={banner.id} className="milestone-banner" aria-hidden="true"><strong>{banner.title}</strong>{banner.detail && <span>{banner.detail}</span>}</div>}
+    {banner && <div key={banner.id} className="milestone-banner" aria-hidden="true">
+      <img src={assetUrl("mascot/welcome.webp")} alt="" />
+      <strong>{banner.title}</strong>{banner.detail && <span>{banner.detail}</span>}
+    </div>}
     {bursts.map((burst) => <div key={burst.id} className={`burst burst-${burst.kind}`} aria-hidden="true">
       {burst.items.map((p) => <i key={p.id} data-round={p.round} style={{
         left: p.x, top: p.y, width: p.size, height: p.round ? p.size : p.size * 0.5, background: p.color,

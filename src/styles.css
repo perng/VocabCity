@@ -3111,3 +3111,8 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
 .album-set header em { display: block; margin-top: 3px; font-style: normal; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #b8871f; }
 .visit-progress .place-progress > div { min-width: 0; }
 @media (max-width: 540px) { .album-nav { display: grid; } }
+.milestone-banner { padding-left: 92px; min-height: 96px; align-content: center; }
+.milestone-banner img { position: absolute; left: 10px; bottom: -6px; width: 78px; height: auto; transform-origin: 50% 100%; animation: mascot-cheer .9s cubic-bezier(.3, 1.6, .5, 1) .15s both; }
+@keyframes mascot-cheer { 0% { transform: translateY(24px) scale(.6); opacity: 0; } 60% { transform: translateY(-6px) rotate(-6deg); opacity: 1; } 100% { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .milestone-banner img { animation: none; } }
+@media (max-width: 540px) { .milestone-banner { padding-left: 74px; } .milestone-banner img { width: 62px; } .milestone-banner strong { font-size: 24px; } }
