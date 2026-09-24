@@ -504,7 +504,7 @@ export class Museum {
       this.box(1 + i % 4, 0.008, 0.04, x, -0.55, z, i % 3 ? "#a6cac4" : "#5f9598", ripples);
     }
     // The ripples drift with a slow swell; the sea surface rises and falls a few centimetres.
-    this.life.add({ x: 0, z: c.seaEdge, reach: 220, update: (t) => {
+    this.life.add({ x: 0, z: c.seaEdge, reach: 100, update: (t) => {
       ripples.position.set(Math.sin(t * 0.21) * 1.6, Math.sin(t * 0.8) * 0.03, Math.sin(t * 0.33) * 0.9);
       sea.position.y = -0.6 + Math.sin(t * 0.8) * 0.03;
     } });
@@ -558,7 +558,7 @@ export class Museum {
       const sail = new THREE.Mesh(sailGeometry, new THREE.MeshStandardMaterial({ color: "#f3e7cc", side: THREE.DoubleSide })); sail.position.set(0, -0.6, 0); boat.add(sail);
       // Moored boats rock gently; the distant sail drifts along the horizon.
       const distant = i === 3;
-      this.life.add({ x, z, reach: 200, update: (t) => {
+      this.life.add({ x, z, reach: 110, update: (t) => {
         boat.position.y = Math.sin(t * 0.9 + i * 1.7) * 0.12;
         boat.rotation.z = Math.sin(t * 0.7 + i) * 0.045;
         boat.rotation.x = Math.sin(t * 0.55 + i * 2.3) * 0.02;
@@ -2297,8 +2297,9 @@ export class Museum {
       }
       this.lastPulse = time;
     }
-    // Boats, gulls, pigeons and residents move at about 30 fps while the visitor is nearby.
-    if (!this.blocked && !this.reducedMotion && !document.hidden && time - this.lastLife > 33) {
+    // Boats, gulls, pigeons and residents move while the visitor is nearby.
+    // About 30 fps while walking, 20 fps while standing and watching.
+    if (!this.blocked && !this.reducedMotion && !document.hidden && time - this.lastLife > (this.keys.size || this.dragging ? 33 : 50)) {
       const lifeDt = Math.min((time - this.lastLife) / 1000, 0.1);
       if (this.life.step(time / 1000, lifeDt, this.camera.position)) this.needsRender = true;
       this.lastLife = time;

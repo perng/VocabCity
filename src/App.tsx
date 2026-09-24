@@ -144,6 +144,8 @@ const languages = [
   { id: "th_TH", name: "ภาษาไทย" },
 ];
 const validIds = new Set(exhibits.map((e) => e.id));
+// The lucide Map icon shadows the global Map in this file.
+const EXHIBIT_BY_ID = new globalThis.Map(exhibits.map((e) => [e.id, e] as const));
 function loadProgress(key: string): string[] {
   try {
     const data: unknown = JSON.parse(localStorage.getItem(key) || "[]");
@@ -310,7 +312,7 @@ function FloorPlan({ pose, compact = false, states, targets = [] }: { pose: Pose
         <text x="0" y={c.observatory.z + 2} textAnchor="middle" fill="#657571" fontSize="5">{t("OBSERVATORY")}</text>
       </>}
       {exhibits.flatMap(e => exhibitPlacements(e).map(p => <rect key={`${e.id}-${p.area}`} x={p.x-1.2} y={p.z-1.2} width="2.4" height="2.4" rx=".5" fill={rooms[e.room].color} />))}
-      {targets.flatMap(id => { const e = exhibits.find(x => x.id === id); return e ? exhibitPlacements(e).map(p => <path key={`walk-${id}-${p.area}`} className="walk-target"
+      {targets.flatMap(id => { const e = EXHIBIT_BY_ID.get(id); return e ? exhibitPlacements(e).map(p => <path key={`walk-${id}-${p.area}`} className="walk-target"
         transform={`translate(${p.x} ${p.z}) scale(${compact ? 1 : 1.6})`} d="M0-4 1.2-1.3 4-1.2 1.8.7 2.5 3.6 0 2 -2.5 3.6 -1.8.7 -4-1.2 -1.2-1.3Z" fill="#e0a92c" stroke="#fff7e2" strokeWidth=".6" />) : []; })}
     </g>
     {RESIDENTS.map(npc => { const point = mapPoint(npc.x, npc.z); return <g key={npc.id} transform={`translate(${point.x} ${point.y})`}>
@@ -1764,7 +1766,7 @@ export default function App() {
                     <header><strong>{locale === "zh_TW" ? set.mediumZh : set.medium}{set.ids.length === 1 && <em>{t("One of a kind")}</em>}</strong><span>{found.length} / {set.ids.length}</span></header>
                     {!rare && <progress max={set.ids.length} value={found.length} aria-label={`${found.length} / ${set.ids.length}`} />}
                     <div className="album-frames">{shown.map((id) => {
-                      const exhibit = exhibits.find((e) => e.id === id)!;
+                      const exhibit = EXHIBIT_BY_ID.get(id)!;
                       return visitedSet.has(id)
                         ? <button key={id} className="album-frame" onClick={() => visit(exhibit)} aria-label={exhibit.word}><img src={assetUrl(exhibit.image)} alt="" loading="lazy" /></button>
                         : <button key={id} className="album-frame is-empty" disabled={!ready || Boolean(error)} onClick={() => navigateRoom(exhibit.room)}
@@ -1795,7 +1797,7 @@ export default function App() {
             </div>
             <ol className="walk-list">
               {walk.ids.map((id, i) => {
-                const exhibit = exhibits.find((e) => e.id === id)!;
+                const exhibit = EXHIBIT_BY_ID.get(id)!;
                 const found = walk.found.includes(id);
                 const place = isRootRoom(exhibit.room) ? rooms[exhibit.room].house!.display : t(districtFor(exhibit.room).landmark);
                 return <li key={id} data-found={found}>

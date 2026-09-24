@@ -56,7 +56,7 @@ export class CityLife {
       this.scene.add(gull);
       const radius = 9 + (i * 7.3) % 14, height = 10 + (i * 3.1) % 7, speed = (0.16 + (i % 3) * 0.05) * (i % 2 ? 1 : -1);
       const cx = center.x + Math.sin(i * 2.1) * 30, cz = center.z + Math.cos(i * 1.7) * 12, phase = i * 1.9;
-      this.add({ x: cx, z: cz, reach: 190, update: (t) => {
+      this.add({ x: cx, z: cz, reach: 120, update: (t) => {
         const a = t * speed + phase;
         gull.position.set(cx + Math.cos(a) * radius, height + Math.sin(t * 0.6 + phase) * 1.2, cz + Math.sin(a) * radius);
         gull.rotation.set(0, -a + (speed > 0 ? Math.PI : 0), speed > 0 ? -0.25 : 0.25);
