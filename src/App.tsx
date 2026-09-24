@@ -2010,6 +2010,27 @@ export default function App() {
                   </p>
                 </span>
               </div>
+              <div>
+                <Trophy />
+                <span>
+                  <strong>{t("Finish a place, light a lantern")}</strong>
+                  <p>{t("Open every painting in a landmark or house to explore it, then learn all its words to master it. Explored houses light their door lanterns; mastered ones earn gold stars.")}</p>
+                </span>
+              </div>
+              <div>
+                <Star />
+                <span>
+                  <strong>{t("A walk, some favours and lost labels")}</strong>
+                  <p>{t("Each day brings five paintings to find and a few labels blown off by the wind. Neighbours ask for favours: find paintings by their meaning and bring them back.")}</p>
+                </span>
+              </div>
+              <div>
+                <Images />
+                <span>
+                  <strong>{t("Fill your album, send a postcard")}</strong>
+                  <p>{t("Every painting joins the album of art styles when you open it. Send any word home as a postcard, and try the evening light to see your learned words glow.")}</p>
+                </span>
+              </div>
             </div>
             <button
               className="primary-button"
