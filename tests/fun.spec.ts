@@ -347,3 +347,10 @@ test('the corner tour continues from the first unseen painting where you stand',
   await expect(page.getByRole('heading', { name: quay[1].word, exact: true })).toBeVisible();
   await expect(page.locator('.exhibit-footer')).toContainText('YOUR GUIDED TOUR');
 });
+
+test('round numbers of discovered words get a banner', async ({ page }) => {
+  const seen = exhibits.slice(200, 209).map((e) => e.id);
+  await enter(page, { 'vocabhall.visited.v1': seen });
+  await openFromCollection(page, exhibits[300]);
+  await expect(page.locator('.milestone-live')).toContainText('10 words discovered!', { timeout: 8000 });
+});

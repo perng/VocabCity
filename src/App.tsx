@@ -103,6 +103,8 @@ const HOUSE_SECTIONS: [HouseKind, string, string][] = [
   ["level", "LEVEL LANES", "Every other word above level 30, six to a house in alphabetical order."],
 ];
 const ROOM_WORDS = roomWordIds(exhibits, rooms.length);
+// Round numbers of discovered words worth a banner.
+const WORD_MILESTONES = [10, 25, 50, 100, 250, 500, 1000, 1500, 2000];
 // The wind only starts taking labels once a visitor has settled in.
 const LOST_LABELS_AFTER = 12;
 const STYLE_SETS = styleSets(exhibits);
@@ -583,6 +585,9 @@ export default function App() {
             announce(translate(milestone === "complete" ? "Style complete!" : "A new style for your album", l), `${name} · ${found} / ${style.ids.length}`);
           }, 1000);
         }
+        const count = visitedRef.current.length + 1, l = localeRef.current;
+        if (WORD_MILESTONES.includes(count) || count === exhibits.length)
+          setTimeout(() => { playSfx("complete"); celebrate("confetti"); announce(`${count} ${translate("words discovered", l)}${l === "zh_TW" ? "！" : "!"}`, translate(count === exhibits.length ? "Every word in the city. Bravo!" : "Keep wandering. The city has more to show you.", l)); }, 1200);
         playSfx("discover");
         celebratePlaces(newlyComplete(roomsOf(exhibit), ROOM_WORDS, new Set(visitedRef.current), exhibit.id), "explored", localeRef.current);
       }
