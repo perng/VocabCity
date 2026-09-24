@@ -12,6 +12,7 @@ import {
   ArrowRight,
   ArrowUp,
   Flame,
+  Heart,
   Star,
   Bell,
   BellOff,
@@ -77,6 +78,7 @@ import { YouglishPlayer, YouTubeLogo } from "./YouglishPlayer";
 import { playSfx, setSfxEnabled, useSfxEnabled } from "./sfx";
 import { Soundscape } from "./soundscape";
 import { Celebrations, announce, celebrate } from "./Celebrations";
+import { favourFound, favourWords, readFavours, saveFavours, type FavourBook } from "./favours";
 import { WALK_SIZE, dayKey, readDaily, saveDaily, streak, todaysWalk, type DailyWalk } from "./daily";
 import { newlyComplete, placeProgress, roomWordIds, roomsOf, type PlaceState } from "./progress";
 const exhibits = collection.exhibits as Exhibit[];
@@ -453,6 +455,21 @@ export default function App() {
     document.addEventListener("visibilitychange", refresh);
     return () => document.removeEventListener("visibilitychange", refresh);
   }, []);
+  const [favours, setFavours] = useState<FavourBook>(() => readFavours(RESIDENTS, validIds));
+  const favoursRef = useRef(favours);
+  favoursRef.current = favours;
+  useEffect(() => { saveFavours(favours); }, [favours]);
+  const askFavour = (npc: Resident, exclude: string[]) => {
+    const entry = favours[npc.id] ?? { level: 0, active: null, asked: [] };
+    const ids = favourWords(npc, exhibits, checked, entry.asked, exclude);
+    setFavours({ ...favours, [npc.id]: { ...entry, active: { ids, found: [] }, asked: [...new Set([...entry.asked, ...ids])] } });
+  };
+  const handOver = (npc: Resident) => {
+    const entry = favours[npc.id];
+    if (!entry || !favourFound(entry.active)) return;
+    setFavours({ ...favours, [npc.id]: { ...entry, level: entry.level + 1, active: null } });
+    museum.current?.cheerResident(npc.id);
+  };
   const walkTargets = walk.ids.filter((id) => !walk.found.includes(id));
   const walkStreak = streak(walk.completed, walk.day);
   const visitedRef = useRef(visited);
@@ -520,6 +537,21 @@ export default function App() {
           }
         }, 700);
       }
+      const book = favoursRef.current;
+      for (const npc of RESIDENTS) {
+        const favour = book[npc.id]?.active;
+        if (!favour?.ids.includes(exhibit.id) || favour.found.includes(exhibit.id)) continue;
+        const found = [...favour.found, exhibit.id];
+        const next = { ...book, [npc.id]: { ...book[npc.id], active: { ...favour, found } } };
+        favoursRef.current = next;
+        setFavours(next);
+        const l = localeRef.current;
+        setTimeout(() => {
+          playSfx("correct"); celebrate("spark");
+          announce(found.length === favour.ids.length ? `${translate("Bring them back to", l)} ${npc.name}` : `${npc.name}: ${translate("That's one for me!", l)}`,
+            `${found.length} / ${favour.ids.length} ${translate("found", l)}`);
+        }, 800);
+      }
       if (!visitedRef.current.includes(exhibit.id)) {
         playSfx("discover");
         celebratePlaces(newlyComplete(roomsOf(exhibit), ROOM_WORDS, new Set(visitedRef.current), exhibit.id), "explored", localeRef.current);
@@ -586,6 +618,10 @@ export default function App() {
   useEffect(() => {
     museum.current?.setChecked(checked);
   }, [checked, ready]);
+  const friendshipKey = RESIDENTS.map((npc) => favours[npc.id]?.level ?? 0).join();
+  useEffect(() => {
+    museum.current?.setFriendship(Object.fromEntries(RESIDENTS.map((npc) => [npc.id, favours[npc.id]?.level ?? 0])));
+  }, [friendshipKey, ready]);
   useEffect(() => {
     museum.current?.setWalkTargets(walkTargets);
   }, [walkTargets.join(), ready]);
@@ -848,6 +884,14 @@ export default function App() {
           <b>{walk.found.length} / {walk.ids.length}</b>
           {walkStreak > 0 && <em title={t("days in a row")}><Flame size={13} />{walkStreak}</em>}
         </button>}
+        {!intro && <div className="favour-chips">{RESIDENTS.filter((npc) => favours[npc.id]?.active).map((npc) => {
+          const favour = favours[npc.id].active!, done = favourFound(favour);
+          return <button key={npc.id} className="favour-chip" data-ready={done} style={{ "--resident-color": npc.color } as React.CSSProperties}
+            onClick={() => { setModal(null); setSelected(null); setIntro(false); museum.current?.visitResident(npc.id); hostRef.current?.querySelector("canvas")?.focus(); }}
+            aria-label={`${t("Favour for")} ${npc.name}: ${favour.found.length} / ${favour.ids.length}${done ? `. ${t("Bring them back to")} ${npc.name}` : ""}`}>
+            <Heart size={14} fill={done ? "currentColor" : "none"} /><span>{npc.name}</span><b>{favour.found.length} / {favour.ids.length}</b>
+          </button>;
+        })}</div>}
 
         {intro && ready && !error && (
           <section className="welcome-card">
@@ -1017,7 +1061,8 @@ export default function App() {
       </main>
 
       {resident && <Dialog className="resident-dialog" label={`${t("Vocab chat")}: ${resident.name}`} onClose={closeResident}>
-        <ResidentQuiz key={resident.id} resident={resident} exhibits={exhibits} checked={checked} onClose={closeResident} onAudioChange={setGameAudio} />
+        <ResidentQuiz key={resident.id} resident={resident} exhibits={exhibits} checked={checked} onClose={closeResident} onAudioChange={setGameAudio}
+          friendship={favours[resident.id]} onAskFavour={(exclude) => askFavour(resident, exclude)} onHandOver={() => handOver(resident)} />
       </Dialog>}
       {selected && (
         <Dialog

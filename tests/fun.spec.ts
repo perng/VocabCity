@@ -177,3 +177,47 @@ test('sound effects can be switched off and the choice persists', async ({ page 
   await page.getByRole('button', { name: 'Start exploring', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Turn on sound effects', exact: true })).toBeVisible();
 });
+
+test('a neighbour\'s favour sends you looking by meaning, then grows the friendship', async ({ page }) => {
+  test.setTimeout(120000);
+  await enter(page);
+  await page.getByRole('button', { name: 'Talk to Luca', exact: true }).click();
+  const clue = await page.locator('.resident-clue').innerText();
+  await page.getByRole('button', { name: "I'll look for them", exact: true }).click();
+  await expect(page.locator('.favour-list li')).toHaveCount(3);
+  await expect(page.locator('.favour-list')).not.toContainText(clue);
+  const favour = await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.favours.v1')!).sailor);
+  expect(favour.level).toBe(0);
+  expect(favour.active.ids).toHaveLength(3);
+  const words = favour.active.ids.map((id: string) => exhibits.find((e) => e.id === id)!);
+  // Luca's words hang on the quay or the mole.
+  for (const word of words) expect([word.room, ...(word.families ?? []).map((f) => f.room)].some((room) => [1, 14].includes(room))).toBe(true);
+  await page.keyboard.press('Escape');
+  const chip = page.locator('.favour-chip');
+  await expect(chip).toContainText('0 / 3');
+  for (const [i, word] of words.entries()) {
+    await openFromCollection(page, word);
+    await page.keyboard.press('Escape');
+    await expect(chip).toContainText(`${i + 1} / 3`);
+  }
+  await expect(chip).toHaveAttribute('data-ready', 'true');
+  await chip.click();
+  await page.getByRole('button', { name: 'Talk to Luca', exact: true }).click();
+  await expect(page.locator('.favour-card')).toContainText('You found all three!');
+  await page.getByRole('button', { name: 'Hand them over', exact: true }).click();
+  await expect(page.locator('.milestone-live')).toContainText('My logbook is ready');
+  await expect(page.locator('.resident-avatar')).toHaveAttribute('data-mood', 'cheer');
+  await expect(page.locator('.friendship svg[fill=currentColor]')).toHaveCount(1);
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.favours.v1')!).sailor);
+  expect(saved).toEqual({ level: 1, active: null, asked: favour.active.ids });
+  expect(await page.evaluate(() => (window as any).__museum.friendship.sailor)).toBe(1);
+  await page.keyboard.press('Escape');
+  await expect(chip).toHaveCount(0);
+  // Luca hops for joy once the chat closes.
+  await expect.poll(() => page.evaluate(() => (window as any).__museum.scene.getObjectByName('resident:sailor').position.y)).toBeGreaterThan(0.05);
+  // The next favour avoids words already asked for.
+  await page.getByRole('button', { name: 'Talk to Luca', exact: true }).click();
+  await page.getByRole('button', { name: "I'll look for them", exact: true }).click();
+  const next = await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.favours.v1')!).sailor.active.ids);
+  expect(next.some((id: string) => favour.active.ids.includes(id))).toBe(false);
+});

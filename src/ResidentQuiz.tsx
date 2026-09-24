@@ -1,14 +1,24 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Check, Volume2, X } from "lucide-react";
+import { ArrowRight, Check, Heart, Search, Volume2, X } from "lucide-react";
 import { useLocale } from "./i18n";
 import { useExhibitAudio } from "./useExhibitAudio";
 import { ENCOUNTERS_KEY, readEncounters, residentHat, residentRounds, type Resident } from "./residents";
 import { playSfx } from "./sfx";
-import { celebrate } from "./Celebrations";
+import { announce, celebrate } from "./Celebrations";
+import { favourFound, type Friendship } from "./favours";
 import type { Exhibit } from "./types";
 import "./residents.css";
 
 type Mood = "idle" | "happy" | "puzzled" | "cheer";
+// What each neighbour asks for, and how they say thank you.
+const FAVOURS: Record<string, { ask: string; thanks: string }> = {
+  sailor: { ask: "I'm packing for a voyage. Could you find three paintings on the quay and the mole for my logbook?", thanks: "My logbook is ready. Fair winds to you, friend!" },
+  guide: { ask: "I'm planning a new walking tour. Could you find three paintings around the Gate Square, the Town Hall and the Inn?", thanks: "Wonderful! My tour will stop at every one of these." },
+  gardener: { ask: "Three paintings in the park have wandered from my notes. Could you find them for me?", thanks: "Thank you! They're back in my notes, like seedlings in a row." },
+  merchant: { ask: "I need three good words for my shop signs. They hang around the market. Could you find them?", thanks: "Perfect! My signs will draw customers from across the city." },
+  historian: { ask: "My chronicle is missing three words. Look in the cathedral, the palazzo and the cistern.", thanks: "My chronicle is complete again. History thanks you." },
+  librarian: { ask: "Three words are overdue at the library! They hang in the first root houses of the Old Town.", thanks: "Returned, and just in time. No late fees for you!" },
+};
 // The resident's face in the chat, drawn like the wooden figure in the square. It hops at a
 // right answer, tilts its head at a miss and cheers when the chat is done.
 export function ResidentAvatar({ resident, mood }: { resident: Resident; mood: Mood }) {
@@ -26,12 +36,44 @@ export function ResidentAvatar({ resident, mood }: { resident: Resident; mood: M
   </svg>;
 }
 
-export function ResidentQuiz({ resident, exhibits, checked, onClose, onAudioChange }: {
+function FavourCard({ resident, friendship, exhibits, onAsk, onHandOver }: {
+  resident: Resident; friendship?: Friendship; exhibits: Exhibit[]; onAsk: () => void; onHandOver: () => void;
+}) {
+  const { locale, t } = useLocale();
+  const level = friendship?.level ?? 0, active = friendship?.active, words = FAVOURS[resident.id];
+  return <section className="favour-card" aria-label={t("A favour")}>
+    <div className="favour-top">
+      <span className="eyebrow">{t("A FAVOUR")}</span>
+      <span className="friendship" aria-label={`${t("Friendship")}: ${level}`}>
+        {Array.from({ length: Math.max(3, Math.min(level + 1, 5)) }, (_, i) => <Heart key={i} size={14} fill={i < level ? "currentColor" : "none"} />)}
+      </span>
+    </div>
+    {!active ? <>
+      <p>“{t(words.ask)}”</p>
+      <button className="text-button favour-ask" onClick={onAsk}><Search size={15} />{t("I'll look for them")}<ArrowRight size={15} /></button>
+    </> : favourFound(active) ? <>
+      <p>{t("You found all three!")}</p>
+      <button className="primary-button" onClick={onHandOver}><Heart size={16} />{t("Hand them over")}</button>
+    </> : <>
+      <p>{t("Find the paintings with these meanings nearby, and open each one.")}</p>
+      <ol className="favour-list">{active.ids.map((id) => {
+        const exhibit = exhibits.find((e) => e.id === id)!, found = active.found.includes(id);
+        return <li key={id} data-found={found}>{found ? <Check size={15} /> : <Search size={14} />}
+          <span>{found && <strong>{exhibit.word} · </strong>}<span lang="en">{exhibit.definition}</span>
+            {locale && exhibit.definitionTranslations[locale] && <small>{exhibit.definitionTranslations[locale]}</small>}</span></li>;
+      })}</ol>
+    </>}
+  </section>;
+}
+
+export function ResidentQuiz({ resident, exhibits, checked, onClose, onAudioChange, friendship, onAskFavour, onHandOver }: {
   resident: Resident; exhibits: Exhibit[]; checked: string[]; onClose: () => void; onAudioChange: (active: boolean) => void;
+  friendship?: Friendship; onAskFavour: (exclude: string[]) => void; onHandOver: () => void;
 }) {
   const { locale, t } = useLocale();
   const [progress, setProgress] = useState(readEncounters);
-  const [rounds, setRounds] = useState(() => residentRounds(resident, exhibits, checked, progress[resident.id]?.words ?? []));
+  const favourIds = friendship?.active?.ids ?? [];
+  const [rounds, setRounds] = useState(() => residentRounds(resident, exhibits, checked, [...(progress[resident.id]?.words ?? []), ...favourIds]));
   const [index, setIndex] = useState(0);
   const [wrong, setWrong] = useState<string[]>([]);
   const [correct, setCorrect] = useState(false);
@@ -77,6 +119,11 @@ export function ResidentQuiz({ resident, exhibits, checked, onClose, onAudioChan
       <button className="icon-button" onClick={onClose} aria-label={t("Close conversation")}><X size={20} /></button>
     </header>
     <p className="resident-greeting">{t(resident.greeting)}</p>
+    <FavourCard resident={resident} friendship={friendship} exhibits={exhibits} onAsk={() => { playSfx("tap"); onAskFavour(rounds.map((r) => r.target.id)); }} onHandOver={() => {
+      setMood("cheer"); playSfx("complete"); celebrate("confetti");
+      announce(t(FAVOURS[resident.id].thanks), `${resident.name} · ${t("Friendship")} ${(friendship?.level ?? 0) + 1}`);
+      onHandOver();
+    }} />
     {!round ? <p>{t("No questions are available here yet.")}</p> : complete ? <div className="resident-complete">
       <Check size={32} /><h3 ref={heading} tabIndex={-1}>{t("A lovely chat!")}</h3>
       <p>{t("Correct on the first try")}: <strong>{score} / {rounds.length}</strong></p>
@@ -87,7 +134,7 @@ export function ResidentQuiz({ resident, exhibits, checked, onClose, onAudioChan
       <p className="resident-saved">{t(storageError ? "This visit could not be saved in this browser." : "Your visit is saved in this browser.")}</p>
       <button className="primary-button" onClick={onClose}>{t("Keep wandering")}<ArrowRight size={17} /></button>
       <button className="text-button" onClick={() => {
-        audio.stop(); setRounds(residentRounds(resident, exhibits, checked, progress[resident.id].words));
+        audio.stop(); setRounds(residentRounds(resident, exhibits, checked, [...progress[resident.id].words, ...favourIds]));
         setIndex(0); setWrong([]); setCorrect(false); setScore(0); setHint(false); setComplete(false); setMood("idle"); setError(""); setStorageError(false);
       }}>{t("Try three more")}</button>
     </div> : <>

@@ -152,6 +152,9 @@ export class Museum {
     .matches;
   private obstacles: { x: number; z: number; rx: number; rz: number }[] = [];
   private placeStates: PlaceState[] = [];
+  private friendship: Record<string, number> = {};
+  private residentBadges = new Map<string, () => void>();
+  private cheers = new Map<string, { pending: boolean; from: number }>();
   private walkMarkers: { sprite: THREE.Sprite; stop: () => void }[] = [];
   private walkStar: THREE.Texture | null = null;
   private evening = false;
@@ -1515,6 +1518,14 @@ export class Museum {
     for (const star of zone.marks.stars) star.visible = state === "mastered";
   }
 
+  /** Friendship hearts on each resident's sign. */
+  setFriendship(levels: Record<string, number>) {
+    for (const [id, redraw] of this.residentBadges) if ((levels[id] ?? 0) !== (this.friendship[id] ?? 0)) { this.friendship[id] = levels[id] ?? 0; redraw(); }
+    this.needsRender = true;
+  }
+  /** Queue a little hop of joy for when the visitor next sees this resident. */
+  cheerResident(id: string) { this.cheers.set(id, { pending: true, from: 0 }); }
+
   /** Gold stars bob above the paintings on today's walk until each one is found. */
   setWalkTargets(ids: string[]) {
     for (const marker of this.walkMarkers) { marker.stop(); this.scene.remove(marker.sprite); marker.sprite.material.dispose(); }
@@ -1809,8 +1820,11 @@ export class Museum {
         ctx.fillStyle = "#fcf5df"; ctx.beginPath(); ctx.roundRect(4, 4, 504, 226, 30); ctx.fill();
         ctx.fillStyle = resident.color; ctx.textAlign = "center";
         ctx.font = '600 62px "DM Sans", sans-serif'; ctx.fillText(`?  ${resident.name}`, 256, 94);
-        ctx.font = '400 34px "DM Sans", sans-serif'; ctx.fillText(translate("Vocab chat", this.options.locale), 256, 165);
+        const level = this.friendship[resident.id] ?? 0;
+        ctx.font = '400 34px "DM Sans", sans-serif';
+        ctx.fillText(`${level ? `${"♥".repeat(Math.min(level, 5))}  ` : ""}${translate("Vocab chat", this.options.locale)}`, 256, 165);
       }, true);
+      this.residentBadges.set(resident.id, this.localizedTextures[this.localizedTextures.length - 1]);
       const sign = new THREE.Sprite(new THREE.SpriteMaterial({ map: badge, depthTest: true }));
       sign.position.set(0, 2.92, 0); sign.scale.set(1.8, .9, 1); group.add(sign);
       group.traverse(object => { object.userData.residentId = resident.id; });
@@ -1824,7 +1838,13 @@ export class Museum {
         facing += turn * Math.min(1, dt * 3);
         group.rotation.y = facing;
         group.scale.y = 1 + Math.sin(t * 1.6 + phase) * .012;
-        const waving = distance < 5.5 && this.residentsEnabled;
+        // A resident who just received a favour hops for joy once the visitor is back in the city.
+        const cheer = this.cheers.get(resident.id);
+        if (cheer?.pending) { cheer.pending = false; cheer.from = t; }
+        const hop = cheer && t - cheer.from < 2.6 ? Math.abs(Math.sin((t - cheer.from) * 7)) * .32 : 0;
+        if (cheer && !hop && t - cheer.from >= 2.6) this.cheers.delete(resident.id);
+        group.position.y = hop;
+        const waving = (distance < 5.5 && this.residentsEnabled) || hop > 0;
         raise += ((waving ? 2.55 : .18) - raise) * Math.min(1, dt * 5);
         shoulder.rotation.z = raise + (waving ? Math.sin(t * 7) * .35 : 0);
         sign.position.y = 2.92 + Math.sin(t * 1.3 + phase) * .05;

@@ -50,11 +50,15 @@ export function readEncounters(): EncounterProgress {
   } catch { return {}; }
 }
 
+/** Words from a resident's neighbourhood, with one distinct word and meaning each. */
+export function residentPool(npc: Resident, exhibits: Exhibit[]) {
+  const pool = exhibits.filter(e => npc.rooms.includes(e.room) || e.families?.some(f => npc.rooms.includes(f.room)));
+  return pool.filter((e, i) => e.definition.trim() && pool.findIndex(other =>
+    other.word.toLowerCase() === e.word.toLowerCase() || other.definition.toLowerCase() === e.definition.toLowerCase()) === i);
+}
 export function residentRounds(npc: Resident, exhibits: Exhibit[], checked: string[], practiced: string[]): GameRound[] {
   // Use the collection's source meanings, with one distinct word and meaning per option.
-  const pool = exhibits.filter(e => npc.rooms.includes(e.room) || e.families?.some(f => npc.rooms.includes(f.room)));
-  const unique = pool.filter((e, i) => e.definition.trim() && pool.findIndex(other =>
-    other.word.toLowerCase() === e.word.toLowerCase() || other.definition.toLowerCase() === e.definition.toLowerCase()) === i);
+  const unique = residentPool(npc, exhibits);
   if (unique.length < 2) return [];
   return makeRounds(unique, [...checked, ...practiced]);
 }

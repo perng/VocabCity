@@ -53,3 +53,22 @@
 @keyframes resident-hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-9px) scale(1.04); } }
 @keyframes resident-tilt { 0% { transform: rotate(0); } 30% { transform: rotate(-12deg); } 60% { transform: rotate(-4deg); } 100% { transform: rotate(-7deg); } }
 @media (prefers-reduced-motion: reduce) { .resident-avatar { animation: none !important; } }
+.favour-card { margin: -8px 0 20px; padding: 14px 16px; background: color-mix(in srgb, var(--resident-color) 9%, #fbf7ea); border: 1px solid color-mix(in srgb, var(--resident-color) 35%, #e2dcc6); }
+.favour-top { display: flex; justify-content: space-between; align-items: center; }
+.friendship { display: inline-flex; gap: 3px; color: #c0504a; }
+.favour-card > p { margin: 8px 0 10px; font-size: 14px; line-height: 1.6; color: #4f5a4a; }
+.favour-card .text-button, .favour-card .primary-button { margin: 0; display: inline-flex; align-items: center; gap: 7px; }
+.favour-list { list-style: none; display: grid; gap: 8px; margin: 0; padding: 0; }
+.favour-list li { display: grid; grid-template-columns: 18px 1fr; gap: 8px; align-items: start; font-size: 13px; line-height: 1.5; color: #4f5a4a; }
+.favour-list li svg { margin-top: 3px; color: #8a8f7c; }
+.favour-list li[data-found=true] svg { color: #56735c; }
+.favour-list li[data-found=true] > span > span { color: #8a8f7c; }
+.favour-list small { display: block; color: #75806d; font-size: 12px; }
+.favour-chips { position: absolute; z-index: 2; top: 340px; right: 37px; display: grid; gap: 6px; justify-items: end; }
+.favour-chip { display: flex; align-items: center; gap: 7px; padding: 7px 11px; background: #f8f7eeef; border: 1px solid color-mix(in srgb, var(--resident-color) 55%, transparent); font-size: 12px; color: #4d5a47; }
+.favour-chip svg { color: #c0504a; }
+.favour-chip[data-ready=true] { background: #fbe9e3; animation: favour-ready 1.6s ease-in-out infinite; }
+@keyframes favour-ready { 50% { box-shadow: 0 0 0 4px #c0504a33; } }
+@media (prefers-reduced-motion: reduce) { .favour-chip[data-ready=true] { animation: none; } }
+@media (max-width: 1100px) { .favour-chips { right: 18px; top: 318px; } }
+@media (max-width: 760px) { .favour-chips { top: 160px; right: 18px; } .favour-chip > span { display: none; } }
