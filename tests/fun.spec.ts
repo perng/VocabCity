@@ -330,7 +330,7 @@ test('a missed word comes back first and clears after right answers on two days'
 test('the city journal gathers progress and points at places that are almost done', async ({ page }) => {
   const ids = ROOM_WORDS[house];
   await enter(page, { 'vocabhall.visited.v1': ids.slice(1), 'vocabhall.learned.v1': ids.slice(0, 1) });
-  await page.getByRole('button', { name: /^Your city journal/ }).click();
+  await page.locator('.city-progress').click();
   const dialog = page.getByRole('dialog', { name: 'Your city journal' });
   await expect(dialog.locator('.journal-tiles > div').first()).toContainText(`${ids.length - 1}/ ${exhibits.length}words discovered`);
   const goal = dialog.locator('.journal-goals li', { hasText: '1 painting left to explore' }).first();

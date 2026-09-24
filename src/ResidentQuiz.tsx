@@ -123,7 +123,7 @@ export function ResidentQuiz({ resident, exhibits, checked, onClose, onAudioChan
     <p className="resident-greeting">{t(resident.greeting)}</p>
     <FavourCard resident={resident} friendship={friendship} exhibits={exhibits} onAsk={() => { playSfx("tap"); onAskFavour(rounds.map((r) => r.target.id)); }} onHandOver={() => {
       setMood("cheer"); playSfx("complete"); celebrate("confetti");
-      announce(t(FAVOURS[resident.id].thanks), `${resident.name} · ${t("Friendship")} ${(friendship?.level ?? 0) + 1}`);
+      announce(t(FAVOURS[resident.id].thanks), `${resident.name} · ${t("Friendship")} ${(friendship?.level ?? 0) + 1}`, true);
       onHandOver();
     }} />
     {!round ? <p>{t("No questions are available here yet.")}</p> : complete ? <div className="resident-complete">

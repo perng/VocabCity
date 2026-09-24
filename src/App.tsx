@@ -623,7 +623,7 @@ export default function App() {
     setLabels(next);
     setLabelQuiz(null);
     playSfx("correct"); celebrate("confetti");
-    announce(t("Label restored!"), `${next.restored.length} / ${next.ids.length} ${t("lost labels found today")}`);
+    announce(t("Label restored!"), `${next.restored.length} / ${next.ids.length} ${t("lost labels found today")}`, true);
     openExhibit(choice, labelQuiz.area);
   };
   useEffect(() => {
@@ -1519,9 +1519,9 @@ export default function App() {
                   try {
                     const place = selectedArea < rooms.length ? (rooms[selectedArea].house ? rooms[selectedArea].house!.display : translate(districtFor(selectedArea).landmark, "")) : "Vocab City";
                     const result = await sendPostcard(selected, place, (locale && selected.translations[locale]) || "", locale);
-                    if (result !== "cancelled") { playSfx("stamp"); announce(t("A postcard from Vocab City!"), t(result === "shared" ? "Sent on its way." : "Saved as an image.")); }
+                    if (result !== "cancelled") { playSfx("stamp"); announce(t("A postcard from Vocab City!"), t(result === "shared" ? "Sent on its way." : "Saved as an image."), true); }
                   } catch {
-                    announce(t("The postcard could not be made."), t("Please try again."));
+                    announce(t("The postcard could not be made."), t("Please try again."), true);
                   } finally { setPostcardBusy(false); }
                 }}
               >

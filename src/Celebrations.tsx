@@ -18,8 +18,8 @@ export function celebrate(kind: Burst = "spark", at?: { x: number; y: number }) 
 
 const ANNOUNCE = "vocabhall:announce";
 /** A short ribbon over everything, for milestones such as a finished house. */
-export function announce(title: string, detail = "") {
-  window.dispatchEvent(new CustomEvent(ANNOUNCE, { detail: { title, detail } }));
+export function announce(title: string, detail = "", now = false) {
+  window.dispatchEvent(new CustomEvent(ANNOUNCE, { detail: { title, detail, now } }));
 }
 
 let nextId = 0;
@@ -69,9 +69,12 @@ export function Celebrations() {
       bannerTimer = next ? setTimeout(showNext, queue.length ? 2600 : 3600) : undefined;
     };
     const onAnnounce = (event: Event) => {
+      const { title, detail, now } = (event as CustomEvent<{ title: string; detail: string; now: boolean }>).detail;
+      // A reply to something the visitor just did shows at once; milestones take turns.
+      if (now) { queue.length = 0; clearTimeout(bannerTimer); bannerTimer = undefined; }
       // Keep the line short when milestones arrive quickly, as on a fast guided tour.
-      if (queue.length >= 2) queue.pop();
-      queue.push((event as CustomEvent<{ title: string; detail: string }>).detail);
+      if (queue.length >= 2) queue.shift();
+      queue.push({ title, detail });
       if (!bannerTimer) showNext();
       else if (queue.length === 1) { clearTimeout(bannerTimer); bannerTimer = setTimeout(showNext, 2600); }
     };
