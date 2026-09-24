@@ -4,6 +4,7 @@ import type { Exhibit, Room } from '../src/types';
 import { newlyComplete, placeProgress, roomWordIds } from '../src/progress';
 import { pickWalk, streak, todaysWalk, WALK_SIZE } from '../src/daily';
 import { registerFamilySizes } from '../src/placements';
+import { styleMilestone, styleSets } from '../src/album';
 
 const exhibits = collection.exhibits as Exhibit[];
 const rooms = collection.rooms as Room[];
@@ -220,4 +221,31 @@ test('a neighbour\'s favour sends you looking by meaning, then grows the friends
   await page.getByRole('button', { name: "I'll look for them", exact: true }).click();
   const next = await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.favours.v1')!).sailor.active.ids);
   expect(next.some((id: string) => favour.active.ids.includes(id))).toBe(false);
+});
+
+test('the album groups every painting into styles and celebrates rare finds', async ({ page }) => {
+  const sets = styleSets(exhibits);
+  expect(sets.flatMap((set) => set.ids).sort()).toEqual(exhibits.map((e) => e.id).sort());
+  expect(sets.filter((set) => set.rare).length).toBeGreaterThan(40);
+  const ukiyo = sets.find((set) => set.key === 'ukiyo-e')!;
+  expect(ukiyo.rare).toBe(true);
+  expect(ukiyo.medium).toBe('Ukiyo-e woodblock print');
+  expect(styleMilestone(ukiyo, new Set(), ukiyo.ids[0])).toBe('first');
+  expect(styleMilestone(ukiyo, new Set(ukiyo.ids.slice(1)), ukiyo.ids[0])).toBe('complete');
+  expect(styleMilestone(ukiyo, new Set([ukiyo.ids[1]]), ukiyo.ids[0])).toBeNull();
+  await enter(page, { 'vocabhall.visited.v1': ukiyo.ids.slice(1) });
+  await page.getByRole('button', { name: /^Album/ }).click();
+  const card = page.locator('.album-set', { hasText: 'Ukiyo-e woodblock print' });
+  await expect(card).toContainText(`${ukiyo.ids.length - 1} / ${ukiyo.ids.length}`);
+  await expect(card.locator('.album-frame.is-empty')).toHaveCount(1);
+  await page.keyboard.press('Escape');
+  await openFromCollection(page, exhibits.find((e) => e.id === ukiyo.ids[0])!);
+  await expect(page.locator('.milestone-live')).toContainText(`Style complete! Ukiyo-e woodblock print · ${ukiyo.ids.length} / ${ukiyo.ids.length}`, { timeout: 10000 });
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /^Album/ }).click();
+  await expect(card).toHaveAttribute('data-complete', 'true');
+  // An empty frame walks you to the painting's neighbourhood.
+  const empty = page.locator('.album-frame.is-empty').first();
+  await empty.click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
 });

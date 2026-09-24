@@ -13,6 +13,7 @@ import {
   ArrowUp,
   Flame,
   Heart,
+  Images,
   Star,
   Bell,
   BellOff,
@@ -78,6 +79,7 @@ import { YouglishPlayer, YouTubeLogo } from "./YouglishPlayer";
 import { playSfx, setSfxEnabled, useSfxEnabled } from "./sfx";
 import { Soundscape } from "./soundscape";
 import { Celebrations, announce, celebrate } from "./Celebrations";
+import { styleMilestone, styleOf, styleSets } from "./album";
 import { favourFound, favourWords, readFavours, saveFavours, type FavourBook } from "./favours";
 import { WALK_SIZE, dayKey, readDaily, saveDaily, streak, todaysWalk, type DailyWalk } from "./daily";
 import { newlyComplete, placeProgress, roomWordIds, roomsOf, type PlaceState } from "./progress";
@@ -95,6 +97,7 @@ const HOUSE_SECTIONS: [HouseKind, string, string][] = [
   ["level", "LEVEL LANES", "Every other word above level 30, six to a house in alphabetical order."],
 ];
 const ROOM_WORDS = roomWordIds(exhibits, rooms.length);
+const STYLE_SETS = styleSets(exhibits);
 const placeLabel = (index: number, locale: string) => {
   const room = rooms[index];
   return room.house ? `${room.house.display}` : translate(districtFor(index).landmark, locale);
@@ -433,7 +436,7 @@ export default function App() {
   const [hoverAction, setHoverAction] = useState<"open" | "check" | "video">(
     "open",
   );
-  const [modal, setModal] = useState<"map" | "collection" | "help" | "walk" | null>(
+  const [modal, setModal] = useState<"map" | "collection" | "help" | "walk" | "album" | null>(
     null,
   );
   const [visited, setVisited] = useProgress("vocabhall.visited.v1");
@@ -471,6 +474,8 @@ export default function App() {
     museum.current?.cheerResident(npc.id);
   };
   const walkTargets = walk.ids.filter((id) => !walk.found.includes(id));
+  const visitedSet = useMemo(() => new Set(visited), [visited]);
+  const stylesComplete = STYLE_SETS.filter((set) => set.ids.every((id) => visitedSet.has(id))).length;
   const walkStreak = streak(walk.completed, walk.day);
   const visitedRef = useRef(visited);
   visitedRef.current = visited;
@@ -553,6 +558,17 @@ export default function App() {
         }, 800);
       }
       if (!visitedRef.current.includes(exhibit.id)) {
+        const style = styleOf(STYLE_SETS, exhibit.id);
+        const milestone = styleMilestone(style, new Set(visitedRef.current), exhibit.id);
+        if (style && (milestone === "complete" || (milestone === "first" && style.rare))) {
+          const l = localeRef.current, name = l === "zh_TW" ? style.mediumZh : style.medium;
+          const found = style.ids.filter((id) => id === exhibit.id || visitedRef.current.includes(id)).length;
+          setTimeout(() => {
+            if (milestone === "complete") { playSfx("complete"); celebrate("confetti"); }
+            else { playSfx("learned"); celebrate("spark"); }
+            announce(translate(milestone === "complete" ? "Style complete!" : "A new style for your album", l), `${name} · ${found} / ${style.ids.length}`);
+          }, 1000);
+        }
         playSfx("discover");
         celebratePlaces(newlyComplete(roomsOf(exhibit), ROOM_WORDS, new Set(visitedRef.current), exhibit.id), "explored", localeRef.current);
       }
@@ -776,7 +792,7 @@ export default function App() {
         </button>
         <nav className="main-nav" aria-label={t("Main navigation")}>
           <button
-            className={modal !== "collection" ? "active" : ""}
+            className={modal !== "collection" && modal !== "album" ? "active" : ""}
             onClick={() => {
               setModal(null);
               setSelected(null);
@@ -793,6 +809,13 @@ export default function App() {
           >
             {t("The collection")}
             <span>{exhibits.length}</span>
+          </button>
+          <button
+            className={modal === "album" ? "active" : ""}
+            onClick={() => setModal("album")}
+          >
+            {t("Album")}
+            <span>{stylesComplete} / {STYLE_SETS.length}</span>
           </button>
         </nav>
         <div className="header-actions">
@@ -826,6 +849,9 @@ export default function App() {
             aria-label={t("How to explore")}
           >
             <HelpCircle size={19} />
+          </button>
+          <button className="icon-button album-nav" onClick={() => setModal("album")} aria-label={`${t("Album")}: ${stylesComplete} / ${STYLE_SETS.length}`}>
+            <Images size={18} />
           </button>
           <span className="header-divider" />
           <button
@@ -1631,6 +1657,42 @@ export default function App() {
                 {t("saved on this device")}
               </span>
             </footer>
+          </section>
+        </Dialog>
+      )}
+
+      {modal === "album" && (
+        <Dialog className="album-dialog" label={t("The collector's album")} onClose={() => setModal(null)}>
+          <section>
+            <div className="modal-heading">
+              <div>
+                <span className="eyebrow">{t("EVERY STYLE IN THE CITY")}</span>
+                <h2>{t("The collector's album")}<span>.</span></h2>
+              </div>
+              <button className="icon-button" onClick={() => setModal(null)} aria-label={t("Close album")}><X size={21} /></button>
+            </div>
+            <p>{t("Each painting in the city belongs to an art style. Open a painting to add it to your album. Rare styles hang only a few times across the city: tap an empty frame to walk to its neighbourhood.")}</p>
+            <div className="album-summary"><strong>{stylesComplete} / {STYLE_SETS.length}</strong><span>{t("styles complete")}</span></div>
+            {([true, false] as const).map((rare) => <section key={String(rare)} className="album-section" aria-label={t(rare ? "Rare styles" : "Painted series")}>
+              <h3>{t(rare ? "Rare styles" : "Painted series")}</h3>
+              <div className={`album-grid ${rare ? "is-rare" : ""}`}>
+                {STYLE_SETS.filter((set) => set.rare === rare).map((set) => {
+                  const found = set.ids.filter((id) => visitedSet.has(id));
+                  const shown = rare ? set.ids : found.slice(0, 8);
+                  return <article key={set.key} className="album-set" data-complete={found.length === set.ids.length}>
+                    <header><strong>{locale === "zh_TW" ? set.mediumZh : set.medium}{set.ids.length === 1 && <em>{t("One of a kind")}</em>}</strong><span>{found.length} / {set.ids.length}</span></header>
+                    {!rare && <progress max={set.ids.length} value={found.length} aria-label={`${found.length} / ${set.ids.length}`} />}
+                    <div className="album-frames">{shown.map((id) => {
+                      const exhibit = exhibits.find((e) => e.id === id)!;
+                      return visitedSet.has(id)
+                        ? <button key={id} className="album-frame" onClick={() => visit(exhibit)} aria-label={exhibit.word}><img src={assetUrl(exhibit.image)} alt="" loading="lazy" /></button>
+                        : <button key={id} className="album-frame is-empty" disabled={!ready || Boolean(error)} onClick={() => navigateRoom(exhibit.room)}
+                          aria-label={`${t("Undiscovered painting")} · ${isRootRoom(exhibit.room) ? rooms[exhibit.room].house!.display : t(districtFor(exhibit.room).landmark)}`}>?</button>;
+                    })}</div>
+                  </article>;
+                })}
+              </div>
+            </section>)}
           </section>
         </Dialog>
       )}

@@ -3081,3 +3081,33 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
   .walk-list img { width: 52px; height: 52px; }
   .walk-list button { grid-column: 1 / -1; justify-content: center; }
 }
+
+/* The collector's album. */
+.album-dialog { width: 860px; }
+.album-dialog > section { padding: 35px 38px; }
+.album-dialog > section > p { font-size: 13px; line-height: 1.75; margin-top: 16px; color: var(--muted); }
+.album-summary { display: flex; align-items: baseline; gap: 10px; margin: 18px 0 8px; }
+.album-summary strong { font: 500 34px/1 var(--serif); color: #3d5a44; }
+.album-summary span { font-size: 13px; color: #6c7565; }
+.album-section h3 { margin: 22px 0 12px; font: 500 22px/1.2 var(--serif); padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.album-set { padding: 12px; border: 1px solid var(--line); background: #fffdf6; display: grid; gap: 9px; align-content: start; }
+.album-set[data-complete=true] { background: #f7efd5; border-color: #d9a22e; box-shadow: inset 0 0 0 1px #e8c15d; }
+.album-set header { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.album-set header strong { font-size: 13px; font-weight: 500; line-height: 1.35; }
+.album-set header span { font-size: 12px; color: #6c7565; white-space: nowrap; }
+.album-set[data-complete=true] header span::after { content: " ★"; color: #b8871f; }
+.album-set progress { width: 100%; height: 5px; accent-color: #56735c; }
+.album-frames { display: flex; flex-wrap: wrap; gap: 6px; }
+.album-frame { width: 44px; height: 44px; padding: 0; border: 2px solid #c9b691; background: #efe9d8; overflow: hidden; display: grid; place-items: center; font: 500 18px var(--serif); color: #a59c84; }
+.album-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.album-frame.is-empty { border-style: dashed; }
+.album-frame:hover:not(:disabled) { border-color: #b8871f; }
+@media (max-width: 760px) {
+  .album-dialog > section { padding: 24px 20px; }
+  .album-grid { grid-template-columns: 1fr; }
+}
+.album-nav { display: none; }
+.album-set header em { display: block; margin-top: 3px; font-style: normal; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #b8871f; }
+.visit-progress .place-progress > div { min-width: 0; }
+@media (max-width: 540px) { .album-nav { display: grid; } }
