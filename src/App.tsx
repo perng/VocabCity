@@ -75,6 +75,7 @@ import { translate, useLocale } from "./i18n";
 import { useExhibitAudio } from "./useExhibitAudio";
 import { YouglishPlayer, YouTubeLogo } from "./YouglishPlayer";
 import { playSfx, setSfxEnabled, useSfxEnabled } from "./sfx";
+import { Soundscape } from "./soundscape";
 import { Celebrations, announce, celebrate } from "./Celebrations";
 import { WALK_SIZE, dayKey, readDaily, saveDaily, streak, todaysWalk, type DailyWalk } from "./daily";
 import { newlyComplete, placeProgress, roomWordIds, roomsOf, type PlaceState } from "./progress";
@@ -407,13 +408,15 @@ export default function App() {
   const hostRef = useRef<HTMLDivElement>(null);
   const museum = useRef<Museum | null>(null);
   const ambienceRef = useRef<AudioContext | null>(null);
-  const ambienceGainRef = useRef<GainNode | null>(null);
+  const soundscapeRef = useRef<Soundscape | null>(null);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState("");
   const [pose, setPose] = useState<Pose>({
     ...ENTRY,
     room: 1,
   });
+  const poseRef = useRef(pose);
+  poseRef.current = pose;
   const [intro, setIntro] = useState(true);
   const [gamesRoom, setGamesRoom] = useState<number | null>(null);
   const [gamesPlaying, setGamesPlaying] = useState(false);
@@ -614,17 +617,14 @@ export default function App() {
     museum.current?.setEvening(evening);
   }, [evening, ready]);
   useEffect(() => {
-    if (ambienceRef.current && ambienceGainRef.current)
-      ambienceGainRef.current.gain.setTargetAtTime(
-        videoExhibit ? 0 : playback.active || gameAudio ? 0.007 : 0.028,
-        ambienceRef.current.currentTime,
-        0.2,
-      );
+    soundscapeRef.current?.setVolume(videoExhibit ? 0 : playback.active || gameAudio ? 0.25 : 0.9);
   }, [playback.active, videoExhibit, gameAudio]);
+  useEffect(() => { soundscapeRef.current?.setPosition(pose); }, [pose]);
   useEffect(
     () => () => {
       clearTimeout(toastTimer.current);
       clearTimeout(roomTimer.current);
+      soundscapeRef.current?.dispose();
       void ambienceRef.current?.close();
     },
     [],
@@ -674,28 +674,8 @@ export default function App() {
       if (!ambienceRef.current) {
         const ctx = new AudioContext();
         ambienceRef.current = ctx;
-        const master = ctx.createGain();
-        ambienceGainRef.current = master;
-        master.gain.value = 0.028;
-        master.connect(ctx.destination);
-        [130.81, 196, 261.63, 329.63].forEach((frequency, i) => {
-          const oscillator = ctx.createOscillator(),
-            gain = ctx.createGain();
-          oscillator.type = "sine";
-          oscillator.frequency.value = frequency;
-          oscillator.detune.value = i % 2 ? 3 : -3;
-          gain.gain.value = 0.23;
-          oscillator.connect(gain);
-          gain.connect(master);
-          oscillator.start();
-          const lfo = ctx.createOscillator(),
-            lfoGain = ctx.createGain();
-          lfo.frequency.value = 0.07 + i * 0.023;
-          lfoGain.gain.value = 0.12;
-          lfo.connect(lfoGain);
-          lfoGain.connect(gain.gain);
-          lfo.start();
-        });
+        soundscapeRef.current = new Soundscape(ctx);
+        soundscapeRef.current.setPosition(poseRef.current);
       }
       if (ambient) await ambienceRef.current.suspend();
       else await ambienceRef.current.resume();
