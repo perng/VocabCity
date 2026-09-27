@@ -1300,7 +1300,7 @@
   "Next word": "下一個單字",
   "Carry label": "拿起標籤",
   "Play the clue": "播放語音線索",
-  "Listening…": "仔細聽…",
+  "Listening…": "聆聽中…",
   "Listen again": "再聽一次",
   "Stand on a word tile for a moment, or tap a tile to answer.": "走到單字地磚上停一下，或點一下地磚作答。",
   "Drag this label onto a numbered painting, or simply click that painting.": "將標籤拖到有編號的畫作上，也可以直接點選那幅畫。",
@@ -1546,5 +1546,15 @@
   "You found today's golden painting!": "你找到今天的金色畫作了！",
   "Found today": "今天已找到",
   "Still hiding": "還藏著呢",
-  "Every painting joins the album of art styles when you open it. Send any word home as a postcard, and try the evening light: your learned words glow and appear as constellations.": "每打開一幅畫，它就會收進畫風畫冊。任何單字都能寄成明信片；切換到傍晚，你學會的單字會發光，還會化成夜空中的星座。"
+  "Every painting joins the album of art styles when you open it. Send any word home as a postcard, and try the evening light: your learned words glow and appear as constellations.": "每打開一幅畫，它就會收進畫風畫冊。任何單字都能寄成明信片；切換到傍晚，你學會的單字會發光，還會化成夜空中的星座。",
+  "Cistern echoes": "地下水宮的回音",
+  "CISTERN ECHOES": "地下水宮的回音",
+  "Words echo off the water down here. Listen, then pick the word you heard, or click its painting.": "單字在水面上迴盪。仔細聽，再選出你聽到的單字，或點它的畫。",
+  "Listen to the echo": "聽聽回音",
+  "Hear it again": "再聽一次",
+  "Stop": "停止",
+  "The echoes settle.": "回音漸漸平息了。",
+  "words heard in the cistern": "個單字在地下水宮裡聽到",
+  "cistern echo sets": "組回音完成",
+  "The echo could not be played. Try again.": "回音無法播放，請再試一次。"
 }

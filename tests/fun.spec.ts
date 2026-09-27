@@ -464,3 +464,23 @@ test('a street challenge tile can be clicked as well as stepped on', async ({ pa
   await page.mouse.click(point.x, point.y);
   await expect(page.getByRole('region', { name: 'Street challenge' })).toHaveAttribute('data-solved', 'true');
 });
+
+test('the cistern offers echoes: hear a word through the echo and pick it, three times', async ({ page }) => {
+  test.setTimeout(90000);
+  await enter(page);
+  await page.evaluate(() => (window as any).__museum.goToRoom(13));
+  const card = page.getByRole('region', { name: 'Cistern echoes' });
+  await expect(card).toBeVisible();
+  await card.getByRole('button', { name: 'Listen to the echo' }).click();
+  for (let round = 0; round < 3; round++) {
+    await expect(card.locator('.eyebrow')).toContainText(`${round + 1} / 3`);
+    // Work out the word from the recording the echo is playing.
+    const url = await page.evaluate(() => performance.getEntriesByType('resource').map((e) => e.name).filter((n) => n.includes('.m4a')).at(-1));
+    const answer = exhibits.find((e) => e.audio && url?.endsWith(e.audio))!;
+    expect(answer, url).toBeTruthy();
+    await card.getByRole('button', { name: answer.word, exact: true }).click();
+    await expect(card).toHaveAttribute('data-solved', 'true');
+  }
+  await expect(page.locator('.milestone-live')).toContainText('The echoes settle. 3 words heard in the cistern');
+  expect(await page.evaluate(() => localStorage.getItem('vocabhall.echoes.v1'))).toBe('1');
+});

@@ -86,6 +86,7 @@ import { Soundscape } from "./soundscape";
 import { sendPostcard } from "./postcard";
 import { Celebrations, announce, celebrate } from "./Celebrations";
 import { dueReviewIds, recordMiss, recordRight, useReviewIds } from "./review";
+import { ECHO_ROUNDS, echoRounds, playEcho, readEchoes, saveEchoes, stopEcho, type EchoRound } from "./echo";
 import { readGolden, saveGolden, todaysGolden, type Golden } from "./golden";
 import { EVERY, FIRST_AFTER, pickChallenge, readChallengeStats, saveChallengeStats, type Challenge } from "./challenges";
 import { labelChoices, readLabels, saveLabels, todaysLabels, type LostLabels } from "./labels";
@@ -109,6 +110,7 @@ const HOUSE_SECTIONS: [HouseKind, string, string][] = [
 const ROOM_WORDS = roomWordIds(exhibits, rooms.length);
 // Round numbers of discovered words worth a banner.
 const WORD_MILESTONES = [10, 25, 50, 100, 250, 500, 1000, 1500, 2000];
+const CISTERN = DISTRICTS.findIndex((district) => district.kind === "cistern");
 // The wind only starts taking labels once a visitor has settled in.
 const LOST_LABELS_AFTER = 12;
 const STYLE_SETS = styleSets(exhibits);
@@ -656,12 +658,71 @@ export default function App() {
   };
   const challengeAnswerRef = useRef(answerChallenge);
   challengeAnswerRef.current = answerChallenge;
+  // Cistern echoes: offered once each time the visitor steps into the cistern.
+  const [echo, setEcho] = useState<{ rounds: EchoRound[]; index: number; wrong: string[]; solved: boolean; heard: boolean; listening: boolean } | null>(null);
+  const [echoOffer, setEchoOffer] = useState(false);
+  const [echoTotal, setEchoTotal] = useState(readEchoes);
+  const echoRef = useRef(echo);
+  echoRef.current = echo;
+  const inCistern = pose.room === CISTERN;
+  useEffect(() => {
+    if (inCistern) setEchoOffer(true);
+    else { setEchoOffer(false); setEcho(null); stopEcho(); }
+  }, [inCistern]);
+  const listenEcho = async () => {
+    const current = echoRef.current;
+    if (!current) return;
+    setEcho({ ...current, heard: true, listening: true });
+    try { await playEcho(current.rounds[current.index].answer.audio!); }
+    catch { showToast(t("The echo could not be played. Try again.")); }
+    setEcho((latest) => latest && { ...latest, listening: false });
+  };
+  const startEcho = () => {
+    const rounds = echoRounds(roomExhibits(CISTERN), checked);
+    if (!rounds.length) return;
+    setEchoOffer(false);
+    const next = { rounds, index: 0, wrong: [], solved: false, heard: false, listening: false };
+    echoRef.current = next; setEcho(next);
+    void listenEcho();
+  };
+  const answerEcho = (id: string) => {
+    const current = echoRef.current;
+    if (!current || current.solved || !current.heard) return;
+    const round = current.rounds[current.index];
+    if (id !== round.answer.id) {
+      playSfx("wrong"); recordMiss(round.answer.id);
+      setEcho({ ...current, wrong: [...new Set([...current.wrong, id])] });
+      return;
+    }
+    stopEcho();
+    if (!current.wrong.length) recordRight(round.answer.id);
+    playSfx("correct"); celebrate("spark");
+    setEcho({ ...current, solved: true });
+    setTimeout(() => {
+      const latest = echoRef.current;
+      if (!latest) return;
+      if (latest.index + 1 >= latest.rounds.length) {
+        const total = echoTotal + 1; setEchoTotal(total); saveEchoes(total);
+        playSfx("complete"); celebrate("confetti");
+        announce(t("The echoes settle."), `${ECHO_ROUNDS} ${t("words heard in the cistern")}`, true);
+        setEcho(null);
+        return;
+      }
+      const next = { ...latest, index: latest.index + 1, wrong: [], solved: false, heard: false, listening: false };
+      echoRef.current = next; setEcho(next);
+      void listenEcho();
+    }, 1300);
+  };
+  const echoAnswerRef = useRef(answerEcho);
+  echoAnswerRef.current = answerEcho;
   const toggleChallenges = (off: boolean) => {
     const stats = { ...challengeStats, off }; setChallengeStats(stats); saveChallengeStats(stats);
     if (off) endChallenge();
   };
   const [labelQuiz, setLabelQuiz] = useState<{ exhibit: Exhibit; area: number; wrong: string[] } | null>(null);
   const sceneSelect = useCallback((exhibit: Exhibit, area?: number) => {
+    // During cistern echoes, clicking a cistern painting answers the round.
+    if (echoRef.current?.heard && !echoRef.current.solved && (exhibit.room === CISTERN)) { echoAnswerRef.current(exhibit.id); return; }
     const today = goldenRef.current;
     if (exhibit.id === today.id && !today.found) {
       const next = { ...today, found: true, total: today.total + 1 };
@@ -1242,6 +1303,19 @@ export default function App() {
             <button onClick={endChallenge}>{t("Not now")}</button>
             <button onClick={() => toggleChallenges(true)}>{t("Turn off street challenges")}</button>
           </div>
+        </section>}
+        {inCistern && (echo || echoOffer) && !selected && !modal && !challenge && <section className="challenge-card echo-card" aria-label={t("Cistern echoes")} data-solved={echo?.solved ?? false}>
+          <span className="eyebrow">{t("CISTERN ECHOES")}{echo && ` · ${echo.index + 1} / ${echo.rounds.length}`}</span>
+          {!echo ? <>
+            <p>{t("Words echo off the water down here. Listen, then pick the word you heard, or click its painting.")}</p>
+            <div className="challenge-actions"><button className="echo-start" onClick={startEcho}><Headphones size={14} />{t("Listen to the echo")}</button>
+              <button onClick={() => setEchoOffer(false)}>{t("Not now")}</button></div>
+          </> : <>
+            <button className="echo-listen" disabled={echo.listening} onClick={() => void listenEcho()}><Volume2 size={16} />{t(echo.listening ? "Listening…" : "Hear it again")}</button>
+            <div className="challenge-options echo-options">{echo.rounds[echo.index].choices.map((choice) => <button key={choice.id} disabled={!echo.heard || echo.solved || echo.wrong.includes(choice.id)}
+              data-wrong={echo.wrong.includes(choice.id)} data-right={echo.solved && choice.id === echo.rounds[echo.index].answer.id} onClick={() => answerEcho(choice.id)}>{choice.word}</button>)}</div>
+            <div className="challenge-actions"><button onClick={() => { stopEcho(); setEcho(null); }}>{t("Stop")}</button></div>
+          </>}
         </section>}
         {nearby && <button className="resident-invite" onClick={() => setResident(nearby)} aria-label={`${t("Talk to")} ${nearby.name}`}>
           <MessageCircle size={23} /><span><strong>{t("Talk to")} {nearby.name}</strong><small>{t(nearby.role)} · {t("Three quick vocabulary questions")}</small></span><ArrowRight size={17} />
@@ -1927,6 +2001,7 @@ export default function App() {
           [t("labels restored"), labels.total, ""],
           [t("street challenges won"), challengeStats.won, ""],
           [t("golden paintings found"), golden.total, ""],
+          [t("cistern echo sets"), echoTotal, ""],
         ];
         return <Dialog className="journal-dialog" label={t("Your city journal")} onClose={() => setModal(null)}>
           <section>

@@ -3220,3 +3220,8 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
 .golden-total { font-size: 11px; color: #8a6a34; }
 .golden-card[data-found=true] { background: #f3e1a8; }
 .golden-target { filter: drop-shadow(0 0 2px #d9a22e); }
+.echo-card .echo-start, .echo-card .echo-listen { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #3d5a44; }
+.echo-card .echo-listen { justify-self: start; padding: 6px 10px; border: 1px solid #c9b691; background: #fffdf6; }
+.echo-card .echo-listen:disabled { opacity: .6; }
+.echo-options { grid-template-columns: repeat(2, 1fr); }
+.echo-card { border-color: #6f8f9a; background: #eef3f2f7; }
