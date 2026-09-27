@@ -168,6 +168,8 @@ export class Museum {
   private lostTexture: THREE.Texture | null = null;
   private lampBulbs: THREE.MeshStandardMaterial[] = [];
   private golden: { id: string; sprites: THREE.Sprite[]; stops: (() => void)[] } | null = null;
+  private starDome!: THREE.Points;
+  private skyWords: THREE.Group | null = null;
   private challenge: {
     group: THREE.Group; textures: THREE.Texture[]; redraw: (() => void)[];
     wrong: string[]; solved: boolean; standing: { id: string; since: number; answered: boolean } | null; stop: () => void;
@@ -225,7 +227,8 @@ export class Museum {
     this.botany = new Botany((w, h, draw) => this.canvasTexture(w, h, draw));
     this.buildCity();
     this.buildExhibits();
-    this.eveningOnly.push(this.life.addStars(() => this.evening), this.life.addFireflies(CITY.park, 60, () => this.evening));
+    this.starDome = this.life.addStars(() => this.evening);
+    this.eveningOnly.push(this.starDome, this.life.addFireflies(CITY.park, 60, () => this.evening));
     this.buildResidents();
     this.resizeObserver = new ResizeObserver(this.resize);
     this.resizeObserver.observe(host);
@@ -1607,6 +1610,58 @@ export class Museum {
     for (const star of zone.marks.stars) star.visible = state === "mastered";
   }
 
+  /** After dusk, learned words hang in the sky as constellations; click one to review it. */
+  setSkyWords(words: { id: string; word: string }[]) {
+    if (this.skyWords) {
+      this.skyWords.traverse((object) => {
+        if (object instanceof THREE.Sprite || object instanceof THREE.LineSegments || object instanceof THREE.Points) {
+          object.geometry.dispose(); const material = object.material as THREE.Material & { map?: THREE.Texture | null };
+          material.map?.dispose(); material.dispose();
+        }
+      });
+      this.skyWords.removeFromParent(); this.skyWords = null;
+    }
+    if (!words.length) { this.needsRender = true; return; }
+    const group = new THREE.Group(); group.name = "sky-words";
+    // The star dome is centred 80 m behind its origin; place constellations relative to the viewer.
+    group.position.set(0, 0, -80);
+    const starTexture = new THREE.CanvasTexture((() => {
+      const canvas = document.createElement("canvas"); canvas.width = canvas.height = 32;
+      const ctx = canvas.getContext("2d")!, g = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+      g.addColorStop(0, "rgba(255,252,235,1)"); g.addColorStop(0.3, "rgba(255,240,190,.8)"); g.addColorStop(1, "rgba(255,230,170,0)");
+      ctx.fillStyle = g; ctx.fillRect(0, 0, 32, 32); return canvas;
+    })());
+    words.forEach((word, i) => {
+      // Spread the constellations around the horizon, low enough to see without looking up.
+      const azimuth = (i / words.length) * Math.PI * 2 + 0.4, elevation = 0.3 + (i % 2) * 0.12, r = 270;
+      const centre = new THREE.Vector3(Math.sin(azimuth) * Math.cos(elevation) * r, Math.sin(elevation) * r, Math.cos(azimuth) * Math.cos(elevation) * r);
+      const across = new THREE.Vector3(Math.cos(azimuth), 0, -Math.sin(azimuth)), up = new THREE.Vector3(0, 1, 0);
+      let seed = [...word.id].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7);
+      const random = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+      const points: THREE.Vector3[] = [];
+      for (let k = 0, n = 5 + Math.floor(random() * 3); k < n; k++)
+        points.push(centre.clone().addScaledVector(across, (k - n / 2) * 7 + (random() - 0.5) * 5).addScaledVector(up, (random() - 0.5) * 16));
+      const segments: THREE.Vector3[] = [];
+      for (let k = 1; k < points.length; k++) segments.push(points[k - 1], points[k]);
+      const lines = new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(segments),
+        new THREE.LineBasicMaterial({ color: "#cfd8ff", transparent: true, opacity: 0.45, fog: false, depthWrite: false }));
+      group.add(lines);
+      for (const point of points) {
+        const star = new THREE.Sprite(new THREE.SpriteMaterial({ map: starTexture, fog: false, depthWrite: false, transparent: true, blending: THREE.AdditiveBlending }));
+        star.position.copy(point); star.scale.setScalar(4.2); star.userData.skyWord = word.id; group.add(star);
+      }
+      const labelCanvas = document.createElement("canvas"); labelCanvas.width = 512; labelCanvas.height = 128;
+      const ctx = labelCanvas.getContext("2d")!;
+      ctx.fillStyle = "#fff6d6"; ctx.shadowColor = "rgba(255,230,160,.8)"; ctx.shadowBlur = 12; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.font = 'italic 500 70px "Cormorant Garamond", serif'; ctx.fillText(word.word, 256, 64, 490);
+      const label = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(labelCanvas), fog: false, depthWrite: false, transparent: true }));
+      label.position.copy(centre).addScaledVector(up, -13); label.scale.set(48, 12, 1); label.userData.skyWord = word.id;
+      group.add(label);
+    });
+    this.starDome.add(group); this.skyWords = group;
+    this.needsRender = true;
+  }
+
   /** Twinkles around today's golden painting (and a fast gold shimmer on its frame). */
   setGolden(id: string | null) {
     if (this.golden) {
@@ -1791,6 +1846,13 @@ export class Museum {
         return;
       }
       const object = this.pickObject(event.clientX, event.clientY);
+      const skyWord: string | undefined = object?.userData.skyWord;
+      if (skyWord) {
+        const exhibit = this.options.exhibits.find((e) => e.id === skyWord);
+        if (exhibit) { this.clearInput(); this.options.onSelect(exhibit, exhibit.room); }
+        this.pointerCancel();
+        return;
+      }
       const challengeAnswer: string | undefined = object?.userData.challengeAnswer;
       if (challengeAnswer && this.challenge && !this.challenge.solved && !this.challenge.wrong.includes(challengeAnswer)) {
         this.clearInput();
@@ -1840,6 +1902,8 @@ export class Museum {
       (hit) =>
         hit.object.userData.gameAnswer ||
         hit.object.userData.residentId ||
+        hit.object.userData.challengeAnswer ||
+        hit.object.userData.skyWord ||
         !(hit.object as THREE.Mesh).material ||
         !((hit.object as THREE.Mesh).material as THREE.Material).transparent ||
         hit.object.userData.target,

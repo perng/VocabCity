@@ -423,3 +423,44 @@ test('the golden painting twinkles, gives hints on request, and counts only when
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.golden.v1')!))).toMatchObject({ found: true, total: 2, hints: 3 });
   await expect.poll(() => page.evaluate(() => (window as any).__museum.golden)).toBeNull();
 });
+
+test('learned words hang in the evening sky as constellations that open their flashcards', async ({ page }) => {
+  const learned = exhibits.slice(10, 13);
+  await enter(page, { 'vocabhall.learned.v1': learned.map((e) => e.id) });
+  const sky = () => page.evaluate(() => { const g = (window as any).__museum.scene.getObjectByName('sky-words'); return g ? [...new Set(g.children.map((c: any) => c.userData.skyWord).filter(Boolean))] : []; });
+  expect(await sky()).toEqual([]);
+  await page.getByRole('button', { name: 'Switch to evening light' }).click();
+  await expect.poll(sky).toEqual(learned.map((e) => e.id));
+  // Click the first constellation's label on screen.
+  const point = await page.evaluate((id) => {
+    const m = (window as any).__museum, g = m.scene.getObjectByName('sky-words');
+    const label = g.children.find((c: any) => c.type === 'Sprite' && c.userData.skyWord === id && c.scale.x > 20);
+    const p = label.getWorldPosition(label.position.clone());
+    const dx = p.x - m.camera.position.x, dz = p.z - m.camera.position.z, dy = p.y - m.camera.position.y;
+    m.yaw = Math.atan2(-dx, -dz); m.pitch = Math.atan2(dy, Math.hypot(dx, dz)); m.camera.rotation.set(m.pitch, m.yaw, 0, 'YXZ'); m.camera.updateMatrixWorld();
+    m.needsRender = true;
+    const v = p.clone().project(m.camera); const r = m.renderer.domElement.getBoundingClientRect();
+    return { x: r.left + (v.x + 1) / 2 * r.width, y: r.top + (1 - v.y) / 2 * r.height };
+  }, learned[0].id);
+  await page.mouse.click(point.x, point.y);
+  await expect(page.getByRole('heading', { name: learned[0].word, exact: true })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: 'Switch to daylight' }).click();
+  await expect.poll(sky).toEqual([]);
+});
+
+test('a street challenge tile can be clicked as well as stepped on', async ({ page }) => {
+  await enter(page, { 'vocabhall.challenges.v1': { won: 0, off: false } });
+  await page.evaluate(() => { const m = (window as any).__museum; m.camera.position.set(0, 1.78, 40); m.yaw = 0; m.pitch = -0.3; m.needsRender = true; });
+  await expect.poll(() => page.evaluate(() => (window as any).__offerChallenge())).toBe(true);
+  const clue = await page.getByRole('region', { name: 'Street challenge' }).locator('strong').innerText();
+  const answer = exhibits.find((e) => e.definition === clue)!;
+  const point = await page.evaluate((id) => {
+    const m = (window as any).__museum; m.camera.rotation.set(m.pitch, m.yaw, 0, 'YXZ'); m.camera.updateMatrixWorld();
+    const tile = m.challenge.group.children.find((c: any) => c.userData.challengeAnswer === id);
+    const v = tile.getWorldPosition(tile.position.clone()).project(m.camera), r = m.renderer.domElement.getBoundingClientRect();
+    return { x: r.left + (v.x + 1) / 2 * r.width, y: r.top + (1 - v.y) / 2 * r.height };
+  }, answer.id);
+  await page.mouse.click(point.x, point.y);
+  await expect(page.getByRole('region', { name: 'Street challenge' })).toHaveAttribute('data-solved', 'true');
+});

@@ -778,6 +778,11 @@ export default function App() {
   useEffect(() => {
     museum.current?.setFriendship(Object.fromEntries(RESIDENTS.map((npc) => [npc.id, favours[npc.id]?.level ?? 0])));
   }, [friendshipKey, ready]);
+  // After dusk, the six most recently learned words become constellations.
+  const skyKey = evening ? checked.slice(-6).join() : "";
+  useEffect(() => {
+    museum.current?.setSkyWords(skyKey ? skyKey.split(",").map((id) => ({ id, word: EXHIBIT_BY_ID.get(id)!.word })) : []);
+  }, [skyKey, ready]);
   useEffect(() => {
     museum.current?.setGolden(golden.found ? null : golden.id);
   }, [golden.id, golden.found, ready]);
@@ -2280,7 +2285,7 @@ export default function App() {
                 <Images />
                 <span>
                   <strong>{t("Fill your album, send a postcard")}</strong>
-                  <p>{t("Every painting joins the album of art styles when you open it. Send any word home as a postcard, and try the evening light to see your learned words glow.")}</p>
+                  <p>{t("Every painting joins the album of art styles when you open it. Send any word home as a postcard, and try the evening light: your learned words glow and appear as constellations.")}</p>
                 </span>
               </div>
             </div>
