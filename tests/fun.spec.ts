@@ -396,3 +396,30 @@ test('a street challenge appears underfoot; stepping on the right word wins it',
   await page.getByRole('button', { name: 'Turn off street challenges', exact: true }).click();
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.challenges.v1')!).off)).toBe(true);
 });
+
+test('the golden painting twinkles, gives hints on request, and counts only when found in the city', async ({ page }) => {
+  test.setTimeout(90000);
+  const d = new Date(), pad = (n: number) => String(n).padStart(2, '0');
+  const day = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const golden = exhibits.find((e) => e.room === 0)!;
+  await enter(page, { 'vocabhall.golden.v1': { day, id: golden.id, found: false, hints: 0, total: 1 } });
+  await expect.poll(() => page.evaluate(() => (window as any).__museum.golden?.sprites.length ?? 0)).toBeGreaterThan(0);
+  // Opening it from the collection does not count.
+  await openFromCollection(page, golden);
+  await page.keyboard.press('Escape');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.golden.v1')!).found)).toBe(false);
+  await page.locator('.walk-chip').click();
+  const card = page.locator('.golden-card');
+  await expect(card.locator('.golden-hints li')).toHaveCount(0);
+  for (let i = 0; i < 3; i++) await card.getByRole('button').click();
+  await expect(card.locator('.golden-hints li')).toHaveCount(3);
+  await expect(card).toContainText(golden.definition);
+  await expect(card.getByRole('button')).toHaveCount(0);
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.minimap .golden-target').first()).toBeAttached();
+  // Clicking it in the city finds it.
+  await page.evaluate((id) => { const m = (window as any).__museum; m.options.onSelect(m.options.exhibits.find((e: any) => e.id === id), 0); }, golden.id);
+  await expect(page.locator('.milestone-live')).toContainText(`You found today's golden painting! ${golden.word} · 2 golden paintings found`);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.golden.v1')!))).toMatchObject({ found: true, total: 2, hints: 3 });
+  await expect.poll(() => page.evaluate(() => (window as any).__museum.golden)).toBeNull();
+});

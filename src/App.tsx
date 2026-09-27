@@ -86,6 +86,7 @@ import { Soundscape } from "./soundscape";
 import { sendPostcard } from "./postcard";
 import { Celebrations, announce, celebrate } from "./Celebrations";
 import { dueReviewIds, recordMiss, recordRight, useReviewIds } from "./review";
+import { readGolden, saveGolden, todaysGolden, type Golden } from "./golden";
 import { EVERY, FIRST_AFTER, pickChallenge, readChallengeStats, saveChallengeStats, type Challenge } from "./challenges";
 import { labelChoices, readLabels, saveLabels, todaysLabels, type LostLabels } from "./labels";
 import { styleMilestone, styleOf, styleSets } from "./album";
@@ -266,7 +267,7 @@ function MuseumLogo() {
   );
 }
 const PLACE_STROKE: Record<PlaceState, [string, number]> = { new: ["#a5ac99", .5], started: ["#a5ac99", .5], explored: ["#d9a22e", 1.4], mastered: ["#b8871f", 2] };
-function FloorPlan({ pose, compact = false, states, targets = [] }: { pose: Pose; compact?: boolean; states: ReturnType<typeof roomStates>; targets?: string[] }) {
+function FloorPlan({ pose, compact = false, states, targets = [], golden }: { pose: Pose; compact?: boolean; states: ReturnType<typeof roomStates>; targets?: string[]; golden?: string }) {
   const { t } = useLocale();
   const follow = mapPoint(pose.x, pose.z);
   const viewBox = compact
@@ -320,6 +321,7 @@ function FloorPlan({ pose, compact = false, states, targets = [] }: { pose: Pose
         <text x="0" y={c.observatory.z + 2} textAnchor="middle" fill="#657571" fontSize="5">{t("OBSERVATORY")}</text>
       </>}
       {exhibits.flatMap(e => exhibitPlacements(e).map(p => <rect key={`${e.id}-${p.area}`} x={p.x-1.2} y={p.z-1.2} width="2.4" height="2.4" rx=".5" fill={rooms[e.room].color} />))}
+      {golden && EXHIBIT_BY_ID.get(golden) && exhibitPlacements(EXHIBIT_BY_ID.get(golden)!).map(p => <circle key={`golden-${p.area}`} className="golden-target" cx={p.x} cy={p.z} r={compact ? 3.2 : 4.5} fill="#f0c043" stroke="#fff7e2" strokeWidth="1" />)}
       {targets.flatMap(id => { const e = EXHIBIT_BY_ID.get(id); return e ? exhibitPlacements(e).map(p => <path key={`walk-${id}-${p.area}`} className="walk-target"
         transform={`translate(${p.x} ${p.z}) scale(${compact ? 1 : 1.6})`} d="M0-4 1.2-1.3 4-1.2 1.8.7 2.5 3.6 0 2 -2.5 3.6 -1.8.7 -4-1.2 -1.2-1.3Z" fill="#e0a92c" stroke="#fff7e2" strokeWidth=".6" />) : []; })}
     </g>
@@ -332,11 +334,11 @@ function FloorPlan({ pose, compact = false, states, targets = [] }: { pose: Pose
     </g>
   </svg>;
 }
-function MiniMap({ pose, onOpen, states, targets }: { pose: Pose; onOpen: () => void; states: ReturnType<typeof roomStates>; targets: string[] }) {
+function MiniMap({ pose, onOpen, states, targets, golden }: { pose: Pose; onOpen: () => void; states: ReturnType<typeof roomStates>; targets: string[]; golden?: string }) {
   const { t } = useLocale();
   return <button className="minimap" onClick={onOpen} aria-label={t("Open museum floor map")}>
     <span className="map-label">{t("YOUR LITTLE WORLD")}<Expand size={12} /></span>
-    <FloorPlan pose={pose} compact states={states} targets={targets} />
+    <FloorPlan pose={pose} compact states={states} targets={targets} golden={golden} />
     <span className="map-current"><span />{pose.room === SQUARE_INDEX || pose.room === STREETS_INDEX ? t(destinationFor(pose.room).name) : isRootRoom(pose.room) ? `${t("Root room")} · ${rooms[pose.room].house!.display}` : t(districtFor(pose.room).landmark)}</span>
   </button>;
 }
@@ -471,6 +473,8 @@ export default function App() {
         setWalk(todaysWalk(walkRef.current, exhibits, visitedRef.current, checkedRef.current));
       if (document.visibilityState === "visible" && labelsRef.current.day !== dayKey())
         setLabels(todaysLabels(labelsRef.current, exhibits, ROOT_START, checkedRef.current, dayKey()));
+      if (document.visibilityState === "visible" && goldenRef.current.day !== dayKey())
+        setGolden(todaysGolden(goldenRef.current, exhibits, checkedRef.current, [...walkRef.current.ids, ...labelsRef.current.ids], dayKey()));
     };
     document.addEventListener("visibilitychange", refresh);
     // A tab left open past midnight also turns the page, checked once a minute.
@@ -607,6 +611,12 @@ export default function App() {
   const [labels, setLabels] = useState<LostLabels>(() => todaysLabels(readLabels(validIds), exhibits, ROOT_START, checked, dayKey()));
   const labelsRef = useRef(labels);
   labelsRef.current = labels;
+  // Today's golden painting: it only counts when found in the city itself.
+  const [golden, setGolden] = useState<Golden>(() => todaysGolden(readGolden(validIds), exhibits, checked, [...walk.ids, ...labels.ids], dayKey()));
+  const goldenRef = useRef(golden);
+  goldenRef.current = golden;
+  useEffect(() => { saveGolden(golden); }, [golden]);
+  const goldenMarked = !golden.found && golden.hints > 2 ? golden.id : undefined;
   useEffect(() => { saveLabels(labels); }, [labels]);
   const lostNow = visited.length >= LOST_LABELS_AFTER ? labels.ids.filter((id) => !labels.restored.includes(id)) : [];
   const lostRef = useRef(lostNow);
@@ -652,6 +662,16 @@ export default function App() {
   };
   const [labelQuiz, setLabelQuiz] = useState<{ exhibit: Exhibit; area: number; wrong: string[] } | null>(null);
   const sceneSelect = useCallback((exhibit: Exhibit, area?: number) => {
+    const today = goldenRef.current;
+    if (exhibit.id === today.id && !today.found) {
+      const next = { ...today, found: true, total: today.total + 1 };
+      goldenRef.current = next; setGolden(next);
+      const l = localeRef.current;
+      setTimeout(() => {
+        playSfx("complete"); celebrate("confetti"); setTimeout(() => celebrate("confetti"), 450);
+        announce(translate("You found today's golden painting!", l), `${exhibit.word} · ${next.total} ${translate("golden paintings found", l)}`, true);
+      }, 600);
+    }
     if (lostRef.current.includes(exhibit.id)) {
       setIntro(false);
       setLabelQuiz({ exhibit, area: area ?? exhibit.room, wrong: [] });
@@ -758,6 +778,9 @@ export default function App() {
   useEffect(() => {
     museum.current?.setFriendship(Object.fromEntries(RESIDENTS.map((npc) => [npc.id, favours[npc.id]?.level ?? 0])));
   }, [friendshipKey, ready]);
+  useEffect(() => {
+    museum.current?.setGolden(golden.found ? null : golden.id);
+  }, [golden.id, golden.found, ready]);
   useEffect(() => {
     museum.current?.setLostLabels(lostNow);
   }, [lostNow.join(), ready]);
@@ -1143,7 +1166,7 @@ export default function App() {
             <ArrowRight size={15} />
           </button>
         )}
-        <MiniMap pose={pose} onOpen={() => setModal("map")} states={states} targets={walkTargets} />
+        <MiniMap pose={pose} onOpen={() => setModal("map")} states={states} targets={walkTargets} golden={goldenMarked} />
         <div className="bottom-controls">
           <div className="walk-help">
             <span className="key-group">
@@ -1201,7 +1224,7 @@ export default function App() {
         </span>
         {gamesRoom !== null && <MuseumGames museum={museum} roomIndex={gamesRoom} room={rooms[gamesRoom]} pool={roomExhibits(gamesRoom)} rooms={rooms} exhibits={exhibits} checked={checked}
           adventures={{ walk: [walk.found.length, walk.ids.length], labels: visited.length >= LOST_LABELS_AFTER ? [labels.restored.length, labels.ids.length] : null,
-            favours: RESIDENTS.filter((npc) => favours[npc.id]?.active).length, onOpen: (target) => setModal(target) }}
+            favours: RESIDENTS.filter((npc) => favours[npc.id]?.active).length, golden: golden.found, onOpen: (target) => setModal(target) }}
           onClose={() => { setGamesRoom(null); hostRef.current?.querySelector("canvas")?.focus(); }} onPlayingChange={setGamesPlaying} onAudioChange={setGameAudio} />}
         {challenge && !selected && !modal && <section className="challenge-card" aria-label={t("Street challenge")} data-solved={challenge.solved}>
           <span className="eyebrow">{t("STREET CHALLENGE")}</span>
@@ -1898,6 +1921,7 @@ export default function App() {
           [t("days in a row"), walkStreak, ""],
           [t("labels restored"), labels.total, ""],
           [t("street challenges won"), challengeStats.won, ""],
+          [t("golden paintings found"), golden.total, ""],
         ];
         return <Dialog className="journal-dialog" label={t("Your city journal")} onClose={() => setModal(null)}>
           <section>
@@ -2016,6 +2040,25 @@ export default function App() {
                 </li>;
               })}
             </ol>
+            {(() => {
+              const g = EXHIBIT_BY_ID.get(golden.id)!;
+              const place = isRootRoom(g.room) ? `${t(rooms[g.room].house!.kind === "root" ? "Root house" : "Townhouse")} ${rooms[g.room].house!.display}` : t(districtFor(g.room).landmark);
+              const area = isRootRoom(g.room) ? t("somewhere in the Old Town") : t(districtFor(g.room).indoor ? "inside one of the city's halls" : "somewhere out in the open air");
+              return <section className="golden-card" data-found={golden.found} aria-label={t("Today's golden painting")}>
+                <span className="eyebrow">{t("TODAY'S GOLDEN PAINTING")}</span>
+                {golden.found ? <p><strong>{g.word}</strong> · {t("Found! A new golden painting hides somewhere tomorrow.")}</p> : <>
+                  <p>{t("One painting in the city is shimmering gold today. Find it and open it in the city itself.")}</p>
+                  {golden.hints > 0 && <ol className="golden-hints">
+                    <li>{area}</li>
+                    {golden.hints > 1 && <li><span lang="en">{g.definition}</span>{locale && g.definitionTranslations[locale] && <small>{g.definitionTranslations[locale]}</small>}</li>}
+                    {golden.hints > 2 && <li>{place} · {t("marked on the map")}</li>}
+                  </ol>}
+                  {golden.hints < 3 && <button className="text-button" onClick={() => setGolden({ ...golden, hints: golden.hints + 1 })}>
+                    <Sparkles size={15} />{t(golden.hints ? "Another hint" : "A hint, please")}</button>}
+                </>}
+                <small className="golden-total">{golden.total} {t("golden paintings found")}</small>
+              </section>;
+            })()}
             <p className="walk-note">{t("Finish every walk to keep your streak. A new route appears tomorrow.")}</p>
             {revisit.length > 0 && <button className="text-button revisit-link" onClick={() => { setFilter("revisit"); setModal("collection"); }}>
               <RotateCcw size={15} />{t("To revisit")} · {revisit.length}<small>{t("From the next day, chats and games ask these first.")}</small><ArrowRight size={15} />
@@ -2054,7 +2097,7 @@ export default function App() {
               )}{" "}
               {fill(t("Beyond the Cathedral Square, the Old Town's canal lanes hold {houses} townhouses: root families, theme houses, word families and level lanes."))}
             </p>
-            <div className="expanded-floorplan"><FloorPlan pose={pose} states={states} targets={walkTargets} /></div>
+            <div className="expanded-floorplan"><FloorPlan pose={pose} states={states} targets={walkTargets} golden={goldenMarked} /></div>
             <p className="map-legend"><span data-state="explored" />{t("Explored: every painting opened")}<span data-state="mastered" />{t("Mastered: every word learned")}</p>
             <section className="resident-directory" aria-label={t("City neighbours")}>
               <h3>{t("City neighbours")}</h3><p>{t("Find a neighbour for three vocabulary questions. Walk up and say hello.")}</p>

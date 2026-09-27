@@ -167,6 +167,7 @@ export class Museum {
   private lostLabels = new Set<string>();
   private lostTexture: THREE.Texture | null = null;
   private lampBulbs: THREE.MeshStandardMaterial[] = [];
+  private golden: { id: string; sprites: THREE.Sprite[]; stops: (() => void)[] } | null = null;
   private challenge: {
     group: THREE.Group; textures: THREE.Texture[]; redraw: (() => void)[];
     wrong: string[]; solved: boolean; standing: { id: string; since: number; answered: boolean } | null; stop: () => void;
@@ -1606,6 +1607,48 @@ export class Museum {
     for (const star of zone.marks.stars) star.visible = state === "mastered";
   }
 
+  /** Twinkles around today's golden painting (and a fast gold shimmer on its frame). */
+  setGolden(id: string | null) {
+    if (this.golden) {
+      this.golden.stops.forEach((stop) => stop());
+      this.golden.sprites.forEach((sprite) => { sprite.removeFromParent(); sprite.material.dispose(); });
+      const previous = this.golden.id;
+      this.golden = null;
+      // Hand the frame back to the ordinary learned/unlearned look.
+      for (const display of this.displayFrames) if (display.id === previous) display.material.emissive.set("#ffc43d");
+      this.setChecked([...this.checked]);
+    }
+    if (!id) { this.needsRender = true; return; }
+    const exhibit = this.options.exhibits.find((e) => e.id === id);
+    if (!exhibit) return;
+    const twinkle = this.canvasTexture(64, 64, (ctx) => {
+      const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 30);
+      g.addColorStop(0, "rgba(255,248,210,1)"); g.addColorStop(0.25, "rgba(255,214,110,.8)"); g.addColorStop(1, "rgba(255,200,80,0)");
+      ctx.fillStyle = g; ctx.fillRect(0, 0, 64, 64);
+      ctx.fillStyle = "rgba(255,250,225,.95)"; ctx.fillRect(30, 4, 4, 56); ctx.fillRect(4, 30, 56, 4);
+    });
+    const golden = { id, sprites: [] as THREE.Sprite[], stops: [] as (() => void)[] };
+    for (const placement of exhibitPlacements(exhibit)) {
+      const scale = displayScale(placement.area);
+      const normal = new THREE.Vector3(0, 0, 1).applyAxisAngle(Y_AXIS, placement.yaw), across = new THREE.Vector3(1, 0, 0).applyAxisAngle(Y_AXIS, placement.yaw);
+      const sprites = Array.from({ length: 6 }, () => {
+        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: twinkle, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
+        this.scene.add(sprite); golden.sprites.push(sprite); return sprite;
+      });
+      golden.stops.push(this.life.add({ x: placement.x, z: placement.z, reach: 45, update: (t) => {
+        sprites.forEach((sprite, i) => {
+          const a = t * 0.7 + (i / sprites.length) * Math.PI * 2;
+          const side = Math.cos(a) * 1.55 * scale, up = (3.15 + Math.sin(a) * 1.75) * scale;
+          sprite.position.set(placement.x + across.x * side + normal.x * 0.35, up, placement.z + across.z * side + normal.z * 0.35);
+          const twinkleSize = 0.25 + Math.max(0, Math.sin(t * 5 + i * 1.7)) * 0.35;
+          sprite.scale.setScalar(twinkleSize * scale);
+        });
+      } }));
+    }
+    this.golden = golden;
+    this.needsRender = true;
+  }
+
   /** Friendship hearts on each resident's sign. */
   setFriendship(levels: Record<string, number>) {
     for (const [id, redraw] of this.residentBadges) if ((levels[id] ?? 0) !== (this.friendship[id] ?? 0)) { this.friendship[id] = levels[id] ?? 0; redraw(); }
@@ -2422,6 +2465,14 @@ export class Museum {
       time - this.lastPulse > 80
     ) {
       for (const display of this.displayFrames) {
+        // Today's golden painting shimmers quickly and brightly, checked or not.
+        if (display.id === this.golden?.id && display.position.distanceTo(this.camera.position) < 60) {
+          display.material.color.set("#f0c043");
+          display.material.emissive.set("#ffcf4a");
+          display.material.emissiveIntensity = 0.55 + Math.sin(time / 260 + display.phase) * 0.35;
+          this.needsRender = true;
+          continue;
+        }
         if (
           !this.checked.has(display.id) &&
           display.position.distanceTo(this.camera.position) < 38

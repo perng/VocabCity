@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
-import { ArrowLeft, ArrowRight, Check, Compass, Footprints, Headphones, Heart, Lightbulb, MapPin, RotateCcw, Stamp as StampIcon, Star, Tag, Volume2, X, Sprout, Store, Brain } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Compass, Footprints, Headphones, Heart, Lightbulb, MapPin, RotateCcw, Stamp as StampIcon, Sparkles, Star, Tag, Volume2, X, Sprout, Store, Brain } from "lucide-react";
 import type { Museum } from "./museum";
 import type { Exhibit, Room } from "./types";
 import { assetUrl } from "./types";
@@ -24,7 +24,7 @@ const descriptions: Record<GameMode, string> = {
   memory: "Meet three paintings, then remember their words, sounds, and sentences. Missed words return for another look.",
 };
 
-export type Adventures = { walk: [number, number]; labels: [number, number] | null; favours: number; onOpen: (target: "walk" | "map" | "passport") => void };
+export type Adventures = { walk: [number, number]; labels: [number, number] | null; favours: number; golden: boolean; onOpen: (target: "walk" | "map" | "passport") => void };
 export function MuseumGames({ museum, roomIndex, room, pool, rooms, exhibits, checked, onClose, onPlayingChange, onAudioChange, adventures }: {
   museum: RefObject<Museum | null>; roomIndex: number; room: Room; pool: Exhibit[]; checked: string[];
   rooms: Room[]; exhibits: Exhibit[]; adventures?: Adventures;
@@ -180,6 +180,7 @@ export function MuseumGames({ museum, roomIndex, room, pool, rooms, exhibits, ch
         <button onClick={() => { leave(); adventures.onOpen("walk"); }}><Star size={18} /><span><strong>{t("Today's walk")}</strong><small>{adventures.walk[0]} / {adventures.walk[1]} {t("found today")}</small></span></button>
         <button onClick={() => { leave(); adventures.onOpen("map"); }}><Heart size={18} /><span><strong>{t("Neighbours' favours")}</strong><small>{adventures.favours ? `${adventures.favours} ${t("in progress")}` : t("Ask a neighbour on the map")}</small></span></button>
         {adventures.labels && <button onClick={() => { leave(); adventures.onOpen("walk"); }}><Tag size={18} /><span><strong>{t("Lost labels")}</strong><small>{adventures.labels[0]} / {adventures.labels[1]} {t("restored today")}</small></span></button>}
+        <button onClick={() => { leave(); adventures.onOpen("walk"); }}><Sparkles size={18} /><span><strong>{t("Today's golden painting")}</strong><small>{t(adventures.golden ? "Found today" : "Still hiding")}</small></span></button>
       </div>}
       <div className="game-menu">{modes.map((mode, index) => {
         const destination = gameRoom(mode);
