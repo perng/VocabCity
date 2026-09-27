@@ -585,13 +585,19 @@ export class Museum {
       const sailGeometry = new THREE.BufferGeometry();
       sailGeometry.setAttribute("position", new THREE.Float32BufferAttribute([0, 6.2, 0, 0, 0.7, 0, 0, 0.7, 3.1], 3)); sailGeometry.computeVertexNormals();
       const sail = new THREE.Mesh(sailGeometry, new THREE.MeshStandardMaterial({ color: "#f3e7cc", side: THREE.DoubleSide })); sail.position.set(0, -0.6, 0); boat.add(sail);
-      // Moored boats rock gently; the distant sail drifts along the horizon.
-      const distant = i === 3;
-      this.life.add({ x, z, reach: 110, update: (t) => {
+      // Moored boats rock gently; the distant sail drifts along the horizon. Once Luca the
+      // sailor is a friend, the boat nearest him slips its mooring and loops round the harbour.
+      const distant = i === 3, lucas = i === 1;
+      this.life.add({ x, z, reach: lucas ? 160 : 110, update: (t) => {
         boat.position.y = Math.sin(t * 0.9 + i * 1.7) * 0.12;
         boat.rotation.z = Math.sin(t * 0.7 + i) * 0.045;
         boat.rotation.x = Math.sin(t * 0.55 + i * 2.3) * 0.02;
         if (distant) boat.position.x = x + Math.sin(t * 0.02) * 60;
+        if (lucas && (this.friendship.sailor ?? 0) > 0) {
+          const a = (t * Math.PI * 2) / 80, sx = -Math.sin(a) * 34, sz = (1 - Math.cos(a)) * 30;
+          boat.position.x = x + sx; boat.position.z = z + sz;
+          boat.rotation.y = Math.atan2(-Math.cos(a) * 34, Math.sin(a) * 30);
+        }
       } });
     }
     this.life.addGulls({ x: 0, z: c.quay.south + 16 }, 7);

@@ -484,3 +484,18 @@ test('the cistern offers echoes: hear a word through the echo and pick it, three
   await expect(page.locator('.milestone-live')).toContainText('The echoes settle. 3 words heard in the cistern');
   expect(await page.evaluate(() => localStorage.getItem('vocabhall.echoes.v1'))).toBe('1');
 });
+
+test('once Luca is a friend, his boat sails round the harbour', async ({ page }) => {
+  const boat = () => page.evaluate(() => {
+    let found: number[] = [];
+    (window as any).__museum.scene.traverse((o: any) => { if (o.geometry?.parameters?.radius === 1 && o.material?.color?.getHexString?.() === '73959e') { const p = o.parent.position; found = [p.x, p.z]; } });
+    return found;
+  });
+  await enter(page);
+  await page.waitForTimeout(1500);
+  expect(await boat()).toEqual([30, 69]);
+  await page.evaluate(() => localStorage.setItem('vocabhall.favours.v1', JSON.stringify({ sailor: { level: 1, active: null, asked: [] } })));
+  await page.reload();
+  await page.getByRole('button', { name: 'Start exploring', exact: true }).click();
+  await expect.poll(async () => { const [x, z] = await boat(); return Math.hypot(x - 30, z - 69); }).toBeGreaterThan(1);
+});
