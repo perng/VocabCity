@@ -1,10 +1,12 @@
 import { defineConfig } from "@playwright/test";
 
 // Lost labels change daily; tests start with none blown away so painting clicks open
-// their flashcards. Tests of the feature seed their own labels.
+// their flashcards. Tests of each feature seed their own state.
 const now = new Date(), pad = (n: number) => String(n).padStart(2, "0");
 const today = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
 const noLostLabels = { name: "vocabhall.labels.v1", value: JSON.stringify({ day: today, ids: [], restored: [], total: 0 }) };
+// Street challenges appear on their own after a while; tests of the feature turn them back on.
+const noChallenges = { name: "vocabhall.challenges.v1", value: JSON.stringify({ won: 0, off: true }) };
 
 export default defineConfig({
   testDir: "./tests",
@@ -17,7 +19,7 @@ export default defineConfig({
     viewport: { width: 1440, height: 960 },
     screenshot: "only-on-failure",
     trace: "retain-on-failure",
-    storageState: { cookies: [], origins: [{ origin: "http://127.0.0.1:5173", localStorage: [noLostLabels] }] },
+    storageState: { cookies: [], origins: [{ origin: "http://127.0.0.1:5173", localStorage: [noLostLabels, noChallenges] }] },
   },
   webServer: {
     command: "npm run dev",

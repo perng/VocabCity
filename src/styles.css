@@ -3195,3 +3195,20 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
 .dusk-chip { display: flex; align-items: center; gap: 7px; max-width: 230px; padding: 8px 11px; text-align: left; font-size: 12px; line-height: 1.35; color: #eef0f7; background: #4b5577e6; border: 1px solid #8f9bc4; }
 .dusk-chip:hover { background: #56628ae6; }
 @media (max-width: 760px) { .dusk-chip > span { display: none; } }
+
+/* Street challenges. */
+.challenge-card { position: absolute; z-index: 4; top: 22px; left: 50%; transform: translateX(-50%); width: min(460px, calc(100% - 32px)); display: grid; gap: 7px; padding: 16px 18px 12px; background: #fbf6e8f7; border: 1px solid #d9a22e; box-shadow: 0 10px 34px #243d3625; animation: challenge-in .45s cubic-bezier(.3, 1.4, .5, 1) both; }
+.challenge-card p { font-size: 12px; color: #6c7565; }
+.challenge-card strong { font: 500 20px/1.3 var(--serif); color: #2f4435; }
+.challenge-card small { font-size: 12px; color: #56735c; }
+.challenge-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-top: 4px; }
+.challenge-options button { padding: 9px 6px; border: 1px solid #c9b691; background: #fffdf6; font: 500 17px/1.2 var(--serif); overflow-wrap: anywhere; }
+.challenge-options button:hover:not(:disabled) { background: #f7efd5; border-color: #b8871f; }
+.challenge-options button[data-wrong=true] { opacity: .45; text-decoration: line-through; }
+.challenge-options button[data-right=true] { background: #466c54; color: #f7f1df; border-color: #466c54; opacity: 1; }
+.challenge-actions { display: flex; justify-content: space-between; gap: 10px; }
+.challenge-actions button { font-size: 11px; color: #75806d; padding: 4px 0; }
+.challenge-actions button:hover { color: #3d5a44; text-decoration: underline; }
+@keyframes challenge-in { 0% { opacity: 0; transform: translate(-50%, -14px); } 100% { opacity: 1; transform: translate(-50%, 0); } }
+@media (prefers-reduced-motion: reduce) { .challenge-card { animation: none; } }
+@media (max-width: 760px) { .challenge-card { top: 170px; } .challenge-card strong { font-size: 17px; } }

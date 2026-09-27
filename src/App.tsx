@@ -85,7 +85,8 @@ import { playSfx, setSfxEnabled, useSfxEnabled } from "./sfx";
 import { Soundscape } from "./soundscape";
 import { sendPostcard } from "./postcard";
 import { Celebrations, announce, celebrate } from "./Celebrations";
-import { recordMiss, recordRight, useReviewIds } from "./review";
+import { dueReviewIds, recordMiss, recordRight, useReviewIds } from "./review";
+import { EVERY, FIRST_AFTER, pickChallenge, readChallengeStats, saveChallengeStats, type Challenge } from "./challenges";
 import { labelChoices, readLabels, saveLabels, todaysLabels, type LostLabels } from "./labels";
 import { styleMilestone, styleOf, styleSets } from "./album";
 import { favourFound, favourWords, readFavours, saveFavours, type FavourBook } from "./favours";
@@ -611,6 +612,44 @@ export default function App() {
   const lostRef = useRef(lostNow);
   lostRef.current = lostNow;
   const [favourView, setFavourView] = useState<Resident | null>(null);
+  // Street challenges appear on their own while the visitor walks through open-air landmarks.
+  const [challenge, setChallenge] = useState<Challenge | null>(null);
+  const [challengeStats, setChallengeStats] = useState(readChallengeStats);
+  const challengeRef = useRef(challenge);
+  challengeRef.current = challenge;
+  const lastChallenge = useRef(performance.now() - EVERY + FIRST_AFTER);
+  const lastMove = useRef(0);
+  const endChallenge = useCallback(() => {
+    museum.current?.clearChallenge(); setChallenge(null); lastChallenge.current = performance.now();
+  }, []);
+  const answerChallenge = (id: string) => {
+    const current = challengeRef.current;
+    if (!current || current.solved) return;
+    if (id === "gone") { endChallenge(); return; }
+    if (id !== current.answer.id) {
+      playSfx("wrong"); recordMiss(current.answer.id);
+      const next = { ...current, wrong: [...new Set([...current.wrong, id])] };
+      challengeRef.current = next; setChallenge(next);
+      museum.current?.markChallenge(next.wrong, null);
+      return;
+    }
+    if (!current.wrong.length) recordRight(current.answer.id);
+    const next = { ...current, solved: true };
+    challengeRef.current = next; setChallenge(next);
+    museum.current?.markChallenge(current.wrong, id);
+    const stats = { ...challengeStats, won: challengeStats.won + 1 };
+    setChallengeStats(stats); saveChallengeStats(stats);
+    playSfx("correct"); celebrate("confetti");
+    announce(t("Well stepped!"), `${current.answer.word} · ${stats.won} ${t("street challenges won")}`, true);
+    void playback.start([wordClip(current.answer)]);
+    setTimeout(() => { if (challengeRef.current === next) endChallenge(); }, 2600);
+  };
+  const challengeAnswerRef = useRef(answerChallenge);
+  challengeAnswerRef.current = answerChallenge;
+  const toggleChallenges = (off: boolean) => {
+    const stats = { ...challengeStats, off }; setChallengeStats(stats); saveChallengeStats(stats);
+    if (off) endChallenge();
+  };
   const [labelQuiz, setLabelQuiz] = useState<{ exhibit: Exhibit; area: number; wrong: string[] } | null>(null);
   const sceneSelect = useCallback((exhibit: Exhibit, area?: number) => {
     if (lostRef.current.includes(exhibit.id)) {
@@ -637,6 +676,27 @@ export default function App() {
     announce(t("Label restored!"), `${next.restored.length} / ${next.ids.length} ${t("lost labels found today")}`, true);
     openExhibit(choice, labelQuiz.area);
   };
+  useEffect(() => { lastMove.current = performance.now(); }, [pose.x, pose.z]);
+  const challengeQuiet = !ready || Boolean(error) || intro || challengeStats.off || Boolean(selected || modal || resident || labelQuiz || favourView || videoExhibit || artworkExhibit) || gamesRoom !== null;
+  const offerChallenge = useCallback((force = false) => {
+    const now = performance.now();
+    if (challengeRef.current) return false;
+    if (!force && (now - lastChallenge.current < EVERY || now - lastMove.current > 4000)) return false;
+    const room = poseRef.current.room;
+    if (room >= rooms.length || isRootRoom(room) || districtFor(room).indoor) return false;
+    const picked = pickChallenge(roomExhibits(room), checkedRef.current, dueReviewIds());
+    if (!picked) return false;
+    const shown = museum.current?.showChallenge(picked.options.map((e) => ({ id: e.id, word: e.word })));
+    if (shown) { challengeRef.current = picked; setChallenge(picked); playSfx("tap"); }
+    else lastChallenge.current = now - EVERY + 15_000; // No open ground here; look again in a moment.
+    return Boolean(shown);
+  }, []);
+  useEffect(() => {
+    if (challengeQuiet) return;
+    const timer = setInterval(() => offerChallenge(), 3000);
+    if (import.meta.env.DEV) (window as unknown as { __offerChallenge?: () => boolean }).__offerChallenge = () => offerChallenge(true);
+    return () => clearInterval(timer);
+  }, [challengeQuiet, offerChallenge]);
   useEffect(() => {
     let live = true;
     void Promise.allSettled([
@@ -659,6 +719,7 @@ export default function App() {
           },
           onMove: setPose,
           onResident: setResident,
+          onChallenge: (id) => challengeAnswerRef.current(id),
           onReady: () => setReady(true),
           onError: setError,
         });
@@ -1142,6 +1203,18 @@ export default function App() {
           adventures={{ walk: [walk.found.length, walk.ids.length], labels: visited.length >= LOST_LABELS_AFTER ? [labels.restored.length, labels.ids.length] : null,
             favours: RESIDENTS.filter((npc) => favours[npc.id]?.active).length, onOpen: (target) => setModal(target) }}
           onClose={() => { setGamesRoom(null); hostRef.current?.querySelector("canvas")?.focus(); }} onPlayingChange={setGamesPlaying} onAudioChange={setGameAudio} />}
+        {challenge && !selected && !modal && <section className="challenge-card" aria-label={t("Street challenge")} data-solved={challenge.solved}>
+          <span className="eyebrow">{t("STREET CHALLENGE")}</span>
+          <p>{t("Step on the tile with the word that means:")}</p>
+          <strong lang="en">{challenge.answer.definition}</strong>
+          {challenge.wrong.length > 0 && !challenge.solved && locale && challenge.answer.definitionTranslations[locale] && <small>{challenge.answer.definitionTranslations[locale]}</small>}
+          <div className="challenge-options">{challenge.options.map((option) => <button key={option.id} disabled={challenge.solved || challenge.wrong.includes(option.id)}
+            data-wrong={challenge.wrong.includes(option.id)} data-right={challenge.solved && option.id === challenge.answer.id} onClick={() => answerChallenge(option.id)}>{option.word}</button>)}</div>
+          <div className="challenge-actions">
+            <button onClick={endChallenge}>{t("Not now")}</button>
+            <button onClick={() => toggleChallenges(true)}>{t("Turn off street challenges")}</button>
+          </div>
+        </section>}
         {nearby && <button className="resident-invite" onClick={() => setResident(nearby)} aria-label={`${t("Talk to")} ${nearby.name}`}>
           <MessageCircle size={23} /><span><strong>{t("Talk to")} {nearby.name}</strong><small>{t(nearby.role)} · {t("Three quick vocabulary questions")}</small></span><ArrowRight size={17} />
         </button>}
@@ -1824,6 +1897,7 @@ export default function App() {
           [t("friendship hearts"), friends, ""],
           [t("days in a row"), walkStreak, ""],
           [t("labels restored"), labels.total, ""],
+          [t("street challenges won"), challengeStats.won, ""],
         ];
         return <Dialog className="journal-dialog" label={t("Your city journal")} onClose={() => setModal(null)}>
           <section>
@@ -1840,6 +1914,7 @@ export default function App() {
               <button className="text-button" onClick={() => setModal("passport")}><Stamp size={15} />{t("Your explorer passport")}<ArrowRight size={14} /></button>
               <button className="text-button" onClick={() => setModal("walk")}><Star size={15} />{t("Today's walk")}<ArrowRight size={14} /></button>
               {revisit.length > 0 && <button className="text-button" onClick={() => { setFilter("revisit"); setModal("collection"); }}><RotateCcw size={15} />{t("To revisit")} · {revisit.length}<ArrowRight size={14} /></button>}
+              {challengeStats.off && <button className="text-button" onClick={() => toggleChallenges(false)}><Footprints size={15} />{t("Turn street challenges back on")}</button>}
             </div>
             {(nearlyPlaces.length > 0 || nearlyStyles.length > 0 || walk.found.length < walk.ids.length) && <>
               <h3>{t("Almost there")}</h3>

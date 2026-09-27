@@ -358,3 +358,41 @@ test('round numbers of discovered words get a banner', async ({ page }) => {
   await openFromCollection(page, exhibits[300]);
   await expect(page.locator('.milestone-live')).toContainText('10 words discovered!', { timeout: 8000 });
 });
+
+test('a street challenge appears underfoot; stepping on the right word wins it', async ({ page }) => {
+  test.setTimeout(90000);
+  await enter(page, { 'vocabhall.challenges.v1': { won: 2, off: false } });
+  // The Gate Square is open ground; face along the square so the tiles fit.
+  await page.evaluate(() => { const m = (window as any).__museum; m.camera.position.set(0, 1.78, 40); m.yaw = 0; m.needsRender = true; });
+  await expect.poll(() => page.evaluate(() => (window as any).__offerChallenge())).toBe(true);
+  const card = page.getByRole('region', { name: 'Street challenge' });
+  await expect(card.locator('.challenge-options button')).toHaveCount(3);
+  const clue = await card.locator('strong').innerText();
+  const answer = exhibits.find((e) => e.definition === clue)!;
+  const tiles = () => page.evaluate(() => {
+    const m = (window as any).__museum, group = m.challenge?.group; const out: Record<string, number[]> = {};
+    group?.children.forEach((c: any) => { if (c.userData.challengeAnswer) { const p = c.getWorldPosition(c.position.clone()); out[c.userData.challengeAnswer] = [p.x, p.z]; } });
+    return out;
+  });
+  const positions = await tiles();
+  expect(Object.keys(positions)).toContain(answer.id);
+  // A wrong tile by clicking its button, then walking onto the right tile.
+  await card.locator('.challenge-options button').filter({ hasNotText: new RegExp(`^${answer.word}$`) }).first().click();
+  await expect(card.locator('button[data-wrong=true]')).toHaveCount(1);
+  expect(Object.keys(await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.review.v1')!)))).toEqual([answer.id]);
+  await page.evaluate(([x, z]) => { const m = (window as any).__museum; m.camera.position.set(x, 1.78, z); m.needsRender = true; }, positions[answer.id]);
+  await expect(card).toHaveAttribute('data-solved', 'true');
+  await expect(page.locator('.milestone-live')).toContainText(`Well stepped! ${answer.word} · 3 street challenges won`);
+  await expect(card).toHaveCount(0, { timeout: 6000 });
+  expect(await page.evaluate(() => (window as any).__museum.challengeActive)).toBe(false);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.challenges.v1')!))).toEqual({ won: 3, off: false });
+  // Walking away lets a challenge go; turning them off keeps them away.
+  await page.evaluate(() => { const m = (window as any).__museum; m.camera.position.set(0, 1.78, 40); m.yaw = 0; });
+  await expect.poll(() => page.evaluate(() => (window as any).__offerChallenge())).toBe(true);
+  await page.evaluate(() => { const m = (window as any).__museum; m.camera.position.set(0, 1.78, 14); m.needsRender = true; });
+  await expect(page.getByRole('region', { name: 'Street challenge' })).toHaveCount(0);
+  await page.evaluate(() => { const m = (window as any).__museum; m.camera.position.set(0, 1.78, 40); m.yaw = 0; });
+  await expect.poll(() => page.evaluate(() => (window as any).__offerChallenge())).toBe(true);
+  await page.getByRole('button', { name: 'Turn off street challenges', exact: true }).click();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('vocabhall.challenges.v1')!).off)).toBe(true);
+});

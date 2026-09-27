@@ -53,6 +53,8 @@ type MuseumOptions = {
   onHover: (exhibit: Exhibit | null, action?: ExhibitHit["action"]) => void;
   onMove: (pose: Pose) => void;
   onResident: (resident: Resident) => void;
+  /** A street challenge tile was answered (or "gone" once the visitor walks away). */
+  onChallenge?: (id: string) => void;
   onReady: () => void;
   onError: (message: string) => void;
 };
@@ -165,6 +167,10 @@ export class Museum {
   private lostLabels = new Set<string>();
   private lostTexture: THREE.Texture | null = null;
   private lampBulbs: THREE.MeshStandardMaterial[] = [];
+  private challenge: {
+    group: THREE.Group; textures: THREE.Texture[]; redraw: (() => void)[];
+    wrong: string[]; solved: boolean; standing: { id: string; since: number; answered: boolean } | null; stop: () => void;
+  } | null = null;
   private eveningOnly: THREE.Object3D[] = [];
   private lampHalo: THREE.Texture | null = null;
   private evening = false;
@@ -1742,6 +1748,13 @@ export class Museum {
         return;
       }
       const object = this.pickObject(event.clientX, event.clientY);
+      const challengeAnswer: string | undefined = object?.userData.challengeAnswer;
+      if (challengeAnswer && this.challenge && !this.challenge.solved && !this.challenge.wrong.includes(challengeAnswer)) {
+        this.clearInput();
+        this.options.onChallenge?.(challengeAnswer);
+        this.pointerCancel();
+        return;
+      }
       const resident = this.residentsEnabled && nearbyResident({ ...this.camera.position, room: areaAt(this.camera.position.x, this.camera.position.z) });
       if (resident && object?.userData.residentId === resident.id) {
         this.clearInput();
@@ -2220,6 +2233,94 @@ export class Museum {
     }
   }
 
+  // Street challenges: three word tiles on the ground ahead of the visitor.
+  private challengeTexture(width: number, height: number, draw: (ctx: CanvasRenderingContext2D) => void) {
+    const canvas = document.createElement("canvas"); canvas.width = width; canvas.height = height;
+    const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace;
+    const redraw = () => { const ctx = canvas.getContext("2d")!; ctx.clearRect(0, 0, width, height); draw(ctx); texture.needsUpdate = true; };
+    redraw();
+    return { texture, redraw };
+  }
+  /** Lay out a challenge ahead of the visitor on open, walkable ground; false when there is no room. */
+  showChallenge(options: { id: string; word: string }[]) {
+    this.clearChallenge();
+    const { x, z } = this.camera.position;
+    for (const turn of [0, -0.35, 0.35, -0.7, 0.7]) for (const distance of [5, 6.5, 4]) {
+      const yaw = this.yaw + turn;
+      const forward = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw)), right = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
+      const fits = [-2.6, 0, 2.6].every((offset) => [-1.2, 0, 1.2].every((dx) => [-0.8, 0.8].every((dz) => {
+        const px = x + forward.x * (distance + dz) + right.x * (offset + dx), pz = z + forward.z * (distance + dz) + right.z * (offset + dx);
+        return this.canMove(px, pz) && areaAt(px, pz) === areaAt(x, z) && RESIDENTS.every((npc) => Math.hypot(px - npc.x, pz - npc.z) > 2);
+      })));
+      if (!fits) continue;
+      const group = new THREE.Group(); group.position.set(x, 0, z); group.rotation.y = yaw;
+      const textures: THREE.Texture[] = [], redraw: (() => void)[] = [];
+      options.forEach((option, i) => {
+        const { texture, redraw: again } = this.challengeTexture(1024, 640, (ctx) => {
+          const wrong = this.challenge?.wrong.includes(option.id), solved = this.challenge?.solved && this.challenge.standing?.id === option.id;
+          ctx.fillStyle = solved ? "#466c54" : wrong ? "#d8d2c2" : "#f4ead0"; ctx.fillRect(0, 0, 1024, 640);
+          ctx.strokeStyle = solved ? "#b9d3ac" : "#b8871f"; ctx.lineWidth = 12; ctx.setLineDash(wrong ? [30, 20] : []); ctx.strokeRect(20, 20, 984, 600);
+          ctx.fillStyle = solved ? "#f7f1df" : wrong ? "#9a9480" : "#35503b"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+          let size = 150; ctx.font = `500 ${size}px "Cormorant Garamond", serif`;
+          while (ctx.measureText(option.word).width > 900 && size > 60) { size -= 8; ctx.font = `500 ${size}px "Cormorant Garamond", serif`; }
+          ctx.fillText(solved ? `✓ ${option.word}` : option.word, 512, 330);
+        });
+        textures.push(texture); redraw.push(again);
+        const tile = this.panel(texture, 2.3, 1.44, (i - 1) * 2.6, 0.05, -distance, group);
+        // Lie flat, reading the right way up for someone walking towards the tiles.
+        tile.rotation.x = -Math.PI / 2;
+        tile.userData.challengeAnswer = option.id; tile.userData.halfWidth = 1.15; tile.userData.halfDepth = 0.72;
+      });
+      this.scene.add(group);
+      // A soft golden pulse on the tiles draws the eye; the clue itself is in the page's challenge card.
+      const tiles = group.children as THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>[];
+      const stop = this.life.add({ x: group.position.x, z: group.position.z, reach: 40, update: (t) => {
+        for (const tile of tiles) tile.material.color.setScalar(0.9 + Math.sin(t * 3) * 0.1);
+      } });
+      this.challenge = { group, textures, redraw, wrong: [], solved: false, standing: null, stop };
+      this.needsRender = true;
+      return true;
+    }
+    return false;
+  }
+  /** Mark a wrong tile, or the solved one. */
+  markChallenge(wrong: string[], solved: string | null) {
+    if (!this.challenge) return;
+    this.challenge.wrong = wrong; this.challenge.solved = !!solved;
+    if (solved) this.challenge.standing = { id: solved, since: 0, answered: true };
+    this.challenge.redraw.forEach((redraw) => redraw());
+    this.needsRender = true;
+  }
+  clearChallenge() {
+    const current = this.challenge;
+    if (!current) return;
+    this.challenge = null;
+    current.stop();
+    current.group.traverse((object) => {
+      if (object instanceof THREE.Mesh || object instanceof THREE.Sprite) { object.geometry.dispose(); (object.material as THREE.Material).dispose(); }
+    });
+    current.group.removeFromParent();
+    current.textures.forEach((texture) => texture.dispose());
+    this.needsRender = true;
+  }
+  get challengeActive() { return !!this.challenge; }
+  private checkChallenge(time: number) {
+    const current = this.challenge;
+    if (!current || this.blocked || this.transition) return;
+    const local = current.group.worldToLocal(this.camera.position.clone());
+    if (Math.hypot(local.x, local.z) > 18) { this.options.onChallenge?.("gone"); return; }
+    if (current.solved) return;
+    const tile = current.group.children.find((child) => child.userData.challengeAnswer &&
+      Math.abs(local.x - child.position.x) < child.userData.halfWidth && Math.abs(local.z - child.position.z) < child.userData.halfDepth);
+    const id: string | undefined = tile?.userData.challengeAnswer;
+    if (!id || current.wrong.includes(id)) { current.standing = null; return; }
+    if (current.standing?.id !== id) current.standing = { id, since: time, answered: false };
+    if (!current.standing.answered && time - current.standing.since > 500) {
+      current.standing.answered = true;
+      this.options.onChallenge?.(id);
+    }
+  }
+
   private canMove(x: number, z: number) {
     if (RESIDENTS.some(npc => Math.hypot(x - npc.x, z - npc.z) < .65)) return false;
     if (this.game?.mode === "market") {
@@ -2297,6 +2398,7 @@ export class Museum {
     }
     this.camera.rotation.set(this.pitch, this.yaw, 0, "YXZ");
     this.checkGameStep(time);
+    this.checkChallenge(time);
     if (!this.blocked) this.updateZones();
     if (time - this.lastReport > 150) {
       const { x, z } = this.camera.position;
@@ -2353,6 +2455,7 @@ export class Museum {
 
   dispose() {
     this.disposed = true;
+    this.clearChallenge();
     this.setGame(null);
     this.life.dispose();
     this.renderer.setAnimationLoop(null);
