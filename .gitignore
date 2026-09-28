@@ -11,3 +11,4 @@ output/artwork/authoring/
 output/artwork/masters/
 .claude/
 output/artwork/retired/
+*.tsbuildinfo
