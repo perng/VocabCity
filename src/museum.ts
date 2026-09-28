@@ -159,7 +159,8 @@ export class Museum {
   private reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
     .matches;
   private touchDevice = window.matchMedia("(pointer: coarse)").matches;
-  private obstacles: { x: number; z: number; rx: number; rz: number }[] = [];
+  // Round things (fountains, towers, the pond) collide as ellipses so you can walk right up to them.
+  private obstacles: { x: number; z: number; rx: number; rz: number; round?: boolean }[] = [];
   private placeStates: PlaceState[] = [];
   private friendship: Record<string, number> = {};
   private residentBadges = new Map<string, () => void>();
@@ -506,6 +507,37 @@ export class Museum {
     this.buildCistern();
     this.buildOldTown();
     this.buildLandmarks();
+    this.buildBoundaries();
+  }
+
+  // Wherever walking stops, something should show why: ground under the whole old core so there
+  // are no holes, and garden walls closing the open edges between the landmarks.
+  private buildBoundaries() {
+    const c = CITY, stone = "#d5c6a6", h = 2.4;
+    this.ground(-c.wallX, c.wallX, c.promenade.z1, c.wallSouth, this.material("#acb990"), -0.02);
+    for (const side of [-1, 1]) {
+      // The promenade's south side, from the side lanes out to the city walls.
+      const lane = c.sideLanes.x1;
+      this.wall(side < 0 ? -c.wallX : lane, side < 0 ? -lane : c.wallX, c.promenade.z1 - 0.3, c.promenade.z1 + 0.3, h, stone);
+      // The outer side of each side lane (the cistern fills most of the east one).
+      const x = side * lane;
+      const spans = side < 0 ? [[c.promenade.z1, c.cathedralSquare.z0 + 2]] : [[c.promenade.z1, c.cistern.z0], [c.cistern.z1, c.cathedralSquare.z0 + 2]];
+      for (const [z0, z1] of spans) this.wall(x - 0.3, x + 0.3, z0, z1, h, stone);
+      // Cathedral Square's south corners, between the Corso arcades and the palazzo and guildhall.
+      this.wall(Math.min(side * c.corso.arcade, x), Math.max(side * c.corso.arcade, x), c.cathedralSquare.z1 + 2, c.cathedralSquare.z1 + 2.6, h, stone);
+      this.wall(x - 0.3, x + 0.3, c.palazzo.z1, c.cathedralSquare.z1 + 2.6, h, stone);
+      // Between the Gate Square and the Town Hall / Inn, south and north of them.
+      const hall = side * c.square.x;
+      this.wall(hall - 0.3, hall + 0.3, c.square.z0 - 2, c.townHall.z0, h, stone);
+      this.wall(hall - 0.3, hall + 0.3, c.townHall.z1, c.wallSouth - 0.6, h, stone);
+      // The Corso houses are open shells behind their arcade fronts: close the ground floor
+      // where it shows, along the passages to the park and market and at the Gate Square end.
+      const front = side * (c.corso.arcade + 0.6), back = side * c.square.x;
+      for (const dz of [-3, 3]) this.wall(Math.min(front, back), Math.max(front, back), c.corso.passageZ + dz - 0.3, c.corso.passageZ + dz + 0.3, 5.4, stone);
+      this.wall(Math.min(front, back), Math.max(front, back), c.square.z0 - 2.6, c.square.z0 - 2, 5.4, stone);
+      // The far ends of the quay.
+      this.wall(side * c.wallX - 0.6, side * c.wallX + 0.6, c.wallSouth, c.quay.south, h + 1, stone);
+    }
   }
 
   // The visitor's guide: a scroll on a reading stand beside the landing, facing new arrivals.
@@ -578,13 +610,14 @@ export class Museum {
     this.box(c.wallX * 2 + 4, 1.3, 0.5, 0, -0.65, c.quay.south + 0.25, "#a99a7c");
     // Railing along the sea edge, leaving the mole open.
     for (let x = -c.wallX + 1; x <= c.wallX; x += 2) {
-      if (x > c.mole.x0 - 1 && x < c.mole.x1 + 1) continue;
+      if (x > c.mole.x0 - 0.5 && x < c.mole.x1 + 0.5) continue;
       this.box(0.09, 1.1, 0.09, x, 0.55, c.quay.south - 0.3, "#687c78");
     }
-    for (const [x0, x1] of [[-c.wallX + 1, c.mole.x0 - 1], [c.mole.x1 + 1, c.wallX]] as const) {
+    for (const [x0, x1] of [[-c.wallX + 1, c.mole.x0 - 0.3], [c.mole.x1 + 0.3, c.wallX]] as const) {
       this.box(x1 - x0, 0.08, 0.08, (x0 + x1) / 2, 1.13, c.quay.south - 0.3, "#8b947f");
     }
     for (let x = -80; x <= 80; x += 20) {
+      if (x + 3 > c.mole.x0 - 1 && x + 3 < c.mole.x1 + 1) continue; // keep the way onto the mole clear
       const bollard = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.28, 0.9, 12), this.material("#4d5551"));
       bollard.position.set(x + 3, 0.45, c.quay.south - 1); this.scene.add(bollard);
       this.obstacles.push({ x: x + 3, z: c.quay.south - 1, rx: 0.4, rz: 0.4 });
@@ -680,7 +713,7 @@ export class Museum {
       top.position.set(x, 15.4, c.wallSouth); this.scene.add(top);
       const capRoof = new THREE.Mesh(new THREE.ConeGeometry(3, 2.6, 20), this.tiles);
       capRoof.position.set(x, 17.2, c.wallSouth); this.scene.add(capRoof);
-      this.obstacles.push({ x, z: c.wallSouth, rx: 2.9, rz: 2.9 });
+      this.obstacles.push({ x, z: c.wallSouth, rx: 2.9, rz: 2.9, round: true });
     }
     for (const side of [-1, 1]) {
       this.wall(side * c.wallX - 0.6, side * c.wallX + 0.6, c.wallNorth, c.wallSouth, 8, stone);
@@ -698,7 +731,7 @@ export class Museum {
 
   private buildGateSquare() {
     const c = CITY, sq = c.square;
-    this.ground(-sq.x, sq.x, sq.z0 - 2, sq.z1 + 2, this.cobbles, 0.003);
+    this.ground(-sq.x, sq.x, sq.z0 - 2, c.wallSouth - 0.5, this.cobbles, 0.003);
     this.ground(-c.gate.halfWidth, c.gate.halfWidth, c.gate.z0 - 1, c.gate.z1 + 1, this.cobbles, 0.004);
     // Fountain at the centre.
     const f = sq.fountain;
@@ -712,7 +745,7 @@ export class Museum {
     bowl.position.set(f.x, 3.2, f.z); this.scene.add(bowl);
     this.life.addFountain(f.x, f.z, 3.4, 0.95, f.r);
     this.life.addPigeons([[-6, 19], [-5, 20.5], [-7, 21.2], [7, 35], [6.1, 36], [8, 36.4], [3, 16.5], [-9, 38]].map(([x, z]) => ({ x, z })));
-    this.obstacles.push({ x: f.x, z: f.z, rx: f.r + 0.3, rz: f.r + 0.3 });
+    this.obstacles.push({ x: f.x, z: f.z, rx: f.r + 0.3, rz: f.r + 0.3, round: true });
     // Arcades along both sides of the square carry the Gate Square paintings.
     for (const side of [-1, 1]) {
       // Put supports in the gaps between paintings, never across their viewing bays.
@@ -764,7 +797,7 @@ export class Museum {
     ring.position.set(well.x, 0.5, well.z); ring.castShadow = true; this.scene.add(ring);
     for (const dx of [-0.9, 0.9]) this.box(0.12, 2.4, 0.12, well.x + dx, 1.5, well.z, "#7c6a4c");
     this.box(2.2, 0.1, 0.9, well.x, 2.7, well.z, "#8f6f4d");
-    this.obstacles.push({ x: well.x, z: well.z, rx: 1.4, rz: 1.4 });
+    this.obstacles.push({ x: well.x, z: well.z, rx: 1.4, rz: 1.4, round: true });
     for (const [x, z] of [[-45, 20], [-27, 20], [-45, 36], [-27, 36]] as const) this.plant(x, z, 1.4);
     this.bench(-36, 19, 0); this.bench(-36, 37, Math.PI);
     for (const dx of [6, 14, 22]) this.window(inn.x0 + dx, 5.8, inn.z1 + 0.02, 1.2, 1.8, Math.PI);
@@ -886,7 +919,7 @@ export class Museum {
     water.rotation.x = -Math.PI / 2; water.scale.set(pond.rx, pond.rz, 1); water.position.set(pond.x, 0.05, pond.z); this.scene.add(water);
     const rim = new THREE.Mesh(new THREE.RingGeometry(1, 1.12, 40), this.material("#bfbca1"));
     rim.rotation.x = -Math.PI / 2; rim.scale.set(pond.rx, pond.rz, 1); rim.position.set(pond.x, 0.06, pond.z); this.scene.add(rim);
-    this.obstacles.push({ x: pond.x, z: pond.z, rx: pond.rx + 0.5, rz: pond.rz + 0.5 });
+    this.obstacles.push({ x: pond.x, z: pond.z, rx: pond.rx + 0.5, rz: pond.rz + 0.5, round: true });
     for (let i = 0; i < 8; i++) {
       const lily = this.botany.lily(i);
       lily.position.set(pond.x + Math.sin(i * 2.4) * 3, 0.07, pond.z + Math.cos(i * 3.1) * 4);
@@ -903,7 +936,7 @@ export class Museum {
     }
     const dome = new THREE.Mesh(new THREE.ConeGeometry(b.r + 0.4, 2.2, 8), this.material("#587a77"));
     dome.position.set(b.x, 5.6, b.z); dome.castShadow = true; this.scene.add(dome);
-    this.obstacles.push({ x: b.x, z: b.z, rx: b.r + 0.3, rz: b.r + 0.3 });
+    this.obstacles.push({ x: b.x, z: b.z, rx: b.r + 0.3, rz: b.r + 0.3, round: true });
     // Trees, beds and benches keep clear of the display sightlines.
     const spots: [number, number, number][] = [[-58, -14, 1.2], [-26, -14, 1.1], [-58, -58, 1.3], [-26, -58, 1.2], [-34, -50, 1.1], [-56, -34, 1.0], [-26, -40, 1.1], [-50, -20, 1.0]];
     spots.forEach(([x, z, size], i) => this.tree(x, z, size, i + 3));
@@ -978,7 +1011,7 @@ export class Museum {
     const body = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.6, 2.6, 12), this.material("#7c8773", 0.4, 0.3)); body.position.y = 1.3; figure.add(body);
     const head = new THREE.Mesh(new THREE.SphereGeometry(0.42, 16, 12), this.material("#7c8773", 0.4, 0.3)); head.position.y = 3; figure.add(head);
     const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.12, 1.6, 8), this.material("#7c8773", 0.4, 0.3)); arm.position.set(0.5, 2.2, -0.3); arm.rotation.z = -1.1; arm.rotation.x = 0.6; figure.add(arm);
-    this.obstacles.push({ x: st.x, z: st.z, rx: st.r, rz: st.r });
+    this.obstacles.push({ x: st.x, z: st.z, rx: st.r, rz: st.r, round: true });
     for (const x of [-22, 22]) for (const z of [-78, -102]) this.lamp(x, z, 4.4);
     for (const x of [-12, 12]) { this.bench(x, -76, Math.PI); this.bench(x, -104, 0); }
     for (const side of [-1, 1]) this.tree(side * 26, -104, 1.6, 40 + side, false);
@@ -2506,12 +2539,10 @@ export class Museum {
       if (Math.abs(local.x) > ROOT_ROOM.width / 2 - .65 || Math.abs(local.z) > ROOT_ROOM.depth / 2 - .65) return false;
     }
     if (!withinGrounds(x, z)) return false;
-    for (const obstacle of this.obstacles)
-      if (
-        Math.abs(x - obstacle.x) < obstacle.rx &&
-        Math.abs(z - obstacle.z) < obstacle.rz
-      )
-        return false;
+    for (const obstacle of this.obstacles) {
+      const dx = (x - obstacle.x) / obstacle.rx, dz = (z - obstacle.z) / obstacle.rz;
+      if (obstacle.round ? dx * dx + dz * dz < 1 : Math.abs(dx) < 1 && Math.abs(dz) < 1) return false;
+    }
     return true;
   }
 

@@ -257,10 +257,11 @@ export function withinGrounds(x: number, z: number) {
     return true; // gardens and spaces between houses can be explored too
   }
   const rects: { x0: number; x1: number; z0: number; z1: number }[] = [
-    { x0: -c.wallX, x1: c.mole.x0 + 2, z0: c.quay.north, z1: c.quay.south },
-    { x0: c.mole.x0, x1: c.mole.x1, z0: c.mole.z0 - 2, z1: c.mole.z1 },
+    { x0: -c.wallX, x1: c.wallX, z0: c.quay.north, z1: c.quay.south },
+    // The mole joins the quay across its whole width.
+    { x0: c.mole.x0, x1: c.mole.x1, z0: c.quay.north, z1: c.mole.z1 },
     { x0: -c.gate.halfWidth, x1: c.gate.halfWidth, z0: c.gate.z0 - 2, z1: c.gate.z1 + 2 },
-    { x0: -c.square.x, x1: c.square.x, z0: c.square.z0 - 2, z1: c.square.z1 },
+    { x0: -c.square.x, x1: c.square.x, z0: c.square.z0 - 2, z1: c.wallSouth - 0.6 },
     { x0: c.townHall.x0, x1: c.townHall.x1, z0: c.townHall.z0, z1: c.townHall.z1 },
     { x0: c.townHall.x0 - 2, x1: c.townHall.x0 + 2, z0: 25, z1: 31 },
     { x0: c.inn.x0, x1: c.inn.x1, z0: c.inn.z0, z1: c.inn.z1 },

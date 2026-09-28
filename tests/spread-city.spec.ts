@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import collection from '../src/collection.json' with { type: 'json' };
-import { CITY, CITY_ROADS, HOUSE_POSITIONS, ROOT_ROOM, ROOT_START, areaAt, houseLocal, inGallery, roomPose, withinGrounds } from '../src/layout';
+import { CITY, CITY_ROADS, DISTRICTS, ENTRY, HOUSE_POSITIONS, ROOT_ROOM, ROOT_START, areaAt, houseLocal, inGallery, roomPose, withinGrounds } from '../src/layout';
 
 // Audit real route geometry so future house counts cannot create sealed entrances or overlapping buildings.
 test('every angled house has an open approach, solid walls, and space between neighbouring buildings', () => {
@@ -128,4 +128,30 @@ test('eighteen refreshed market and garden works load at native resolution and r
     expect((await page.request.get(e.audio!)).ok()).toBe(true);
     expect((await page.request.get(e.exampleAudio!)).ok()).toBe(true);
   }
+});
+
+// Every landmark must be reachable on foot from the landing, obstacles included: the Harbour Mole
+// was once sealed off by a sliver of quay and a bollard in its mouth.
+test('every landmark can be walked to from the landing', async ({ page }) => {
+  test.setTimeout(90000);
+  await enter(page, 1);
+  const bounds = { x0: -CITY.market.x1 - 20, x1: CITY.mole.x1 + 10, z0: CITY.promenade.z0 - 2, z1: CITY.mole.z1 + 2 };
+  const poses = DISTRICTS.filter((d) => d.kind !== 'wall').map((d) => ({ name: d.landmark, ...d.pose }));
+  const unreachable = await page.evaluate(({ bounds, poses, entry }) => {
+    const m = (window as any).__museum, S = 0.5;
+    const W = Math.ceil((bounds.x1 - bounds.x0) / S) + 1, H = Math.ceil((bounds.z1 - bounds.z0) / S) + 1;
+    const idx = (x: number, z: number) => Math.round((z - bounds.z0) / S) * W + Math.round((x - bounds.x0) / S);
+    const ok = new Uint8Array(W * H), seen = new Uint8Array(W * H);
+    for (let j = 0; j < H; j++) for (let i = 0; i < W; i++) ok[j * W + i] = m.canMove(bounds.x0 + i * S, bounds.z0 + j * S) ? 1 : 0;
+    const stack = [idx(entry.x, entry.z)]; seen[stack[0]] = 1;
+    while (stack.length) {
+      const k = stack.pop()!, i = k % W, j = (k - i) / W;
+      for (const [a, b] of [[i + 1, j], [i - 1, j], [i, j + 1], [i, j - 1]]) {
+        const n = b * W + a;
+        if (a >= 0 && b >= 0 && a < W && b < H && ok[n] && !seen[n]) { seen[n] = 1; stack.push(n); }
+      }
+    }
+    return poses.filter((p) => !seen[idx(p.x, p.z)]).map((p) => p.name);
+  }, { bounds, poses, entry: ENTRY });
+  expect(unreachable).toEqual([]);
 });
