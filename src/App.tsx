@@ -41,6 +41,7 @@ import {
   Pause,
   Play,
   Search,
+  ScrollText,
   Landmark,
   Sparkles,
   Sprout,
@@ -52,6 +53,7 @@ import {
 } from "lucide-react";
 import collection from "./collection.json";
 import { MuseumGames } from "./MuseumGames";
+import { GuideScroll } from "./GuideScroll";
 import { FavourCard, ResidentAvatar, ResidentQuiz } from "./ResidentQuiz";
 import { RESIDENTS, nearbyResident, type Resident } from "./residents";
 import { readPassport } from "./games";
@@ -455,7 +457,7 @@ export default function App() {
   const [hoverAction, setHoverAction] = useState<"open" | "check" | "video">(
     "open",
   );
-  const [modal, setModal] = useState<"map" | "collection" | "help" | "walk" | "album" | "journal" | "passport" | null>(
+  const [modal, setModal] = useState<"map" | "collection" | "help" | "guide" | "walk" | "album" | "journal" | "passport" | null>(
     null,
   );
   const [visited, setVisited] = useProgress("vocabhall.visited.v1");
@@ -801,6 +803,7 @@ export default function App() {
           onMove: setPose,
           onResident: setResident,
           onChallenge: (id) => challengeAnswerRef.current(id),
+          onGuide: () => { setIntro(false); setModal("guide"); },
           onReady: () => setReady(true),
           onError: setError,
         });
@@ -1171,8 +1174,8 @@ export default function App() {
             </button>
             <button className="text-button" onClick={() => { setIntro(false); setModal("walk"); }}><Star size={16} />{t("Today's walk")}<span>{WALK_SIZE} {t("paintings to find")}</span></button>
             <button className="text-button" onClick={launchGames}><Gamepad2 size={17} />{t("Play with words")}<ArrowRight size={15} /></button>
-            <button className="welcome-news" onClick={() => setModal("help")}>
-              <Sparkles size={14} /><span><b>{t("New in the city")}</b> {t("A daily walk, neighbours' favours, lost labels, an art album, postcards and a glowing evening.")}</span>
+            <button className="welcome-news" onClick={() => setModal("guide")}>
+              <ScrollText size={14} /><span><b>{t("New in the city")}</b> {t("Golden paintings, street challenges, cistern echoes and word constellations. Unroll the visitor's guide for everything.")}</span>
             </button>
             <div className="welcome-footnote">
               <span>15 {t("LANDMARKS")} · {houses.length} √</span>
@@ -2259,6 +2262,7 @@ export default function App() {
         </Dialog>
       )}
 
+      {modal === "guide" && <GuideScroll onClose={() => setModal(null)} />}
       {modal === "help" && (
         <Dialog
           className="help-dialog"
@@ -2364,6 +2368,11 @@ export default function App() {
                 </span>
               </div>
             </div>
+            <button className="text-button guide-link" onClick={() => setModal("guide")}>
+              <ScrollText size={17} />
+              {t("Unroll the full visitor's guide")}
+              <ArrowRight size={15} />
+            </button>
             <button
               className="primary-button"
               onClick={() => {

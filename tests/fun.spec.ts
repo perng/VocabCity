@@ -499,3 +499,35 @@ test('once Luca is a friend, his boat sails round the harbour', async ({ page })
   await page.getByRole('button', { name: 'Start exploring', exact: true }).click();
   await expect.poll(async () => { const [x, z] = await boat(); return Math.hypot(x - 30, z - 69); }).toBeGreaterThan(1);
 });
+
+test('the visitor\'s guide unrolls as a scroll from the quay stand, the help dialog and the welcome', async ({ page }) => {
+  await page.addInitScript(() => { if (!sessionStorage.getItem('seeded')) { sessionStorage.setItem('seeded', '1'); localStorage.setItem('vocabhall.locale.v1', ''); } });
+  await page.goto('/');
+  // From the welcome's "New in the city" note.
+  await page.locator('.welcome-news').click();
+  const scroll = page.getByRole('dialog', { name: 'The Visitor\'s Guide' });
+  await expect(scroll).toBeVisible();
+  await expect(scroll.locator('section')).toHaveCount(12);
+  await scroll.getByRole('navigation').getByRole('button', { name: 'Games in the streets' }).click();
+  await expect.poll(() => scroll.locator('.scroll-body').evaluate((b) => b.scrollTop)).toBeGreaterThan(1000);
+  await scroll.getByRole('button', { name: 'Roll up the scroll' }).last().click();
+  await expect(scroll).toHaveCount(0);
+  await page.getByRole('button', { name: 'Start exploring', exact: true }).click();
+  // From the help dialog.
+  await page.getByRole('button', { name: 'How to explore' }).click();
+  await page.getByRole('button', { name: 'Unroll the full visitor\'s guide' }).click();
+  await expect(scroll).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(scroll).toHaveCount(0);
+  // From the reading stand on the quay: face it and click the scroll.
+  const point = await page.evaluate(() => {
+    const m = (window as any).__museum; m.camera.position.set(0.35, 1.78, 58);
+    let stand: any; m.scene.traverse((o: any) => { if (o.userData.guide && o.isGroup && !stand && o.parent === m.scene) stand = o; });
+    m.yaw = Math.atan2(-(stand.position.x - 0.35), -(stand.position.z - 58)); m.pitch = -0.35; m.needsRender = true;
+    m.camera.rotation.set(m.pitch, m.yaw, 0, 'YXZ'); m.camera.updateMatrixWorld();
+    const v = stand.position.clone().setY(1.12).project(m.camera), r = m.renderer.domElement.getBoundingClientRect();
+    return { x: r.left + (v.x + 1) / 2 * r.width, y: r.top + (1 - v.y) / 2 * r.height };
+  });
+  await page.mouse.click(point.x, point.y);
+  await expect(scroll).toBeVisible();
+});

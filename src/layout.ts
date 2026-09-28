@@ -195,6 +195,8 @@ export const districtFor = (room: number): District => (room < DISTRICTS.length 
 export const CATHEDRAL_SQUARE = { id: "square", name: "Cathedral Square", subtitle: "The heart of the city. Every road meets here.", color: "#b39a6a" };
 export const OLD_TOWN = { id: "oldtown", name: "The Old Town", subtitle: "Ninety-three roots along the canal lanes.", color: "#7a8a6c" };
 export const ENTRY = { x: 0.35, z: 58, yaw: 0.015 };
+// The reading stand with the visitor's guide scroll, just ahead and to the left of the landing.
+export const GUIDE_STAND = { x: -2.8, z: 55.6 };
 
 export function galleryTransform(room: number) {
   if (isRootRoom(room)) return rootRoomTransform(room);

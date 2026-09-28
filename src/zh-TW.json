@@ -1506,7 +1506,6 @@
   "Take me there": "帶我過去",
   "one painting from complete": "只差一幅就收齊",
   "New in the city": "城裡的新鮮事",
-  "A daily walk, neighbours' favours, lost labels, an art album, postcards and a glowing evening.": "每日散步、鄰居的小忙、失物招領、畫風畫冊、明信片，還有會發光的傍晚。",
   "Tour from here": "從這裡開始導覽",
   "Every word in the city. Bravo!": "全城的每個單字都找到了，太棒了！",
   "Keep wandering. The city has more to show you.": "繼續漫遊吧，城裡還有更多等你發現。",
@@ -1556,5 +1555,10 @@
   "The echoes settle.": "回音漸漸平息了。",
   "words heard in the cistern": "個單字在地下水宮裡聽到",
   "cistern echo sets": "組回音完成",
-  "The echo could not be played. Try again.": "回音無法播放，請再試一次。"
+  "The echo could not be played. Try again.": "回音無法播放，請再試一次。",
+  "The Visitor's Guide": "城市導覽手卷",
+  "Everything the city can do, unrolled in one place.": "這座城市的所有精彩功能，在此為你完整展開。",
+  "Read the guide": "閱讀導覽手卷",
+  "Golden paintings, street challenges, cistern echoes and word constellations. Unroll the visitor's guide for everything.": "金色畫作、街頭挑戰、地下水宮的回音與單字星座。展開城市導覽手卷，一次看懂所有玩法。",
+  "Unroll the full visitor's guide": "展開完整的城市導覽手卷"
 }

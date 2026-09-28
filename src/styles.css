@@ -3225,3 +3225,206 @@ html:lang(zh-Hant-TW) .welcome-card h1 { font-size: 32px; line-height: 1.45; }
 .echo-card .echo-listen:disabled { opacity: .6; }
 .echo-options { grid-template-columns: repeat(2, 1fr); }
 .echo-card { border-color: #6f8f9a; background: #eef3f2f7; }
+
+/* The visitor's guide: a parchment scroll unrolling between two wooden rods. */
+dialog.guide-scroll {
+  width: min(720px, calc(100vw - 24px));
+  max-width: none;
+  max-height: calc(100dvh - 24px);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  overflow: visible;
+  animation: none;
+}
+dialog.guide-scroll[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+dialog.guide-scroll::backdrop {
+  background: #2a211535;
+  animation: scroll-fade 0.4s ease;
+}
+.scroll-rod {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background:
+    repeating-linear-gradient(90deg, #0000 0 22px, #0000000f 22px 24px),
+    linear-gradient(#b27a45, #e0a86b 30%, #8c5a2e 70%, #5e3a1c);
+  box-shadow: 0 6px 12px #3a24122e;
+  animation: scroll-turn 0.9s ease-out;
+}
+.scroll-rod::before,
+.scroll-rod::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  width: 20px;
+  height: 34px;
+  border-radius: 10px;
+  background: radial-gradient(circle at 40% 35%, #c99559, #6f4420 70%);
+}
+.scroll-rod::before { left: -4px; }
+.scroll-rod::after { right: -4px; }
+.scroll-sheet {
+  width: calc(100% - 44px);
+  max-height: calc(100dvh - 72px);
+  min-height: 0;
+  display: flex;
+  margin: -6px 0;
+  color: #4a3522;
+  background:
+    radial-gradient(ellipse at 50% 40%, #0000 55%, #9b743f24),
+    linear-gradient(90deg, #cfae7440, #0000 7%, #0000 93%, #cfae7440),
+    #f6e9c8;
+  box-shadow: inset 0 10px 14px -8px #5b3a1a45, inset 0 -10px 14px -8px #5b3a1a45;
+  animation: scroll-unroll 0.9s cubic-bezier(0.3, 0.7, 0.3, 1);
+  overflow: hidden;
+}
+.guide-scroll.closing .scroll-sheet { animation: scroll-rollup 0.42s ease-in forwards; }
+.guide-scroll.closing .scroll-rod { animation: scroll-turn 0.42s ease-in reverse; }
+.guide-scroll.closing::backdrop { opacity: 0; transition: opacity 0.42s; }
+.scroll-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 40px 48px 36px;
+  outline: none;
+  scrollbar-color: #b58f5a #0000;
+}
+.scroll-x {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #6b4b2a;
+}
+.scroll-x:hover { background: #e7d3a6; }
+.scroll-body header { text-align: center; padding: 0 30px; }
+.scroll-ornament { font-size: 26px; color: #a1783f; }
+.scroll-body h2 {
+  margin: 4px 0 0;
+  font: 500 44px/1.05 var(--serif);
+  color: #4a2f16;
+}
+.scroll-body header p {
+  margin: 10px 0 0;
+  font: italic 18px/1.4 var(--serif);
+  color: #7b5a35;
+}
+.scroll-body nav {
+  margin: 28px auto 8px;
+  padding: 18px 22px;
+  max-width: 480px;
+  border: 1px solid #c9a86f;
+  border-radius: 4px;
+  background: #fbf2da90;
+}
+.scroll-body h3 {
+  margin: 0;
+  font: 500 24px/1.2 var(--serif);
+  color: #4a2f16;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.scroll-body nav h3 {
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: "DM Sans", sans-serif;
+  color: #8a6a3e;
+  justify-content: center;
+}
+.scroll-body nav ol {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  columns: 2;
+  column-gap: 20px;
+}
+.scroll-body nav button {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  padding: 5px 4px;
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #5a3d20;
+  break-inside: avoid;
+}
+.scroll-body nav button:hover { color: #2f1c0a; text-decoration: underline; }
+.scroll-body nav b,
+.scroll-body h3 b {
+  font: 600 13px var(--serif);
+  color: #a1783f;
+  min-width: 16px;
+}
+.scroll-body h3 b { font-size: 20px; }
+.scroll-body section {
+  padding-top: 26px;
+  margin-top: 26px;
+  border-top: 1px solid #d8bd89;
+}
+.scroll-body section:first-of-type { border-top: 0; }
+.scroll-body section p {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.scroll-body dl { margin: 12px 0 0; }
+.scroll-body dl > div {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px dashed #dcc59a;
+}
+.scroll-body dl > div:last-child { border-bottom: 0; }
+.scroll-body dt {
+  font: 600 16px/1.4 var(--serif);
+  color: #5a3a1a;
+}
+.scroll-body dd {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+.scroll-done {
+  display: block;
+  margin: 34px auto 4px;
+  padding: 11px 26px;
+  border: 1px solid #a1783f;
+  border-radius: 999px;
+  font: 500 17px var(--serif);
+  color: #4a2f16;
+}
+.scroll-done:hover { background: #ecd8aa; }
+.help-dialog .guide-link { width: 100%; justify-content: center; margin-top: 4px; }
+@keyframes scroll-unroll { from { max-height: 0; } to { max-height: calc(100dvh - 72px); } }
+@keyframes scroll-rollup { from { max-height: calc(100dvh - 72px); } to { max-height: 0; } }
+@keyframes scroll-turn { from { background-position: 60px 0, 0 0; } to { background-position: 0 0, 0 0; } }
+@keyframes scroll-fade { from { opacity: 0; } }
+@media (max-width: 640px) {
+  .scroll-sheet { width: calc(100% - 28px); }
+  .scroll-body { padding: 34px 20px 28px; }
+  .scroll-body header { padding: 0 24px; }
+  .scroll-body h2 { font-size: 34px; }
+  .scroll-body nav ol { columns: 1; }
+  .scroll-body dl > div { grid-template-columns: 1fr; gap: 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-sheet, .scroll-rod, dialog.guide-scroll::backdrop { animation: none; }
+}

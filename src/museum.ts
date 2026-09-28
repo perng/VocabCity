@@ -16,6 +16,7 @@ import {
   lanePoint,
   DISTRICTS,
   ENTRY,
+  GUIDE_STAND,
   ROOT_START,
   ROOT_COUNT,
   ROOT_ROOM,
@@ -55,6 +56,8 @@ type MuseumOptions = {
   onResident: (resident: Resident) => void;
   /** A street challenge tile was answered (or "gone" once the visitor walks away). */
   onChallenge?: (id: string) => void;
+  /** The guide scroll on the quay was clicked. */
+  onGuide?: () => void;
   onReady: () => void;
   onError: (message: string) => void;
 };
@@ -505,6 +508,56 @@ export class Museum {
     this.buildLandmarks();
   }
 
+  // The visitor's guide: a scroll on a reading stand beside the landing, facing new arrivals.
+  private buildGuideStand(x: number, z: number) {
+    const stand = new THREE.Group();
+    stand.position.set(x, 0, z);
+    stand.rotation.y = Math.atan2(ENTRY.x - x, ENTRY.z - z);
+    this.scene.add(stand);
+    const wood = "#6f4a2c";
+    this.box(0.62, 0.06, 0.62, 0, 0.03, 0, "#5b3d25", stand);
+    const post = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.08, 1.02, 10), this.material(wood));
+    post.position.y = 0.54; post.castShadow = true; stand.add(post);
+    const top = new THREE.Group();
+    top.position.set(0, 1.08, 0); top.rotation.x = 0.5; stand.add(top);
+    this.box(0.86, 0.05, 0.6, 0, 0, 0, wood, top, true);
+    const page = this.canvasTexture(512, 340, (ctx) => {
+      const tint = ctx.createRadialGradient(256, 170, 60, 256, 170, 300);
+      tint.addColorStop(0, "#f8eccb"); tint.addColorStop(1, "#dcc38f");
+      ctx.fillStyle = tint; ctx.fillRect(0, 0, 512, 340);
+      ctx.fillStyle = "#5a3b1f"; ctx.textAlign = "center";
+      ctx.font = '600 44px "Cormorant Garamond", "Songti TC", Georgia, serif';
+      ctx.fillText(translate("The Visitor's Guide", this.options.locale), 256, 92, 460);
+      ctx.fillStyle = "#9a7a4c"; ctx.fillRect(176, 118, 160, 2);
+      ctx.fillStyle = "#7b5a35"; ctx.font = '24px "DM Sans", sans-serif';
+      this.wrapText(ctx, translate("Everything the city can do, unrolled in one place.", this.options.locale), 256, 168, 420, 34);
+      ctx.fillStyle = "#b08a57";
+      for (let i = 0; i < 3; i++) ctx.fillRect(116, 250 + i * 22, 280 - i * 50, 3);
+    }, true);
+    const sheet = new THREE.Mesh(new THREE.PlaneGeometry(0.66, 0.44), new THREE.MeshStandardMaterial({ map: page, roughness: 0.9 }));
+    sheet.rotation.x = -Math.PI / 2; sheet.position.y = 0.03; top.add(sheet);
+    for (const side of [-1, 1]) {
+      const roller = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.74, 12), this.material("#e9dab4"));
+      roller.rotation.z = Math.PI / 2; roller.position.set(0, 0.06, side * 0.24); top.add(roller);
+      for (const end of [-1, 1]) {
+        const knob = new THREE.Mesh(new THREE.SphereGeometry(0.045, 10, 8), this.material("#8a5a2e"));
+        knob.position.set(end * 0.4, 0.06, side * 0.24); top.add(knob);
+      }
+    }
+    // A small floating label invites a click, bobbing gently over the stand.
+    const tag = this.canvasTexture(512, 128, (ctx) => {
+      ctx.fillStyle = "#f7f0dc"; ctx.beginPath(); ctx.roundRect(4, 4, 504, 96, 48); ctx.fill();
+      ctx.strokeStyle = "#b08a57"; ctx.lineWidth = 4; ctx.stroke();
+      ctx.fillStyle = "#5a3b1f"; ctx.textAlign = "center"; ctx.font = '600 38px "DM Sans", sans-serif';
+      ctx.fillText(translate("Read the guide", this.options.locale), 256, 66, 460);
+    }, true);
+    const label = new THREE.Sprite(new THREE.SpriteMaterial({ map: tag, transparent: true, depthWrite: false }));
+    label.scale.set(1.1, 0.275, 1); label.position.y = 1.85; stand.add(label);
+    stand.traverse((object) => { object.userData.guide = true; });
+    this.obstacles.push({ x, z, rx: 0.55, rz: 0.55 });
+    this.life.add({ x, z, reach: 30, update: (t) => { label.position.y = 1.85 + Math.sin(t * 1.6) * 0.05; } });
+  }
+
   private buildHarbour() {
     const c = CITY;
     // Sea to the south, with the quay, the mole and the lighthouse.
@@ -601,6 +654,7 @@ export class Museum {
       } });
     }
     this.life.addGulls({ x: 0, z: c.quay.south + 16 }, 7);
+    this.buildGuideStand(GUIDE_STAND.x, GUIDE_STAND.z);
     // Belvedere: a pergola and benches at the western end of the quay.
     for (const x of [-86, -74, -62]) for (const z of [52, 60]) { this.box(0.24, 3.7, 0.24, x, 1.85, z, "#a68d64", this.scene, true); this.obstacles.push({ x, z, rx: 0.45, rz: 0.45 }); }
     for (const z of [52, 60]) this.box(26, 0.25, 0.3, -74, 3.65, z, "#ae946c", this.scene, true);
@@ -1859,6 +1913,12 @@ export class Museum {
         this.pointerCancel();
         return;
       }
+      if (object?.userData.guide) {
+        this.clearInput();
+        this.options.onGuide?.();
+        this.pointerCancel();
+        return;
+      }
       const challengeAnswer: string | undefined = object?.userData.challengeAnswer;
       if (challengeAnswer && this.challenge && !this.challenge.solved && !this.challenge.wrong.includes(challengeAnswer)) {
         this.clearInput();
@@ -1910,6 +1970,7 @@ export class Museum {
         hit.object.userData.residentId ||
         hit.object.userData.challengeAnswer ||
         hit.object.userData.skyWord ||
+        hit.object.userData.guide ||
         !(hit.object as THREE.Mesh).material ||
         !((hit.object as THREE.Mesh).material as THREE.Material).transparent ||
         hit.object.userData.target,
@@ -1930,7 +1991,7 @@ export class Museum {
       this.options.onHover(hit?.exhibit ?? null, hit?.action);
     }
     const resident = this.residentsEnabled && nearbyResident({ ...this.camera.position, room: areaAt(this.camera.position.x, this.camera.position.z) });
-    this.renderer.domElement.style.cursor = hit || (resident && object?.userData.residentId === resident.id) ? "pointer" : "grab";
+    this.renderer.domElement.style.cursor = hit || object?.userData.guide || (resident && object?.userData.residentId === resident.id) ? "pointer" : "grab";
   }
   private keyDown = (event: KeyboardEvent) => {
     if (
